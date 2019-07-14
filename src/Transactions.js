@@ -31,9 +31,7 @@ const getCategoryByKey = getByKey('cat');
 const mappedData = data.ope.map((transaction, index) => ({
   ...transaction,
   no: index,
-  date: new Date(
-    65247984000000 - 86400000 * Number(transaction.date)
-  ).toISOString(),
+  date: new Date(Number(transaction.date)).toISOString(),
   amount: Number.parseFloat(transaction.amount).toFixed(2),
   account: getAccountByKey(transaction.account),
   category: getCategoryByKey(transaction.category),
