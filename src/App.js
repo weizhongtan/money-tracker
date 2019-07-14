@@ -1,23 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import data from './private/data';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css';
+import Transactions from './Transactions';
+import Graphs from './Graphs';
+import { Menu } from 'semantic-ui-react';
 
 function App() {
+  const [activeItem, setActiveItem] = useState('transactions');
   return (
     <div className="App">
-      <table>
-      {data.ope.map(transaction => (
-        <tr>
-          {Object.entries(transaction).map(([key, val]) => {
-            return (
-              <td>
-                {val}
-              </td>
-            )
-          })}
-        </tr>
-      ))}
-      </table>
+      <Router>
+        <Menu>
+          <Link
+            to="/transactions"
+            onClick={() => setActiveItem('transactions')}
+          >
+            <Menu.Item active={activeItem === 'transactions'}>
+              Transactions
+            </Menu.Item>
+          </Link>
+          <Link to="/graphs" onClick={() => setActiveItem('graphs')}>
+            <Menu.Item active={activeItem === 'graphs'}>graphs</Menu.Item>
+          </Link>
+        </Menu>
+        <Route path="/transactions" component={Transactions} />
+        <Route path="/graphs" component={Graphs} />
+      </Router>
     </div>
   );
 }
