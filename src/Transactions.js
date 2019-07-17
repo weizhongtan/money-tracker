@@ -10,7 +10,6 @@ const headings = [
   'amount',
   'account',
   'fromInternalAccount',
-  'paymode',
   'st',
   'category',
   'wording',
