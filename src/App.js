@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import Transactions from './Transactions';
 import Graphs from './Graphs';
@@ -24,8 +29,9 @@ function App() {
             <Menu.Item active={activeItem === 'graphs'}>graphs</Menu.Item>
           </Link>
         </Menu>
-        <Route path="/transactions" component={Transactions} />
-        <Route path="/graphs" component={Graphs} />
+        <Route path="/transactions" exact component={Transactions} />
+        <Route path="/graphs" exact component={Graphs} />
+        <Redirect to="/transactions" />
       </Router>
     </div>
   );
