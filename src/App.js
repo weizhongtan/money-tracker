@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
+  Switch,
   Route,
   Link,
   Redirect,
@@ -29,9 +30,11 @@ function App() {
             <Menu.Item active={activeItem === 'graphs'}>graphs</Menu.Item>
           </Link>
         </Menu>
-        <Route path="/transactions" exact component={Transactions} />
-        <Route path="/graphs" exact component={Graphs} />
-        <Redirect to="/transactions" />
+        <Switch>
+          <Route path="/transactions" exact component={Transactions} />
+          <Route path="/graphs" exact component={Graphs} />
+          <Redirect to="/transactions" />
+        </Switch>
       </Router>
     </div>
   );
