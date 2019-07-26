@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { LineChart, LineSeries } from 'reaviz';
+import { ResponsiveLineCanvas } from '@nivo/line';
 
 import data from './private/data';
-import { Table, Input } from 'semantic-ui-react';
+import { Table, Input, Divider } from 'semantic-ui-react';
 
 const filtered = data.ope
   .filter(t => t.account === '1')
@@ -18,22 +18,42 @@ const cumulative = [];
 let total = 0;
 
 filtered.forEach(t => {
-  const key = t.date;
   total += t.amount;
-  const data = total;
-  cumulative.push({ key, data, id: t.id });
+  cumulative.push({ x: t.date, y: total });
 });
 
-console.log(cumulative);
+const series = [
+  {
+    id: 'series1',
+    data: cumulative,
+  },
+];
 
 const Graphs = () => {
   return (
-    <LineChart
-      width={350}
-      height={250}
-      data={cumulative}
-      series={<LineSeries />}
-    />
+    <div
+      style={{
+        overflow: 'auto',
+        width: '90%',
+        height: '90%',
+      }}
+    >
+      <ResponsiveLineCanvas
+        margin={{ top: 30, right: 50, bottom: 100, left: 100 }}
+        xScale={{ type: 'time', format: 'native' }}
+        yScale={{ type: 'linear', min: -2000 }}
+        axisBottom={{
+          format: '%m/%d/%Y',
+          tickValues: 'every 3 months',
+        }}
+        data={series}
+        isInteractive={false}
+        theme={{
+          axis: { ticks: { text: { fontSize: 14 } } },
+          grid: { line: { stroke: '#ddd', strokeDasharray: '1 2' } },
+        }}
+      />
+    </div>
   );
 };
 
