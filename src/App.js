@@ -1,40 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect,
+  NavLink,
 } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
-import Transactions from './Transactions';
+import { Segment, Menu } from 'semantic-ui-react';
+
+import Navigation from './Navigation';
 import Graphs from './Graphs';
-import { Menu } from 'semantic-ui-react';
+import Transactions from './Transactions';
 
 function App() {
-  const [activeItem, setActiveItem] = useState('transactions');
   return (
     <div className="App">
       <Router>
-        <Menu>
-          <Link
-            to="/transactions"
-            onClick={() => setActiveItem('transactions')}
-          >
-            <Menu.Item active={activeItem === 'transactions'}>
-              Transactions
-            </Menu.Item>
-          </Link>
-          <Link to="/graphs" onClick={() => setActiveItem('graphs')}>
-            <Menu.Item active={activeItem === 'graphs'}>graphs</Menu.Item>
-          </Link>
-        </Menu>
-        <Switch>
-          <Route path="/transactions" exact component={Transactions} />
-          <Route path="/graphs" exact component={Graphs} />
-          <Redirect to="/transactions" />
-        </Switch>
+        <Navigation>
+          {({ location }) => (
+            <Menu tabular>
+              <Menu.Item active={location.pathname === '/transactions'}>
+                <NavLink exact to="/transactions">
+                  Transactions
+                </NavLink>
+              </Menu.Item>
+              <Menu.Item active={location.pathname === '/graphs'}>
+                <NavLink to="/graphs">Graphs</NavLink>
+              </Menu.Item>
+            </Menu>
+          )}
+        </Navigation>
+        <Segment attached="bottom">
+          <Switch>
+            <Route path="/transactions" exact component={Transactions} />
+            <Route path="/graphs" exact component={Graphs} />
+            <Redirect to="/transactions" />
+          </Switch>
+        </Segment>
       </Router>
     </div>
   );
