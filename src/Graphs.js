@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ResponsiveLineCanvas } from '@nivo/line';
 
 import data from './private/data';
-import { Table, Input, Divider } from 'semantic-ui-react';
 
 const filtered = data.ope
   .filter(t => t.account === '1')

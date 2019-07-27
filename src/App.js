@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,14 +8,24 @@ import {
 } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import { Segment, Menu } from 'semantic-ui-react';
+import styled from 'styled-components';
 
 import Navigation from './Navigation';
 import Graphs from './Graphs';
 import Transactions from './Transactions';
 
+const Wrapper = styled.div`
+  height: 100%;
+`;
+
+const Main = styled(Segment)`
+  height: 100%;
+  width: 100%;
+`;
+
 function App() {
   return (
-    <div className="App">
+    <Wrapper>
       <Router>
         <Navigation>
           {({ location }) => (
@@ -32,15 +41,15 @@ function App() {
             </Menu>
           )}
         </Navigation>
-        <Segment attached="bottom">
+        <Main attached="bottom">
           <Switch>
             <Route path="/transactions" exact component={Transactions} />
             <Route path="/graphs" exact component={Graphs} />
             <Redirect to="/transactions" />
           </Switch>
-        </Segment>
+        </Main>
       </Router>
-    </div>
+    </Wrapper>
   );
 }
 
