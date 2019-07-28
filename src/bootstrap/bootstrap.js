@@ -78,18 +78,16 @@ Transaction.init(
       type: Sequelize.STRING,
       allowNull: false,
     },
-    paired_with_id: {
-      type: Sequelize.UUID,
-      allowNull: true,
-    },
   },
   { sequelize, modelName: 'transaction' }
 );
 
-Account.hasMany(Transaction);
-Account.hasMany(Transaction);
+Transaction.belongsTo(Account, { as: 'FromAccount' });
+Transaction.belongsTo(Account, { as: 'ToAccount' });
 
 Transaction.belongsTo(Category);
+
+Transaction.hasOne(Transaction, { as: 'PairedWith' });
 
 sequelize
   .authenticate()
@@ -124,6 +122,16 @@ sequelize
         name: 'Nationwide My account',
       },
     });
+
+    const transaction = Transaction.build({
+      date: new Date(),
+      amount: 50,
+      description: 'test transaction',
+    });
+
+    transaction.setToAccount(account, { save: false });
+
+    transaction.save();
 
     // data.ope.forEach(c => {
     //   Transaction.create({
