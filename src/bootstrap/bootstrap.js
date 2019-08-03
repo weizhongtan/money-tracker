@@ -1,11 +1,6 @@
 const Sequelize = require('sequelize');
 const data = require('../private/data');
 
-const transactions = data.ope.map(t => {
-  t.date = new Date(Number(t.date));
-  return t;
-});
-
 const sequelize = new Sequelize('moneytracker', 'wzt', '', {
   host: 'localhost',
   dialect: 'postgres',
@@ -27,6 +22,10 @@ Account.init(
       type: Sequelize.UUID,
       primaryKey: true,
       defaultValue: Sequelize.UUIDV4,
+    },
+    legacy_key: {
+      type: Sequelize.TEXT,
+      allowNull: false,
     },
     name: {
       type: Sequelize.STRING,
@@ -50,6 +49,10 @@ Category.init(
       type: Sequelize.UUID,
       primaryKey: true,
       defaultValue: Sequelize.UUIDV4,
+    },
+    legacy_key: {
+      type: Sequelize.TEXT,
+      allowNull: false,
     },
     name: {
       type: Sequelize.STRING,
@@ -105,6 +108,7 @@ sequelize
           name: a.name,
           initial_amount: a.initial,
           minimum: a.minimum,
+          legacy_key: a.key,
         });
       })
     );
@@ -113,31 +117,59 @@ sequelize
       data.cat.map(c => {
         return Category.create({
           name: c.name,
+          legacy_key: c.key,
         });
       })
     );
 
-    const account = await Account.findOne({
-      where: {
-        name: 'Nationwide My account',
-      },
+    const transactions = data.ope.map(t => {
+      t.date = new Date(Number(t.date));
+      return t;
     });
 
-    const transaction = Transaction.build({
-      date: new Date(),
-      amount: 50,
-      description: 'test transaction',
+    const errors = [];
+
+    const promises = transactions.map(async t => {
+      try {
+        const transaction = Transaction.build({
+          date: t.date,
+          amount: t.amount,
+          description: t.wording,
+        });
+
+        const toAccount = await Account.findOne({
+          where: {
+            legacy_key: t.account,
+          },
+        });
+        transaction.setToAccount(toAccount, { save: false });
+
+        if (t.dst_account) {
+          const fromAccount = await Account.findOne({
+            where: {
+              legacy_key: t.dst_account,
+            },
+          });
+          transaction.setFromAccount(fromAccount, { save: false });
+        }
+
+        const category = await Category.findOne({
+          where: {
+            legacy_key: t.category,
+          },
+        });
+
+        transaction.setCategory(category, { save: false });
+
+        transaction.save();
+      } catch (err) {
+        errors.push(t);
+      }
     });
 
-    transaction.setToAccount(account, { save: false });
+    await Promise.all(promises);
 
-    transaction.save();
-
-    // data.ope.forEach(c => {
-    //   Transaction.create({
-    //     name: c.name
-    //   })
-    // })
+    console.error(errors);
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
