@@ -81,6 +81,10 @@ Transaction.init(
       type: Sequelize.STRING,
       allowNull: false,
     },
+    pair_id: {
+      type: Sequelize.UUID,
+      allowNull: true,
+    },
   },
   { sequelize, modelName: 'transaction' }
 );
@@ -135,6 +139,7 @@ sequelize
           date: t.date,
           amount: t.amount,
           description: t.wording,
+          pair_id: t.paired,
         });
 
         const toAccount = await Account.findOne({
