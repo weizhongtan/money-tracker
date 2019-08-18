@@ -1,5 +1,13 @@
 const Sequelize = require('sequelize');
 const data = require('../private/data');
+const {
+  AccountInit,
+  CategoryInit,
+  TransactionInit,
+  SplitTransactionInit,
+} = require('./models');
+const customTypes = require('./types');
+const DataTypes = Object.assign({}, Sequelize, customTypes);
 
 const sequelize = new Sequelize('moneytracker', 'wzt', '', {
   host: 'localhost',
@@ -9,127 +17,10 @@ const sequelize = new Sequelize('moneytracker', 'wzt', '', {
   },
 });
 
-const Model = Sequelize.Model;
-class Transaction extends Model {}
-class Account extends Model {}
-class Category extends Model {}
-class SplitTransaction extends Model {}
-
-const tables = [Transaction, Account, Category, SplitTransaction];
-
-const MONEY = Sequelize.DECIMAL(19, 2);
-
-Account.init(
-  {
-    id: {
-      type: Sequelize.UUID,
-      primaryKey: true,
-      defaultValue: Sequelize.UUIDV4,
-    },
-    legacy_key: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
-    name: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
-    initial_amount: {
-      type: MONEY,
-      allowNull: false,
-    },
-    minimum: {
-      type: MONEY,
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    modelName: 'account',
-  }
-);
-
-Category.init(
-  {
-    id: {
-      type: Sequelize.UUID,
-      primaryKey: true,
-      defaultValue: Sequelize.UUIDV4,
-    },
-    legacy_key: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
-    name: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
-  },
-  {
-    sequelize,
-    modelName: 'category',
-  }
-);
-
-Transaction.init(
-  {
-    id: {
-      type: Sequelize.UUID,
-      primaryKey: true,
-      defaultValue: Sequelize.UUIDV4,
-    },
-    date: {
-      type: Sequelize.DATE,
-      allowNull: false,
-    },
-    amount: {
-      type: MONEY,
-      allowNull: false,
-    },
-    description: {
-      type: Sequelize.TEXT,
-      allowNull: false,
-    },
-    pair_id: {
-      type: Sequelize.UUID,
-      allowNull: true,
-    },
-    split_amount: {
-      type: Sequelize.ARRAY(MONEY),
-      allowNull: true,
-    },
-    split_description: {
-      type: Sequelize.ARRAY(Sequelize.TEXT),
-      allowNull: true,
-    },
-  },
-  {
-    sequelize,
-    modelName: 'transaction',
-  }
-);
-
-SplitTransaction.init(
-  {
-    id: {
-      type: Sequelize.UUID,
-      primaryKey: true,
-      defaultValue: Sequelize.UUIDV4,
-    },
-    amount: {
-      type: MONEY,
-      allowNull: true,
-    },
-    description: {
-      type: Sequelize.TEXT,
-      allowNull: true,
-    },
-  },
-  {
-    sequelize,
-    modelName: 'split_transaction',
-  }
-);
+const Account = AccountInit(sequelize, DataTypes);
+const Category = CategoryInit(sequelize, DataTypes);
+const Transaction = TransactionInit(sequelize, DataTypes);
+const SplitTransaction = SplitTransactionInit(sequelize, DataTypes);
 
 Transaction.belongsTo(Account, { as: 'FromAccount' });
 Transaction.belongsTo(Account, { as: 'ToAccount' });
@@ -146,7 +37,8 @@ sequelize
   .then(async () => {
     console.log('Connection has been established successfully.');
 
-    await tables.reduce(async (acc, table) => {
+    const models = [Account, Category, Transaction, SplitTransaction];
+    await models.reduce(async (acc, table) => {
       await acc;
       return table.sync({ force: true });
     }, Promise.resolve());
