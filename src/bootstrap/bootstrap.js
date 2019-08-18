@@ -13,6 +13,9 @@ const Model = Sequelize.Model;
 class Transaction extends Model {}
 class Account extends Model {}
 class Category extends Model {}
+class SplitTransaction extends Model {}
+
+const tables = [Transaction, Account, Category, SplitTransaction];
 
 const MONEY = Sequelize.DECIMAL(19, 2);
 
@@ -28,7 +31,7 @@ Account.init(
       allowNull: false,
     },
     name: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
     initial_amount: {
@@ -40,7 +43,10 @@ Account.init(
       allowNull: false,
     },
   },
-  { sequelize, modelName: 'account' }
+  {
+    sequelize,
+    modelName: 'account',
+  }
 );
 
 Category.init(
@@ -55,11 +61,14 @@ Category.init(
       allowNull: false,
     },
     name: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
   },
-  { sequelize, modelName: 'category' }
+  {
+    sequelize,
+    modelName: 'category',
+  }
 );
 
 Transaction.init(
@@ -78,21 +87,57 @@ Transaction.init(
       allowNull: false,
     },
     description: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false,
     },
     pair_id: {
       type: Sequelize.UUID,
       allowNull: true,
     },
+    split_amount: {
+      type: Sequelize.ARRAY(MONEY),
+      allowNull: true,
+    },
+    split_description: {
+      type: Sequelize.ARRAY(Sequelize.TEXT),
+      allowNull: true,
+    },
   },
-  { sequelize, modelName: 'transaction' }
+  {
+    sequelize,
+    modelName: 'transaction',
+  }
+);
+
+SplitTransaction.init(
+  {
+    id: {
+      type: Sequelize.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.UUIDV4,
+    },
+    amount: {
+      type: MONEY,
+      allowNull: true,
+    },
+    description: {
+      type: Sequelize.TEXT,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'split_transaction',
+  }
 );
 
 Transaction.belongsTo(Account, { as: 'FromAccount' });
 Transaction.belongsTo(Account, { as: 'ToAccount' });
 
 Transaction.belongsTo(Category);
+Transaction.belongsToMany(Category, {
+  through: SplitTransaction,
+});
 
 Transaction.hasOne(Transaction, { as: 'PairedWith' });
 
@@ -101,9 +146,10 @@ sequelize
   .then(async () => {
     console.log('Connection has been established successfully.');
 
-    await Account.sync({ force: true });
-    await Category.sync({ force: true });
-    await Transaction.sync({ force: true });
+    await tables.reduce(async (acc, table) => {
+      await acc;
+      return table.sync({ force: true });
+    }, Promise.resolve());
     console.log('bootstrapped');
 
     await Promise.all(
@@ -158,17 +204,46 @@ sequelize
           transaction.setFromAccount(fromAccount, { save: false });
         }
 
-        const category = await Category.findOne({
-          where: {
-            legacy_key: t.category,
-          },
-        });
+        // split transaction
+        if (t.scat) {
+          const split = s => s.split('||').filter(x => x);
+          const categories = split(t.scat);
+          const amounts = split(t.samt);
+          const descriptions = split(t.smem);
+          await Promise.all(
+            categories.map(async legacyKey => {
+              const category = await Category.findOne({
+                where: {
+                  legacy_key: legacyKey,
+                },
+              });
+              transaction.addCategory(category, {
+                through: {
+                  amount: amounts.shift(),
+                  // default to main description
+                  description: descriptions.shift() || t.wording,
+                },
+                save: false,
+              });
+            })
+          );
+        }
 
-        transaction.setCategory(category, { save: false });
+        if (t.category) {
+          const category = await Category.findOne({
+            where: {
+              legacy_key: t.category,
+            },
+          });
+          transaction.setCategory(category, { save: false });
+        }
 
-        transaction.save();
+        await transaction.save();
       } catch (err) {
-        errors.push(t);
+        errors.push({
+          err,
+          t,
+        });
       }
     });
 
