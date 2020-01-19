@@ -10,9 +10,15 @@ import 'semantic-ui-css/semantic.min.css';
 import { Segment, Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
 
+import ApolloClient, { gql } from 'apollo-boost';
+
 import Navigation from './Navigation';
 // import Graphs from './Graphs';
 // import Transactions from './Transactions';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql',
+});
 
 const Wrapper = styled.div`
   height: 100%;
@@ -26,17 +32,19 @@ const Main = styled(Segment)`
 function App() {
   useEffect(() => {
     const get = async () => {
-      const res = await fetch('http://localhost:3000/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: '{ allAccounts { nodes { rowId } } }',
-          variables: null,
-        }),
+      const res = await client.query({
+        query: gql`
+          {
+            allAccounts {
+              nodes {
+                rowId
+              }
+            }
+          }
+        `,
       });
-      console.log(await res.json());
+
+      console.log(res);
     };
     get();
   });
