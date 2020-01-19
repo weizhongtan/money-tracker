@@ -26,7 +26,7 @@ const Main = styled(Segment)`
 function App() {
   useEffect(() => {
     const get = async () => {
-      const res = await fetch('http://localhost:5000/graphql', {
+      const res = await fetch('http://localhost:3000/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,6 +40,7 @@ function App() {
     };
     get();
   });
+
   return (
     <Wrapper>
       <Router>
