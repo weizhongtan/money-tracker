@@ -7,7 +7,7 @@ const readFile = promisify(fs.readFile);
 const { createTransaction } = require('./lib');
 
 (async () => {
-  const inPath = path.resolve(__dirname, '../private/marcus.csv');
+  const inPath = path.resolve(__dirname, '../../private/marcus.csv');
   const csvData = await readFile(inPath, { encoding: 'utf8' });
   const jsonData = csvjson.toObject(csvData, {
     delimiter: ';',

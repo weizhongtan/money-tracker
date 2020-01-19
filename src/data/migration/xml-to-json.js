@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const uuid = require('uuid/v4');
 
-const inPath = path.resolve(__dirname, '../../private/Bank.xhb');
+const inPath = path.resolve(__dirname, '../../../private/Bank.xhb');
 const xml = fs.readFileSync(inPath);
 
 parseString(xml, (err, original) => {
@@ -38,7 +38,7 @@ parseString(xml, (err, original) => {
   });
 
   fs.writeFileSync(
-    path.resolve(__dirname, '../../private/bank.json'),
+    path.resolve(__dirname, '../../../private/bank.json'),
     JSON.stringify(tmp, null, 2)
   );
 });
