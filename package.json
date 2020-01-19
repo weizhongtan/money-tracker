@@ -27,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "postgraphile -c postgres:///moneytracker -s public -a -j -o",
+    "api": "postgraphile -c postgres:///moneytracker -s public -a -j -o",
     "bootstrap:xml-to-json": "node src/data/migration/xml-to-json.js",
     "bootstrap:json-to-postgres": "node src/data/migration/json-to-postgres.js"
   },
