@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,8 +11,8 @@ import { Segment, Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
 
 import Navigation from './Navigation';
-import Graphs from './Graphs';
-import Transactions from './Transactions';
+// import Graphs from './Graphs';
+// import Transactions from './Transactions';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -24,6 +24,22 @@ const Main = styled(Segment)`
 `;
 
 function App() {
+  useEffect(() => {
+    const get = async () => {
+      const res = await fetch('http://localhost:5000/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: '{ allAccounts { nodes { rowId } } }',
+          variables: null,
+        }),
+      });
+      console.log(await res.json());
+    };
+    get();
+  });
   return (
     <Wrapper>
       <Router>
@@ -43,8 +59,8 @@ function App() {
         </Navigation>
         <Main attached="bottom">
           <Switch>
-            <Route path="/transactions" exact component={Transactions} />
-            <Route path="/graphs" exact component={Graphs} />
+            {/* <Route path="/transactions" exact component={Transactions} /> */}
+            {/* <Route path="/graphs" exact component={Graphs} /> */}
             <Redirect to="/transactions" />
           </Switch>
         </Main>

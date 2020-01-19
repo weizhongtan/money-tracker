@@ -8,6 +8,7 @@
     "lodash": "^4.17.15",
     "pg": "^7.17.1",
     "pg-hstore": "^2.3.3",
+    "postgraphile": "^4.5.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
@@ -26,6 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "server": "postgraphile -c postgres:///moneytracker -s public -a -j -o",
     "bootstrap:xml-to-json": "node src/data/migration/xml-to-json.js",
     "bootstrap:json-to-postgres": "node src/data/migration/json-to-postgres.js"
   },
