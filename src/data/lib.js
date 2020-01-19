@@ -1,12 +1,9 @@
 const { connect, Account, Category, Transaction } = require('./bootstrap');
 
-exports.connect = connect;
-
-exports.sync = async (force = false) => {
+exports.connectAndSync = async (force = false) => {
   const sequelize = await connect();
   // overrides existing models
   await sequelize.sync({ force });
-  console.log('bootstrapped');
 };
 
 exports.createTransaction = async ({
@@ -96,10 +93,6 @@ exports.createHomebankTransaction = async t => {
 };
 
 exports.addExistingData = async data => {
-  const sequelize = await connect();
-  await sequelize.sync();
-  console.log('bootstrapped');
-
   await Promise.all(
     data.account.map(a => {
       return Account.create({

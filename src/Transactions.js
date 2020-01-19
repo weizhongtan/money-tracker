@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 
-import data from './private/data';
+import data from '../private/data';
 import { Table, Input } from 'semantic-ui-react';
 
 const headings = [

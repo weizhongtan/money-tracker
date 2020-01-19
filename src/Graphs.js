@@ -1,7 +1,7 @@
 import React from 'react';
 import { ResponsiveLineCanvas } from '@nivo/line';
 
-import data from './private/data';
+import data from '../private/data';
 
 const filtered = data.ope
   .filter(t => t.account === '1')
