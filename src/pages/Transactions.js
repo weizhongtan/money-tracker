@@ -75,7 +75,12 @@ const List = ({ searchText, setLoading }) => {
               <Table.Cell>
                 <TimeAgo date={t.date} />
               </Table.Cell>
-              <Table.Cell>{t.amount}</Table.Cell>
+              <Table.Cell
+                positive={Number(t.amount) > 0}
+                negative={Number(t.amount) < 0}
+              >
+                {t.amount}
+              </Table.Cell>
               <Table.Cell>{t.account}</Table.Cell>
               <Table.Cell>{t.fromInternalAccount}</Table.Cell>
               <Table.Cell>{t.description}</Table.Cell>
