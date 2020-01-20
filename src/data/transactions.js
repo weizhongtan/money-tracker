@@ -1,27 +1,27 @@
 import { gql } from 'apollo-boost';
 
 export const GET_TRANSACTIONS = gql`
-  query Transactions($account: String) {
-    allAccounts(filter: { name: { includesInsensitive: $account } }) {
+  query Transactions($accountName: String) {
+    allTransactions(
+      filter: {
+        accountByToAccountId: { name: { includesInsensitive: $accountName } }
+      }
+    ) {
       nodes {
-        transactionsByToAccountId {
-          nodes {
-            date
-            amount
-            description
-            accountByToAccountId {
-              name
-            }
-            accountByFromAccountId {
-              name
-            }
-            categoryByCategoryId {
-              name
-            }
-            transactionByPairedWithId {
-              id
-            }
-          }
+        date
+        amount
+        description
+        accountByToAccountId {
+          name
+        }
+        accountByFromAccountId {
+          name
+        }
+        categoryByCategoryId {
+          name
+        }
+        transactionByPairedWithId {
+          id
         }
       }
     }

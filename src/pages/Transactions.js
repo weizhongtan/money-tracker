@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
-import { Table, Input, Loader, Dimmer } from 'semantic-ui-react';
+import { Table, Input, Loader } from 'semantic-ui-react';
 import { DebounceInput } from 'react-debounce-input';
 
 import { useQuery } from '@apollo/react-hooks';
 import { GET_TRANSACTIONS } from '../data/transactions';
 
-const List = ({ account }) => {
+const List = ({ accountName }) => {
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
-      account,
+      accountName,
     },
   });
 
@@ -21,33 +21,29 @@ const List = ({ account }) => {
     return <Loader active inline />;
   }
 
-  const transactions = data?.allAccounts.nodes
-    .map(node =>
-      node.transactionsByToAccountId.nodes.map(
-        (
-          {
-            id,
-            date,
-            amount,
-            accountByToAccountId,
-            description,
-            categoryByCategoryId,
-            accountByFromAccountId,
-          },
-          index
-        ) => ({
-          id: id,
-          index,
-          date: date,
-          amount: amount,
-          account: accountByToAccountId?.name,
-          description: description,
-          category: categoryByCategoryId?.name,
-          fromInternalAccount: accountByFromAccountId?.name,
-        })
-      )
-    )
-    .flat(1);
+  const transactions = data?.allTransactions.nodes.map(
+    (
+      {
+        id,
+        date,
+        amount,
+        accountByToAccountId,
+        description,
+        categoryByCategoryId,
+        accountByFromAccountId,
+      },
+      index
+    ) => ({
+      id: id,
+      index,
+      date: date,
+      amount: amount,
+      account: accountByToAccountId?.name,
+      description: description,
+      category: categoryByCategoryId?.name,
+      fromInternalAccount: accountByFromAccountId?.name,
+    })
+  );
 
   const headings = [
     'index',
@@ -105,7 +101,7 @@ const Transactions = () => {
         }}
         element={Input}
       />
-      <List account={searchText} />
+      <List accountName={searchText} />
     </>
   );
 };
