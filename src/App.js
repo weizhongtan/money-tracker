@@ -13,7 +13,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 
 import Navigation from './Navigation';
-// import Graphs from './pages/Graphs';
+import Graphs from './pages/Graphs';
 import Transactions from './pages/Transactions';
 import Criteria from './pages/Criteria';
 
@@ -53,8 +53,8 @@ function App() {
     ) => ({
       id: id,
       index,
-      date: date,
-      amount: amount,
+      date: new Date(date),
+      amount: Number(amount),
       account: accountByToAccountId?.name,
       description: description,
       category: categoryByCategoryId?.name,
@@ -66,9 +66,6 @@ function App() {
     return <p>something went wrong :(</p>;
   }
 
-  if (loading) {
-    return null;
-  }
   return (
     <Wrapper>
       <Router>
@@ -96,25 +93,31 @@ function App() {
             </Menu>
           )}
         </Navigation>
-        <Main attached="bottom">
-          <Switch>
-            <Route
-              path="/transactions"
-              exact
-              render={() => (
-                <Transactions
-                  {...{
-                    transactions,
-                    orderBy,
-                    setOrderBy,
-                  }}
-                />
-              )}
-            />
-            {/* <Route path="/graphs" exact component={Graphs} /> */}
-            <Redirect to="/transactions" />
-          </Switch>
-        </Main>
+        {!loading && (
+          <Main attached="bottom">
+            <Switch>
+              <Route
+                path="/transactions"
+                exact
+                render={() => (
+                  <Transactions
+                    {...{
+                      transactions,
+                      orderBy,
+                      setOrderBy,
+                    }}
+                  />
+                )}
+              />
+              <Route
+                path="/graphs"
+                exact
+                component={() => <Graphs {...{ transactions }} />}
+              />
+              <Redirect to="/transactions" />
+            </Switch>
+          </Main>
+        )}
       </Router>
     </Wrapper>
   );

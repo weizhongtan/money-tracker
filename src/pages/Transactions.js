@@ -29,10 +29,7 @@ const Transactions = ({ transactions, orderBy, setOrderBy }) => {
               <Table.Cell>
                 <TimeAgo date={t.date} />
               </Table.Cell>
-              <Table.Cell
-                positive={Number(t.amount) > 0}
-                negative={Number(t.amount) < 0}
-              >
+              <Table.Cell positive={t.amount > 0} negative={t.amount < 0}>
                 {t.amount}
               </Table.Cell>
               <Table.Cell>{t.account}</Table.Cell>

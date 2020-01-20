@@ -1,9 +1,7 @@
 import React from 'react';
 import { ResponsiveLineCanvas } from '@nivo/line';
-import { useQuery } from '@apollo/react-hooks';
-import { GET_TRANSACTIONS } from '../data/transactions';
 
-const Graphs = () => {
+const Graphs = ({ transactions }) => {
   const cumulative = [];
   let total = 0;
   const series = [
@@ -12,20 +10,11 @@ const Graphs = () => {
       data: cumulative,
     },
   ];
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS);
-  const filtered = data.ope
-    .filter(t => t.account === '1')
-    .map((t, index, array) => {
-      return {
-        date: new Date(Number(t.date)),
-        amount: Number(t.amount),
-        id: t.id,
-      };
-    });
-  filtered.forEach(t => {
+  transactions.forEach(t => {
     total += t.amount;
     cumulative.push({ x: t.date, y: total });
   });
+
   return (
     <div
       style={{
