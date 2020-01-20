@@ -1,5 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,16 +10,14 @@ import 'semantic-ui-css/semantic.min.css';
 import { Segment, Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
 
-import ApolloClient, { gql } from 'apollo-boost';
+import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import Navigation from './Navigation';
-// import Graphs from './Graphs';
-// import Transactions from './Transactions';
+// import Graphs from './pages/Graphs';
+import Transactions from './pages/Transactions';
 
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
-});
+const client = new ApolloClient();
 
 const Wrapper = styled.div`
   height: 100%;
@@ -30,31 +27,6 @@ const Main = styled(Segment)`
   height: 100%;
   width: 100%;
 `;
-
-const ALL_ACCOUNTS = gql`
-  {
-    allAccounts {
-      nodes {
-        rowId
-      }
-    }
-  }
-`;
-
-const Inner = () => {
-  const { loading, error, data } = useQuery(ALL_ACCOUNTS);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-
-  return (
-    <ul>
-      {data.allAccounts.nodes.map(({ rowId }) => (
-        <li>{rowId}</li>
-      ))}
-    </ul>
-  );
-};
 
 function App() {
   return (
@@ -77,8 +49,7 @@ function App() {
           </Navigation>
           <Main attached="bottom">
             <Switch>
-              <Inner />
-              {/* <Route path="/transactions" exact component={Transactions} /> */}
+              <Route path="/transactions" exact component={Transactions} />
               {/* <Route path="/graphs" exact component={Graphs} /> */}
               <Redirect to="/transactions" />
             </Switch>
