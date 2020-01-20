@@ -1,12 +1,15 @@
 import { gql } from 'apollo-boost';
 
 export const GET_TRANSACTIONS = gql`
-  query Transactions($accountName: String) {
+  query Transactions(
+    $searchText: String
+    $orderBy: [TransactionsOrderBy!] = DATE_DESC
+  ) {
     allTransactions(
-      filter: {
-        accountByToAccountId: { name: { includesInsensitive: $accountName } }
-      }
+      filter: { description: { includesInsensitive: $searchText } }
+      orderBy: $orderBy
     ) {
+      totalCount
       nodes {
         date
         amount
