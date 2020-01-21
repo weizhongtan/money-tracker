@@ -33,15 +33,15 @@ const Main = styled(Segment)`
 
 function App() {
   const [searchText, setSearchText] = useState('');
-  const [orderBy, setOrderBy] = useState('DATE_DESC');
+  const [orderBy, setOrderBy] = useState('desc');
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
-      searchText,
+      searchText: `%${searchText}%`,
       orderBy,
     },
   });
 
-  const transactions = data?.allTransactions.nodes.map(
+  const transactions = data?.transactions.map(
     (
       {
         id,
@@ -49,7 +49,7 @@ function App() {
         amount,
         accountByToAccountId,
         description,
-        categoryByCategoryId,
+        category,
         accountByFromAccountId,
       },
       index
@@ -60,7 +60,7 @@ function App() {
       amount: Number(amount),
       account: accountByToAccountId?.name,
       description: description,
-      category: categoryByCategoryId?.name,
+      category: category?.name,
       fromInternalAccount: accountByFromAccountId?.name,
     })
   );
@@ -75,7 +75,7 @@ function App() {
         <Segment>
           <Criteria
             {...{
-              totalCount: data?.allTransactions.totalCount,
+              totalCount: data?.transactions_aggregate.aggregate.count,
               searchText,
               setSearchText,
               loading,
@@ -134,7 +134,9 @@ function App() {
   );
 }
 
-const client = new ApolloClient();
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/v1/graphql',
+});
 
 function ApolloWrapper() {
   return (

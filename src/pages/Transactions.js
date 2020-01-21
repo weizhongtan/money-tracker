@@ -9,10 +9,8 @@ const Transactions = ({ transactions, orderBy, setOrderBy }) => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell
-              sorted={orderBy === 'DATE_ASC' ? 'ascending' : 'descending'}
-              onClick={() =>
-                setOrderBy(orderBy === 'DATE_ASC' ? 'DATE_DESC' : 'DATE_ASC')
-              }
+              sorted={orderBy === 'asc' ? 'ascending' : 'descending'}
+              onClick={() => setOrderBy(orderBy === 'asc' ? 'desc' : 'asc')}
             >
               Date
             </Table.HeaderCell>

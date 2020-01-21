@@ -1,31 +1,32 @@
 import { gql } from 'apollo-boost';
 
 export const GET_TRANSACTIONS = gql`
-  query Transactions(
-    $searchText: String
-    $orderBy: [TransactionsOrderBy!] = DATE_DESC
-  ) {
-    allTransactions(
-      filter: { description: { includesInsensitive: $searchText } }
-      orderBy: $orderBy
+  query MyQuery($searchText: String, $orderBy: order_by) {
+    transactions(
+      where: { description: { _ilike: $searchText } }
+      order_by: { date: $orderBy }
     ) {
-      totalCount
-      nodes {
-        date
-        amount
-        description
-        accountByToAccountId {
-          name
-        }
-        accountByFromAccountId {
-          name
-        }
-        categoryByCategoryId {
-          name
-        }
-        transactionByPairedWithId {
-          id
-        }
+      date
+      amount
+      description
+      id
+      accountByFromAccountId {
+        name
+      }
+      accountByToAccountId {
+        name
+      }
+      category {
+        name
+      }
+      pair_id
+    }
+    transactions_aggregate(
+      where: { description: { _ilike: $searchText } }
+      order_by: { date: $orderBy }
+    ) {
+      aggregate {
+        count
       }
     }
   }
