@@ -1,17 +1,17 @@
 import { gql } from 'apollo-boost';
 
 export const GET_CATEGORIES = gql`
-  query Stuff {
-    allCategories {
-      nodes {
-        name
-        transactionsByCategoryId(
-          filter: {
-            date: { greaterThan: "2018-12-21T00:11:46.639Z" }
-            amount: { lessThan: "0" }
-          }
-        ) {
-          nodes {
+  query MyQuery($startDate: timestamptz, $endDate: timestamptz) {
+    categories {
+      name
+      transactions_aggregate(
+        where: {
+          date: { _gte: $startDate, _lte: $endDate }
+          _and: { amount: { _lt: "0" } }
+        }
+      ) {
+        aggregate {
+          sum {
             amount
           }
         }

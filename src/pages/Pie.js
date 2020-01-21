@@ -13,22 +13,24 @@ const Wrapper = styled.div`
 // website examples showcase many properties,
 // you'll often use just a few of them.
 const Pie = () => {
-  const { loading, error, data } = useQuery(GET_CATEGORIES);
+  const { loading, error, data } = useQuery(GET_CATEGORIES, {
+    variables: {
+      startDate: '2019-12-01T23:08:33.049Z',
+      endDate: '2020-01-21T23:08:33.049Z',
+    },
+  });
   if (loading || error) return null;
 
   // TODO: move aggregation into postgres
-  const out = data.allCategories.nodes
+  const out = data.categories
     .map(category => ({
       id: category.name,
       label: category.name,
-      value: category.transactionsByCategoryId.nodes.reduce(
-        (acc, node) => acc + Math.abs(Number(node.amount)),
-        0
-      ),
+      value:
+        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0,
     }))
-    .sort((a, b) => b.value - a.value);
-
-  console.log(out);
+    .sort((a, b) => b.value - a.value)
+    .filter(x => x.value > 0);
 
   return (
     <Wrapper>
