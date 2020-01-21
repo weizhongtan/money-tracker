@@ -16,10 +16,13 @@ import Navigation from './Navigation';
 import Graphs from './pages/Graphs';
 import Transactions from './pages/Transactions';
 import Criteria from './pages/Criteria';
+import Pie from './pages/Pie';
 
 import { GET_TRANSACTIONS } from './data/transactions';
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-flow: column;
   height: 100%;
 `;
 
@@ -90,6 +93,9 @@ function App() {
               <Menu.Item active={location.pathname === '/graphs'}>
                 <NavLink to="/graphs">Graphs</NavLink>
               </Menu.Item>
+              <Menu.Item active={location.pathname === '/pie'}>
+                <NavLink to="/pie">Pie</NavLink>
+              </Menu.Item>
             </Menu>
           )}
         </Navigation>
@@ -113,6 +119,11 @@ function App() {
                 path="/graphs"
                 exact
                 component={() => <Graphs {...{ transactions }} />}
+              />
+              <Route
+                path="/pie"
+                exact
+                component={() => <Pie {...{ transactions }} />}
               />
               <Redirect to="/transactions" />
             </Switch>
