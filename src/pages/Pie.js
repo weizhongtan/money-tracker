@@ -21,7 +21,6 @@ const Pie = () => {
   });
   if (loading || error) return null;
 
-  // TODO: move aggregation into postgres
   const out = data.categories
     .map(category => ({
       id: category.name,

@@ -17,6 +17,7 @@ import Graphs from './pages/Graphs';
 import Transactions from './pages/Transactions';
 import Criteria from './pages/Criteria';
 import Pie from './pages/Pie';
+import Bar from './pages/Bar';
 
 import { GET_TRANSACTIONS } from './data/transactions';
 
@@ -96,6 +97,9 @@ function App() {
               <Menu.Item active={location.pathname === '/pie'}>
                 <NavLink to="/pie">Pie</NavLink>
               </Menu.Item>
+              <Menu.Item active={location.pathname === '/bar'}>
+                <NavLink to="/bar">Bar</NavLink>
+              </Menu.Item>
             </Menu>
           )}
         </Navigation>
@@ -124,6 +128,11 @@ function App() {
                 path="/pie"
                 exact
                 component={() => <Pie {...{ transactions }} />}
+              />
+              <Route
+                path="/bar"
+                exact
+                component={() => <Bar {...{ transactions }} />}
               />
               <Redirect to="/transactions" />
             </Switch>
