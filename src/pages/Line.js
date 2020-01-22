@@ -30,6 +30,7 @@ const LineGraph = ({ transactions }) => {
         margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
         animate
         data={series}
+        enableArea
         xScale={{
           type: 'time',
           format: '%Y-%m-%d',
@@ -38,6 +39,7 @@ const LineGraph = ({ transactions }) => {
         xFormat="time:%Y-%m-%d"
         yScale={{
           type: 'linear',
+          min: 'auto',
         }}
         axisLeft={{
           legend: 'linear scale',
@@ -49,7 +51,8 @@ const LineGraph = ({ transactions }) => {
           legend: 'time scale',
           legendOffset: -12,
         }}
-        pointSize={4}
+        curve="stepAfter"
+        pointSize={6}
         pointBorderWidth={1}
         pointBorderColor={{
           from: 'color',
