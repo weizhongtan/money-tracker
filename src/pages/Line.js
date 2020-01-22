@@ -1,6 +1,7 @@
 import React from 'react';
-import { ResponsiveLineCanvas } from '@nivo/line';
+import { ResponsiveLine } from '@nivo/line';
 import styled from 'styled-components';
+import moment from 'moment';
 
 const Wrapper = styled.div`
   height: 90%;
@@ -18,25 +19,44 @@ const LineGraph = ({ transactions }) => {
   ];
   transactions.forEach(t => {
     total += t.amount;
-    cumulative.push({ x: t.date, y: total });
+    cumulative.push({ x: moment(t.date).format('YYYY-MM-DD'), y: total });
   });
+
+  console.log(series);
 
   return (
     <Wrapper>
-      <ResponsiveLineCanvas
-        margin={{ top: 30, right: 50, bottom: 100, left: 100 }}
-        xScale={{ type: 'time', format: 'native' }}
-        yScale={{ type: 'linear', min: -2000 }}
-        axisBottom={{
-          format: '%m/%d/%Y',
-          tickValues: 'every 3 months',
-        }}
+      <ResponsiveLine
+        margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
+        animate
         data={series}
-        isInteractive={false}
-        theme={{
-          axis: { ticks: { text: { fontSize: 14 } } },
-          grid: { line: { stroke: '#ddd', strokeDasharray: '1 2' } },
+        xScale={{
+          type: 'time',
+          format: '%Y-%m-%d',
+          precision: 'day',
         }}
+        xFormat="time:%Y-%m-%d"
+        yScale={{
+          type: 'linear',
+        }}
+        axisLeft={{
+          legend: 'linear scale',
+          legendOffset: 12,
+        }}
+        axisBottom={{
+          format: '%b %d',
+          tickValues: 'every 2 days',
+          legend: 'time scale',
+          legendOffset: -12,
+        }}
+        pointSize={4}
+        pointBorderWidth={1}
+        pointBorderColor={{
+          from: 'color',
+          modifiers: [['darker', 0.3]],
+        }}
+        useMesh={true}
+        enableSlices={false}
       />
     </Wrapper>
   );
