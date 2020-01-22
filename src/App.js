@@ -35,11 +35,17 @@ const Main = styled(Segment)`
 
 function App() {
   const [searchText, setSearchText] = useState('');
+  // TODO: fix this
+  // default nationwide account id for now
+  const [accountId, setAccountId] = useState(
+    '3bb877cf-131e-4884-a7e4-ff11824e0cf3'
+  );
   const [orderBy, setOrderBy] = useState('desc');
   const [startDate, setStartDate] = useState(moment().subtract(1, 'months'));
   const [endDate, setEndDate] = useState(moment());
   const variables = {
     searchText: `%${searchText}%`,
+    accountId,
     orderBy,
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
@@ -89,9 +95,11 @@ function App() {
           <Variables
             {...{
               totalCount: data?.transactions_aggregate.aggregate.count,
+              loading,
               searchText,
               setSearchText,
-              loading,
+              accountId,
+              setAccountId,
               startDate,
               setStartDate,
               endDate,

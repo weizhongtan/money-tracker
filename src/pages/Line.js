@@ -2,25 +2,28 @@ import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import styled from 'styled-components';
 import moment from 'moment';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_TRANSACTIONS_BY_DAY } from '../data/transactionsByDate';
 
 const Wrapper = styled.div`
   height: 90%;
 `;
 
-const LineGraph = ({ transactions }) => {
-  // TODO: move aggregation into postgres
-  const cumulative = [];
-  let total = 0;
+const LineGraph = ({ variables }) => {
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS_BY_DAY, {
+    variables,
+  });
+  if (loading || error) return null;
+
   const series = [
     {
-      id: 'series1',
-      data: cumulative,
+      id: 'asdf',
+      data: data?.data.map(({ date, sum }) => ({
+        x: moment(date).format('YYYY-MM-DD'),
+        y: sum,
+      })),
     },
   ];
-  transactions.forEach(t => {
-    total += t.amount;
-    cumulative.push({ x: moment(t.date).format('YYYY-MM-DD'), y: total });
-  });
 
   console.log(series);
 
