@@ -7,11 +7,7 @@ import { GET_CATEGORIES } from '../data/categories';
 const Wrapper = styled.div`
   height: 90%;
 `;
-// make sure parent container have a defined height when using
-// responsive component, otherwise height will be 0 and
-// no chart will be rendered.
-// website examples showcase many properties,
-// you'll often use just a few of them.
+
 const Pie = ({ variables: { startDate, endDate } }) => {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
     variables: { startDate, endDate },

@@ -51,6 +51,8 @@ function App() {
     variables: {
       searchText: variables.searchText,
       orderBy: variables.orderBy,
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
     },
   });
 

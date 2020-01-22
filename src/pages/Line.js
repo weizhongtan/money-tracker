@@ -7,6 +7,7 @@ const Wrapper = styled.div`
 `;
 
 const LineGraph = ({ transactions }) => {
+  // TODO: move aggregation into postgres
   const cumulative = [];
   let total = 0;
   const series = [
