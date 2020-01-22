@@ -36,9 +36,7 @@ const Main = styled(Segment)`
 function App() {
   const [searchText, setSearchText] = useState('');
   const [orderBy, setOrderBy] = useState('desc');
-  const [startDate, setStartDate] = useState(
-    moment('2017-01-01T00:00:00.000Z')
-  );
+  const [startDate, setStartDate] = useState(moment().subtract(1, 'months'));
   const [endDate, setEndDate] = useState(moment());
   const variables = {
     searchText: `%${searchText}%`,
