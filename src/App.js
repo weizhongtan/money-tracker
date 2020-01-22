@@ -11,11 +11,12 @@ import { Segment, Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
+import moment from 'moment';
 
 import Navigation from './Navigation';
-import Graphs from './pages/Graphs';
+import Line from './pages/Line';
 import Transactions from './pages/Transactions';
-import Criteria from './pages/Criteria';
+import Variables from './pages/Variables';
 import Pie from './pages/Pie';
 import Bar from './pages/Bar';
 
@@ -35,10 +36,21 @@ const Main = styled(Segment)`
 function App() {
   const [searchText, setSearchText] = useState('');
   const [orderBy, setOrderBy] = useState('desc');
+  const [startDate, setStartDate] = useState(
+    moment('2017-01-01T00:00:00.000Z')
+  );
+  const [endDate, setEndDate] = useState(moment());
+  const variables = {
+    searchText: `%${searchText}%`,
+    orderBy,
+    startDate: startDate?.toISOString(),
+    endDate: endDate?.toISOString(),
+  };
+
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
-      searchText: `%${searchText}%`,
-      orderBy,
+      searchText: variables.searchText,
+      orderBy: variables.orderBy,
     },
   });
 
@@ -74,12 +86,16 @@ function App() {
     <Wrapper>
       <Router>
         <Segment>
-          <Criteria
+          <Variables
             {...{
               totalCount: data?.transactions_aggregate.aggregate.count,
               searchText,
               setSearchText,
               loading,
+              startDate,
+              setStartDate,
+              endDate,
+              setEndDate,
             }}
           />
         </Segment>
@@ -91,8 +107,8 @@ function App() {
                   Transactions
                 </NavLink>
               </Menu.Item>
-              <Menu.Item active={location.pathname === '/graphs'}>
-                <NavLink to="/graphs">Graphs</NavLink>
+              <Menu.Item active={location.pathname === '/line'}>
+                <NavLink to="/line">Line</NavLink>
               </Menu.Item>
               <Menu.Item active={location.pathname === '/pie'}>
                 <NavLink to="/pie">Pie</NavLink>
@@ -120,19 +136,19 @@ function App() {
                 )}
               />
               <Route
-                path="/graphs"
+                path="/line"
                 exact
-                component={() => <Graphs {...{ transactions }} />}
+                component={() => <Line {...{ transactions, variables }} />}
               />
               <Route
                 path="/pie"
                 exact
-                component={() => <Pie {...{ transactions }} />}
+                component={() => <Pie {...{ transactions, variables }} />}
               />
               <Route
                 path="/bar"
                 exact
-                component={() => <Bar {...{ transactions }} />}
+                component={() => <Bar {...{ transactions, variables }} />}
               />
               <Redirect to="/transactions" />
             </Switch>

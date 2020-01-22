@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   height: 90%;
 `;
 
-const Graphs = ({ transactions }) => {
+const LineGraph = ({ transactions }) => {
   const cumulative = [];
   let total = 0;
   const series = [
@@ -41,4 +41,4 @@ const Graphs = ({ transactions }) => {
   );
 };
 
-export default Graphs;
+export default LineGraph;
