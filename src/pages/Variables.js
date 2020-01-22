@@ -32,6 +32,7 @@ const Variables = ({
         isOutsideRange={() => false}
         displayFormat="DD-MM-YYYY"
       />
+      <span>{totalCount} records</span>
       <DebounceInput
         minLength={2}
         debounceTimeout={500}
@@ -46,7 +47,6 @@ const Variables = ({
         autoFocus
         fluid
       />
-      <p>{totalCount} records</p>
     </>
   );
 };

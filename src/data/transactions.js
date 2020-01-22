@@ -30,7 +30,10 @@ export const GET_TRANSACTIONS = gql`
       pair_id
     }
     transactions_aggregate(
-      where: { description: { _ilike: $searchText } }
+      where: {
+        date: { _gte: $startDate, _lte: $endDate }
+        _and: { description: { _ilike: $searchText } }
+      }
       order_by: { date: $orderBy }
     ) {
       aggregate {
