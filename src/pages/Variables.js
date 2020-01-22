@@ -50,6 +50,7 @@ const Variables = ({
       />
       <span>{totalCount} records</span>
       <Dropdown
+        inline
         selection
         options={options}
         value={accountId}
@@ -67,7 +68,7 @@ const Variables = ({
         loading={loading}
         focus
         autoFocus
-        fluid
+        inline
       />
     </>
   );
