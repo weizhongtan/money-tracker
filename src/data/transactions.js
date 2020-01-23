@@ -5,7 +5,7 @@ export const GET_TRANSACTIONS = gql`
     $startDate: timestamptz
     $endDate: timestamptz
     $searchText: String
-    $orderBy: order_by
+    $orderBy: order_by = desc
   ) {
     transactions(
       where: {

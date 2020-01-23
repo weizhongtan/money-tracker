@@ -3,6 +3,7 @@ import { ResponsivePieCanvas } from '@nivo/pie';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_CATEGORIES } from '../data/categories';
+import { toMoney } from '../lib';
 
 const Wrapper = styled.div`
   height: 90%;
@@ -18,8 +19,9 @@ const Pie = ({ startDate, endDate }) => {
     .map(category => ({
       id: category.name,
       label: category.name,
-      value:
-        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0,
+      value: toMoney(
+        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0
+      ),
     }))
     .sort((a, b) => b.value - a.value)
     .filter(x => x.value > 0);
@@ -35,7 +37,7 @@ const Pie = ({ startDate, endDate }) => {
         cornerRadius={3}
         colors={{ scheme: 'paired' }}
         borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
-        radialLabelsSkipAngle={10}
+        radialLabelsSkipAngle={5}
         radialLabelsTextXOffset={6}
         radialLabelsTextColor="#333333"
         radialLabelsLinkOffset={0}
@@ -72,9 +74,8 @@ const Pie = ({ startDate, endDate }) => {
           {
             anchor: 'right',
             direction: 'column',
-            translateX: 140,
             itemWidth: 60,
-            itemHeight: 14,
+            itemHeight: 16,
             itemsSpacing: 2,
             symbolSize: 14,
             symbolShape: 'circle',

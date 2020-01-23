@@ -6,7 +6,7 @@ import {
   Redirect,
   NavLink,
 } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import moment from 'moment';
@@ -33,80 +33,88 @@ const Main = styled(Content)`
   width: 100%;
 `;
 
+const theme = {
+  positive: '#52c41a',
+  neutral: '#1890ff',
+  negative: '#f5222d',
+};
+
 function App() {
   const [startDate, setStartDate] = useState(moment().subtract(1, 'months'));
   const [endDate, setEndDate] = useState(moment());
 
   return (
     <Wrapper>
-      <Router>
-        <Header>
-          <Variables
-            {...{
-              startDate,
-              setStartDate,
-              endDate,
-              setEndDate,
-            }}
-          />
-        </Header>
-        <Navigation>
-          {({ location }) => (
-            <Menu
-              selectedKeys={location.pathname}
-              onSelect={({ key }) => {
-                location.pathname = `/${key}`;
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Header>
+            <Variables
+              {...{
+                startDate,
+                setStartDate,
+                endDate,
+                setEndDate,
               }}
-              mode="horizontal"
-            >
-              <Menu.Item key="/transactions">
-                <NavLink to="/transactions">Transactions</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/line">
-                <NavLink to="/line">Line</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/pie">
-                <NavLink to="/pie">Pie</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/bar">
-                <NavLink to="/bar">Bar</NavLink>
-              </Menu.Item>
-            </Menu>
-          )}
-        </Navigation>
-        <Main attached="bottom">
-          <Switch>
-            <Route
-              path="/transactions"
-              exact
-              render={() => (
-                <Transactions
-                  {...{
-                    startDate,
-                    endDate,
-                  }}
-                />
-              )}
             />
-            <Route
-              path="/line"
-              exact
-              component={() => <Line {...{ startDate, endDate }} />}
-            />
-            <Route
-              path="/pie"
-              exact
-              component={() => <Pie {...{ startDate, endDate }} />}
-            />
-            <Route
-              path="/bar"
-              exact
-              component={() => <Bar {...{ startDate, endDate }} />}
-            />
-            <Redirect to="/transactions" />
-          </Switch>
-        </Main>
-      </Router>
+          </Header>
+          <Navigation>
+            {({ location }) => (
+              <Menu
+                selectedKeys={location.pathname}
+                onSelect={({ key }) => {
+                  location.pathname = `/${key}`;
+                }}
+                mode="horizontal"
+              >
+                <Menu.Item key="/transactions">
+                  <NavLink to="/transactions">Transactions</NavLink>
+                </Menu.Item>
+                <Menu.Item key="/line">
+                  <NavLink to="/line">Line</NavLink>
+                </Menu.Item>
+                <Menu.Item key="/pie">
+                  <NavLink to="/pie">Pie</NavLink>
+                </Menu.Item>
+                <Menu.Item key="/bar">
+                  <NavLink to="/bar">Bar</NavLink>
+                </Menu.Item>
+              </Menu>
+            )}
+          </Navigation>
+          <Main attached="bottom">
+            <Switch>
+              <Route
+                path="/transactions"
+                exact
+                render={() => (
+                  <Transactions
+                    {...{
+                      startDate,
+                      endDate,
+                    }}
+                  />
+                )}
+              />
+              <Route
+                path="/line"
+                exact
+                component={() => <Line {...{ startDate, endDate }} />}
+              />
+              <Route
+                path="/pie"
+                exact
+                component={() => <Pie {...{ startDate, endDate }} />}
+              />
+              <Route
+                path="/bar"
+                exact
+                component={() => <Bar {...{ startDate, endDate }} />}
+              />
+              <Redirect to="/transactions" />
+            </Switch>
+          </Main>
+        </Router>
+      </ThemeProvider>
     </Wrapper>
   );
 }

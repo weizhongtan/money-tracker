@@ -3,9 +3,10 @@ import { ResponsiveBarCanvas } from '@nivo/bar';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_CATEGORIES } from '../data/categories';
+import { toMoney } from '../lib';
 
 const Wrapper = styled.div`
-  height: 90%;
+  height: 100%;
 `;
 
 const MyResponsiveBarCanvas = ({ startDate, endDate }) => {
@@ -17,10 +18,11 @@ const MyResponsiveBarCanvas = ({ startDate, endDate }) => {
   const out = data.categories
     .map(category => ({
       name: category.name,
-      value:
-        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0,
+      value: toMoney(
+        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0
+      ),
     }))
-    .sort((a, b) => b.value - a.value)
+    .sort((a, b) => a.value - b.value)
     .filter(x => x.value > 0);
 
   console.log(out);
@@ -30,13 +32,12 @@ const MyResponsiveBarCanvas = ({ startDate, endDate }) => {
       <ResponsiveBarCanvas
         data={out}
         indexBy="name"
-        margin={{ top: 50, right: 60, bottom: 50, left: 80 }}
+        margin={{ top: 50, right: 60, bottom: 50, left: 200 }}
         pixelRatio={2}
         padding={0.15}
         innerPadding={0}
         minValue="auto"
         maxValue="auto"
-        groupMode="stacked"
         layout="horizontal"
         reverse={false}
         colors={{ scheme: 'paired' }}
@@ -47,17 +48,14 @@ const MyResponsiveBarCanvas = ({ startDate, endDate }) => {
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: '',
-          legendOffset: 36,
+          format: value => `£${value}`,
         }}
         axisRight={null}
         axisBottom={{
           tickSize: 5,
           tickPadding: 5,
           tickRotation: 0,
-          legend: 'country',
-          legendPosition: 'middle',
-          legendOffset: 36,
+          format: value => `£${value}`,
         }}
         enableGridX={true}
         enableGridY={false}

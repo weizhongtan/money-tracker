@@ -5,21 +5,23 @@ import moment from 'moment';
 import { useQuery } from '@apollo/react-hooks';
 import { Select } from 'antd';
 import { GET_TRANSACTIONS_BY_DAY } from '../data/transactionsByDate';
+import { toMoney } from '../lib';
 
 const { Option } = Select;
 
 const Wrapper = styled.div`
-  height: 90%;
+  height: 100%;
 `;
 
-const getTickValues = numOfValues => {
-  if (numOfValues <= 7) {
+const getTickValues = (startDate, endDate) => {
+  const duration = endDate.diff(startDate, 'days');
+  if (duration <= 7) {
     return 'every day';
   }
-  if (numOfValues <= 31) {
+  if (duration <= 31) {
     return 'every 2 days';
   }
-  if (numOfValues <= 62) {
+  if (duration <= 62) {
     return 'every 1 week';
   }
   return 'every 1 month';
@@ -45,16 +47,24 @@ const LineGraph = ({ startDate, endDate }) => {
       id: 'asdf',
       data: data?.cumulative_transactions.map(({ date, sum }) => ({
         x: moment(date).format('YYYY-MM-DD'),
-        y: sum,
+        y: toMoney(sum),
       })),
     },
   ];
+
+  const tickValues = getTickValues(startDate, endDate);
+
+  console.log(series);
 
   const accounts = data?.accounts;
 
   return (
     <Wrapper>
-      <Select defaultValue={accounts[0].name} onChange={setAccountId}>
+      <Select
+        defaultValue={accounts[0].name}
+        value={accountId}
+        onChange={setAccountId}
+      >
         {accounts.map(({ id, name }) => (
           <Option value={id}>{name}</Option>
         ))}
@@ -74,9 +84,12 @@ const LineGraph = ({ startDate, endDate }) => {
           type: 'linear',
           min: 'auto',
         }}
+        axisLeft={{
+          format: value => `£${value}`,
+        }}
         axisBottom={{
           format: '%b %d',
-          tickValues: getTickValues(series[0].data.length),
+          tickValues,
         }}
         curve="stepAfter"
         pointSize={7}

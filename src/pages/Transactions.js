@@ -2,22 +2,30 @@ import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
 import { DebounceInput } from 'react-debounce-input';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_TRANSACTIONS } from '../data/transactions';
 import { Input, Table } from 'antd';
+import styled from 'styled-components';
+
+import { GET_TRANSACTIONS } from '../data/transactions';
+import { toMoney } from '../lib';
 
 const { Column } = Table;
 const { Search } = Input;
 
+const Amount = styled.span`
+  display: block;
+  text-align: right;
+  color: ${({ positive, theme }) =>
+    positive ? theme.positive : theme.neutral};
+`;
+
 const Transactions = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
-  const [orderBy, setOrderBy] = useState('desc');
 
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
       searchText: `%${searchText}%`,
-      orderBy,
     },
   });
 
@@ -75,19 +83,22 @@ const Transactions = ({ startDate, endDate }) => {
               key="date"
               render={date => <TimeAgo date={date} />}
             />
-            {/* <Table.HeaderCell
-              sorted={orderBy === 'asc' ? 'ascending' : 'descending'}
-              onClick={() => setOrderBy(orderBy === 'asc' ? 'desc' : 'asc')}
-            > */}
-            <Column title="amount" dataIndex="amount" key="amount" />
-            <Column title="account" dataIndex="account" key="account" />
-            <Column title="from" dataIndex="from" key="from" />
             <Column
-              title="description"
+              title="Amount"
+              dataIndex="amount"
+              key="amount"
+              render={amount => (
+                <Amount positive={amount > 0}>{toMoney(amount)}</Amount>
+              )}
+            />
+            <Column title="Account" dataIndex="account" key="account" />
+            <Column title="From" dataIndex="from" key="from" />
+            <Column
+              title="Description"
               dataIndex="description"
               key="description"
             />
-            <Column title="category" dataIndex="category" key="category" />
+            <Column title="Category" dataIndex="category" key="category" />
           </Table>
         </>
       )}
