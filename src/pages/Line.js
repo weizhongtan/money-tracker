@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -23,9 +23,19 @@ const getTickValues = numOfValues => {
   return 'every 1 month';
 };
 
-const LineGraph = ({ accountId, setAccountId, variables }) => {
+const LineGraph = ({ startDate, endDate, orderBy }) => {
+  // TODO: fix this
+  // default nationwide account id for now
+  const [accountId, setAccountId] = useState(
+    '3bb877cf-131e-4884-a7e4-ff11824e0cf3'
+  );
   const { loading, error, data } = useQuery(GET_TRANSACTIONS_BY_DAY, {
-    variables,
+    variables: {
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+      accountId,
+      orderBy,
+    },
   });
   if (loading || error) return null;
 

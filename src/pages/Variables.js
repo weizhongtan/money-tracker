@@ -1,20 +1,9 @@
 import React, { useState } from 'react';
-import { Input } from 'semantic-ui-react';
-import { DebounceInput } from 'react-debounce-input';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
 
-const Variables = ({
-  loading,
-  totalCount,
-  searchText,
-  setSearchText,
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
-}) => {
+const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
   const [focusedInput, setFocusedInput] = useState(null);
 
   return (
@@ -32,21 +21,6 @@ const Variables = ({
         onFocusChange={setFocusedInput} // PropTypes.func.isRequired,
         isOutsideRange={() => false}
         displayFormat="DD-MM-YYYY"
-      />
-      <span>{totalCount} records</span>
-      <DebounceInput
-        minLength={2}
-        debounceTimeout={500}
-        element={Input}
-        placeholder="Search..."
-        value={searchText}
-        onChange={event => {
-          setSearchText(event.target.value);
-        }}
-        loading={loading}
-        focus
-        autoFocus
-        inline
       />
     </>
   );

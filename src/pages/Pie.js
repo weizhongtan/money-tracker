@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   height: 90%;
 `;
 
-const Pie = ({ variables: { startDate, endDate } }) => {
+const Pie = ({ startDate, endDate }) => {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
     variables: { startDate, endDate },
   });

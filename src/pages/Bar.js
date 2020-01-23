@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   height: 90%;
 `;
 
-const MyResponsiveBarCanvas = ({ variables: { startDate, endDate } }) => {
+const MyResponsiveBarCanvas = ({ startDate, endDate }) => {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
     variables: { startDate, endDate },
   });

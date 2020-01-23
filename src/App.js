@@ -10,7 +10,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { Segment, Menu } from 'semantic-ui-react';
 import styled from 'styled-components';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider, useQuery } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/react-hooks';
 import moment from 'moment';
 
 import Navigation from './Navigation';
@@ -19,8 +19,6 @@ import Transactions from './pages/Transactions';
 import Variables from './pages/Variables';
 import Pie from './pages/Pie';
 import Bar from './pages/Bar';
-
-import { GET_TRANSACTIONS } from './data/transactions';
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,59 +32,9 @@ const Main = styled(Segment)`
 `;
 
 function App() {
-  const [searchText, setSearchText] = useState('');
-  // TODO: fix this
-  // default nationwide account id for now
-  const [accountId, setAccountId] = useState(
-    '3bb877cf-131e-4884-a7e4-ff11824e0cf3'
-  );
   const [orderBy, setOrderBy] = useState('desc');
   const [startDate, setStartDate] = useState(moment().subtract(1, 'months'));
   const [endDate, setEndDate] = useState(moment());
-  const variables = {
-    searchText: `%${searchText}%`,
-    accountId,
-    orderBy,
-    startDate: startDate?.toISOString(),
-    endDate: endDate?.toISOString(),
-  };
-
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
-    variables: {
-      searchText: variables.searchText,
-      orderBy: variables.orderBy,
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
-    },
-  });
-
-  const transactions = data?.transactions.map(
-    (
-      {
-        id,
-        date,
-        amount,
-        accountByToAccountId,
-        description,
-        category,
-        accountByFromAccountId,
-      },
-      index
-    ) => ({
-      id: id,
-      index,
-      date: new Date(date),
-      amount: Number(amount),
-      account: accountByToAccountId?.name,
-      description: description,
-      category: category?.name,
-      fromInternalAccount: accountByFromAccountId?.name,
-    })
-  );
-
-  if (error) {
-    return <p>something went wrong :(</p>;
-  }
 
   return (
     <Wrapper>
@@ -94,12 +42,6 @@ function App() {
         <Segment>
           <Variables
             {...{
-              totalCount: data?.transactions_aggregate.aggregate.count,
-              loading,
-              searchText,
-              setSearchText,
-              accountId,
-              setAccountId,
               startDate,
               setStartDate,
               endDate,
@@ -127,43 +69,40 @@ function App() {
             </Menu>
           )}
         </Navigation>
-        {!loading && (
-          <Main attached="bottom">
-            <Switch>
-              <Route
-                path="/transactions"
-                exact
-                render={() => (
-                  <Transactions
-                    {...{
-                      transactions,
-                      orderBy,
-                      setOrderBy,
-                    }}
-                  />
-                )}
-              />
-              <Route
-                path="/line"
-                exact
-                component={() => (
-                  <Line {...{ variables, accountId, setAccountId }} />
-                )}
-              />
-              <Route
-                path="/pie"
-                exact
-                component={() => <Pie {...{ variables }} />}
-              />
-              <Route
-                path="/bar"
-                exact
-                component={() => <Bar {...{ variables }} />}
-              />
-              <Redirect to="/transactions" />
-            </Switch>
-          </Main>
-        )}
+        <Main attached="bottom">
+          <Switch>
+            <Route
+              path="/transactions"
+              exact
+              render={() => (
+                <Transactions
+                  {...{
+                    startDate,
+                    endDate,
+                    orderBy,
+                    setOrderBy,
+                  }}
+                />
+              )}
+            />
+            <Route
+              path="/line"
+              exact
+              component={() => <Line {...{ startDate, endDate, orderBy }} />}
+            />
+            <Route
+              path="/pie"
+              exact
+              component={() => <Pie {...{ startDate, endDate }} />}
+            />
+            <Route
+              path="/bar"
+              exact
+              component={() => <Bar {...{ startDate, endDate }} />}
+            />
+            <Redirect to="/transactions" />
+          </Switch>
+        </Main>
       </Router>
     </Wrapper>
   );

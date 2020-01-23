@@ -1,10 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
-import { Table } from 'semantic-ui-react';
+import { Table, Input } from 'semantic-ui-react';
+import { DebounceInput } from 'react-debounce-input';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_TRANSACTIONS } from '../data/transactions';
 
-const Transactions = ({ transactions, orderBy, setOrderBy }) => {
+const Transactions = ({ startDate, endDate, orderBy, setOrderBy }) => {
+  const [searchText, setSearchText] = useState('');
+
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
+    variables: {
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+      searchText: `%${searchText}%`,
+      orderBy,
+    },
+  });
+
+  if (loading) return null;
+
+  const transactions = data?.transactions.map(
+    (
+      {
+        id,
+        date,
+        amount,
+        accountByToAccountId,
+        description,
+        category,
+        accountByFromAccountId,
+      },
+      index
+    ) => ({
+      id: id,
+      index,
+      date: new Date(date),
+      amount: Number(amount),
+      account: accountByToAccountId?.name,
+      description: description,
+      category: category?.name,
+      fromInternalAccount: accountByFromAccountId?.name,
+    })
+  );
+
+  if (error) {
+    return <p>something went wrong :(</p>;
+  }
+
   return (
     <>
+      <DebounceInput
+        minLength={2}
+        debounceTimeout={500}
+        element={Input}
+        placeholder="Search..."
+        value={searchText}
+        onChange={event => {
+          setSearchText(event.target.value);
+        }}
+        loading={loading}
+        focus
+        autoFocus
+      />
+      <span>{data?.transactions_aggregate.aggregate.count} records</span>
       <Table celled sortable>
         <Table.Header>
           <Table.Row>

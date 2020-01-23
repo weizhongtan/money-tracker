@@ -2,11 +2,10 @@ import { gql } from 'apollo-boost';
 
 export const GET_TRANSACTIONS_BY_DAY = gql`
   query MyQuery(
-    $accountId: uuid
-    $searchText: String
-    $orderBy: order_by
     $startDate: timestamptz
     $endDate: timestamptz
+    $accountId: uuid
+    $orderBy: order_by
   ) {
     accounts {
       id
