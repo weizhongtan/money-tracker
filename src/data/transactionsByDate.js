@@ -5,7 +5,6 @@ export const GET_TRANSACTIONS_BY_DAY = gql`
     $startDate: timestamptz
     $endDate: timestamptz
     $accountId: uuid
-    $orderBy: order_by
   ) {
     accounts {
       id
@@ -14,7 +13,7 @@ export const GET_TRANSACTIONS_BY_DAY = gql`
     cumulative_transactions: function_transactions_by_day_cumulative(
       args: { v_account_id: $accountId }
       where: { date: { _gte: $startDate, _lte: $endDate } }
-      order_by: { date: $orderBy }
+      order_by: { date: asc }
     ) {
       date
       sum

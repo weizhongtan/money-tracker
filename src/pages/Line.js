@@ -23,7 +23,7 @@ const getTickValues = numOfValues => {
   return 'every 1 month';
 };
 
-const LineGraph = ({ startDate, endDate, orderBy }) => {
+const LineGraph = ({ startDate, endDate }) => {
   // TODO: fix this
   // default nationwide account id for now
   const [accountId, setAccountId] = useState(
@@ -34,7 +34,6 @@ const LineGraph = ({ startDate, endDate, orderBy }) => {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
       accountId,
-      orderBy,
     },
   });
   if (loading || error) return null;

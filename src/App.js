@@ -32,7 +32,6 @@ const Main = styled(Segment)`
 `;
 
 function App() {
-  const [orderBy, setOrderBy] = useState('desc');
   const [startDate, setStartDate] = useState(moment().subtract(1, 'months'));
   const [endDate, setEndDate] = useState(moment());
 
@@ -79,8 +78,6 @@ function App() {
                   {...{
                     startDate,
                     endDate,
-                    orderBy,
-                    setOrderBy,
                   }}
                 />
               )}
@@ -88,7 +85,7 @@ function App() {
             <Route
               path="/line"
               exact
-              component={() => <Line {...{ startDate, endDate, orderBy }} />}
+              component={() => <Line {...{ startDate, endDate }} />}
             />
             <Route
               path="/pie"

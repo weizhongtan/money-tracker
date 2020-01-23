@@ -5,8 +5,9 @@ import { DebounceInput } from 'react-debounce-input';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_TRANSACTIONS } from '../data/transactions';
 
-const Transactions = ({ startDate, endDate, orderBy, setOrderBy }) => {
+const Transactions = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
+  const [orderBy, setOrderBy] = useState('desc');
 
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
