@@ -13,6 +13,7 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
           setEndDate(moment(date).endOf('week'));
         }}
         placeholder="Select week"
+        value={startDate}
       />
       <MonthPicker
         onChange={date => {
@@ -20,12 +21,14 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
           setEndDate(moment(date).endOf('month'));
         }}
         placeholder="Select month"
+        value={startDate}
       />
       <RangePicker
         onChange={([start, end]) => {
           setStartDate(start);
           setEndDate(end);
         }}
+        value={[startDate, endDate]}
         ranges={{
           'This Month': [moment().startOf('month'), moment().endOf('month')],
           'Last Month': [
