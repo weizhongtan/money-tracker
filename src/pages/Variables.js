@@ -26,6 +26,26 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
           setStartDate(start);
           setEndDate(end);
         }}
+        ranges={{
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [
+            moment()
+              .subtract(1, 'month')
+              .startOf('month'),
+            moment()
+              .subtract(1, 'month')
+              .endOf('month'),
+          ],
+          'This Year': [moment().startOf('year'), moment().endOf('year')],
+          'Last Year': [
+            moment()
+              .subtract(1, 'year')
+              .startOf('year'),
+            moment()
+              .subtract(1, 'year')
+              .endOf('year'),
+          ],
+        }}
       />
     </>
   );
