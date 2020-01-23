@@ -146,17 +146,19 @@ function App() {
               <Route
                 path="/line"
                 exact
-                component={() => <Line {...{ transactions, variables }} />}
+                component={() => (
+                  <Line {...{ variables, accountId, setAccountId }} />
+                )}
               />
               <Route
                 path="/pie"
                 exact
-                component={() => <Pie {...{ transactions, variables }} />}
+                component={() => <Pie {...{ variables }} />}
               />
               <Route
                 path="/bar"
                 exact
-                component={() => <Bar {...{ transactions, variables }} />}
+                component={() => <Bar {...{ variables }} />}
               />
               <Redirect to="/transactions" />
             </Switch>

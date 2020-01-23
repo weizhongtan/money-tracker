@@ -1,36 +1,21 @@
 import React, { useState } from 'react';
-import { Input, Dropdown } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 import { DebounceInput } from 'react-debounce-input';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
-import { useQuery } from '@apollo/react-hooks';
-
-import { GET_ACCOUNTS } from '../data/accounts';
 
 const Variables = ({
   loading,
   totalCount,
   searchText,
   setSearchText,
-  accountId,
-  setAccountId,
   startDate,
   setStartDate,
   endDate,
   setEndDate,
 }) => {
   const [focusedInput, setFocusedInput] = useState(null);
-  const { isLoading, error, data } = useQuery(GET_ACCOUNTS);
-  if (isLoading || error) return null;
-
-  const options = data?.accounts.map(({ id, name }) => ({
-    key: id,
-    value: id,
-    text: name,
-  }));
-
-  console.log(options);
 
   return (
     <>
@@ -49,13 +34,6 @@ const Variables = ({
         displayFormat="DD-MM-YYYY"
       />
       <span>{totalCount} records</span>
-      <Dropdown
-        inline
-        selection
-        options={options}
-        value={accountId}
-        onChange={(_, { value }) => setAccountId(value)}
-      />
       <DebounceInput
         minLength={2}
         debounceTimeout={500}

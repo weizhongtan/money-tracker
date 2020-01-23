@@ -3,6 +3,7 @@ import { ResponsiveLine } from '@nivo/line';
 import styled from 'styled-components';
 import moment from 'moment';
 import { useQuery } from '@apollo/react-hooks';
+import { Dropdown } from 'semantic-ui-react';
 import { GET_TRANSACTIONS_BY_DAY } from '../data/transactionsByDate';
 
 const Wrapper = styled.div`
@@ -22,16 +23,24 @@ const getTickValues = numOfValues => {
   return 'every 1 month';
 };
 
-const LineGraph = ({ variables }) => {
+const LineGraph = ({ accountId, setAccountId, variables }) => {
   const { loading, error, data } = useQuery(GET_TRANSACTIONS_BY_DAY, {
     variables,
   });
   if (loading || error) return null;
 
+  const options = data?.accounts.map(({ id, name }) => ({
+    key: id,
+    value: id,
+    text: name,
+  }));
+
+  console.log(options);
+
   const series = [
     {
       id: 'asdf',
-      data: data?.data.map(({ date, sum }) => ({
+      data: data?.cumulative_transactions.map(({ date, sum }) => ({
         x: moment(date).format('YYYY-MM-DD'),
         y: sum,
       })),
@@ -42,6 +51,13 @@ const LineGraph = ({ variables }) => {
 
   return (
     <Wrapper>
+      <Dropdown
+        inline
+        selection
+        options={options}
+        value={accountId}
+        onChange={(_, { value }) => setAccountId(value)}
+      />
       <ResponsiveLine
         margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
         animate
@@ -57,17 +73,12 @@ const LineGraph = ({ variables }) => {
           type: 'linear',
           min: 'auto',
         }}
-        axisLeft={{
-          legend: 'linear scale',
-          legendOffset: 12,
-        }}
         axisBottom={{
           format: '%b %d',
           tickValues: getTickValues(series[0].data.length),
-          legendOffset: -12,
         }}
         curve="stepAfter"
-        pointSize={6}
+        pointSize={7}
         pointBorderWidth={1}
         pointBorderColor={{
           from: 'color',
