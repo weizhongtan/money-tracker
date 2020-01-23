@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import TimeAgo from 'react-timeago';
-import { Table, Input } from 'semantic-ui-react';
 import { DebounceInput } from 'react-debounce-input';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_TRANSACTIONS } from '../data/transactions';
+import { Input, Table } from 'antd';
+
+const { Column } = Table;
+const { Search } = Input;
 
 const Transactions = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
@@ -18,23 +21,17 @@ const Transactions = ({ startDate, endDate }) => {
     },
   });
 
-  if (loading) return null;
-
   const transactions = data?.transactions.map(
-    (
-      {
-        id,
-        date,
-        amount,
-        accountByToAccountId,
-        description,
-        category,
-        accountByFromAccountId,
-      },
-      index
-    ) => ({
-      id: id,
-      index,
+    ({
+      id,
+      date,
+      amount,
+      accountByToAccountId,
+      description,
+      category,
+      accountByFromAccountId,
+    }) => ({
+      key: id,
       date: new Date(date),
       amount: Number(amount),
       account: accountByToAccountId?.name,
@@ -53,50 +50,47 @@ const Transactions = ({ startDate, endDate }) => {
       <DebounceInput
         minLength={2}
         debounceTimeout={500}
-        element={Input}
+        element={Search}
         placeholder="Search..."
         value={searchText}
         onChange={event => {
           setSearchText(event.target.value);
         }}
         loading={loading}
-        focus
         autoFocus
       />
-      <span>{data?.transactions_aggregate.aggregate.count} records</span>
-      <Table celled sortable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell
+      {!loading && (
+        <>
+          <span>{data?.transactions_aggregate.aggregate.count} records</span>
+          <Table
+            dataSource={transactions}
+            pagination={{
+              defaultPageSize: 50,
+            }}
+            size="small"
+          >
+            <Column
+              title="Date"
+              dataIndex="date"
+              key="date"
+              render={date => <TimeAgo date={date} />}
+            />
+            {/* <Table.HeaderCell
               sorted={orderBy === 'asc' ? 'ascending' : 'descending'}
               onClick={() => setOrderBy(orderBy === 'asc' ? 'desc' : 'asc')}
-            >
-              Date
-            </Table.HeaderCell>
-            <Table.HeaderCell>Amount</Table.HeaderCell>
-            <Table.HeaderCell>Account</Table.HeaderCell>
-            <Table.HeaderCell>From</Table.HeaderCell>
-            <Table.HeaderCell>Description</Table.HeaderCell>
-            <Table.HeaderCell>Category</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {transactions.map(t => (
-            <Table.Row key={t.id}>
-              <Table.Cell>
-                <TimeAgo date={t.date} />
-              </Table.Cell>
-              <Table.Cell positive={t.amount > 0} negative={t.amount < 0}>
-                {t.amount}
-              </Table.Cell>
-              <Table.Cell>{t.account}</Table.Cell>
-              <Table.Cell>{t.fromInternalAccount}</Table.Cell>
-              <Table.Cell>{t.description}</Table.Cell>
-              <Table.Cell>{t.category}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+            > */}
+            <Column title="amount" dataIndex="amount" key="amount" />
+            <Column title="account" dataIndex="account" key="account" />
+            <Column title="from" dataIndex="from" key="from" />
+            <Column
+              title="description"
+              dataIndex="description"
+              key="description"
+            />
+            <Column title="category" dataIndex="category" key="category" />
+          </Table>
+        </>
+      )}
     </>
   );
 };

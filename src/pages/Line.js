@@ -3,8 +3,10 @@ import { ResponsiveLine } from '@nivo/line';
 import styled from 'styled-components';
 import moment from 'moment';
 import { useQuery } from '@apollo/react-hooks';
-import { Dropdown } from 'semantic-ui-react';
+import { Select } from 'antd';
 import { GET_TRANSACTIONS_BY_DAY } from '../data/transactionsByDate';
+
+const { Option } = Select;
 
 const Wrapper = styled.div`
   height: 90%;
@@ -38,14 +40,6 @@ const LineGraph = ({ startDate, endDate }) => {
   });
   if (loading || error) return null;
 
-  const options = data?.accounts.map(({ id, name }) => ({
-    key: id,
-    value: id,
-    text: name,
-  }));
-
-  console.log(options);
-
   const series = [
     {
       id: 'asdf',
@@ -56,17 +50,15 @@ const LineGraph = ({ startDate, endDate }) => {
     },
   ];
 
-  console.log(series);
+  const accounts = data?.accounts;
 
   return (
     <Wrapper>
-      <Dropdown
-        inline
-        selection
-        options={options}
-        value={accountId}
-        onChange={(_, { value }) => setAccountId(value)}
-      />
+      <Select defaultValue={accounts[0].name} onChange={setAccountId}>
+        {accounts.map(({ id, name }) => (
+          <Option value={id}>{name}</Option>
+        ))}
+      </Select>
       <ResponsiveLine
         margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
         animate
