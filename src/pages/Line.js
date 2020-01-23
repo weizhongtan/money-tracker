@@ -9,6 +9,19 @@ const Wrapper = styled.div`
   height: 90%;
 `;
 
+const getTickValues = numOfValues => {
+  if (numOfValues <= 7) {
+    return 'every day';
+  }
+  if (numOfValues <= 31) {
+    return 'every 2 days';
+  }
+  if (numOfValues <= 62) {
+    return 'every 1 week';
+  }
+  return 'every 1 month';
+};
+
 const LineGraph = ({ variables }) => {
   const { loading, error, data } = useQuery(GET_TRANSACTIONS_BY_DAY, {
     variables,
@@ -50,8 +63,7 @@ const LineGraph = ({ variables }) => {
         }}
         axisBottom={{
           format: '%b %d',
-          tickValues: 'every 2 days',
-          legend: 'time scale',
+          tickValues: getTickValues(series[0].data.length),
           legendOffset: -12,
         }}
         curve="stepAfter"
