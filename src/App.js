@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
 import moment from 'moment';
+import 'antd/dist/antd.css';
 
 import Navigation from './Navigation';
 import Line from './pages/Line';
