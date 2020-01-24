@@ -1,4 +1,4 @@
-const { connect, Account, Category, Transaction } = require('./bootstrap');
+const { connect, Account, Category, Transaction } = require('./model');
 
 exports.connectAndSync = async (force = false) => {
   const sequelize = await connect();

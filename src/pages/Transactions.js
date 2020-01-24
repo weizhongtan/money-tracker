@@ -29,7 +29,7 @@ const Transactions = ({ startDate, endDate }) => {
     },
   });
 
-  const transactions = data?.transactions.map(
+  const transactions = data?.transactions_aggregate.nodes.map(
     ({
       id,
       date,
@@ -43,9 +43,9 @@ const Transactions = ({ startDate, endDate }) => {
       date: new Date(date),
       amount: Number(amount),
       account: accountByToAccountId?.name,
+      from: accountByFromAccountId?.name,
       description: description,
       category: category?.name,
-      fromInternalAccount: accountByFromAccountId?.name,
     })
   );
 

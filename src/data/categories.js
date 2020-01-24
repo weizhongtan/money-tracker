@@ -7,7 +7,10 @@ export const GET_CATEGORIES = gql`
       transactions_aggregate(
         where: {
           date: { _gte: $startDate, _lte: $endDate }
-          _and: { amount: { _lt: "0" } }
+          _and: {
+            amount: { _lt: "0" }
+            _and: { amount: {}, from_account_id: { _is_null: true } }
+          }
         }
       ) {
         aggregate {
