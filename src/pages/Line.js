@@ -13,6 +13,10 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
+const AccountSelect = styled(Select)`
+  width: 300px;
+`;
+
 const getTickValues = (startDate, endDate) => {
   const duration = endDate.diff(startDate, 'days');
   if (duration <= 7) {
@@ -31,7 +35,7 @@ const LineGraph = ({ startDate, endDate }) => {
   // TODO: fix this
   // default nationwide account id for now
   const [accountId, setAccountId] = useState(
-    '3bb877cf-131e-4884-a7e4-ff11824e0cf3'
+    '71cb04f4-4554-4b3f-8747-bc2008940d23'
   );
   const { loading, error, data } = useQuery(GET_TRANSACTIONS_BY_DAY, {
     variables: {
@@ -58,15 +62,11 @@ const LineGraph = ({ startDate, endDate }) => {
 
   return (
     <Wrapper>
-      <Select
-        defaultValue={accounts[0].name}
-        value={accountId}
-        onChange={setAccountId}
-      >
+      <AccountSelect defaultValue={accountId} onChange={setAccountId}>
         {accounts.map(({ id, name }) => (
           <Option value={id}>{name}</Option>
         ))}
-      </Select>
+      </AccountSelect>
       <ResponsiveLine
         margin={{ top: 20, right: 20, bottom: 100, left: 80 }}
         animate
