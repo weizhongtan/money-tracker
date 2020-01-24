@@ -1,6 +1,6 @@
-import React from 'react';
 import { DatePicker } from 'antd';
 import moment from 'moment';
+import React from 'react';
 
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
@@ -60,7 +60,7 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
               .subtract(1, 'year')
               .endOf('year'),
           ],
-          'Entire Range': [moment('2017').startOf('year'), moment()],
+          'Entire Range': [moment('2017-01-01').startOf('year'), moment()],
         }}
       />
     </>

@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { ResponsivePieCanvas } from '@nivo/pie';
-import { ResponsiveBar } from '@nivo/bar';
-import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
+import { ResponsiveBar } from '@nivo/bar';
+import { ResponsivePie } from '@nivo/pie';
+import { Select } from 'antd';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
 import { GET_CATEGORIES } from '../data/categories';
 import { toMoney, toPercent } from '../lib';
-import { Select } from 'antd';
 
 const { Option } = Select;
 
 const Pie = ({ data, total }) => (
-  <ResponsivePieCanvas
+  <ResponsivePie
     data={data}
     margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
     pixelRatio={2}
@@ -118,13 +119,14 @@ const CategoryView = ({ startDate, endDate }) => {
       id: category.name,
       name: category.name,
       label: category.name,
-      value:
-        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0,
+      value: Math.abs(category.transactions_aggregate.aggregate.sum.amount),
     }))
     .sort((a, b) => b.value - a.value)
     .filter(x => x.value > 0);
 
   const total = data.transactions_aggregate.aggregate.sum.amount;
+
+  const Graph = graph === 'pie' ? Pie : Bar;
 
   return (
     <Wrapper>
@@ -132,11 +134,7 @@ const CategoryView = ({ startDate, endDate }) => {
         <Option value="pie">Pie</Option>
         <Option value="bar">Bar</Option>
       </Select>
-      {graph === 'pie' ? (
-        <Pie data={out} total={total} />
-      ) : (
-        <Bar data={out} total={total} />
-      )}
+      <Graph data={out} total={total} />
     </Wrapper>
   );
 };

@@ -1,24 +1,25 @@
+import 'antd/dist/antd.css';
+
+import { ApolloProvider } from '@apollo/react-hooks';
+import { Layout, Menu } from 'antd';
+import ApolloClient from 'apollo-boost';
+import moment from 'moment';
 import React, { useState } from 'react';
 import {
+  NavLink,
+  Redirect,
+  Route,
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect,
-  NavLink,
 } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
-import moment from 'moment';
-import 'antd/dist/antd.css';
-import { Layout, Menu } from 'antd';
 
 import Navigation from './Navigation';
-import Cumulative from './pages/Cumulative';
+import CategoryView from './pages/CategoryView';
+import CumulativeView from './pages/CumulativeView';
+import SpendingView from './pages/SpendingView';
 import Transactions from './pages/Transactions';
 import Variables from './pages/Variables';
-import CategoryView from './pages/CategoryView';
-import SpendingView from './pages/SpendingView';
 
 const { Header, Content } = Layout;
 
@@ -98,7 +99,7 @@ function App() {
               <Route
                 path="/cumulative"
                 exact
-                component={() => <Cumulative {...{ startDate, endDate }} />}
+                component={() => <CumulativeView {...{ startDate, endDate }} />}
               />
               <Route
                 path="/categories"

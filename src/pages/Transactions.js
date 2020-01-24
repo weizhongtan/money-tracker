@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import TimeAgo from 'react-timeago';
-import { DebounceInput } from 'react-debounce-input';
 import { useQuery } from '@apollo/react-hooks';
 import { Input, Table } from 'antd';
+import React, { useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
 import { GET_TRANSACTIONS } from '../data/transactions';
