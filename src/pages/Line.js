@@ -44,7 +44,7 @@ const LineGraph = ({ startDate, endDate }) => {
 
   const series = [
     {
-      id: 'asdf',
+      id: '£',
       data: data?.cumulative_transactions.map(({ date, sum }) => ({
         x: moment(date).format('YYYY-MM-DD'),
         y: toMoney(sum),
@@ -53,8 +53,6 @@ const LineGraph = ({ startDate, endDate }) => {
   ];
 
   const tickValues = getTickValues(startDate, endDate);
-
-  console.log(series);
 
   const accounts = data?.accounts;
 
@@ -70,7 +68,7 @@ const LineGraph = ({ startDate, endDate }) => {
         ))}
       </Select>
       <ResponsiveLine
-        margin={{ top: 20, right: 20, bottom: 60, left: 80 }}
+        margin={{ top: 20, right: 20, bottom: 100, left: 80 }}
         animate
         data={series}
         enableArea
@@ -82,7 +80,8 @@ const LineGraph = ({ startDate, endDate }) => {
         xFormat="time:%Y-%m-%d"
         yScale={{
           type: 'linear',
-          min: 'auto',
+          min: Math.min(...series[0].data.map(({ y }) => y)) > 0 ? 0 : 'auto',
+          max: Math.max(...series[0].data.map(({ y }) => y)) < 0 ? 0 : 'auto',
         }}
         axisLeft={{
           format: value => `£${value}`,
@@ -98,8 +97,7 @@ const LineGraph = ({ startDate, endDate }) => {
           from: 'color',
           modifiers: [['darker', 0.3]],
         }}
-        useMesh={true}
-        enableSlices={false}
+        enableSlices="x"
       />
     </Wrapper>
   );
