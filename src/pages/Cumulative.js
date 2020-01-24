@@ -31,7 +31,7 @@ const getTickValues = (startDate, endDate) => {
   return 'every 1 month';
 };
 
-const LineGraph = ({ startDate, endDate }) => {
+const Cumulative = ({ startDate, endDate }) => {
   // TODO: fix this
   // default nationwide account id for now
   const [accountId, setAccountId] = useState(
@@ -103,4 +103,4 @@ const LineGraph = ({ startDate, endDate }) => {
   );
 };
 
-export default LineGraph;
+export default Cumulative;

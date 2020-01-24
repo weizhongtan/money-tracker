@@ -14,11 +14,11 @@ import 'antd/dist/antd.css';
 import { Layout, Menu } from 'antd';
 
 import Navigation from './Navigation';
-import Line from './pages/Line';
+import Cumulative from './pages/Cumulative';
 import Transactions from './pages/Transactions';
 import Variables from './pages/Variables';
-import Pie from './pages/Pie';
-import Bar from './pages/Bar';
+import CategoryView from './pages/CategoryView';
+import SpendingView from './pages/SpendingView';
 
 const { Header, Content } = Layout;
 
@@ -69,14 +69,14 @@ function App() {
                 <Menu.Item key="/transactions">
                   <NavLink to="/transactions">Transactions</NavLink>
                 </Menu.Item>
-                <Menu.Item key="/line">
-                  <NavLink to="/line">Line</NavLink>
+                <Menu.Item key="/cumulative">
+                  <NavLink to="/cumulative">Cumulative</NavLink>
                 </Menu.Item>
-                <Menu.Item key="/pie">
-                  <NavLink to="/pie">Pie</NavLink>
+                <Menu.Item key="/categories">
+                  <NavLink to="/categories">Categories</NavLink>
                 </Menu.Item>
-                <Menu.Item key="/bar">
-                  <NavLink to="/bar">Bar</NavLink>
+                <Menu.Item key="/spending">
+                  <NavLink to="/spending">Spending</NavLink>
                 </Menu.Item>
               </Menu>
             )}
@@ -98,17 +98,17 @@ function App() {
               <Route
                 path="/line"
                 exact
-                component={() => <Line {...{ startDate, endDate }} />}
+                component={() => <Cumulative {...{ startDate, endDate }} />}
               />
               <Route
-                path="/pie"
+                path="/categories"
                 exact
-                component={() => <Pie {...{ startDate, endDate }} />}
+                component={() => <CategoryView {...{ startDate, endDate }} />}
               />
               <Route
-                path="/bar"
+                path="/spending"
                 exact
-                component={() => <Bar {...{ startDate, endDate }} />}
+                component={() => <SpendingView {...{ startDate, endDate }} />}
               />
               <Redirect to="/transactions" />
             </Switch>
