@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import { useQuery } from '@apollo/react-hooks';
 import { Select } from 'antd';
-import { GET_TRANSACTIONS_BY_DAY } from '../data/transactionsByDate';
+import { GET_TRANSACTIONS_GROUP_BY } from '../data/transactionsGroupBy';
 import { toMoney } from '../lib';
 
 const { Option } = Select;
@@ -34,14 +34,13 @@ const getTickValues = (startDate, endDate) => {
 const Cumulative = ({ startDate, endDate }) => {
   // TODO: fix this
   // default nationwide account id for now
-  const [accountId, setAccountId] = useState(
-    '71cb04f4-4554-4b3f-8747-bc2008940d23'
-  );
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS_BY_DAY, {
+  const [accountId, setAccountId] = useState(null);
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS_GROUP_BY, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
       accountId,
+      groupBy: 'month',
     },
   });
   if (loading || error) return null;
@@ -58,7 +57,13 @@ const Cumulative = ({ startDate, endDate }) => {
 
   const tickValues = getTickValues(startDate, endDate);
 
-  const accounts = data?.accounts;
+  const accounts = [
+    {
+      id: null,
+      name: 'All Accounts',
+    },
+    ...data?.accounts,
+  ];
 
   return (
     <Wrapper>

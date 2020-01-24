@@ -96,7 +96,7 @@ function App() {
                 )}
               />
               <Route
-                path="/line"
+                path="/cumulative"
                 exact
                 component={() => <Cumulative {...{ startDate, endDate }} />}
               />
