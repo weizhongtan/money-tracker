@@ -39,6 +39,18 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
               .subtract(1, 'month')
               .endOf('month'),
           ],
+          'Last 6 Months': [
+            moment()
+              .subtract(6, 'month')
+              .startOf('month'),
+            moment().endOf('month'),
+          ],
+          'Last 12 Months': [
+            moment()
+              .subtract(12, 'month')
+              .startOf('month'),
+            moment().endOf('month'),
+          ],
           'This Year': [moment().startOf('year'), moment().endOf('year')],
           'Last Year': [
             moment()
@@ -48,6 +60,7 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
               .subtract(1, 'year')
               .endOf('year'),
           ],
+          'Entire Range': [moment('2017').startOf('year'), moment()],
         }}
       />
     </>
