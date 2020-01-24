@@ -16,6 +16,9 @@ const Wrapper = styled.div`
 const AccountSelect = styled(Select)`
   width: 300px;
 `;
+const PrecisionSelect = styled(Select)`
+  width: 300px;
+`;
 
 const getTickValues = (startDate, endDate) => {
   const duration = endDate.diff(startDate, 'days');
@@ -35,12 +38,13 @@ const Cumulative = ({ startDate, endDate }) => {
   // TODO: fix this
   // default nationwide account id for now
   const [accountId, setAccountId] = useState(null);
+  const [precision, setPrecision] = useState('day');
   const { loading, error, data } = useQuery(GET_TRANSACTIONS_GROUP_BY, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
       accountId,
-      groupBy: 'month',
+      groupBy: precision,
     },
   });
   if (loading || error) return null;
@@ -69,9 +73,16 @@ const Cumulative = ({ startDate, endDate }) => {
     <Wrapper>
       <AccountSelect defaultValue={accountId} onChange={setAccountId}>
         {accounts.map(({ id, name }) => (
-          <Option value={id}>{name}</Option>
+          <Option value={id} key={id}>
+            {name}
+          </Option>
         ))}
       </AccountSelect>
+      <PrecisionSelect defaultValue={precision} onChange={setPrecision}>
+        <Option value="day">Day</Option>
+        <Option value="week">Week</Option>
+        <Option value="month">Month</Option>
+      </PrecisionSelect>
       <ResponsiveLine
         margin={{ top: 20, right: 20, bottom: 100, left: 80 }}
         animate
