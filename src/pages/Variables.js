@@ -31,6 +31,7 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
         value={[startDate, endDate]}
         ranges={{
           'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'This Year': [moment().startOf('year'), moment().endOf('year')],
           'Last Month': [
             moment()
               .subtract(1, 'month')
@@ -38,6 +39,12 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
             moment()
               .subtract(1, 'month')
               .endOf('month'),
+          ],
+          'Last 3 Months': [
+            moment()
+              .subtract(3, 'month')
+              .startOf('month'),
+            moment().endOf('month'),
           ],
           'Last 6 Months': [
             moment()
@@ -51,7 +58,6 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
               .startOf('month'),
             moment().endOf('month'),
           ],
-          'This Year': [moment().startOf('year'), moment().endOf('year')],
           'Last Year': [
             moment()
               .subtract(1, 'year')
