@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { ResponsivePieCanvas } from '@nivo/pie';
-import { ResponsiveBarCanvas } from '@nivo/bar';
+import { ResponsiveBar } from '@nivo/bar';
 import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_CATEGORIES } from '../data/categories';
-import { toMoney } from '../lib';
+import { toMoney, toPercent } from '../lib';
 import { Select } from 'antd';
 
 const { Option } = Select;
 
-const Pie = ({ data }) => (
+const Pie = ({ data, total }) => (
   <ResponsivePieCanvas
     data={data}
     margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
@@ -27,6 +27,9 @@ const Pie = ({ data }) => (
     radialLabelsLinkHorizontalLength={24}
     radialLabelsLinkStrokeWidth={1}
     radialLabelsLinkColor={{ from: 'color' }}
+    sliceLabel={({ value }) =>
+      `£${toMoney(value)} (${toPercent(value / total)})`
+    }
     slicesLabelsSkipAngle={10}
     slicesLabelsTextColor="#333333"
     animate={true}
@@ -66,22 +69,16 @@ const Pie = ({ data }) => (
   />
 );
 
-const Bar = ({ data }) => (
-  <ResponsiveBarCanvas
+const Bar = ({ data, total }) => (
+  <ResponsiveBar
     data={data}
     indexBy="name"
     margin={{ top: 50, right: 60, bottom: 50, left: 200 }}
-    pixelRatio={2}
-    padding={0.15}
-    innerPadding={0}
     minValue="auto"
     maxValue="auto"
     layout="horizontal"
-    reverse={false}
     colors={{ scheme: 'paired' }}
     colorBy="index"
-    borderWidth={0}
-    borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
     axisTop={{
       tickSize: 5,
       tickPadding: 5,
@@ -97,7 +94,7 @@ const Bar = ({ data }) => (
     }}
     enableGridX={true}
     enableGridY={false}
-    enableLabel={true}
+    labelFormat={x => `£${toMoney(x)} (${toPercent(x / total)})`}
     labelSkipWidth={12}
     labelSkipHeight={12}
     labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
@@ -110,7 +107,7 @@ const Wrapper = styled.div`
 `;
 
 const CategoryView = ({ startDate, endDate }) => {
-  const [graph, setGraph] = useState('pie');
+  const [graph, setGraph] = useState('bar');
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
     variables: { startDate, endDate },
   });
@@ -121,12 +118,13 @@ const CategoryView = ({ startDate, endDate }) => {
       id: category.name,
       name: category.name,
       label: category.name,
-      value: toMoney(
-        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0
-      ),
+      value:
+        Math.abs(category.transactions_aggregate.aggregate.sum.amount) ?? 0,
     }))
     .sort((a, b) => b.value - a.value)
     .filter(x => x.value > 0);
+
+  const total = data.transactions_aggregate.aggregate.sum.amount;
 
   return (
     <Wrapper>
@@ -134,7 +132,11 @@ const CategoryView = ({ startDate, endDate }) => {
         <Option value="pie">Pie</Option>
         <Option value="bar">Bar</Option>
       </Select>
-      {graph === 'pie' ? <Pie data={out} /> : <Bar data={out} />}
+      {graph === 'pie' ? (
+        <Pie data={out} total={total} />
+      ) : (
+        <Bar data={out} total={total} />
+      )}
     </Wrapper>
   );
 };
