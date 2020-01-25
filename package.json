@@ -35,7 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "api": "./docker-run.sh",
+    "api:up": "docker-compose up -d",
+    "api:down": "docker-compose down",
     "bootstrap:xml-to-json": "node src/api/migration/xml-to-json.js",
     "bootstrap:json-to-postgres": "node src/api/migration/json-to-postgres.js"
   },
