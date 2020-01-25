@@ -108,7 +108,7 @@ const Wrapper = styled.div`
 `;
 
 const CategoryView = ({ startDate, endDate }) => {
-  const [graph, setGraph] = useState('bar');
+  const [graph, setGraph] = useState('pie');
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
     variables: { startDate, endDate },
   });
