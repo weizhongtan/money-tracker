@@ -1,10 +1,10 @@
 import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
-import { Select } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import Select from '../components/Select';
 import { GET_CATEGORIES } from '../data/categories';
 import { toMoney, toPercent } from '../lib';
 

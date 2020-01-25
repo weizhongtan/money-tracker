@@ -1,11 +1,11 @@
 import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveBar } from '@nivo/bar';
-import { Select } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
+import Select from '../components/Select';
 import { QUERY } from '../data/transactionsGroupBy';
 import { toMoney, toPercent } from '../lib';
 
@@ -23,7 +23,6 @@ const Bar = ({ data }) => {
       minValue="auto"
       maxValue="auto"
       colors={[theme.positive, theme.neutral]}
-      // colorBy="sign"
       axisTop={{
         tickSize: 5,
         tickPadding: 5,
@@ -49,9 +48,6 @@ const Bar = ({ data }) => {
 
 const Wrapper = styled.div`
   height: 90%;
-`;
-const PrecisionSelect = styled(Select)`
-  width: 300px;
 `;
 
 const SpendingView = ({ startDate, endDate }) => {
@@ -86,11 +82,11 @@ const SpendingView = ({ startDate, endDate }) => {
           </Option>
         ))}
       </Select>
-      <PrecisionSelect defaultValue={precision} onChange={setPrecision}>
+      <Select defaultValue={precision} onChange={setPrecision}>
         <Option value="day">Day</Option>
         <Option value="week">Week</Option>
         <Option value="month">Month</Option>
-      </PrecisionSelect>
+      </Select>
       <Bar data={out} />
     </Wrapper>
   );
