@@ -24,14 +24,14 @@ const Bar = ({ data }) => {
       maxValue="auto"
       colors={[theme.positive, theme.neutral]}
       axisTop={{
-        tickSize: 5,
+        tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
         format: value => moment(value).format('MMM YY'),
       }}
       axisRight={null}
       axisBottom={{
-        tickSize: 5,
+        tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
         format: value => moment(value).format('MMM YY'),

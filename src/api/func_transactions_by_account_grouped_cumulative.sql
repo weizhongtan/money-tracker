@@ -9,6 +9,7 @@ CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_ac
    AS $$
    ( WITH data AS (
          -- first row should be the initial amount from the account
+         -- date is before all other transactions
          SELECT
             '2000-01-01T00:00:00.000Z' AS group_date,
             initial_amount AS sum
@@ -19,6 +20,7 @@ CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_ac
             OR id = v_account_id
          UNION ALL
          SELECT
+            -- group transactions by time period
             date_trunc(v_group_by, transactions.date) AS group_date,
             sum(transactions.amount) AS sum
          FROM
@@ -31,6 +33,7 @@ CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_ac
 )
       SELECT
          data.group_date,
+         -- for each row, add all previous rows to its sum value (cumulative)
          sum(data.sum) OVER (ORDER BY data.group_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS sum
       FROM
          data);
