@@ -5,7 +5,7 @@ import moment from 'moment';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { GET_TRANSACTIONS_GROUP_BY } from '../data/transactionsGroupBy';
+import { GET_TRANSACTIONS_GROUP_BY } from '../data/transactionsGroupByCumulative';
 import { toMoney } from '../lib';
 
 const { Option } = Select;

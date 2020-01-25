@@ -1,18 +1,18 @@
 import { gql } from 'apollo-boost';
 
-export const QUERY = gql`
+export const GET_TRANSACTIONS_GROUP_BY = gql`
   query MyQuery(
     $startDate: timestamptz
     $endDate: timestamptz
-    $categoryId: uuid
+    $accountId: uuid
     $groupBy: String
   ) {
-    categories {
+    accounts {
       id
       name
     }
-    groups: func_transactions_by_category_grouped(
-      args: { v_category_id: $categoryId, v_group_by: $groupBy }
+    cumulative_transactions: func_transactions_by_account_grouped_cumulative(
+      args: { v_account_id: $accountId, v_group_by: $groupBy }
       where: { date: { _gte: $startDate, _lte: $endDate } }
       order_by: { date: asc }
     ) {

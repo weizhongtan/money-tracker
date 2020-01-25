@@ -32,7 +32,7 @@ const Pie = ({ data, total }) => (
       `£${toMoney(value)} (${toPercent(value / total)})`
     }
     slicesLabelsSkipAngle={10}
-    slicesLabelsTextColor="#333333"
+    slicesLabelsTextColor={{ from: 'color' }}
     animate={true}
     motionStiffness={90}
     motionDamping={15}
@@ -98,7 +98,7 @@ const Bar = ({ data, total }) => (
     labelFormat={x => `£${toMoney(x)} (${toPercent(x / total)})`}
     labelSkipWidth={12}
     labelSkipHeight={12}
-    labelTextColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+    labelTextColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
     isInteractive={true}
   />
 );

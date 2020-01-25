@@ -41,7 +41,11 @@ const theme = {
 };
 
 function App() {
-  const [startDate, setStartDate] = useState(moment().subtract(1, 'months'));
+  const [startDate, setStartDate] = useState(
+    moment()
+      .subtract(1, 'year')
+      .startOf('year')
+  );
   const [endDate, setEndDate] = useState(moment());
 
   return (
