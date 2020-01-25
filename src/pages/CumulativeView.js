@@ -57,7 +57,7 @@ const CumulativeView = ({ startDate, endDate }) => {
       groupBy: precision,
     },
   });
-  if (loading) return null;
+  if (loading && typeof data === 'undefined') return null;
   if (error) return 'error';
 
   const series = [
