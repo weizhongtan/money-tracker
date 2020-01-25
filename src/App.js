@@ -34,12 +34,6 @@ const Main = styled(Content)`
   width: 100%;
 `;
 
-const theme = {
-  positive: '#52c41a',
-  neutral: '#1890ff',
-  negative: '#f5222d',
-};
-
 function App() {
   const [startDate, setStartDate] = useState(
     moment()
@@ -49,71 +43,63 @@ function App() {
   const [endDate, setEndDate] = useState(moment());
 
   return (
-    <Wrapper>
-      <ThemeProvider theme={theme}>
-        <Router>
-          <Header>
-            <Variables
-              {...{
-                startDate,
-                setStartDate,
-                endDate,
-                setEndDate,
+    <Router>
+      <Header>
+        <Variables
+          {...{
+            startDate,
+            setStartDate,
+            endDate,
+            setEndDate,
+          }}
+        />
+      </Header>
+      <Main>
+        <Navigation>
+          {({ location }) => (
+            <Menu
+              selectedKeys={location.pathname}
+              onSelect={({ key }) => {
+                location.pathname = `/${key}`;
               }}
-            />
-          </Header>
-          <Navigation>
-            {({ location }) => (
-              <Menu
-                selectedKeys={location.pathname}
-                onSelect={({ key }) => {
-                  location.pathname = `/${key}`;
-                }}
-                mode="horizontal"
-              >
-                <Menu.Item key="/transactions">
-                  <NavLink to="/transactions">Transactions</NavLink>
-                </Menu.Item>
-                <Menu.Item key="/cumulative">
-                  <NavLink to="/cumulative">Cumulative</NavLink>
-                </Menu.Item>
-                <Menu.Item key="/categories">
-                  <NavLink to="/categories">Categories</NavLink>
-                </Menu.Item>
-                <Menu.Item key="/spending">
-                  <NavLink to="/spending">Spending</NavLink>
-                </Menu.Item>
-              </Menu>
-            )}
-          </Navigation>
-          <Main attached="bottom">
-            <Switch>
-              <Route
-                path="/transactions"
-                exact
-                render={() => <TransactionsView {...{ startDate, endDate }} />}
-              />
-              <Route
-                path="/cumulative"
-                exact
-                component={() => <CumulativeView {...{ startDate, endDate }} />}
-              />
-              <Route
-                path="/categories"
-                exact
-                component={() => <CategoryView {...{ startDate, endDate }} />}
-              />
-              <Route
-                path="/spending"
-                exact
-                component={() => <SpendingView {...{ startDate, endDate }} />}
-              />
-              <Redirect to="/transactions" />
-            </Switch>
-          </Main>
-        </Router>
-      </ThemeProvider>
-    </Wrapper>
+              mode="horizontal"
+            >
+              <Menu.Item key="/transactions">
+                <NavLink to="/transactions">Transactions</NavLink>
+              </Menu.Item>
+              <Menu.Item key="/cumulative">
+                <NavLink to="/cumulative">Cumulative</NavLink>
+              </Menu.Item>
+              <Menu.Item key="/categories">
+                <NavLink to="/categories">Categories</NavLink>
+              </Menu.Item>
+              <Menu.Item key="/spending">
+                <NavLink to="/spending">Spending</NavLink>
+              </Menu.Item>
+            </Menu>
+          )}
+        </Navigation>
+        <Switch>
+          <Route
+            path="/transactions"
+            render={() => <TransactionsView {...{ startDate, endDate }} />}
+          />
+          <Route
+            path="/cumulative"
+            component={() => <CumulativeView {...{ startDate, endDate }} />}
+          />
+          <Route
+            path="/categories"
+            component={() => <CategoryView {...{ startDate, endDate }} />}
+          />
+          <Route
+            path="/spending"
+            component={() => <SpendingView {...{ startDate, endDate }} />}
+          />
+          <Redirect to="/transactions" />
+        </Switch>
+      </Main>
+    </Router>
   );
 }
 
@@ -121,12 +107,22 @@ const client = new ApolloClient({
   uri: 'http://localhost:3000/v1/graphql',
 });
 
-function ApolloWrapper() {
+const theme = {
+  positive: '#52c41a',
+  neutral: '#1890ff',
+  negative: '#f5222d',
+};
+
+function Wrappers() {
   return (
     <ApolloProvider client={client}>
-      <App />
+      <Wrapper>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </Wrapper>
     </ApolloProvider>
   );
 }
 
-export default ApolloWrapper;
+export default Wrappers;

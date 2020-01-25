@@ -112,7 +112,8 @@ const CategoryView = ({ startDate, endDate }) => {
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
     variables: { startDate, endDate },
   });
-  if (loading || error) return null;
+  if (loading && typeof data === 'undefined') return null;
+  if (error) return 'error';
 
   const out = data.categories
     .map(category => ({

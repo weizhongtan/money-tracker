@@ -46,6 +46,7 @@ exports.createHomebankTransaction = async t => {
   });
   transaction.setToAccount(toAccount, { save: false });
 
+  // transactions with dst_account are internal transfers
   if (t.dst_account) {
     const fromAccount = await Account.findOne({
       where: {

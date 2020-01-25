@@ -57,7 +57,8 @@ const CumulativeView = ({ startDate, endDate }) => {
       groupBy: precision,
     },
   });
-  if (loading || error) return null;
+  if (loading) return null;
+  if (error) return 'error';
 
   const series = [
     {
@@ -69,6 +70,8 @@ const CumulativeView = ({ startDate, endDate }) => {
     },
   ];
 
+  // if no data is returned for the first or last time periods, create dummy data points
+  // at either end to stretch the y axis across the selected time period
   const firstDataPoint = series[0].data[0];
   if (firstDataPoint && startDate.isBefore(moment(firstDataPoint.x))) {
     series[0].data.unshift({
@@ -76,7 +79,6 @@ const CumulativeView = ({ startDate, endDate }) => {
       y: firstDataPoint.y,
     });
   }
-
   const lastDataPoint = series[0].data[series[0].data.length - 1];
   if (lastDataPoint && endDate.isAfter(moment(lastDataPoint.x))) {
     series[0].data.push({
@@ -122,7 +124,6 @@ const CumulativeView = ({ startDate, endDate }) => {
           format: '%Y-%m-%d',
           precision: 'day',
         }}
-        // xFormat="time:%Y-%m-%d"
         yScale={{
           type: 'linear',
           min: Math.min(...series[0].data.map(({ y }) => y)) > 0 ? 0 : 'auto',

@@ -28,6 +28,8 @@ const TransactionsView = ({ startDate, endDate }) => {
       searchText: `%${searchText}%`,
     },
   });
+  if (loading && typeof data === 'undefined') return null;
+  if (error) return 'error';
 
   const transactions = data?.transactions_aggregate.nodes
     .map(
@@ -65,10 +67,6 @@ const TransactionsView = ({ startDate, endDate }) => {
     )
     .flat();
 
-  if (error) {
-    return <p>something went wrong :(</p>;
-  }
-
   return (
     <>
       <DebounceInput
@@ -83,50 +81,48 @@ const TransactionsView = ({ startDate, endDate }) => {
         loading={loading}
         autoFocus
       />
-      {!loading && (
-        <>
-          <span>{data.transactions_aggregate.aggregate.count} records</span>
-          <Table
-            dataSource={transactions}
-            pagination={{
-              defaultPageSize: 50,
-            }}
-            size="small"
-          >
-            <Column
-              title="Date"
-              dataIndex="date"
-              key="date"
-              render={date => <TimeAgo date={date} />}
-            />
-            <Column
-              title="Amount"
-              dataIndex="amount"
-              key="amount"
-              render={amount => (
-                <Amount positive={amount > 0}>{toMoney(amount)}</Amount>
-              )}
-            />
-            <Column title="Account" dataIndex="account" key="account" />
-            <Column title="From" dataIndex="from" key="from" />
-            <Column
-              title="Description"
-              dataIndex="description"
-              key="description"
-            />
-            <Column
-              title="Category"
-              dataIndex="category"
-              key="category"
-              filters={data.categories.map(({ name }) => ({
-                text: name,
-                value: name,
-              }))}
-              onFilter={(value, record) => record.category === value}
-            />
-          </Table>
-        </>
-      )}
+      <>
+        <span>{data.transactions_aggregate.aggregate.count} records</span>
+        <Table
+          dataSource={transactions}
+          pagination={{
+            defaultPageSize: 50,
+          }}
+          size="small"
+        >
+          <Column
+            title="Date"
+            dataIndex="date"
+            key="date"
+            render={date => <TimeAgo date={date} />}
+          />
+          <Column
+            title="Amount"
+            dataIndex="amount"
+            key="amount"
+            render={amount => (
+              <Amount positive={amount > 0}>{toMoney(amount)}</Amount>
+            )}
+          />
+          <Column title="Account" dataIndex="account" key="account" />
+          <Column title="From" dataIndex="from" key="from" />
+          <Column
+            title="Description"
+            dataIndex="description"
+            key="description"
+          />
+          <Column
+            title="Category"
+            dataIndex="category"
+            key="category"
+            filters={data.categories.map(({ name }) => ({
+              text: name,
+              value: name,
+            }))}
+            onFilter={(value, record) => record.category === value}
+          />
+        </Table>
+      </>
     </>
   );
 };

@@ -56,20 +56,23 @@ const SpendingView = ({ startDate, endDate }) => {
   const { loading, error, data } = useQuery(QUERY, {
     variables: { startDate, endDate, categoryId, groupBy: precision },
   });
-  if (loading || error) return null;
+  if (loading && typeof data === 'undefined') return null;
+  if (error) return 'error';
 
-  const series = data.groups.map(({ date, sum }) => ({
+  const groups = data.groups.map(({ date, sum }) => ({
     date: moment(date).format('YYYY-MM-DD'),
     [sum > 0 ? 'positive' : 'negative']: sum,
     sum,
   }));
 
+  // data returned only includes time periods with matching records
+  // fill empty time periods with null values to retain a linear time axis
   const numOfGroups = endDate.diff(startDate, precision) + 1;
-  const series2 = new Array(numOfGroups).fill(null).map((_, index) => {
+  const groupsFilled = new Array(numOfGroups).fill(null).map((_, index) => {
     const expectedDate = moment(startDate)
       .add(index, precision)
       .format('YYYY-MM-DD');
-    const existingDataPoint = series.find(({ date }) => date === expectedDate);
+    const existingDataPoint = groups.find(({ date }) => date === expectedDate);
     if (existingDataPoint) {
       return existingDataPoint;
     }
@@ -105,7 +108,7 @@ const SpendingView = ({ startDate, endDate }) => {
         <Option value="week">Week</Option>
         <Option value="month">Month</Option>
       </Select>
-      <Bar data={series2} />
+      <Bar data={groupsFilled} />
     </Wrapper>
   );
 };
