@@ -35,6 +35,14 @@ export const QUERY = gql`
           name
         }
         pair_id
+        split_transactions {
+          amount
+          description
+          id
+          category {
+            name
+          }
+        }
       }
     }
   }

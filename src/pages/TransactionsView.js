@@ -29,25 +29,41 @@ const TransactionsView = ({ startDate, endDate }) => {
     },
   });
 
-  const transactions = data?.transactions_aggregate.nodes.map(
-    ({
-      id,
-      date,
-      amount,
-      accountByToAccountId,
-      description,
-      category,
-      accountByFromAccountId,
-    }) => ({
-      key: id,
-      date: new Date(date),
-      amount: Number(amount),
-      account: accountByToAccountId?.name,
-      from: accountByFromAccountId?.name,
-      description: description,
-      category: category?.name,
-    })
-  );
+  const transactions = data?.transactions_aggregate.nodes
+    .map(
+      ({
+        id,
+        date,
+        amount,
+        accountByToAccountId,
+        description,
+        category,
+        accountByFromAccountId,
+        split_transactions,
+      }) => {
+        if (split_transactions.length) {
+          return split_transactions.map(splitTransaction => ({
+            key: id,
+            date: new Date(date),
+            amount: Number(splitTransaction.amount),
+            account: accountByToAccountId?.name,
+            from: accountByFromAccountId?.name,
+            description: splitTransaction.description,
+            category: splitTransaction.category?.name,
+          }));
+        }
+        return {
+          key: id,
+          date: new Date(date),
+          amount: Number(amount ?? split_transactions?.amount),
+          account: accountByToAccountId?.name,
+          from: accountByFromAccountId?.name,
+          description: description ?? split_transactions?.description,
+          category: category?.name ?? split_transactions?.category?.name,
+        };
+      }
+    )
+    .flat();
 
   if (error) {
     return <p>something went wrong :(</p>;
