@@ -95,7 +95,12 @@ const CumulativeView = ({ startDate, endDate }) => {
 
   return (
     <Wrapper>
-      <Select defaultValue={accountId} onChange={setAccountId}>
+      <Select
+        defaultValue={accountId}
+        onChange={setAccountId}
+        showSearch
+        optionFilterProp="children"
+      >
         {accounts.map(({ id, name }) => (
           <Option value={id} key={id}>
             {name}

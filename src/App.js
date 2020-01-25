@@ -18,7 +18,7 @@ import Navigation from './Navigation';
 import CategoryView from './pages/CategoryView';
 import CumulativeView from './pages/CumulativeView';
 import SpendingView from './pages/SpendingView';
-import Transactions from './pages/Transactions';
+import TransactionsView from './pages/TransactionsView';
 import Variables from './pages/Variables';
 
 const { Header, Content } = Layout;
@@ -91,14 +91,7 @@ function App() {
               <Route
                 path="/transactions"
                 exact
-                render={() => (
-                  <Transactions
-                    {...{
-                      startDate,
-                      endDate,
-                    }}
-                  />
-                )}
+                render={() => <TransactionsView {...{ startDate, endDate }} />}
               />
               <Route
                 path="/cumulative"

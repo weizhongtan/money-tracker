@@ -88,7 +88,12 @@ const SpendingView = ({ startDate, endDate }) => {
 
   return (
     <Wrapper>
-      <Select defaultValue={categoryId} onChange={setCategoryId}>
+      <Select
+        defaultValue={categoryId}
+        onChange={setCategoryId}
+        showSearch
+        optionFilterProp="children"
+      >
         {categories.map(({ id, name }) => (
           <Option value={id} key={id}>
             {name}

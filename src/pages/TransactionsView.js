@@ -5,7 +5,7 @@ import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
-import { GET_TRANSACTIONS } from '../data/transactions';
+import { QUERY } from '../data/transactions';
 import { toMoney } from '../lib';
 
 const { Column } = Table;
@@ -18,10 +18,10 @@ const Amount = styled.span`
     positive ? theme.positive : theme.neutral};
 `;
 
-const Transactions = ({ startDate, endDate }) => {
+const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
 
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
+  const { loading, error, data } = useQuery(QUERY, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
@@ -69,7 +69,7 @@ const Transactions = ({ startDate, endDate }) => {
       />
       {!loading && (
         <>
-          <span>{data?.transactions_aggregate.aggregate.count} records</span>
+          <span>{data.transactions_aggregate.aggregate.count} records</span>
           <Table
             dataSource={transactions}
             pagination={{
@@ -98,7 +98,16 @@ const Transactions = ({ startDate, endDate }) => {
               dataIndex="description"
               key="description"
             />
-            <Column title="Category" dataIndex="category" key="category" />
+            <Column
+              title="Category"
+              dataIndex="category"
+              key="category"
+              filters={data.categories.map(({ name }) => ({
+                text: name,
+                value: name,
+              }))}
+              onFilter={(value, record) => record.category === value}
+            />
           </Table>
         </>
       )}
@@ -106,4 +115,4 @@ const Transactions = ({ startDate, endDate }) => {
   );
 };
 
-export default Transactions;
+export default TransactionsView;
