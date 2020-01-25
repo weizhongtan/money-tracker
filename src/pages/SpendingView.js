@@ -7,7 +7,7 @@ import styled, { ThemeContext } from 'styled-components';
 
 import Select from '../components/Select';
 import { QUERY } from '../data/transactionsGroupBy';
-import { toMoney, toPercent } from '../lib';
+import { toMoney } from '../lib';
 
 const { Option } = Select;
 
@@ -58,12 +58,25 @@ const SpendingView = ({ startDate, endDate }) => {
   });
   if (loading || error) return null;
 
-  const out = data.groups.map(({ date, sum }) => ({
+  const series = data.groups.map(({ date, sum }) => ({
     date: moment(date).format('YYYY-MM-DD'),
     [sum > 0 ? 'positive' : 'negative']: sum,
+    sum,
   }));
 
-  console.log(out);
+  const numOfGroups = endDate.diff(startDate, precision) + 1;
+  const series2 = new Array(numOfGroups).fill(null).map((_, index) => {
+    const expectedDate = moment(startDate)
+      .add(index, precision)
+      .format('YYYY-MM-DD');
+    const existingDataPoint = series.find(({ date }) => date === expectedDate);
+    if (existingDataPoint) {
+      return existingDataPoint;
+    }
+    return {
+      date: expectedDate,
+    };
+  });
 
   const categories = [
     {
@@ -87,7 +100,7 @@ const SpendingView = ({ startDate, endDate }) => {
         <Option value="week">Week</Option>
         <Option value="month">Month</Option>
       </Select>
-      <Bar data={out} />
+      <Bar data={series2} />
     </Wrapper>
   );
 };
