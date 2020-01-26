@@ -8,6 +8,7 @@ export const QUERY = gql`
     $orderBy: order_by = desc
   ) {
     categories(order_by: { name: asc }) {
+      id
       name
     }
     transactions_aggregate(
@@ -21,10 +22,10 @@ export const QUERY = gql`
         count
       }
       nodes {
+        id
         date
         amount
         description
-        id
         accountByFromAccountId {
           name
         }
@@ -36,9 +37,9 @@ export const QUERY = gql`
         }
         pair_id
         split_transactions {
+          id
           amount
           description
-          id
           category {
             name
           }

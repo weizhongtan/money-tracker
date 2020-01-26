@@ -1,12 +1,16 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Input, Table } from 'antd';
 import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
+import Select from '../components/Select';
 import { QUERY } from '../data/transactions';
+import { QUERY as UPDATE_QUERY } from '../data/updateTransaction';
 import { toMoney } from '../lib';
+
+const { Option } = Select;
 
 const { Column } = Table;
 const { Search } = Input;
@@ -20,6 +24,15 @@ const Amount = styled.span`
 
 const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
+  const [updateTransaction] = useMutation(UPDATE_QUERY);
+  const updateTransactionCategory = ({ transactionId, categoryId }) => {
+    updateTransaction({
+      variables: {
+        transactionId,
+        categoryId,
+      },
+    });
+  };
 
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
@@ -44,24 +57,41 @@ const TransactionsView = ({ startDate, endDate }) => {
         split_transactions,
       }) => {
         if (split_transactions.length) {
-          return split_transactions.map(splitTransaction => ({
-            key: id,
-            date: new Date(date),
-            amount: Number(splitTransaction.amount),
-            account: accountByToAccountId?.name,
-            from: accountByFromAccountId?.name,
-            description: splitTransaction.description,
-            category: splitTransaction.category?.name,
-          }));
+          return [
+            {
+              key: id,
+              id,
+              date: new Date(date),
+              amount: Number(amount),
+              account: accountByToAccountId?.name,
+              from: accountByFromAccountId?.name,
+              description: description,
+              category: category?.name,
+              split: 'parent',
+            },
+            ...split_transactions.map(splitTransaction => ({
+              key: splitTransaction.id,
+              id: splitTransaction.id,
+              date: new Date(date),
+              amount: Number(splitTransaction.amount),
+              account: accountByToAccountId?.name,
+              from: accountByFromAccountId?.name,
+              description: splitTransaction.description,
+              category: splitTransaction.category?.name,
+              split: 'child',
+            })),
+          ];
         }
         return {
           key: id,
+          id,
           date: new Date(date),
-          amount: Number(amount ?? split_transactions?.amount),
+          amount: Number(amount),
           account: accountByToAccountId?.name,
           from: accountByFromAccountId?.name,
-          description: description ?? split_transactions?.description,
-          category: category?.name ?? split_transactions?.category?.name,
+          description: description,
+          category: category?.name,
+          split: null,
         };
       }
     )
@@ -120,7 +150,29 @@ const TransactionsView = ({ startDate, endDate }) => {
               value: name,
             }))}
             onFilter={(value, record) => record.category === value}
+            render={(categoryName, record) => (
+              <>
+                <Select
+                  defaultValue={categoryName}
+                  onChange={categoryId =>
+                    updateTransactionCategory({
+                      transactionId: record.id,
+                      categoryId,
+                    })
+                  }
+                  showSearch
+                  optionFilterProp="children"
+                >
+                  {data.categories.map(({ id, name }) => (
+                    <Option value={id} key={id}>
+                      {name}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            )}
           />
+          <Column title="Split?" dataIndex="split" key="split" />
         </Table>
       </>
     </>
