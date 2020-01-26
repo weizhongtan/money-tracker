@@ -58,10 +58,13 @@ exports.createHomebankTransaction = async t => {
 
   // split transaction
   if (t.scat) {
+    transaction.set('is_split', true);
     const split = s => s.split('||').filter(x => x);
     const categories = split(t.scat);
     const amounts = split(t.samt);
     const descriptions = split(t.smem);
+
+    // creates new split transaction rows for each category/amount/description combo
     await Promise.all(
       categories.map(async legacyKey => {
         const category = await Category.findOne({

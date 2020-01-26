@@ -11,7 +11,6 @@ import { QUERY as UPDATE_QUERY } from '../data/updateTransaction';
 import { toMoney } from '../lib';
 
 const { Option } = Select;
-
 const { Column } = Table;
 const { Search } = Input;
 
@@ -54,6 +53,7 @@ const TransactionsView = ({ startDate, endDate }) => {
         description,
         category,
         accountByFromAccountId,
+        is_split,
         split_transactions,
       }) => {
         if (split_transactions.length) {
@@ -67,6 +67,7 @@ const TransactionsView = ({ startDate, endDate }) => {
               from: accountByFromAccountId?.name,
               description: description,
               category: category?.name,
+              is_split,
               split: 'parent',
             },
             ...split_transactions.map(splitTransaction => ({
@@ -91,6 +92,7 @@ const TransactionsView = ({ startDate, endDate }) => {
           from: accountByFromAccountId?.name,
           description: description,
           category: category?.name,
+          is_split,
           split: null,
         };
       }
@@ -150,27 +152,30 @@ const TransactionsView = ({ startDate, endDate }) => {
               value: name,
             }))}
             onFilter={(value, record) => record.category === value}
-            render={(categoryName, record) => (
-              <>
-                <Select
-                  defaultValue={categoryName}
-                  onChange={categoryId =>
-                    updateTransactionCategory({
-                      transactionId: record.id,
-                      categoryId,
-                    })
-                  }
-                  showSearch
-                  optionFilterProp="children"
-                >
-                  {data.categories.map(({ id, name }) => (
-                    <Option value={id} key={id}>
-                      {name}
-                    </Option>
-                  ))}
-                </Select>
-              </>
-            )}
+            render={(categoryName, record) =>
+              // do not allow setting category on split transactions
+              !record.is_split && (
+                <>
+                  <Select
+                    defaultValue={categoryName}
+                    onChange={categoryId =>
+                      updateTransactionCategory({
+                        transactionId: record.id,
+                        categoryId,
+                      })
+                    }
+                    showSearch
+                    optionFilterProp="children"
+                  >
+                    {data.categories.map(({ id, name }) => (
+                      <Option value={id} key={id}>
+                        {name}
+                      </Option>
+                    ))}
+                  </Select>
+                </>
+              )
+            }
           />
           <Column title="Split?" dataIndex="split" key="split" />
         </Table>

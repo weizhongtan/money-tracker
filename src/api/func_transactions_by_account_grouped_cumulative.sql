@@ -26,6 +26,7 @@ CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_ac
          FROM
             transactions
          WHERE
+            -- we don't care if it's a split transaction, since that only affects categories, not accounts
             v_account_id IS NULL
             OR to_account_id = v_account_id
          GROUP BY

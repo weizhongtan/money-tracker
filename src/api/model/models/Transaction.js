@@ -23,13 +23,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.UUID,
         allowNull: true,
       },
-      split_amount: {
-        type: Sequelize.ARRAY(Sequelize.MONEY),
-        allowNull: true,
-      },
-      split_description: {
-        type: Sequelize.ARRAY(Sequelize.TEXT),
-        allowNull: true,
+      is_split: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
     },
     {
