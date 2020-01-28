@@ -1,4 +1,6 @@
+const Sequelize = require('sequelize');
 const { connect, Account, Category, Transaction } = require('./model');
+const moment = require('moment');
 
 exports.connectAndSync = async (force = false) => {
   const sequelize = await connect();
@@ -6,29 +8,49 @@ exports.connectAndSync = async (force = false) => {
   await sequelize.sync({ force });
 };
 
+exports.getAccount = async where =>
+  Account.findOne({
+    where,
+  });
+
 exports.createTransaction = async ({
   date,
   amount,
   description,
-  toAccountId,
+  toAccount,
 }) => {
-  const transaction = await Transaction.findOne({
+  // search for any transaction with a date of 3 days either side,
+  // the same amount, to the same account
+  const startDate = moment(date)
+    .subtract(3, 'days')
+    .toISOString();
+  const endDate = moment(date)
+    .add(3, 'days')
+    .toISOString();
+  const existing = await Transaction.findOne({
     where: {
-      date: new Date(date),
-      amount,
-      to_account_id: toAccountId,
+      date: {
+        [Sequelize.Op.gte]: startDate,
+        [Sequelize.Op.lte]: endDate,
+      },
+      amount: {
+        [Sequelize.Op.eq]: amount,
+      },
+      to_account_id: toAccount.id,
     },
   });
-  if (transaction) {
-    console.log('similar transaction already exists');
-  } else {
-    await Transaction.create({
-      date: new Date(date),
-      amount,
-      description,
-      to_account_id: toAccountId,
-    });
+  if (existing) {
+    console.error(`Transaction already exists: ${existing.id}`);
+    return false;
   }
+  const transaction = await Transaction.build({
+    date,
+    amount,
+    description,
+  });
+  transaction.setToAccount(toAccount, { save: false });
+  await transaction.save();
+  return true;
 };
 
 exports.createHomebankTransaction = async t => {
