@@ -105,7 +105,16 @@ const TransactionsView = ({ startDate, endDate }) => {
               <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
             )}
           />
-          <Column title="Account" dataIndex="account" key="account" />
+          <Column
+            title="Account"
+            dataIndex="account"
+            key="account"
+            filters={data.accounts.map(({ name }) => ({
+              text: name,
+              value: name,
+            }))}
+            onFilter={(value, record) => record.account === value}
+          />
           <Column title="From" dataIndex="from" key="from" />
           <Column
             title="Description"

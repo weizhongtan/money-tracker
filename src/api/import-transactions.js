@@ -36,7 +36,7 @@ function csvParser(data) {
 (async () => {
   const inPath = path.resolve(
     __dirname,
-    '../../private/_transformed_tandem_transactions.csv'
+    '../../private/Statement Download 2020-Jan-28 23-39-23.ofx'
   );
 
   const rawData = await readFile(inPath, 'utf8');
@@ -44,7 +44,7 @@ function csvParser(data) {
   const parser = extension === '.ofx' ? ofxParser : csvParser;
 
   const toAccount = await getAccount({
-    name: 'Tandem',
+    legacy_key: '1',
   });
 
   const parsedJson = parser(rawData).map(t => ({
@@ -54,14 +54,13 @@ function csvParser(data) {
 
   console.log(parsedJson);
 
-  const proms = parsedJson.map(async t => {
-    await createTransaction(t);
-    return;
+  const proms = parsedJson.map(t => {
+    return createTransaction(t);
   });
-  await Promise.all(proms);
+  const results = await Promise.all(proms);
 
-  const created = proms.filter(x => x).length;
-  const skipped = proms.length - created;
+  const created = results.filter(x => x).length;
+  const skipped = results.length - created;
 
   console.log(`Created ${created} records`);
   console.log(`Skipped ${skipped} records`);

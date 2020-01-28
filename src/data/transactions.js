@@ -7,6 +7,10 @@ export const QUERY = gql`
     $searchText: String
     $orderBy: order_by = desc
   ) {
+    accounts(order_by: { legacy_key: asc }) {
+      id
+      name
+    }
     categories(order_by: { name: asc }) {
       id
       name
