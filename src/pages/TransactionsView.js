@@ -102,7 +102,7 @@ const TransactionsView = ({ startDate, endDate }) => {
             dataIndex="amount"
             key="amount"
             render={amount => (
-              <Amount positive={amount > 0}>{toMoney(amount)}</Amount>
+              <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
             )}
           />
           <Column title="Account" dataIndex="account" key="account" />

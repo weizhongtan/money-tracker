@@ -65,7 +65,7 @@ const CumulativeView = ({ startDate, endDate }) => {
       id: '£',
       data: data?.cumulative_transactions.map(({ date, sum }) => ({
         x: moment(date).format('YYYY-MM-DD'),
-        y: toMoney(sum),
+        y: sum,
       })),
     },
   ];
@@ -130,7 +130,7 @@ const CumulativeView = ({ startDate, endDate }) => {
           max: Math.max(...series[0].data.map(({ y }) => y)) < 0 ? 0 : 'auto',
         }}
         axisLeft={{
-          format: value => `£${value}`,
+          format: toMoney,
         }}
         axisBottom={getBottomAxisProp(startDate, endDate)}
         curve="stepAfter"

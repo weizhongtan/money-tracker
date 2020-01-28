@@ -29,7 +29,7 @@ const Pie = ({ data, total }) => (
     radialLabelsLinkStrokeWidth={1}
     radialLabelsLinkColor={{ from: 'color' }}
     sliceLabel={({ value }) =>
-      `£${toMoney(value)} (${toPercent(value / total)})`
+      `${toMoney(value)} (${toPercent(value / total)})`
     }
     slicesLabelsSkipAngle={10}
     slicesLabelsTextColor={{ from: 'color' }}
@@ -84,18 +84,18 @@ const Bar = ({ data, total }) => (
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      format: value => `£${value}`,
+      format: toMoney,
     }}
     axisRight={null}
     axisBottom={{
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      format: value => `£${value}`,
+      format: toMoney,
     }}
     enableGridX={true}
     enableGridY={false}
-    labelFormat={x => `£${toMoney(x)} (${toPercent(x / total)})`}
+    labelFormat={x => `${toMoney(x)} (${toPercent(x / total)})`}
     labelSkipWidth={12}
     labelSkipHeight={12}
     labelTextColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
