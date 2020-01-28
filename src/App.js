@@ -21,16 +21,19 @@ import SpendingView from './pages/SpendingView';
 import TransactionsView from './pages/TransactionsView';
 import Variables from './pages/Variables';
 
-const { Header, Content } = Layout;
-
 const Wrapper = styled.div`
-  display: flex;
-  flex-flow: column;
+  box-sizing: border-box;
+  display: grid;
+  align-items: stretch;
   height: 100%;
+  grid-template-rows: auto;
 `;
 
-const Main = styled(Content)`
-  height: 100%;
+const Header = styled(Layout.Header)`
+  height: fit-content;
+`;
+
+const Content = styled(Layout.Content)`
   width: 100%;
 `;
 
@@ -53,8 +56,6 @@ function App() {
             setEndDate,
           }}
         />
-      </Header>
-      <Main>
         <Navigation>
           {({ location }) => (
             <Menu
@@ -79,6 +80,8 @@ function App() {
             </Menu>
           )}
         </Navigation>
+      </Header>
+      <Content>
         <Switch>
           <Route
             path="/transactions"
@@ -98,7 +101,7 @@ function App() {
           />
           <Redirect to="/transactions" />
         </Switch>
-      </Main>
+      </Content>
     </Router>
   );
 }

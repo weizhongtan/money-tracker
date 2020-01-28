@@ -2,9 +2,8 @@ import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveLine } from '@nivo/line';
 import moment from 'moment';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
-import Select from '../components/Select';
+import { Select, Wrapper } from '../components';
 import { GET_TRANSACTIONS_GROUP_BY } from '../data/transactionsGroupByCumulative';
 import { toMoney } from '../lib';
 
@@ -42,13 +41,11 @@ const getBottomAxisProp = (startDate, endDate) => {
   };
 };
 
-const Wrapper = styled.div`
-  height: 100%;
-`;
-
 const CumulativeView = ({ startDate, endDate }) => {
   const [accountId, setAccountId] = useState(null);
-  const [precision, setPrecision] = useState('day');
+  const defaultPrecision =
+    endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
+  const [precision, setPrecision] = useState(defaultPrecision);
   const { loading, error, data } = useQuery(GET_TRANSACTIONS_GROUP_BY, {
     variables: {
       startDate: startDate?.toISOString(),
@@ -102,6 +99,7 @@ const CumulativeView = ({ startDate, endDate }) => {
         onChange={setAccountId}
         showSearch
         optionFilterProp="children"
+        style={{ 'justify-self': 'start' }}
       >
         {accounts.map(({ id, name }) => (
           <Option value={id} key={id}>
@@ -115,7 +113,7 @@ const CumulativeView = ({ startDate, endDate }) => {
         <Option value="month">Month</Option>
       </Select>
       <ResponsiveLine
-        margin={{ top: 20, right: 20, bottom: 100, left: 80 }}
+        margin={{ top: 20, right: 20, bottom: 40, left: 50 }}
         animate
         data={series}
         enableArea

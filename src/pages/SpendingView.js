@@ -3,9 +3,9 @@ import { ResponsiveBar } from '@nivo/bar';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import { ThemeContext } from 'styled-components';
 
-import Select from '../components/Select';
+import { Select, Wrapper } from '../components';
 import { QUERY } from '../data/transactionsGroupBy';
 import { toMoney } from '../lib';
 
@@ -45,10 +45,6 @@ const Bar = ({ data }) => {
     />
   );
 };
-
-const Wrapper = styled.div`
-  height: 90%;
-`;
 
 const SpendingView = ({ startDate, endDate }) => {
   const [categoryId, setCategoryId] = useState(null);

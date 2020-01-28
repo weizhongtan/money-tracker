@@ -2,9 +2,8 @@ import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
-import Select from '../components/Select';
+import { Select, Wrapper } from '../components';
 import { GET_CATEGORIES } from '../data/categories';
 import { toMoney, toPercent } from '../lib';
 
@@ -102,10 +101,6 @@ const Bar = ({ data, total }) => (
     isInteractive={true}
   />
 );
-
-const Wrapper = styled.div`
-  height: 90%;
-`;
 
 const CategoryView = ({ startDate, endDate }) => {
   const [graph, setGraph] = useState('pie');

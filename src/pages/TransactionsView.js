@@ -5,7 +5,7 @@ import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
-import Select from '../components/Select';
+import { Select } from '../components';
 import { QUERY } from '../data/transactions';
 import { QUERY as UPDATE_QUERY } from '../data/updateTransaction';
 import { toMoney } from '../lib';
