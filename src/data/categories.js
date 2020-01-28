@@ -1,6 +1,5 @@
 import { gql } from 'apollo-boost';
 
-// TODO: FIX THIS - it doesn't grab split transactions properly
 export const GET_CATEGORIES = gql`
   query MyQuery($startDate: timestamptz, $endDate: timestamptz) {
     transactions_aggregate(

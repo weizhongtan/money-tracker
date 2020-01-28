@@ -36,15 +36,6 @@ export const QUERY = gql`
           name
         }
         pair_id
-        is_split
-        split_transactions {
-          id
-          amount
-          description
-          category {
-            name
-          }
-        }
       }
     }
   }

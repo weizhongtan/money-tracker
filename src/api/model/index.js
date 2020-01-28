@@ -1,10 +1,5 @@
 const Sequelize = require('sequelize');
-const {
-  AccountInit,
-  CategoryInit,
-  TransactionInit,
-  SplitTransactionInit,
-} = require('./models');
+const { AccountInit, CategoryInit, TransactionInit } = require('./models');
 const customTypes = require('./types');
 const DataTypes = Object.assign({}, Sequelize, customTypes);
 
@@ -19,15 +14,11 @@ const sequelize = new Sequelize('moneytracker', 'wzt', '', {
 const Account = AccountInit(sequelize, DataTypes);
 const Category = CategoryInit(sequelize, DataTypes);
 const Transaction = TransactionInit(sequelize, DataTypes);
-const SplitTransaction = SplitTransactionInit(sequelize, DataTypes);
 
 Transaction.belongsTo(Account, { as: 'FromAccount' });
 Transaction.belongsTo(Account, { as: 'ToAccount' });
 
 Transaction.belongsTo(Category);
-Transaction.belongsToMany(Category, {
-  through: SplitTransaction,
-});
 
 Transaction.hasOne(Transaction, { as: 'PairedWith' });
 
@@ -46,4 +37,3 @@ exports.connect = connect;
 exports.Account = Account;
 exports.Category = Category;
 exports.Transaction = Transaction;
-exports.SplitTransaction = SplitTransaction;

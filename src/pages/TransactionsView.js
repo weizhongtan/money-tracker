@@ -53,36 +53,7 @@ const TransactionsView = ({ startDate, endDate }) => {
         description,
         category,
         accountByFromAccountId,
-        is_split,
-        split_transactions,
       }) => {
-        if (split_transactions.length) {
-          return [
-            {
-              key: id,
-              id,
-              date: new Date(date),
-              amount: Number(amount),
-              account: accountByToAccountId?.name,
-              from: accountByFromAccountId?.name,
-              description: description,
-              category: category?.name,
-              is_split,
-              split: 'parent',
-            },
-            ...split_transactions.map(splitTransaction => ({
-              key: splitTransaction.id,
-              id: splitTransaction.id,
-              date: new Date(date),
-              amount: Number(splitTransaction.amount),
-              account: accountByToAccountId?.name,
-              from: accountByFromAccountId?.name,
-              description: splitTransaction.description,
-              category: splitTransaction.category?.name,
-              split: 'child',
-            })),
-          ];
-        }
         return {
           key: id,
           id,
@@ -92,8 +63,6 @@ const TransactionsView = ({ startDate, endDate }) => {
           from: accountByFromAccountId?.name,
           description: description,
           category: category?.name,
-          is_split,
-          split: null,
         };
       }
     )
@@ -152,32 +121,28 @@ const TransactionsView = ({ startDate, endDate }) => {
               value: name,
             }))}
             onFilter={(value, record) => record.category === value}
-            render={(categoryName, record) =>
-              // do not allow setting category on split transactions
-              !record.is_split && (
-                <>
-                  <Select
-                    defaultValue={categoryName}
-                    onChange={categoryId =>
-                      updateTransactionCategory({
-                        transactionId: record.id,
-                        categoryId,
-                      })
-                    }
-                    showSearch
-                    optionFilterProp="children"
-                  >
-                    {data.categories.map(({ id, name }) => (
-                      <Option value={id} key={id}>
-                        {name}
-                      </Option>
-                    ))}
-                  </Select>
-                </>
-              )
-            }
+            render={(categoryName, record) => (
+              <>
+                <Select
+                  defaultValue={categoryName}
+                  onChange={categoryId =>
+                    updateTransactionCategory({
+                      transactionId: record.id,
+                      categoryId,
+                    })
+                  }
+                  showSearch
+                  optionFilterProp="children"
+                >
+                  {data.categories.map(({ id, name }) => (
+                    <Option value={id} key={id}>
+                      {name}
+                    </Option>
+                  ))}
+                </Select>
+              </>
+            )}
           />
-          <Column title="Split?" dataIndex="split" key="split" />
         </Table>
       </>
     </>

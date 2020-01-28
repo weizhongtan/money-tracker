@@ -32,6 +32,43 @@ exports.createTransaction = async ({
 };
 
 exports.createHomebankTransaction = async t => {
+  // split transactions
+  if (t.scat) {
+    const split = s => s.split('||').filter(x => x);
+    const categories = split(t.scat);
+    const amounts = split(t.samt);
+    const descriptions = split(t.smem);
+
+    // creates new split transaction rows for each category/amount/description combo
+    await Promise.all(
+      categories.map(async legacyKey => {
+        const splitTransaction = Transaction.build({
+          date: new Date(Number(t.date)),
+          amount: amounts.shift(),
+          // default to main description
+          description: descriptions.shift() || t.wording,
+        });
+
+        const category = await Category.findOne({
+          where: {
+            legacy_key: legacyKey,
+          },
+        });
+        splitTransaction.setCategory(category, { save: false });
+
+        const toAccount = await Account.findOne({
+          where: {
+            legacy_key: t.account,
+          },
+        });
+        splitTransaction.setToAccount(toAccount, { save: false });
+
+        await splitTransaction.save();
+      })
+    );
+    return;
+  }
+
   const transaction = Transaction.build({
     date: new Date(Number(t.date)),
     amount: t.amount,
@@ -54,34 +91,6 @@ exports.createHomebankTransaction = async t => {
       },
     });
     transaction.setFromAccount(fromAccount, { save: false });
-  }
-
-  // split transaction
-  if (t.scat) {
-    transaction.set('is_split', true);
-    const split = s => s.split('||').filter(x => x);
-    const categories = split(t.scat);
-    const amounts = split(t.samt);
-    const descriptions = split(t.smem);
-
-    // creates new split transaction rows for each category/amount/description combo
-    await Promise.all(
-      categories.map(async legacyKey => {
-        const category = await Category.findOne({
-          where: {
-            legacy_key: legacyKey,
-          },
-        });
-        transaction.addCategory(category, {
-          through: {
-            amount: amounts.shift(),
-            // default to main description
-            description: descriptions.shift() || t.wording,
-          },
-          save: false,
-        });
-      })
-    );
   }
 
   if (t.category) {

@@ -23,10 +23,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.UUID,
         allowNull: true,
       },
-      is_split: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
     },
     {
       sequelize,

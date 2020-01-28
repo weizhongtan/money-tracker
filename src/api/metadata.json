@@ -1,10 +1,39 @@
 {
-  "functions": [],
+  "functions": [
+    {
+      "function": "func_transactions_by_account_grouped_cumulative",
+      "configuration": {}
+    },
+    { "function": "func_transactions_by_category_grouped", "configuration": {} }
+  ],
   "remote_schemas": [],
   "query_collections": [],
   "allowlist": [],
   "version": 2,
   "tables": [
+    {
+      "table": "__transactions_group_by",
+      "is_enum": false,
+      "configuration": {
+        "custom_root_fields": {
+          "select": null,
+          "select_by_pk": null,
+          "select_aggregate": null,
+          "insert": null,
+          "update": null,
+          "delete": null
+        },
+        "custom_column_names": {}
+      },
+      "object_relationships": [],
+      "array_relationships": [],
+      "insert_permissions": [],
+      "select_permissions": [],
+      "update_permissions": [],
+      "delete_permissions": [],
+      "event_triggers": [],
+      "computed_fields": []
+    },
     {
       "table": "accounts",
       "is_enum": false,
@@ -63,36 +92,8 @@
         },
         "custom_column_names": {}
       },
-      "object_relationships": [
-        {
-          "using": {
-            "foreign_key_constraint_on": "parent_id"
-          },
-          "name": "category",
-          "comment": null
-        }
-      ],
+      "object_relationships": [],
       "array_relationships": [
-        {
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "parent_id",
-              "table": "categories"
-            }
-          },
-          "name": "categories",
-          "comment": null
-        },
-        {
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "category_id",
-              "table": "split_transactions"
-            }
-          },
-          "name": "split_transactions",
-          "comment": null
-        },
         {
           "using": {
             "foreign_key_constraint_on": {
@@ -112,7 +113,7 @@
       "computed_fields": []
     },
     {
-      "table": "split_transactions",
+      "table": "cumulative_by_day",
       "is_enum": false,
       "configuration": {
         "custom_root_fields": {
@@ -125,22 +126,7 @@
         },
         "custom_column_names": {}
       },
-      "object_relationships": [
-        {
-          "using": {
-            "foreign_key_constraint_on": "category_id"
-          },
-          "name": "category",
-          "comment": null
-        },
-        {
-          "using": {
-            "foreign_key_constraint_on": "transaction_id"
-          },
-          "name": "transaction",
-          "comment": null
-        }
-      ],
+      "object_relationships": [],
       "array_relationships": [],
       "insert_permissions": [],
       "select_permissions": [],
@@ -165,45 +151,27 @@
       },
       "object_relationships": [
         {
-          "using": {
-            "foreign_key_constraint_on": "from_account_id"
-          },
+          "using": { "foreign_key_constraint_on": "from_account_id" },
           "name": "accountByFromAccountId",
           "comment": null
         },
         {
-          "using": {
-            "foreign_key_constraint_on": "to_account_id"
-          },
+          "using": { "foreign_key_constraint_on": "to_account_id" },
           "name": "accountByToAccountId",
           "comment": null
         },
         {
-          "using": {
-            "foreign_key_constraint_on": "category_id"
-          },
+          "using": { "foreign_key_constraint_on": "category_id" },
           "name": "category",
           "comment": null
         },
         {
-          "using": {
-            "foreign_key_constraint_on": "paired_with_id"
-          },
+          "using": { "foreign_key_constraint_on": "paired_with_id" },
           "name": "transaction",
           "comment": null
         }
       ],
       "array_relationships": [
-        {
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "transaction_id",
-              "table": "split_transactions"
-            }
-          },
-          "name": "split_transactions",
-          "comment": null
-        },
         {
           "using": {
             "foreign_key_constraint_on": {
