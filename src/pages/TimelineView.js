@@ -46,7 +46,7 @@ const Bar = ({ data }) => {
   );
 };
 
-const SpendingView = ({ startDate, endDate }) => {
+const TimelineView = ({ startDate, endDate }) => {
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');
   const { loading, error, data } = useQuery(QUERY, {
@@ -109,4 +109,4 @@ const SpendingView = ({ startDate, endDate }) => {
   );
 };
 
-export default SpendingView;
+export default TimelineView;

@@ -17,7 +17,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import Navigation from './Navigation';
 import CategoryView from './pages/CategoryView';
 import CumulativeView from './pages/CumulativeView';
-import SpendingView from './pages/SpendingView';
+import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
 import Variables from './pages/Variables';
 
@@ -36,6 +36,29 @@ const Header = styled(Layout.Header)`
 const Content = styled(Layout.Content)`
   width: 100%;
 `;
+
+const routes = [
+  {
+    path: '/transactions',
+    title: 'Transactions',
+    component: TransactionsView,
+  },
+  {
+    path: '/cumulative',
+    title: 'Cumulative',
+    component: CumulativeView,
+  },
+  {
+    path: '/breakdown',
+    title: 'Breakdown',
+    component: CategoryView,
+  },
+  {
+    path: '/timeline',
+    title: 'Timeline',
+    component: TimelineView,
+  },
+];
 
 function App() {
   const [startDate, setStartDate] = useState(
@@ -65,41 +88,25 @@ function App() {
               }}
               mode="horizontal"
             >
-              <Menu.Item key="/transactions">
-                <NavLink to="/transactions">Transactions</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/cumulative">
-                <NavLink to="/cumulative">Cumulative</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/categories">
-                <NavLink to="/categories">Categories</NavLink>
-              </Menu.Item>
-              <Menu.Item key="/spending">
-                <NavLink to="/spending">Spending</NavLink>
-              </Menu.Item>
+              {routes.map(({ path, title }) => (
+                <Menu.Item key={path}>
+                  <NavLink to={path}>{title}</NavLink>
+                </Menu.Item>
+              ))}
             </Menu>
           )}
         </Navigation>
       </Header>
       <Content>
         <Switch>
-          <Route
-            path="/transactions"
-            render={() => <TransactionsView {...{ startDate, endDate }} />}
-          />
-          <Route
-            path="/cumulative"
-            component={() => <CumulativeView {...{ startDate, endDate }} />}
-          />
-          <Route
-            path="/categories"
-            component={() => <CategoryView {...{ startDate, endDate }} />}
-          />
-          <Route
-            path="/spending"
-            component={() => <SpendingView {...{ startDate, endDate }} />}
-          />
-          <Redirect to="/transactions" />
+          {routes.map(({ path, component: Component }) => (
+            <Route
+              key={path}
+              path={path}
+              render={() => <Component {...{ startDate, endDate }} />}
+            />
+          ))}
+          <Redirect to={routes[0].path} />
         </Switch>
       </Content>
     </Router>
