@@ -22,6 +22,8 @@ Transaction.belongsTo(Category);
 
 Transaction.hasOne(Transaction, { as: 'PairedWith' });
 
+Category.belongsTo(Category, { as: 'ParentCategory' });
+
 const connect = () =>
   sequelize
     .authenticate()

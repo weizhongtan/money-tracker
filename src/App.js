@@ -15,7 +15,7 @@ import {
 import styled, { ThemeProvider } from 'styled-components';
 
 import Navigation from './Navigation';
-import CategoryView from './pages/CategoryView';
+import BreakdownView from './pages/BreakdownView';
 import CumulativeView from './pages/CumulativeView';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
@@ -51,7 +51,7 @@ const routes = [
   {
     path: '/breakdown',
     title: 'Breakdown',
-    component: CategoryView,
+    component: BreakdownView,
   },
   {
     path: '/timeline',

@@ -139,12 +139,44 @@ exports.addExistingData = async data => {
     })
   );
 
+  const categories = [];
+  const subCategories = [];
+  data.cat.forEach(c => {
+    // if it has no parents, it's a category
+    if (!c.parent) {
+      categories.push(c);
+    } else {
+      subCategories.push(c);
+    }
+  });
+
+  // create all categories first
   await Promise.all(
-    data.cat.map(c => {
+    categories.map(c => {
       return Category.create({
         name: c.name,
         legacy_key: c.key,
+        // for categories, flag '2' represents income
+        type: c.flags === '2' ? 'income' : 'expense',
       });
+    })
+  );
+  // then sub categories
+  await Promise.all(
+    subCategories.map(async c => {
+      const sc = Category.build({
+        name: c.name,
+        legacy_key: c.key,
+        // dont set income/expense on child categories
+      });
+      const parent = await Category.findOne({
+        where: {
+          legacy_key: c.parent,
+        },
+      });
+      console.log('found parent:', parent.id);
+      sc.setParentCategory(parent, { save: false });
+      await sc.save();
     })
   );
 

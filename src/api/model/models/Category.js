@@ -15,6 +15,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.TEXT,
         allowNull: false,
       },
+      type: {
+        type: Sequelize.TEXT,
+      },
     },
     {
       sequelize,
