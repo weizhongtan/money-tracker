@@ -17,12 +17,12 @@ const Bar = ({ data }) => {
   return (
     <ResponsiveBar
       data={data}
-      keys={['positive', 'negative']}
+      keys={['positive', 'neutral']}
       indexBy="date"
       margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
       minValue="auto"
       maxValue="auto"
-      colors={[theme.positive, theme.neutral]}
+      colors={({ id }) => theme[id]}
       axisTop={{
         tickSize: 0,
         tickPadding: 5,
@@ -57,7 +57,7 @@ const SpendingView = ({ startDate, endDate }) => {
 
   const groups = data.groups.map(({ date, sum }) => ({
     date: moment(date).format('YYYY-MM-DD'),
-    [sum > 0 ? 'positive' : 'negative']: sum,
+    [sum > 0 ? 'positive' : 'neutral']: sum,
     sum,
   }));
 
