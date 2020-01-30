@@ -19,7 +19,7 @@ const Bar = ({ data }) => {
       data={data}
       keys={['positive', 'neutral']}
       indexBy="date"
-      margin={{ top: 50, right: 60, bottom: 50, left: 60 }}
+      margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
       minValue="auto"
       maxValue="auto"
       colors={({ id }) => theme[id]}
@@ -27,14 +27,14 @@ const Bar = ({ data }) => {
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        format: value => moment(value).format('MMM YY'),
+        format: x => moment(x).format('MMM YY'),
       }}
-      axisRight={null}
+      axisLeft={null}
       axisBottom={{
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        format: value => moment(value).format('MMM YY'),
+        format: x => moment(x).format('MMM YY'),
       }}
       enableGridY
       labelFormat={toMoney}
@@ -42,6 +42,7 @@ const Bar = ({ data }) => {
       labelSkipHeight={12}
       labelTextColor={{ from: 'color', modifiers: [['brighter', 6]] }}
       isInteractive={true}
+      tooltip={({ value }) => toMoney(value, false)}
     />
   );
 };
