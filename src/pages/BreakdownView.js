@@ -105,7 +105,7 @@ const Bar = ({ data, total }) => (
 const BreakdownView = ({ startDate, endDate }) => {
   const [graph, setGraph] = useState('pie');
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
-    variables: { startDate, endDate },
+    variables: { startDate, endDate, categoryType: 'expense' },
   });
   if (loading && typeof data === 'undefined') return null;
   if (error) return 'error';
@@ -115,12 +115,11 @@ const BreakdownView = ({ startDate, endDate }) => {
       id: category.name,
       name: category.name,
       label: category.name,
-      value: Math.abs(category.transactions_aggregate.aggregate.sum.amount),
+      value: Math.abs(category.sum),
     }))
     .sort((a, b) => b.value - a.value);
-  // .filter(x => x.value > 0);
 
-  const total = data.transactions_aggregate.aggregate.sum.amount;
+  const total = data.amount.aggregate.sum.sum;
 
   const Graph = graph === 'pie' ? Pie : Bar;
 
