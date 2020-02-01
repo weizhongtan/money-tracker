@@ -1,13 +1,35 @@
 import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveLine } from '@nivo/line';
+import { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 
 import { Select, Wrapper } from '../components';
-import { GET_TRANSACTIONS_GROUP_BY } from '../data/transactionsGroupByCumulative';
 import { toMoney } from '../lib';
 
 const { Option } = Select;
+
+const GET_TRANSACTIONS = gql`
+  query MyQuery(
+    $startDate: timestamptz
+    $endDate: timestamptz
+    $accountId: uuid
+    $groupBy: String
+  ) {
+    accounts {
+      id
+      name
+    }
+    cumulative_transactions: func_transactions_by_account_grouped_cumulative(
+      args: { v_account_id: $accountId, v_group_by: $groupBy }
+      where: { date: { _gte: $startDate, _lte: $endDate } }
+      order_by: { date: asc }
+    ) {
+      date
+      sum
+    }
+  }
+`;
 
 const getBottomAxisProp = (startDate, endDate) => {
   const duration = endDate.diff(startDate, 'days');
@@ -46,7 +68,7 @@ const CumulativeView = ({ startDate, endDate }) => {
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
   const [precision, setPrecision] = useState(defaultPrecision);
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS_GROUP_BY, {
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),

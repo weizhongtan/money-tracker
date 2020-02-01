@@ -1,15 +1,37 @@
 import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveBar } from '@nivo/bar';
+import { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { Select, Wrapper } from '../components';
-import { QUERY } from '../data/transactionsGroupBy';
 import { toMoney } from '../lib';
 
 const { Option } = Select;
+
+const GET_AMOUNTS = gql`
+  query MyQuery(
+    $startDate: timestamptz
+    $endDate: timestamptz
+    $categoryId: uuid
+    $groupBy: String
+  ) {
+    categories: view_categories_with_parents(order_by: { full_name: asc }) {
+      id
+      name: full_name
+    }
+    groups: func_transactions_by_category_grouped(
+      args: { v_category_id: $categoryId, v_group_by: $groupBy }
+      where: { date: { _gte: $startDate, _lte: $endDate } }
+      order_by: { date: asc }
+    ) {
+      date
+      sum
+    }
+  }
+`;
 
 const Bar = ({ data }) => {
   const theme = useContext(ThemeContext);
@@ -54,7 +76,7 @@ const Parent = styled.span`
 const TimelineView = ({ startDate, endDate }) => {
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');
-  const { loading, error, data } = useQuery(QUERY, {
+  const { loading, error, data } = useQuery(GET_AMOUNTS, {
     variables: { startDate, endDate, categoryId, groupBy: precision },
   });
   if (loading && typeof data === 'undefined') return null;

@@ -1,18 +1,74 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { Input, Table } from 'antd';
+import { gql } from 'apollo-boost';
 import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
 import { Select } from '../components';
-import { QUERY } from '../data/transactions';
-import { QUERY as UPDATE_QUERY } from '../data/updateTransaction';
 import { toMoney } from '../lib';
 
 const { Option } = Select;
 const { Column } = Table;
 const { Search } = Input;
+
+const GET_TRANSACTIONS = gql`
+  query MyQuery(
+    $startDate: timestamptz
+    $endDate: timestamptz
+    $searchText: String
+    $orderBy: order_by = desc
+  ) {
+    accounts(order_by: { legacy_key: asc }) {
+      id
+      name
+    }
+    categories: view_categories_with_parents(order_by: { full_name: asc }) {
+      id
+      name: full_name
+    }
+    transactions_aggregate(
+      where: {
+        date: { _gte: $startDate, _lte: $endDate }
+        _and: { description: { _ilike: $searchText } }
+      }
+      order_by: { date: $orderBy }
+    ) {
+      aggregate {
+        count
+      }
+      nodes {
+        id
+        date
+        amount
+        description
+        accountByFromAccountId {
+          name
+        }
+        accountByToAccountId {
+          name
+        }
+        category {
+          name
+        }
+        pair_id
+      }
+    }
+  }
+`;
+
+const UPDATE_TRANSACTION = gql`
+  mutation MyMutation($transactionId: uuid, $categoryId: uuid) {
+    __typename
+    update_transactions(
+      where: { id: { _eq: $transactionId } }
+      _set: { category_id: $categoryId }
+    ) {
+      affected_rows
+    }
+  }
+`;
 
 const Amount = styled.span`
   display: block;
@@ -27,7 +83,7 @@ const Parent = styled.span`
 
 const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
-  const [updateTransaction] = useMutation(UPDATE_QUERY);
+  const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
   const updateTransactionCategory = ({ transactionId, categoryId }) => {
     updateTransaction({
       variables: {
@@ -37,7 +93,7 @@ const TransactionsView = ({ startDate, endDate }) => {
     });
   };
 
-  const { loading, error, data } = useQuery(QUERY, {
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
