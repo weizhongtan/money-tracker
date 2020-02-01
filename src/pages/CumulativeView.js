@@ -120,10 +120,10 @@ const CumulativeView = ({ startDate, endDate }) => {
         defaultValue={accountId}
         onChange={setAccountId}
         showSearch
-        optionFilterProp="children"
+        optionFilterProp="label"
       >
         {accounts.map(({ id, name }) => (
-          <Option value={id} key={id}>
+          <Option value={id} key={id} label={name}>
             {name}
           </Option>
         ))}

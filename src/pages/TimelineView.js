@@ -120,14 +120,13 @@ const TimelineView = ({ startDate, endDate }) => {
   return (
     <Wrapper>
       <Select
-        value={categories.getName(categoryId)}
-        onChange={value => {
-          setCategoryId(categories.getId(value));
-        }}
+        value={categoryId}
+        onChange={setCategoryId}
         showSearch
+        optionFilterProp="label"
       >
-        {categories.get().map(({ name, isSub }) => (
-          <Option key={name} value={name}>
+        {categories.get().map(({ id, name, isSub }) => (
+          <Option key={id} value={id} label={name}>
             {isSub ? name : <Parent>{name}</Parent>}
           </Option>
         ))}

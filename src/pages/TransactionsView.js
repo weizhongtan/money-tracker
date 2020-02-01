@@ -91,44 +91,6 @@ const WithState = ({ initialValue, children }) => {
 const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
   const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
-  const updateTransactionCategory = async ({
-    transactionId,
-    newCategoryName,
-    currentCategoryName,
-    setValue,
-  }) => {
-    await updateTransaction({
-      variables: {
-        transactionId,
-        categoryId: categories.getId(newCategoryName),
-      },
-    });
-    const key = uuid();
-    notification.success({
-      key,
-      message: `Updated: ${newCategoryName}`,
-      description: (
-        <Button
-          icon="undo"
-          size="small"
-          onClick={async () => {
-            notification.close(key);
-            await updateTransaction({
-              variables: {
-                transactionId,
-                categoryId: categories.getId(currentCategoryName),
-              },
-            });
-            setValue(currentCategoryName);
-          }}
-        >
-          Undo
-        </Button>
-      ),
-      placement: 'topLeft',
-    });
-  };
-
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
       startDate: startDate?.toISOString(),
@@ -140,6 +102,44 @@ const TransactionsView = ({ startDate, endDate }) => {
   if (error) return 'error';
 
   const categories = new CategoriesList(data.categories);
+
+  const updateTransactionCategory = async ({
+    transactionId,
+    newCategoryId,
+    currentCategoryId,
+    setValue,
+  }) => {
+    await updateTransaction({
+      variables: {
+        transactionId,
+        categoryId: newCategoryId,
+      },
+    });
+    const key = uuid();
+    notification.success({
+      key,
+      message: `Updated: ${categories.getName(newCategoryId)}`,
+      description: (
+        <Button
+          icon="undo"
+          size="small"
+          onClick={async () => {
+            notification.close(key);
+            await updateTransaction({
+              variables: {
+                transactionId,
+                categoryId: currentCategoryId,
+              },
+            });
+            setValue(currentCategoryId);
+          }}
+        >
+          Undo
+        </Button>
+      ),
+      placement: 'topLeft',
+    });
+  };
 
   const transactions = data?.transactions_aggregate.nodes
     .map(
@@ -229,24 +229,25 @@ const TransactionsView = ({ startDate, endDate }) => {
             }))}
             onFilter={(value, record) => record.category === value}
             render={(currentCategoryName, record) => (
-              <WithState initialValue={currentCategoryName}>
+              <WithState initialValue={categories.getId(currentCategoryName)}>
                 {({ value, setValue }) => (
                   <Select
                     value={value}
-                    onChange={async newCategoryName => {
-                      setValue(newCategoryName);
+                    onChange={async newCategoryId => {
+                      setValue(newCategoryId);
                       await updateTransactionCategory({
                         transactionId: record.id,
-                        newCategoryName,
-                        currentCategoryName: value,
+                        newCategoryId,
+                        currentCategoryId: value,
                         setValue,
                       });
                     }}
                     showSearch
+                    optionFilterProp="label"
                     size="small"
                   >
-                    {categories.get().map(({ name, isSub }) => (
-                      <Option key={name} value={name}>
+                    {categories.get().map(({ id, name, isSub }) => (
+                      <Option key={id} value={id} label={name}>
                         {isSub ? name : <Parent>{name}</Parent>}
                       </Option>
                     ))}
