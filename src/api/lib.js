@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { connect, Account, Category, Transaction } = require('./model');
+const { connect, Account, Category, Transaction } = require('./schema');
 const moment = require('moment');
 
 exports.connectAndSync = async (force = false) => {
