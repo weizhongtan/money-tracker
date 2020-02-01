@@ -10,7 +10,7 @@ import { toMoney } from '../lib';
 const { Option } = Select;
 
 const GET_TRANSACTIONS = gql`
-  query MyQuery(
+  query GetTransactions(
     $startDate: timestamptz
     $endDate: timestamptz
     $accountId: uuid

@@ -10,7 +10,7 @@ import { toMoney, toPercent } from '../lib';
 const { Option } = Select;
 
 const GET_CATEGORIES = gql`
-  query MyQuery(
+  query GetCategories(
     $startDate: timestamptz
     $endDate: timestamptz
     $categoryType: String

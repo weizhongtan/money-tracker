@@ -15,11 +15,10 @@ const { Column } = Table;
 const { Search } = Input;
 
 const GET_TRANSACTIONS = gql`
-  query MyQuery(
+  query GetTransactions(
     $startDate: timestamptz
     $endDate: timestamptz
     $searchText: String
-    $orderBy: order_by = desc
   ) {
     accounts(order_by: { legacy_key: asc }) {
       id
@@ -32,9 +31,9 @@ const GET_TRANSACTIONS = gql`
     transactions_aggregate(
       where: {
         date: { _gte: $startDate, _lte: $endDate }
-        _and: { description: { _ilike: $searchText } }
+        description: { _ilike: $searchText }
       }
-      order_by: { date: $orderBy }
+      order_by: { date: desc }
     ) {
       aggregate {
         count
@@ -61,8 +60,7 @@ const GET_TRANSACTIONS = gql`
 `;
 
 const UPDATE_TRANSACTION = gql`
-  mutation MyMutation($transactionId: uuid, $categoryId: uuid) {
-    __typename
+  mutation UpdateTransaction($transactionId: uuid, $categoryId: uuid) {
     update_transactions(
       where: { id: { _eq: $transactionId } }
       _set: { category_id: $categoryId }

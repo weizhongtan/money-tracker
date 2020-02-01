@@ -11,8 +11,8 @@ import { CategoriesList, toMoney } from '../lib';
 
 const { Option } = Select;
 
-const GET_AMOUNTS = gql`
-  query MyQuery(
+const GET_AMOUNT_GROUPS = gql`
+  query GetAmountGroups(
     $startDate: timestamptz
     $endDate: timestamptz
     $categoryId: uuid
@@ -76,7 +76,7 @@ const Parent = styled.span`
 const TimelineView = ({ startDate, endDate }) => {
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');
-  const { loading, error, data } = useQuery(GET_AMOUNTS, {
+  const { loading, error, data } = useQuery(GET_AMOUNT_GROUPS, {
     variables: {
       startDate,
       endDate,
