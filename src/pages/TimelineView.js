@@ -3,7 +3,7 @@ import { ResponsiveBar } from '@nivo/bar';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useContext } from 'react';
-import { ThemeContext } from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 
 import { Select, Wrapper } from '../components';
 import { QUERY } from '../data/transactionsGroupBy';
@@ -47,6 +47,10 @@ const Bar = ({ data }) => {
   );
 };
 
+const Parent = styled.span`
+  color: ${({ theme }) => theme.neutral};
+`;
+
 const TimelineView = ({ startDate, endDate }) => {
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');
@@ -83,7 +87,7 @@ const TimelineView = ({ startDate, endDate }) => {
       id: null,
       name: 'All Categories',
     },
-    ...data?.categories,
+    ...data.categories,
   ];
 
   return (
@@ -95,8 +99,9 @@ const TimelineView = ({ startDate, endDate }) => {
         optionFilterProp="children"
       >
         {categories.map(({ id, name }) => (
-          <Option value={id} key={id}>
-            {name}
+          <Option value={id} key={id} colors="blue">
+            {/* TODO: the category view should expose this information directly */}
+            {name.includes(':') ? name : <Parent>{name}</Parent>}
           </Option>
         ))}
       </Select>

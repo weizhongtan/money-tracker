@@ -7,9 +7,9 @@ export const QUERY = gql`
     $categoryId: uuid
     $groupBy: String
   ) {
-    categories {
+    categories: view_categories_with_parents(order_by: { full_name: asc }) {
       id
-      name
+      name: full_name
     }
     groups: func_transactions_by_category_grouped(
       args: { v_category_id: $categoryId, v_group_by: $groupBy }
