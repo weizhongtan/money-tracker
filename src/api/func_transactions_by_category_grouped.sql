@@ -9,14 +9,17 @@ CREATE OR REPLACE FUNCTION func_transactions_by_category_grouped (v_category_id 
    AS $$
    SELECT
       -- group transactions by time period
-      date_trunc(v_group_by, transactions.date) AS group_date,
-      sum(transactions.amount) AS sum
+      date_trunc(v_group_by, t.date) AS group_date,
+      sum(t.amount) AS sum
    FROM
-      transactions
+      transactions t
+      INNER JOIN categories c ON t.category_id = c.id
+      LEFT JOIN categories pc ON c.parent_category_id = pc.id
    WHERE
       -- if v_category_id is not provided, match all rows
       v_category_id IS NULL
-      OR transactions.category_id = v_category_id
+      OR c.id = v_category_id
+      OR pc.id = v_category_id
    GROUP BY
       group_date
    ORDER BY
