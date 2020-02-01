@@ -5,12 +5,14 @@ export const GET_CATEGORIES = gql`
     $startDate: timestamptz
     $endDate: timestamptz
     $categoryType: String
+    $groupByParent: Boolean
   ) {
     categories: func_category_by_date_type(
       args: {
         v_category_type: $categoryType
         v_end_date: $endDate
         v_start_date: $startDate
+        v_parent: $groupByParent
       }
     ) {
       name
@@ -21,6 +23,7 @@ export const GET_CATEGORIES = gql`
         v_category_type: $categoryType
         v_end_date: $endDate
         v_start_date: $startDate
+        v_parent: $groupByParent
       }
     ) {
       aggregate {

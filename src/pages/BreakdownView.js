@@ -104,8 +104,14 @@ const Bar = ({ data, total }) => (
 
 const BreakdownView = ({ startDate, endDate }) => {
   const [graph, setGraph] = useState('pie');
+  const [grouping, setGrouping] = useState('category');
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
-    variables: { startDate, endDate, categoryType: 'expense' },
+    variables: {
+      startDate,
+      endDate,
+      categoryType: 'expense',
+      groupByParent: grouping === 'category',
+    },
   });
   if (loading && typeof data === 'undefined') return null;
   if (error) return 'error';
@@ -128,6 +134,10 @@ const BreakdownView = ({ startDate, endDate }) => {
       <Select defaultValue={graph} onChange={setGraph}>
         <Option value="pie">Pie</Option>
         <Option value="bar">Bar</Option>
+      </Select>
+      <Select defaultValue={grouping} onChange={setGrouping}>
+        <Option value="subcategory">Subcategory</Option>
+        <Option value="category">Category</Option>
       </Select>
       <Graph data={out} total={total} />
     </Wrapper>

@@ -4,13 +4,18 @@ CREATE TABLE __categories_group_by (
   sum numeric(19, 2)
 );
 
-CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamptz, v_end_date timestamptz, v_category_type text)
+CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamptz, v_end_date timestamptz, v_category_type text, v_parent boolean)
   RETURNS SETOF __categories_group_by
   AS $$
   WITH data AS (
     SELECT
       t.amount,
-      c.name AS category_name,
+      CASE v_parent
+      WHEN TRUE THEN
+        coalesce(pc.name, c.name)
+      ELSE
+        c.name
+      END AS category_name,
       coalesce(pc.type, c.type) AS category_type
     FROM
       transactions t
