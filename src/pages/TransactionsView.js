@@ -1,13 +1,14 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Input, Table } from 'antd';
+import { Button, Input, Table, notification } from 'antd';
 import { gql } from 'apollo-boost';
 import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
+import uuid from 'uuid/v4';
 
 import { Select } from '../components';
-import { toMoney } from '../lib';
+import { CategoriesList, toMoney } from '../lib';
 
 const { Option } = Select;
 const { Column } = Table;
@@ -50,6 +51,7 @@ const GET_TRANSACTIONS = gql`
           name
         }
         category {
+          id
           name
         }
         pair_id
@@ -81,15 +83,49 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
+const WithState = ({ initialValue, children }) => {
+  const [value, setValue] = useState(initialValue);
+  return children({ value, setValue });
+};
+
 const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
   const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
-  const updateTransactionCategory = ({ transactionId, categoryId }) => {
-    updateTransaction({
+  const updateTransactionCategory = async ({
+    transactionId,
+    newCategoryName,
+    currentCategoryName,
+    setValue,
+  }) => {
+    await updateTransaction({
       variables: {
         transactionId,
-        categoryId,
+        categoryId: categories.getId(newCategoryName),
       },
+    });
+    const key = uuid();
+    notification.success({
+      key,
+      message: `Updated: ${newCategoryName}`,
+      description: (
+        <Button
+          icon="undo"
+          size="small"
+          onClick={async () => {
+            notification.close(key);
+            await updateTransaction({
+              variables: {
+                transactionId,
+                categoryId: categories.getId(currentCategoryName),
+              },
+            });
+            setValue(currentCategoryName);
+          }}
+        >
+          Undo
+        </Button>
+      ),
+      placement: 'topLeft',
     });
   };
 
@@ -102,6 +138,8 @@ const TransactionsView = ({ startDate, endDate }) => {
   });
   if (loading && typeof data === 'undefined') return null;
   if (error) return 'error';
+
+  const categories = new CategoriesList(data.categories);
 
   const transactions = data?.transactions_aggregate.nodes
     .map(
@@ -122,7 +160,7 @@ const TransactionsView = ({ startDate, endDate }) => {
           account: accountByToAccountId?.name,
           from: accountByFromAccountId?.name,
           description: description,
-          category: category?.name,
+          category: categories.getName(category?.id),
         };
       }
     )
@@ -185,33 +223,36 @@ const TransactionsView = ({ startDate, endDate }) => {
             title="Category"
             dataIndex="category"
             key="category"
-            filters={data.categories.map(({ name }) => ({
+            filters={categories.get().map(({ name }) => ({
               text: name,
               value: name,
             }))}
             onFilter={(value, record) => record.category === value}
-            render={(categoryName, record) => (
-              <>
-                <Select
-                  defaultValue={categoryName}
-                  onChange={categoryId =>
-                    updateTransactionCategory({
-                      transactionId: record.id,
-                      categoryId,
-                    })
-                  }
-                  showSearch
-                  optionFilterProp="children"
-                  size="small"
-                >
-                  {data.categories.map(({ id, name }) => (
-                    <Option value={id} key={id}>
-                      {/* TODO: the category view should expose this information directly */}
-                      {name.includes(':') ? name : <Parent>{name}</Parent>}
-                    </Option>
-                  ))}
-                </Select>
-              </>
+            render={(currentCategoryName, record) => (
+              <WithState initialValue={currentCategoryName}>
+                {({ value, setValue }) => (
+                  <Select
+                    value={value}
+                    onChange={async newCategoryName => {
+                      setValue(newCategoryName);
+                      await updateTransactionCategory({
+                        transactionId: record.id,
+                        newCategoryName,
+                        currentCategoryName: value,
+                        setValue,
+                      });
+                    }}
+                    showSearch
+                    size="small"
+                  >
+                    {categories.get().map(({ name, isSub }) => (
+                      <Option key={name} value={name}>
+                        {isSub ? name : <Parent>{name}</Parent>}
+                      </Option>
+                    ))}
+                  </Select>
+                )}
+              </WithState>
             )}
           />
         </Table>

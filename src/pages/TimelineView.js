@@ -7,7 +7,7 @@ import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { Select, Wrapper } from '../components';
-import { toMoney } from '../lib';
+import { CategoriesList, toMoney } from '../lib';
 
 const { Option } = Select;
 
@@ -77,7 +77,12 @@ const TimelineView = ({ startDate, endDate }) => {
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');
   const { loading, error, data } = useQuery(GET_AMOUNTS, {
-    variables: { startDate, endDate, categoryId, groupBy: precision },
+    variables: {
+      startDate,
+      endDate,
+      categoryId,
+      groupBy: precision,
+    },
   });
   if (loading && typeof data === 'undefined') return null;
   if (error) return 'error';
@@ -104,26 +109,26 @@ const TimelineView = ({ startDate, endDate }) => {
     };
   });
 
-  const categories = [
+  const categories = new CategoriesList([
     {
       id: null,
       name: 'All Categories',
     },
     ...data.categories,
-  ];
+  ]);
 
   return (
     <Wrapper>
       <Select
-        defaultValue={categoryId}
-        onChange={setCategoryId}
+        value={categories.getName(categoryId)}
+        onChange={value => {
+          setCategoryId(categories.getId(value));
+        }}
         showSearch
-        optionFilterProp="children"
       >
-        {categories.map(({ id, name }) => (
-          <Option value={id} key={id}>
-            {/* TODO: the category view should expose this information directly */}
-            {name.includes(':') ? name : <Parent>{name}</Parent>}
+        {categories.get().map(({ name, isSub }) => (
+          <Option key={name} value={name}>
+            {isSub ? name : <Parent>{name}</Parent>}
           </Option>
         ))}
       </Select>
