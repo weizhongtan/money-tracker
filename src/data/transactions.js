@@ -11,9 +11,9 @@ export const QUERY = gql`
       id
       name
     }
-    categories(order_by: { name: asc }) {
+    categories: view_categories_with_parents(order_by: { full_name: asc }) {
       id
-      name
+      name: full_name
     }
     transactions_aggregate(
       where: {

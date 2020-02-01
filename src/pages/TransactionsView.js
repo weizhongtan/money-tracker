@@ -21,6 +21,10 @@ const Amount = styled.span`
     positive ? theme.positive : theme.neutral};
 `;
 
+const Parent = styled.span`
+  color: ${({ theme }) => theme.neutral};
+`;
+
 const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
   const [updateTransaction] = useMutation(UPDATE_QUERY);
@@ -142,10 +146,12 @@ const TransactionsView = ({ startDate, endDate }) => {
                   }
                   showSearch
                   optionFilterProp="children"
+                  size="small"
                 >
                   {data.categories.map(({ id, name }) => (
                     <Option value={id} key={id}>
-                      {name}
+                      {/* TODO: the category view should expose this information directly */}
+                      {name.includes(':') ? name : <Parent>{name}</Parent>}
                     </Option>
                   ))}
                 </Select>

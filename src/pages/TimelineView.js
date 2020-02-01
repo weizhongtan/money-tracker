@@ -99,7 +99,7 @@ const TimelineView = ({ startDate, endDate }) => {
         optionFilterProp="children"
       >
         {categories.map(({ id, name }) => (
-          <Option value={id} key={id} colors="blue">
+          <Option value={id} key={id}>
             {/* TODO: the category view should expose this information directly */}
             {name.includes(':') ? name : <Parent>{name}</Parent>}
           </Option>
