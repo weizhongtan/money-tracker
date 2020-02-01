@@ -1,3 +1,4 @@
+-- get categories and their respective parents
 CREATE OR REPLACE VIEW view_categories_with_parents AS
 SELECT
   c.id,

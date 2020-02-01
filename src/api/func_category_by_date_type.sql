@@ -4,6 +4,11 @@ CREATE TABLE __categories_group_by (
   sum numeric(19, 2)
 );
 
+-- get the sum of all transactions
+-- - in a given time period
+-- - which match a category type (income/expense)
+-- - which match a category level (parent/child)
+
 CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamptz, v_end_date timestamptz, v_category_type text, v_parent boolean)
   RETURNS SETOF __categories_group_by
   AS $$
@@ -12,6 +17,7 @@ CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamptz,
       t.amount,
       CASE v_parent
       WHEN TRUE THEN
+        -- get the name of the parent category if it exists, otherwise return the category name
         coalesce(pc.name, c.name)
       ELSE
         c.name

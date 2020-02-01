@@ -4,6 +4,7 @@ CREATE TABLE __transactions_group_by (
    sum numeric(19, 2)
 );
 
+-- get a cumulative sum of transaction amounts over time for a given account, grouped by time period
 CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_account_id uuid, v_group_by text)
    RETURNS SETOF __transactions_group_by
    AS $$
