@@ -46,7 +46,7 @@ const GET_AMOUNT_GROUPS = gql`
   }
 `;
 
-const Bar = ({ data }) => {
+const Bar = ({ data, mean }) => {
   const theme = useContext(ThemeContext);
 
   return (
@@ -78,6 +78,18 @@ const Bar = ({ data }) => {
       labelTextColor={{ from: 'color', modifiers: [['brighter', 6]] }}
       isInteractive={true}
       tooltip={({ value }) => toMoney(value, false)}
+      markers={[
+        {
+          axis: 'y',
+          value: mean,
+          lineStyle: {
+            stroke: 'rgba(0, 0, 0, .35)',
+            strokeWidth: 1,
+            'stroke-dasharray': 5,
+          },
+          legend: `Mean: ${toMoney(mean)}`,
+        },
+      ]}
     />
   );
 };
@@ -134,8 +146,7 @@ const TimelineView = ({ startDate, endDate }) => {
         <Option value="month">Month</Option>
         <Option value="year">Year</Option>
       </Select>
-      <span>Average: {toMoney(data.aggregate.aggregate.avg.sum)}</span>
-      <Bar data={groups} />
+      <Bar data={groups} mean={data.aggregate.aggregate.avg.sum} />
     </Wrapper>
   );
 };
