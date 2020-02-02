@@ -59,12 +59,15 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
-const UPDATE_TRANSACTION = gql`
-  mutation UpdateTransaction($transactionId: uuid, $categoryId: uuid) {
+const UPDATE_TRANSACTIONS = gql`
+  mutation UpdateTransactions($transactionIds: [uuid!]!, $categoryId: uuid) {
     update_transactions(
-      where: { id: { _eq: $transactionId } }
-      _set: { category_id: $categoryId }
+      where: { id: { _in: $transactionIds } }
+      _set: { category_id: $categoryId, updated_at: "now" }
     ) {
+      returning {
+        category_id
+      }
       affected_rows
     }
   }
@@ -88,7 +91,9 @@ const WithState = ({ initialValue, children }) => {
 
 const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
-  const [updateTransaction] = useMutation(UPDATE_TRANSACTION);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [categoryId, setCategoryId] = useState(null);
+  const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS);
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
     variables: {
       startDate: startDate?.toISOString(),
@@ -107,9 +112,10 @@ const TransactionsView = ({ startDate, endDate }) => {
     currentCategoryId,
     setValue,
   }) => {
+    const transactionIds = [transactionId];
     await updateTransaction({
       variables: {
-        transactionId,
+        transactionIds,
         categoryId: newCategoryId,
       },
     });
@@ -125,11 +131,55 @@ const TransactionsView = ({ startDate, endDate }) => {
             notification.close(key);
             await updateTransaction({
               variables: {
-                transactionId,
+                transactionIds,
                 categoryId: currentCategoryId,
               },
             });
             setValue(currentCategoryId);
+          }}
+        >
+          Undo
+        </Button>
+      ),
+      placement: 'topLeft',
+    });
+  };
+
+  const updateMultiTransactionCategory = async ({
+    transactionIds,
+    newCategoryId,
+    currentCategoryIds,
+  }) => {
+    const { data } = await updateTransaction({
+      variables: {
+        transactionIds,
+        categoryId: newCategoryId,
+      },
+      refetchQueries: ['GetTransactions'],
+    });
+    const key = uuid();
+    notification.success({
+      key,
+      message: `Updated: ${categories.getName(newCategoryId)} (${
+        data.update_transactions.affected_rows
+      } records)`,
+      description: (
+        <Button
+          icon="undo"
+          size="small"
+          onClick={async () => {
+            notification.close(key);
+            await Promise.all(
+              currentCategoryIds.map((categoryId, index) =>
+                updateTransaction({
+                  variables: {
+                    transactionIds: [transactionIds[index]],
+                    categoryId,
+                  },
+                  refetchQueries: ['GetTransactions'],
+                })
+              )
+            );
           }}
         >
           Undo
@@ -152,13 +202,13 @@ const TransactionsView = ({ startDate, endDate }) => {
       }) => {
         return {
           key: id,
-          id,
           date: new Date(date),
           amount: Number(amount),
           account: accountByToAccountId?.name,
           from: accountByFromAccountId?.name,
           description: description,
           category: categories.getName(category?.id),
+          categoryId: category?.id,
         };
       }
     )
@@ -180,10 +230,37 @@ const TransactionsView = ({ startDate, endDate }) => {
       />
       <>
         <span>{data.transactions_aggregate.aggregate.count} records</span>
+        <Select
+          placeholder="Select category"
+          onChange={setCategoryId}
+          showSearch
+          optionFilterProp="label"
+        >
+          {categories.get().map(({ id, name, isSub }) => (
+            <Option key={id} value={id} label={name}>
+              {isSub ? name : <Parent>{name}</Parent>}
+            </Option>
+          ))}
+        </Select>
+        <Button
+          onClick={() => {
+            updateMultiTransactionCategory({
+              transactionIds: selectedRows.map(x => x.key),
+              newCategoryId: categoryId,
+              currentCategoryIds: selectedRows.map(x => x.categoryId),
+            });
+          }}
+        >
+          Set for selected transactions
+        </Button>
         <Table
           dataSource={transactions}
           pagination={{
             defaultPageSize: 50,
+          }}
+          rowSelection={{
+            selectedRowKeys: selectedRows.map(x => x.key),
+            onChange: (_, rows) => setSelectedRows(rows),
           }}
           size="small"
         >
@@ -227,14 +304,14 @@ const TransactionsView = ({ startDate, endDate }) => {
             }))}
             onFilter={(value, record) => record.category === value}
             render={(currentCategoryName, record) => (
-              <WithState initialValue={categories.getId(currentCategoryName)}>
+              <WithState initialValue={'adf'}>
                 {({ value, setValue }) => (
                   <Select
-                    value={value}
+                    value={categories.getId(currentCategoryName)}
                     onChange={async newCategoryId => {
                       setValue(newCategoryId);
                       await updateTransactionCategory({
-                        transactionId: record.id,
+                        transactionIds: record.id,
                         newCategoryId,
                         currentCategoryId: value,
                         setValue,
