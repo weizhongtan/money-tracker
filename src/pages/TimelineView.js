@@ -81,7 +81,7 @@ const Bar = ({ data, mean }) => {
           lineStyle: {
             stroke: 'rgba(0, 0, 0, .35)',
             strokeWidth: 1,
-            'stroke-dasharray': 5,
+            strokeDasharray: 5,
           },
           legend: `Mean: ${toMoney(mean)}`,
         },
