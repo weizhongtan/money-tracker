@@ -84,11 +84,6 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const WithState = ({ initialValue, children }) => {
-  const [value, setValue] = useState(initialValue);
-  return children({ value, setValue });
-};
-
 const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
@@ -106,46 +101,7 @@ const TransactionsView = ({ startDate, endDate }) => {
 
   const categories = new CategoriesList(data.categories);
 
-  const updateTransactionCategory = async ({
-    transactionId,
-    newCategoryId,
-    currentCategoryId,
-    setValue,
-  }) => {
-    const transactionIds = [transactionId];
-    await updateTransaction({
-      variables: {
-        transactionIds,
-        categoryId: newCategoryId,
-      },
-    });
-    const key = uuid();
-    notification.success({
-      key,
-      message: `Updated: ${categories.getName(newCategoryId)}`,
-      description: (
-        <Button
-          icon="undo"
-          size="small"
-          onClick={async () => {
-            notification.close(key);
-            await updateTransaction({
-              variables: {
-                transactionIds,
-                categoryId: currentCategoryId,
-              },
-            });
-            setValue(currentCategoryId);
-          }}
-        >
-          Undo
-        </Button>
-      ),
-      placement: 'topLeft',
-    });
-  };
-
-  const updateMultiTransactionCategory = async ({
+  const updateTransactionsCategory = async ({
     transactionIds,
     newCategoryId,
     currentCategoryIds,
@@ -169,17 +125,24 @@ const TransactionsView = ({ startDate, endDate }) => {
           size="small"
           onClick={async () => {
             notification.close(key);
-            await Promise.all(
-              currentCategoryIds.map((categoryId, index) =>
-                updateTransaction({
+            const results = await Promise.all(
+              currentCategoryIds.map(async (categoryId, index) => {
+                const { data } = await updateTransaction({
                   variables: {
                     transactionIds: [transactionIds[index]],
                     categoryId,
                   },
                   refetchQueries: ['GetTransactions'],
-                })
-              )
+                });
+                return data.update_transactions.affected_rows;
+              })
             );
+            const recordsUpdated = results.reduce((acc, val) => acc + val, 0);
+            notification.success({
+              key: uuid(),
+              message: `Undid: ${recordsUpdated} records`,
+              placement: 'topLeft',
+            });
           }}
         >
           Undo
@@ -244,7 +207,7 @@ const TransactionsView = ({ startDate, endDate }) => {
         </Select>
         <Button
           onClick={() => {
-            updateMultiTransactionCategory({
+            updateTransactionsCategory({
               transactionIds: selectedRows.map(x => x.key),
               newCategoryId: categoryId,
               currentCategoryIds: selectedRows.map(x => x.categoryId),
@@ -303,33 +266,30 @@ const TransactionsView = ({ startDate, endDate }) => {
               value: name,
             }))}
             onFilter={(value, record) => record.category === value}
-            render={(currentCategoryName, record) => (
-              <WithState initialValue={'adf'}>
-                {({ value, setValue }) => (
-                  <Select
-                    value={categories.getId(currentCategoryName)}
-                    onChange={async newCategoryId => {
-                      setValue(newCategoryId);
-                      await updateTransactionCategory({
-                        transactionIds: record.id,
-                        newCategoryId,
-                        currentCategoryId: value,
-                        setValue,
-                      });
-                    }}
-                    showSearch
-                    optionFilterProp="label"
-                    size="small"
-                  >
-                    {categories.get().map(({ id, name, isSub }) => (
-                      <Option key={id} value={id} label={name}>
-                        {isSub ? name : <Parent>{name}</Parent>}
-                      </Option>
-                    ))}
-                  </Select>
-                )}
-              </WithState>
-            )}
+            render={(currentCategoryName, record) => {
+              const categoryId = categories.getId(currentCategoryName);
+              return (
+                <Select
+                  value={categoryId}
+                  onChange={async newCategoryId => {
+                    await updateTransactionsCategory({
+                      transactionIds: [record.key],
+                      newCategoryId,
+                      currentCategoryIds: [categoryId],
+                    });
+                  }}
+                  showSearch
+                  optionFilterProp="label"
+                  size="small"
+                >
+                  {categories.get().map(({ id, name, isSub }) => (
+                    <Option key={id} value={id} label={name}>
+                      {isSub ? name : <Parent>{name}</Parent>}
+                    </Option>
+                  ))}
+                </Select>
+              );
+            }}
           />
         </Table>
       </>
