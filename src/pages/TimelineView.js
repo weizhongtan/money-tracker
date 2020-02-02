@@ -1,3 +1,5 @@
+import './TimelineView.css';
+
 import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveBar } from '@nivo/bar';
 import { gql } from 'apollo-boost';
@@ -29,6 +31,17 @@ const GET_AMOUNT_GROUPS = gql`
     ) {
       date
       sum
+    }
+    aggregate: func_transactions_by_category_grouped_aggregate(
+      args: { v_category_id: $categoryId, v_group_by: $groupBy }
+      where: { date: { _gte: $startDate, _lte: $endDate } }
+      order_by: { date: asc }
+    ) {
+      aggregate {
+        avg {
+          sum
+        }
+      }
     }
   }
 `;
@@ -93,22 +106,6 @@ const TimelineView = ({ startDate, endDate }) => {
     sum,
   }));
 
-  // data returned only includes time periods with matching records
-  // fill empty time periods with null values to retain a linear time axis
-  const numOfGroups = endDate.diff(startDate, precision) + 1;
-  const groupsFilled = new Array(numOfGroups).fill(null).map((_, index) => {
-    const expectedDate = moment(startDate)
-      .add(index, precision)
-      .format('YYYY-MM-DD');
-    const existingDataPoint = groups.find(({ date }) => date === expectedDate);
-    if (existingDataPoint) {
-      return existingDataPoint;
-    }
-    return {
-      date: expectedDate,
-    };
-  });
-
   const categories = new CategoriesList([
     {
       id: null,
@@ -124,6 +121,7 @@ const TimelineView = ({ startDate, endDate }) => {
         onChange={setCategoryId}
         showSearch
         optionFilterProp="label"
+        dropdownClassName="dropdown"
       >
         {categories.get().map(({ id, name, isSub }) => (
           <Option key={id} value={id} label={name}>
@@ -133,10 +131,11 @@ const TimelineView = ({ startDate, endDate }) => {
       </Select>
       <Select defaultValue={precision} onChange={setPrecision}>
         <Option value="day">Day</Option>
-        <Option value="week">Week</Option>
         <Option value="month">Month</Option>
+        <Option value="year">Year</Option>
       </Select>
-      <Bar data={groupsFilled} />
+      <span>Average: {toMoney(data.aggregate.aggregate.avg.sum)}</span>
+      <Bar data={groups} />
     </Wrapper>
   );
 };
