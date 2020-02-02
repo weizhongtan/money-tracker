@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Button, Input, Table, notification } from 'antd';
+import { Avatar, Button, Icon, Input, Table, notification } from 'antd';
 import { gql } from 'apollo-boost';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
-import styled from 'styled-components';
+import styled, { ThemeContext } from 'styled-components';
 import uuid from 'uuid/v4';
 
 import { Select } from '../components';
@@ -85,6 +85,7 @@ const Parent = styled.span`
 `;
 
 const TransactionsView = ({ startDate, endDate }) => {
+  const theme = useContext(ThemeContext);
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
   const [categoryId, setCategoryId] = useState(null);
@@ -98,6 +99,27 @@ const TransactionsView = ({ startDate, endDate }) => {
   });
   if (loading && typeof data === 'undefined') return null;
   if (error) return 'error';
+
+  const avatars = data.accounts.reduce((acc, { name }, index) => {
+    return {
+      ...acc,
+      [name]: (
+        <>
+          <Avatar
+            style={{
+              background: Object.entries(theme.colors.presetPrimaryColors).find(
+                (_, _index) => index === _index
+              )[1],
+            }}
+            size="small"
+          >
+            {name[0]}
+          </Avatar>{' '}
+          {name}
+        </>
+      ),
+    };
+  }, {});
 
   const categories = new CategoriesList(data.categories);
 
@@ -166,9 +188,14 @@ const TransactionsView = ({ startDate, endDate }) => {
         return {
           key: id,
           date: new Date(date),
-          amount: Number(amount),
-          account: accountByToAccountId?.name,
-          from: accountByFromAccountId?.name,
+          amount: {
+            value: Number(amount),
+            isOut: Number(amount) < 0,
+          },
+          account: {
+            to: accountByToAccountId?.name,
+            from: accountByFromAccountId?.name,
+          },
           description: description,
           category: categories.getName(category?.id),
           categoryId: category?.id,
@@ -234,14 +261,6 @@ const TransactionsView = ({ startDate, endDate }) => {
             render={date => <TimeAgo date={date} />}
           />
           <Column
-            title="Amount"
-            dataIndex="amount"
-            key="amount"
-            render={amount => (
-              <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
-            )}
-          />
-          <Column
             title="Account"
             dataIndex="account"
             key="account"
@@ -250,8 +269,30 @@ const TransactionsView = ({ startDate, endDate }) => {
               value: name,
             }))}
             onFilter={(value, record) => record.account === value}
+            render={({ to, from }, record) => {
+              const { isOut } = record.amount;
+              const arrow = <Icon type={isOut ? 'right' : 'left'} />;
+              return (
+                <>
+                  {avatars[to]}
+                  {from && (
+                    <>
+                      {' '}
+                      {arrow} {avatars[from]}
+                    </>
+                  )}
+                </>
+              );
+            }}
           />
-          <Column title="From" dataIndex="from" key="from" />
+          <Column
+            title="Amount"
+            dataIndex="amount"
+            key="amount"
+            render={({ value, isOut }) => (
+              <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
+            )}
+          />
           <Column
             title="Description"
             dataIndex="description"

@@ -1,5 +1,6 @@
 import 'antd/dist/antd.css';
 
+import * as colors from '@ant-design/colors';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { Layout, Menu } from 'antd';
 import ApolloClient from 'apollo-boost';
@@ -118,9 +119,10 @@ const client = new ApolloClient({
 });
 
 const theme = {
-  positive: '#52c41a',
-  neutral: '#1890ff',
-  negative: '#f5222d',
+  positive: colors.green.primary,
+  neutral: colors.blue.primary,
+  negative: colors.red.primary,
+  colors,
 };
 
 function Wrappers() {
