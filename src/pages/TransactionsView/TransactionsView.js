@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/react-hooks';
 import { Avatar, Button, Icon, Input, Table, notification } from 'antd';
 import { gql } from 'apollo-boost';
 import React, { useContext, useState } from 'react';
@@ -7,57 +7,13 @@ import TimeAgo from 'react-timeago';
 import styled, { ThemeContext } from 'styled-components';
 import uuid from 'uuid/v4';
 
-import { Select } from '../components';
-import { CategoriesList, toMoney } from '../lib';
+import { Select } from '../../components';
+import { BaseDataContext, CategoriesList, toMoney } from '../../lib';
+import { useTransactions } from './data';
 
 const { Option } = Select;
 const { Column } = Table;
 const { Search } = Input;
-
-const GET_TRANSACTIONS = gql`
-  query GetTransactions(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $searchText: String
-  ) {
-    accounts(order_by: { legacy_key: asc }) {
-      id
-      name
-    }
-    categories: view_categories_with_parents(order_by: { full_name: asc }) {
-      id
-      name: full_name
-    }
-    transactions_aggregate(
-      where: {
-        date: { _gte: $startDate, _lte: $endDate }
-        description: { _ilike: $searchText }
-      }
-      order_by: { date: desc }
-    ) {
-      aggregate {
-        count
-      }
-      nodes {
-        id
-        date
-        amount
-        description
-        accountByFromAccountId {
-          name
-        }
-        accountByToAccountId {
-          name
-        }
-        category {
-          id
-          name
-        }
-        pair_id
-      }
-    }
-  }
-`;
 
 const UPDATE_TRANSACTIONS = gql`
   mutation UpdateTransactions($transactionIds: [uuid!]!, $categoryId: uuid) {
@@ -86,21 +42,22 @@ const Parent = styled.span`
 
 const TransactionsView = ({ startDate, endDate }) => {
   const theme = useContext(ThemeContext);
+  const baseData = useContext(BaseDataContext);
+
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
   const [categoryId, setCategoryId] = useState(null);
+
   const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS);
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
-    variables: {
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
-      searchText: `%${searchText}%`,
-    },
+  const { loading, error, transactions, count } = useTransactions({
+    startDate,
+    endDate,
+    searchText,
   });
-  if (loading && typeof data === 'undefined') return null;
+  if (loading && typeof transactions === 'undefined') return null;
   if (error) return 'error';
 
-  const avatars = data.accounts.reduce((acc, { name }, index) => {
+  const avatars = baseData.accounts.reduce((acc, { name }, index) => {
     return {
       ...acc,
       [name]: (
@@ -121,7 +78,7 @@ const TransactionsView = ({ startDate, endDate }) => {
     };
   }, {});
 
-  const categories = new CategoriesList(data.categories);
+  const categories = new CategoriesList(baseData.categories);
 
   const updateTransactionsCategory = async ({
     transactionIds,
@@ -174,36 +131,6 @@ const TransactionsView = ({ startDate, endDate }) => {
     });
   };
 
-  const transactions = data?.transactions_aggregate.nodes
-    .map(
-      ({
-        id,
-        date,
-        amount,
-        accountByToAccountId,
-        description,
-        category,
-        accountByFromAccountId,
-      }) => {
-        return {
-          key: id,
-          date: new Date(date),
-          amount: {
-            value: Number(amount),
-            isOut: Number(amount) < 0,
-          },
-          account: {
-            to: accountByToAccountId?.name,
-            from: accountByFromAccountId?.name,
-          },
-          description: description,
-          category: categories.getName(category?.id),
-          categoryId: category?.id,
-        };
-      }
-    )
-    .flat();
-
   return (
     <>
       <DebounceInput
@@ -219,7 +146,7 @@ const TransactionsView = ({ startDate, endDate }) => {
         autoFocus
       />
       <>
-        <span>{data.transactions_aggregate.aggregate.count} records</span>
+        <span>{count} records</span>
         <Select
           placeholder="Select category"
           onChange={setCategoryId}
@@ -264,7 +191,7 @@ const TransactionsView = ({ startDate, endDate }) => {
             title="Account"
             dataIndex="account"
             key="account"
-            filters={data.accounts.map(({ name }) => ({
+            filters={baseData.accounts.map(({ name }) => ({
               text: name,
               value: name,
             }))}

@@ -1,48 +1,12 @@
-import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
-import { gql } from 'apollo-boost';
 import React, { useState } from 'react';
 
-import { Select, Wrapper } from '../components';
-import { toMoney, toPercent } from '../lib';
+import { Select, Wrapper } from '../../components';
+import { toMoney, toPercent } from '../../lib';
+import { useCategories } from './data';
 
 const { Option } = Select;
-
-const GET_CATEGORIES = gql`
-  query GetCategories(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $categoryType: String
-    $groupByParent: Boolean
-  ) {
-    categories: func_category_by_date_type(
-      args: {
-        v_category_type: $categoryType
-        v_end_date: $endDate
-        v_start_date: $startDate
-        v_parent: $groupByParent
-      }
-    ) {
-      name
-      sum
-    }
-    amount: func_category_by_date_type_aggregate(
-      args: {
-        v_category_type: $categoryType
-        v_end_date: $endDate
-        v_start_date: $startDate
-        v_parent: $groupByParent
-      }
-    ) {
-      aggregate {
-        sum {
-          sum
-        }
-      }
-    }
-  }
-`;
 
 const Pie = ({ data, total }) => (
   <ResponsivePie
@@ -140,27 +104,13 @@ const Bar = ({ data, total }) => (
 const BreakdownView = ({ startDate, endDate }) => {
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
-  const { loading, error, data } = useQuery(GET_CATEGORIES, {
-    variables: {
-      startDate,
-      endDate,
-      categoryType: 'expense',
-      groupByParent: grouping === 'category',
-    },
+  const { loading, error, categories, total } = useCategories({
+    startDate,
+    endDate,
+    grouping,
   });
-  if (loading && typeof data === 'undefined') return null;
+  if (loading && typeof categories === 'undefined') return null;
   if (error) return 'error';
-
-  const out = data.categories
-    .map(category => ({
-      id: category.name,
-      name: category.name,
-      label: category.name,
-      value: Math.abs(category.sum),
-    }))
-    .sort((a, b) => b.value - a.value);
-
-  const total = data.amount.aggregate.sum.sum;
 
   const Graph = graph === 'pie' ? Pie : Bar;
 
@@ -174,7 +124,7 @@ const BreakdownView = ({ startDate, endDate }) => {
         <Option value="subcategory">Subcategory</Option>
         <Option value="category">Category</Option>
       </Select>
-      <Graph data={out} total={total} />
+      <Graph data={categories} total={total} />
     </Wrapper>
   );
 };

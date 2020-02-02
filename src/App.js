@@ -1,9 +1,9 @@
 import 'antd/dist/antd.css';
 
 import * as colors from '@ant-design/colors';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import { Layout, Menu } from 'antd';
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 import {
@@ -15,6 +15,7 @@ import {
 } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
+import { BaseDataContext } from './lib';
 import Navigation from './Navigation';
 import BreakdownView from './pages/BreakdownView';
 import CumulativeView from './pages/CumulativeView';
@@ -39,27 +40,24 @@ const Content = styled(Layout.Content)`
 `;
 
 const routes = [
-  {
-    path: '/transactions',
-    title: 'Transactions',
-    component: TransactionsView,
-  },
-  {
-    path: '/cumulative',
-    title: 'Cumulative',
-    component: CumulativeView,
-  },
-  {
-    path: '/breakdown',
-    title: 'Breakdown',
-    component: BreakdownView,
-  },
-  {
-    path: '/timeline',
-    title: 'Timeline',
-    component: TimelineView,
-  },
+  { path: '/transactions', title: 'Transactions', component: TransactionsView },
+  { path: '/cumulative', title: 'Cumulative', component: CumulativeView },
+  { path: '/breakdown', title: 'Breakdown', component: BreakdownView },
+  { path: '/timeline', title: 'Timeline', component: TimelineView },
 ];
+
+const GET_BASE_DATA = gql`
+  query GetBaseData {
+    accounts(order_by: { legacy_key: asc }) {
+      id
+      name
+    }
+    categories: view_categories_with_parents(order_by: { full_name: asc }) {
+      id
+      name: full_name
+    }
+  }
+`;
 
 function App() {
   const [startDate, setStartDate] = useState(
@@ -68,48 +66,52 @@ function App() {
       .startOf('year')
   );
   const [endDate, setEndDate] = useState(moment());
+  const { loading, error, data } = useQuery(GET_BASE_DATA);
+  if (loading || error) return null;
 
   return (
     <Router>
-      <Header>
-        <Variables
-          {...{
-            startDate,
-            setStartDate,
-            endDate,
-            setEndDate,
-          }}
-        />
-        <Navigation>
-          {({ location }) => (
-            <Menu
-              selectedKeys={location.pathname}
-              onSelect={({ key }) => {
-                location.pathname = `/${key}`;
-              }}
-              mode="horizontal"
-            >
-              {routes.map(({ path, title }) => (
-                <Menu.Item key={path}>
-                  <NavLink to={path}>{title}</NavLink>
-                </Menu.Item>
-              ))}
-            </Menu>
-          )}
-        </Navigation>
-      </Header>
-      <Content>
-        <Switch>
-          {routes.map(({ path, component: Component }) => (
-            <Route
-              key={path}
-              path={path}
-              render={() => <Component {...{ startDate, endDate }} />}
-            />
-          ))}
-          <Redirect to={routes[0].path} />
-        </Switch>
-      </Content>
+      <BaseDataContext.Provider value={data}>
+        <Header>
+          <Variables
+            {...{
+              startDate,
+              setStartDate,
+              endDate,
+              setEndDate,
+            }}
+          />
+          <Navigation>
+            {({ location }) => (
+              <Menu
+                selectedKeys={location.pathname}
+                onSelect={({ key }) => {
+                  location.pathname = `/${key}`;
+                }}
+                mode="horizontal"
+              >
+                {routes.map(({ path, title }) => (
+                  <Menu.Item key={path}>
+                    <NavLink to={path}>{title}</NavLink>
+                  </Menu.Item>
+                ))}
+              </Menu>
+            )}
+          </Navigation>
+        </Header>
+        <Content>
+          <Switch>
+            {routes.map(({ path, component: Component }) => (
+              <Route
+                key={path}
+                path={path}
+                render={() => <Component {...{ startDate, endDate }} />}
+              />
+            ))}
+            <Redirect to={routes[0].path} />
+          </Switch>
+        </Content>
+      </BaseDataContext.Provider>
     </Router>
   );
 }

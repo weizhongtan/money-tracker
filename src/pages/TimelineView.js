@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { Select, Wrapper } from '../components';
-import { CategoriesList, toMoney } from '../lib';
+import { BaseDataContext, CategoriesList, toMoney } from '../lib';
 
 const { Option } = Select;
 
@@ -20,10 +20,6 @@ const GET_AMOUNT_GROUPS = gql`
     $categoryId: uuid
     $groupBy: String
   ) {
-    categories: view_categories_with_parents(order_by: { full_name: asc }) {
-      id
-      name: full_name
-    }
     groups: func_transactions_by_category_grouped(
       args: { v_category_id: $categoryId, v_group_by: $groupBy }
       where: { date: { _gte: $startDate, _lte: $endDate } }
@@ -99,8 +95,11 @@ const Parent = styled.span`
 `;
 
 const TimelineView = ({ startDate, endDate }) => {
+  const baseData = useContext(BaseDataContext);
+
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');
+
   const { loading, error, data } = useQuery(GET_AMOUNT_GROUPS, {
     variables: {
       startDate,
@@ -123,7 +122,7 @@ const TimelineView = ({ startDate, endDate }) => {
       id: null,
       name: 'All Categories',
     },
-    ...data.categories,
+    ...baseData.categories,
   ]);
 
   return (

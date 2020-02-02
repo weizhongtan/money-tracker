@@ -9,8 +9,8 @@ import { toMoney } from '../lib';
 
 const { Option } = Select;
 
-const GET_TRANSACTIONS = gql`
-  query GetTransactions(
+const GET_BALANCE = gql`
+  query GetBalance(
     $startDate: timestamptz
     $endDate: timestamptz
     $accountId: uuid
@@ -20,7 +20,7 @@ const GET_TRANSACTIONS = gql`
       id
       name
     }
-    cumulative_transactions: func_transactions_by_account_grouped_cumulative(
+    balance: func_transactions_by_account_grouped_cumulative(
       args: { v_account_id: $accountId, v_group_by: $groupBy }
       where: { date: { _gte: $startDate, _lte: $endDate } }
       order_by: { date: asc }
@@ -68,7 +68,7 @@ const CumulativeView = ({ startDate, endDate }) => {
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
   const [precision, setPrecision] = useState(defaultPrecision);
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
+  const { loading, error, data } = useQuery(GET_BALANCE, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
@@ -82,7 +82,7 @@ const CumulativeView = ({ startDate, endDate }) => {
   const series = [
     {
       id: '£',
-      data: data?.cumulative_transactions.map(({ date, sum }) => ({
+      data: data?.balance.map(({ date, sum }) => ({
         x: moment(date).format('YYYY-MM-DD'),
         y: sum,
       })),

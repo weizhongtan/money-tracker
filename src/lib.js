@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const toMoney = (number, compact = true) =>
   new Intl.NumberFormat('en-EN', {
     style: 'currency',
@@ -25,3 +27,5 @@ export class CategoriesList {
     return this.categories.find(({ name: _name }) => _name === name)?.id;
   }
 }
+
+export const BaseDataContext = React.createContext({});
