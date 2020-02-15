@@ -18,9 +18,9 @@ import styled, { ThemeProvider } from 'styled-components';
 import { BaseDataContext } from './lib';
 import BreakdownView from './pages/BreakdownView';
 import CumulativeView from './pages/CumulativeView';
+import DateRangeSelect from './pages/DateRangeSelect';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
-import Variables from './pages/Variables';
 import theme from './theme';
 
 const Wrapper = styled.div`
@@ -108,7 +108,7 @@ function App() {
               </Menu.Item>
             ))}
           </Menu>
-          <Variables
+          <DateRangeSelect
             {...{
               startDate,
               setStartDate,
