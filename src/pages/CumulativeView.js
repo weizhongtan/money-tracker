@@ -4,7 +4,7 @@ import { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 
-import { Select, Wrapper } from '../components';
+import { Radio, Select, Wrapper } from '../components';
 import { toMoney } from '../lib';
 
 const { Option } = Select;
@@ -128,11 +128,15 @@ const CumulativeView = ({ startDate, endDate }) => {
           </Option>
         ))}
       </Select>
-      <Select defaultValue={precision} onChange={setPrecision}>
-        <Option value="day">Day</Option>
-        <Option value="week">Week</Option>
-        <Option value="month">Month</Option>
-      </Select>
+      <Radio.Group
+        buttonStyle="solid"
+        defaultValue={precision}
+        onChange={event => setPrecision(event.target.value)}
+      >
+        <Radio.Button value="day">Day</Radio.Button>
+        <Radio.Button value="week">Week</Radio.Button>
+        <Radio.Button value="month">Month</Radio.Button>
+      </Radio.Group>
       <ResponsiveLine
         margin={{ top: 20, right: 20, bottom: 40, left: 50 }}
         animate

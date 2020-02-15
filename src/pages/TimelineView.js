@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
-import { Select, Wrapper } from '../components';
+import { Radio, Select, Wrapper } from '../components';
 import { BaseDataContext, CategoriesList, toMoney } from '../lib';
 
 const { Option } = Select;
@@ -140,11 +140,15 @@ const TimelineView = ({ startDate, endDate }) => {
           </Option>
         ))}
       </Select>
-      <Select defaultValue={precision} onChange={setPrecision}>
-        <Option value="day">Day</Option>
-        <Option value="month">Month</Option>
-        <Option value="year">Year</Option>
-      </Select>
+      <Radio.Group
+        buttonStyle="solid"
+        defaultValue={precision}
+        onChange={event => setPrecision(event.target.value)}
+      >
+        <Radio.Button value="day">Day</Radio.Button>
+        <Radio.Button value="month">Month</Radio.Button>
+        <Radio.Button value="year">Year</Radio.Button>
+      </Radio.Group>
       <Bar data={groups} mean={data.aggregate.aggregate.avg.sum} />
     </Wrapper>
   );

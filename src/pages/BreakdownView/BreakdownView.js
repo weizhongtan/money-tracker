@@ -2,11 +2,9 @@ import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
 import React, { useState } from 'react';
 
-import { Select, Wrapper } from '../../components';
+import { Radio, Wrapper } from '../../components';
 import { toMoney, toPercent } from '../../lib';
 import { useCategories } from './data';
-
-const { Option } = Select;
 
 const Pie = ({ data, total }) => (
   <ResponsivePie
@@ -116,14 +114,22 @@ const BreakdownView = ({ startDate, endDate }) => {
 
   return (
     <Wrapper>
-      <Select defaultValue={graph} onChange={setGraph}>
-        <Option value="pie">Pie</Option>
-        <Option value="bar">Bar</Option>
-      </Select>
-      <Select defaultValue={grouping} onChange={setGrouping}>
-        <Option value="subcategory">Subcategory</Option>
-        <Option value="category">Category</Option>
-      </Select>
+      <Radio.Group
+        buttonStyle="solid"
+        defaultValue={graph}
+        onChange={event => setGraph(event.target.value)}
+      >
+        <Radio.Button value="pie">Pie</Radio.Button>
+        <Radio.Button value="bar">Bar</Radio.Button>
+      </Radio.Group>
+      <Radio.Group
+        buttonStyle="solid"
+        defaultValue={grouping}
+        onChange={event => setGrouping(event.target.value)}
+      >
+        <Radio.Button value="subcategory">Subcategory</Radio.Button>
+        <Radio.Button value="category">Category</Radio.Button>
+      </Radio.Group>
       <Graph data={categories} total={total} />
     </Wrapper>
   );
