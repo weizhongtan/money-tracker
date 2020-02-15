@@ -1,5 +1,14 @@
 import { useMutation } from '@apollo/react-hooks';
-import { Avatar, Button, Drawer, Icon, Input, Table, notification } from 'antd';
+import {
+  Affix,
+  Avatar,
+  Button,
+  Drawer,
+  Icon,
+  Input,
+  Table,
+  notification,
+} from 'antd';
 import { gql } from 'apollo-boost';
 import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
@@ -159,114 +168,110 @@ const TransactionsView = ({ startDate, endDate }) => {
           ))}
         </Select>
       </Drawer>
-      <DebounceInput
-        minLength={2}
-        debounceTimeout={500}
-        element={Search}
-        placeholder="Search..."
-        value={searchText}
-        onChange={event => {
-          setSearchText(event.target.value);
-        }}
-        loading={loading}
-        autoFocus
-      />
-      <>
+      <Affix offsetTop={0.01}>
+        <DebounceInput
+          minLength={2}
+          debounceTimeout={500}
+          element={Search}
+          placeholder="Search..."
+          value={searchText}
+          onChange={event => {
+            setSearchText(event.target.value);
+          }}
+          loading={loading}
+          autoFocus
+        />
         <span>{count} records</span>
-        <Table
-          dataSource={transactions}
-          pagination={{
-            defaultPageSize: 50,
+      </Affix>
+      <Table
+        dataSource={transactions}
+        pagination={{
+          defaultPageSize: 50,
+        }}
+        rowSelection={{
+          selectedRowKeys: selectedRows.map(x => x.key),
+          onChange: (_, rows) => setSelectedRows(rows),
+        }}
+        size="small"
+      >
+        <Column
+          title="Date"
+          dataIndex="date"
+          key="date"
+          render={date => <TimeAgo date={date} />}
+        />
+        <Column
+          title="Account"
+          dataIndex="account"
+          key="account"
+          filters={baseData.accounts.map(({ name }) => ({
+            text: name,
+            value: name,
+          }))}
+          onFilter={(value, record) => record.account === value}
+          render={({ to, from }, record) => {
+            const { isOut } = record.amount;
+            const arrow = <Icon type={isOut ? 'right' : 'left'} />;
+            return (
+              <>
+                {avatars[to]}
+                {from && (
+                  <>
+                    {' '}
+                    {arrow} {avatars[from]}
+                  </>
+                )}
+              </>
+            );
           }}
-          rowSelection={{
-            selectedRowKeys: selectedRows.map(x => x.key),
-            onChange: (_, rows) => setSelectedRows(rows),
+        />
+        <Column
+          title="Amount"
+          dataIndex="amount"
+          key="amount"
+          render={({ value, isOut }) => (
+            <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
+          )}
+        />
+        <Column title="Description" dataIndex="description" key="description" />
+        <Column
+          title="Category"
+          dataIndex="category"
+          key="category"
+          filters={categories.get().map(({ name }) => ({
+            text: name,
+            value: name,
+          }))}
+          onFilter={(value, record) => record.category === value}
+          render={(currentCategoryName, record) => {
+            const categoryId = categories.getId(currentCategoryName);
+            return (
+              <>
+                <Select
+                  value={categoryId}
+                  onChange={async newCategoryId => {
+                    await updateTransactionsCategory({
+                      transactionIds: [record.key],
+                      newCategoryId,
+                      currentCategoryIds: [categoryId],
+                    });
+                  }}
+                  showSearch
+                  optionFilterProp="label"
+                  size="small"
+                >
+                  {categories.get().map(({ id, name, isSub }) => (
+                    <Option key={id} value={id} label={name}>
+                      {isSub ? name : <Parent>{name}</Parent>}
+                    </Option>
+                  ))}
+                </Select>
+                {!currentCategoryName && <Icon type="exclamation-circle" />}
+              </>
+            );
           }}
-          size="small"
-        >
-          <Column
-            title="Date"
-            dataIndex="date"
-            key="date"
-            render={date => <TimeAgo date={date} />}
-          />
-          <Column
-            title="Account"
-            dataIndex="account"
-            key="account"
-            filters={baseData.accounts.map(({ name }) => ({
-              text: name,
-              value: name,
-            }))}
-            onFilter={(value, record) => record.account === value}
-            render={({ to, from }, record) => {
-              const { isOut } = record.amount;
-              const arrow = <Icon type={isOut ? 'right' : 'left'} />;
-              return (
-                <>
-                  {avatars[to]}
-                  {from && (
-                    <>
-                      {' '}
-                      {arrow} {avatars[from]}
-                    </>
-                  )}
-                </>
-              );
-            }}
-          />
-          <Column
-            title="Amount"
-            dataIndex="amount"
-            key="amount"
-            render={({ value, isOut }) => (
-              <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
-            )}
-          />
-          <Column
-            title="Description"
-            dataIndex="description"
-            key="description"
-          />
-          <Column
-            title="Category"
-            dataIndex="category"
-            key="category"
-            filters={categories.get().map(({ name }) => ({
-              text: name,
-              value: name,
-            }))}
-            onFilter={(value, record) => record.category === value}
-            render={(currentCategoryName, record) => {
-              const categoryId = categories.getId(currentCategoryName);
-              return (
-                <>
-                  <Select
-                    value={categoryId}
-                    onChange={async newCategoryId => {
-                      await updateTransactionsCategory({
-                        transactionIds: [record.key],
-                        newCategoryId,
-                        currentCategoryIds: [categoryId],
-                      });
-                    }}
-                    showSearch
-                    optionFilterProp="label"
-                    size="small"
-                  >
-                    {categories.get().map(({ id, name, isSub }) => (
-                      <Option key={id} value={id} label={name}>
-                        {isSub ? name : <Parent>{name}</Parent>}
-                      </Option>
-                    ))}
-                  </Select>
-                  {!currentCategoryName && <Icon type="exclamation-circle" />}
-                </>
-              );
-            }}
-          />
-        </Table>
-      </>
+        />
+      </Table>
     </>
   );
 };

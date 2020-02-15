@@ -37,6 +37,7 @@ const Header = styled(Layout.Header)`
 
 const Content = styled(Layout.Content)`
   width: 100%;
+  background: #fff;
 `;
 
 const routes = [
@@ -72,45 +73,47 @@ function App() {
   return (
     <Router>
       <BaseDataContext.Provider value={data}>
-        <Header>
-          <Variables
-            {...{
-              startDate,
-              setStartDate,
-              endDate,
-              setEndDate,
-            }}
-          />
-          <Navigation>
-            {({ location }) => (
-              <Menu
-                selectedKeys={location.pathname}
-                onSelect={({ key }) => {
-                  location.pathname = `/${key}`;
-                }}
-                mode="horizontal"
-              >
-                {routes.map(({ path, title }) => (
-                  <Menu.Item key={path}>
-                    <NavLink to={path}>{title}</NavLink>
-                  </Menu.Item>
-                ))}
-              </Menu>
-            )}
-          </Navigation>
-        </Header>
-        <Content>
-          <Switch>
-            {routes.map(({ path, component: Component }) => (
-              <Route
-                key={path}
-                path={path}
-                render={() => <Component {...{ startDate, endDate }} />}
-              />
-            ))}
-            <Redirect to={routes[0].path} />
-          </Switch>
-        </Content>
+        <Layout hasSider>
+          <Layout.Sider collapsible>
+            <Variables
+              {...{
+                startDate,
+                setStartDate,
+                endDate,
+                setEndDate,
+              }}
+            />
+            <Navigation>
+              {({ location }) => (
+                <Menu
+                  theme="dark"
+                  selectedKeys={location.pathname}
+                  onSelect={({ key }) => {
+                    location.pathname = `/${key}`;
+                  }}
+                >
+                  {routes.map(({ path, title }) => (
+                    <Menu.Item key={path}>
+                      <NavLink to={path}>{title}</NavLink>
+                    </Menu.Item>
+                  ))}
+                </Menu>
+              )}
+            </Navigation>
+          </Layout.Sider>
+          <Content>
+            <Switch>
+              {routes.map(({ path, component: Component }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  render={() => <Component {...{ startDate, endDate }} />}
+                />
+              ))}
+              <Redirect to={routes[0].path} />
+            </Switch>
+          </Content>
+        </Layout>
       </BaseDataContext.Provider>
     </Router>
   );
