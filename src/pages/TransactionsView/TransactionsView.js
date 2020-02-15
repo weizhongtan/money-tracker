@@ -237,25 +237,28 @@ const TransactionsView = ({ startDate, endDate }) => {
             render={(currentCategoryName, record) => {
               const categoryId = categories.getId(currentCategoryName);
               return (
-                <Select
-                  value={categoryId}
-                  onChange={async newCategoryId => {
-                    await updateTransactionsCategory({
-                      transactionIds: [record.key],
-                      newCategoryId,
-                      currentCategoryIds: [categoryId],
-                    });
-                  }}
-                  showSearch
-                  optionFilterProp="label"
-                  size="small"
-                >
-                  {categories.get().map(({ id, name, isSub }) => (
-                    <Option key={id} value={id} label={name}>
-                      {isSub ? name : <Parent>{name}</Parent>}
-                    </Option>
-                  ))}
-                </Select>
+                <>
+                  <Select
+                    value={categoryId}
+                    onChange={async newCategoryId => {
+                      await updateTransactionsCategory({
+                        transactionIds: [record.key],
+                        newCategoryId,
+                        currentCategoryIds: [categoryId],
+                      });
+                    }}
+                    showSearch
+                    optionFilterProp="label"
+                    size="small"
+                  >
+                    {categories.get().map(({ id, name, isSub }) => (
+                      <Option key={id} value={id} label={name}>
+                        {isSub ? name : <Parent>{name}</Parent>}
+                      </Option>
+                    ))}
+                  </Select>
+                  {!currentCategoryName && <Icon type="exclamation-circle" />}
+                </>
               );
             }}
           />
