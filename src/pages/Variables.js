@@ -6,7 +6,7 @@ const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 
 const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
   return (
-    <>
+    <div>
       <WeekPicker
         onChange={date => {
           setStartDate(moment(date).startOf('week'));
@@ -69,7 +69,7 @@ const Variables = ({ startDate, setStartDate, endDate, setEndDate }) => {
           'Entire Range': [moment('2017-01-01').startOf('year'), moment()],
         }}
       />
-    </>
+    </div>
   );
 };
 

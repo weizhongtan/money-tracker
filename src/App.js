@@ -1,6 +1,5 @@
 import 'antd/dist/antd.css';
 
-import * as colors from '@ant-design/colors';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import { Icon, Layout, Menu } from 'antd';
 import ApolloClient, { gql } from 'apollo-boost';
@@ -22,6 +21,7 @@ import CumulativeView from './pages/CumulativeView';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
 import Variables from './pages/Variables';
+import theme from './theme';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -93,14 +93,6 @@ function App() {
     <BaseDataContext.Provider value={data}>
       <Layout hasSider>
         <Layout.Sider collapsible>
-          <Variables
-            {...{
-              startDate,
-              setStartDate,
-              endDate,
-              setEndDate,
-            }}
-          />
           <Menu
             theme="dark"
             selectedKeys={location.pathname}
@@ -116,7 +108,14 @@ function App() {
               </Menu.Item>
             ))}
           </Menu>
-          )
+          <Variables
+            {...{
+              startDate,
+              setStartDate,
+              endDate,
+              setEndDate,
+            }}
+          />
         </Layout.Sider>
         <Content>
           <Switch>
@@ -138,13 +137,6 @@ function App() {
 const client = new ApolloClient({
   uri: 'http://localhost:3000/v1/graphql',
 });
-
-const theme = {
-  positive: colors.green.primary,
-  neutral: colors.blue.primary,
-  negative: colors.red.primary,
-  colors,
-};
 
 function Wrappers() {
   return (

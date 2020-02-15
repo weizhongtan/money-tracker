@@ -10,6 +10,7 @@ import {
   notification,
 } from 'antd';
 import { gql } from 'apollo-boost';
+import _ from 'lodash';
 import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
@@ -146,7 +147,10 @@ const TransactionsView = ({ startDate, endDate }) => {
         closable={false}
         visible={!!selectedRows.length}
         mask={false}
-        height={80}
+        height={52}
+        bodyStyle={{
+          padding: '10px',
+        }}
       >
         <Select
           placeholder="Select category"
@@ -167,6 +171,9 @@ const TransactionsView = ({ startDate, endDate }) => {
             </Option>
           ))}
         </Select>
+        <Button type="primary" onClick={() => setSelectedRows([])}>
+          Deselect {selectedRows.length} row(s)
+        </Button>
       </Drawer>
       <Affix offsetTop={0.01}>
         <DebounceInput
@@ -193,6 +200,19 @@ const TransactionsView = ({ startDate, endDate }) => {
           onChange: (_, rows) => setSelectedRows(rows),
         }}
         size="small"
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: () => {
+              const selectedRowsClone = [...selectedRows];
+              if (selectedRowsClone.find(row => row.key === record.key)) {
+                _.remove(selectedRowsClone, row => row.key === record.key);
+              } else {
+                selectedRowsClone.push(record);
+              }
+              setSelectedRows(selectedRowsClone);
+            },
+          };
+        }}
       >
         <Column
           title="Date"
