@@ -2,21 +2,21 @@ import 'antd/dist/antd.css';
 
 import * as colors from '@ant-design/colors';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
-import { Layout, Menu } from 'antd';
+import { Icon, Layout, Menu } from 'antd';
 import ApolloClient, { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 import {
-  NavLink,
   Redirect,
   Route,
   BrowserRouter as Router,
   Switch,
+  useHistory,
+  useLocation,
 } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
 import { BaseDataContext } from './lib';
-import Navigation from './Navigation';
 import BreakdownView from './pages/BreakdownView';
 import CumulativeView from './pages/CumulativeView';
 import TimelineView from './pages/TimelineView';
@@ -31,20 +31,36 @@ const Wrapper = styled.div`
   grid-template-rows: auto;
 `;
 
-const Header = styled(Layout.Header)`
-  height: fit-content;
-`;
-
 const Content = styled(Layout.Content)`
   width: 100%;
   background: #fff;
 `;
 
 const routes = [
-  { path: '/transactions', title: 'Transactions', component: TransactionsView },
-  { path: '/cumulative', title: 'Cumulative', component: CumulativeView },
-  { path: '/breakdown', title: 'Breakdown', component: BreakdownView },
-  { path: '/timeline', title: 'Timeline', component: TimelineView },
+  {
+    path: '/transactions',
+    title: 'Transactions',
+    component: TransactionsView,
+    Icon: <Icon type="bars" />,
+  },
+  {
+    path: '/cumulative',
+    title: 'Cumulative',
+    component: CumulativeView,
+    Icon: <Icon type="fund" />,
+  },
+  {
+    path: '/breakdown',
+    title: 'Breakdown',
+    component: BreakdownView,
+    Icon: <Icon type="pie-chart" />,
+  },
+  {
+    path: '/timeline',
+    title: 'Timeline',
+    component: TimelineView,
+    Icon: <Icon type="clock-circle" />,
+  },
 ];
 
 const GET_BASE_DATA = gql`
@@ -61,6 +77,9 @@ const GET_BASE_DATA = gql`
 `;
 
 function App() {
+  const location = useLocation();
+  const history = useHistory();
+
   const [startDate, setStartDate] = useState(
     moment()
       .subtract(1, 'year')
@@ -71,51 +90,48 @@ function App() {
   if (loading || error) return null;
 
   return (
-    <Router>
-      <BaseDataContext.Provider value={data}>
-        <Layout hasSider>
-          <Layout.Sider collapsible>
-            <Variables
-              {...{
-                startDate,
-                setStartDate,
-                endDate,
-                setEndDate,
-              }}
-            />
-            <Navigation>
-              {({ location }) => (
-                <Menu
-                  theme="dark"
-                  selectedKeys={location.pathname}
-                  onSelect={({ key }) => {
-                    location.pathname = `/${key}`;
-                  }}
-                >
-                  {routes.map(({ path, title }) => (
-                    <Menu.Item key={path}>
-                      <NavLink to={path}>{title}</NavLink>
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              )}
-            </Navigation>
-          </Layout.Sider>
-          <Content>
-            <Switch>
-              {routes.map(({ path, component: Component }) => (
-                <Route
-                  key={path}
-                  path={path}
-                  render={() => <Component {...{ startDate, endDate }} />}
-                />
-              ))}
-              <Redirect to={routes[0].path} />
-            </Switch>
-          </Content>
-        </Layout>
-      </BaseDataContext.Provider>
-    </Router>
+    <BaseDataContext.Provider value={data}>
+      <Layout hasSider>
+        <Layout.Sider collapsible>
+          <Variables
+            {...{
+              startDate,
+              setStartDate,
+              endDate,
+              setEndDate,
+            }}
+          />
+          <Menu
+            theme="dark"
+            selectedKeys={location.pathname}
+            onSelect={({ key }) => {
+              history.push(key);
+            }}
+            mode="inline"
+          >
+            {routes.map(({ path, title, Icon }) => (
+              <Menu.Item key={path}>
+                {Icon}
+                <span>{title}</span>
+              </Menu.Item>
+            ))}
+          </Menu>
+          )
+        </Layout.Sider>
+        <Content>
+          <Switch>
+            {routes.map(({ path, component: Component }) => (
+              <Route
+                key={path}
+                path={path}
+                render={() => <Component {...{ startDate, endDate }} />}
+              />
+            ))}
+            <Redirect to={routes[0].path} />
+          </Switch>
+        </Content>
+      </Layout>
+    </BaseDataContext.Provider>
   );
 }
 
@@ -135,7 +151,9 @@ function Wrappers() {
     <ApolloProvider client={client}>
       <Wrapper>
         <ThemeProvider theme={theme}>
-          <App />
+          <Router>
+            <App />
+          </Router>
         </ThemeProvider>
       </Wrapper>
     </ApolloProvider>
