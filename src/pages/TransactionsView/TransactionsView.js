@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/react-hooks';
-import { Avatar, Button, Icon, Input, Table, notification } from 'antd';
+import { Avatar, Button, Drawer, Icon, Input, Table, notification } from 'antd';
 import { gql } from 'apollo-boost';
 import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
@@ -46,7 +46,6 @@ const TransactionsView = ({ startDate, endDate }) => {
 
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
-  const [categoryId, setCategoryId] = useState(null);
 
   const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS);
   const { loading, error, transactions, count } = useTransactions({
@@ -133,6 +132,33 @@ const TransactionsView = ({ startDate, endDate }) => {
 
   return (
     <>
+      <Drawer
+        placement="top"
+        closable={false}
+        visible={!!selectedRows.length}
+        mask={false}
+        height={80}
+      >
+        <Select
+          placeholder="Select category"
+          onChange={categoryId => {
+            updateTransactionsCategory({
+              transactionIds: selectedRows.map(x => x.key),
+              newCategoryId: categoryId,
+              currentCategoryIds: selectedRows.map(x => x.categoryId),
+            });
+            setSelectedRows([]);
+          }}
+          showSearch
+          optionFilterProp="label"
+        >
+          {categories.get().map(({ id, name, isSub }) => (
+            <Option key={id} value={id} label={name}>
+              {isSub ? name : <Parent>{name}</Parent>}
+            </Option>
+          ))}
+        </Select>
+      </Drawer>
       <DebounceInput
         minLength={2}
         debounceTimeout={500}
@@ -147,29 +173,6 @@ const TransactionsView = ({ startDate, endDate }) => {
       />
       <>
         <span>{count} records</span>
-        <Select
-          placeholder="Select category"
-          onChange={setCategoryId}
-          showSearch
-          optionFilterProp="label"
-        >
-          {categories.get().map(({ id, name, isSub }) => (
-            <Option key={id} value={id} label={name}>
-              {isSub ? name : <Parent>{name}</Parent>}
-            </Option>
-          ))}
-        </Select>
-        <Button
-          onClick={() => {
-            updateTransactionsCategory({
-              transactionIds: selectedRows.map(x => x.key),
-              newCategoryId: categoryId,
-              currentCategoryIds: selectedRows.map(x => x.categoryId),
-            });
-          }}
-        >
-          Set for selected transactions
-        </Button>
         <Table
           dataSource={transactions}
           pagination={{
