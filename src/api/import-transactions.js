@@ -10,13 +10,15 @@ const { createTransaction, getAccount } = require('./lib');
 function ofxParser(data) {
   const raw = ofx.parse(data);
   return raw.OFX.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKTRANLIST.STMTTRN.map(
-    rawTransaction => {
+    (rawTransaction, index) => {
       const rawDate = rawTransaction.DTPOSTED;
       return {
         date: new Date(
-          [rawDate.slice(0, 4), rawDate.slice(4, 6), rawDate.slice(6, 8)].join(
-            '-'
-          )
+          `${[
+            rawDate.slice(0, 4),
+            rawDate.slice(4, 6),
+            rawDate.slice(6, 8),
+          ].join('-')}T00:00:${String(index).padStart(2, '0')}Z`
         ).toISOString(),
         amount: Number(rawTransaction.TRNAMT),
         description: rawTransaction.NAME,
@@ -36,7 +38,7 @@ function csvParser(data) {
 (async () => {
   const inPath = path.resolve(
     __dirname,
-    '../../private/Statement Download 2020-Jan-28 23-39-23.ofx'
+    '../../private/Statement Download 2020-Feb-15 0-41-58.ofx'
   );
 
   const rawData = await readFile(inPath, 'utf8');
