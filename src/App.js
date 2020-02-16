@@ -69,7 +69,6 @@ const routes = [
     Icon: <Icon type="setting" />,
   },
 ];
-
 const GET_BASE_DATA = gql`
   query GetBaseData {
     accounts(order_by: { legacy_key: asc }) {
@@ -80,10 +79,47 @@ const GET_BASE_DATA = gql`
       id
       name
       parentCategoryName: parent_category_name
+      parentCategoryId: parent_category_id
       fullName: full_name
+      type
     }
   }
 `;
+
+const useBaseData = () => {
+  const { loading, error, data } = useQuery(GET_BASE_DATA);
+  if (loading || error) {
+    return {
+      loading,
+      error,
+    };
+  }
+
+  return {
+    data: {
+      accounts: data.accounts,
+      categories: data.categories.map(
+        ({
+          id,
+          name,
+          parentCategoryName,
+          parentCategoryId,
+          fullName,
+          type,
+        }) => ({
+          id,
+          name,
+          parent: {
+            name: parentCategoryName,
+            id: parentCategoryId,
+          },
+          fullName,
+          type,
+        })
+      ),
+    },
+  };
+};
 
 function App() {
   const location = useLocation();
@@ -95,7 +131,7 @@ function App() {
       .startOf('year')
   );
   const [endDate, setEndDate] = useState(moment());
-  const { loading, error, data } = useQuery(GET_BASE_DATA);
+  const { loading, error, data } = useBaseData();
   if (loading || error) return null;
 
   return (

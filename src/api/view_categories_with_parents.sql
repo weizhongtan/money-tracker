@@ -4,6 +4,7 @@ SELECT
   c.id,
   c.name AS name,
   pc.name AS parent_category_name,
+  pc.id AS parent_category_id,
   coalesce(pc.name || ':' || c.name, c.name) AS full_name,
   coalesce(pc.type, c.type) AS TYPE
 FROM

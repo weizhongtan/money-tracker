@@ -1,7 +1,5 @@
-import { useQuery } from '@apollo/react-hooks';
-import { ResponsiveBar } from '@nivo/bar';
+import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import moment from 'moment';
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import styled, { ThemeContext } from 'styled-components';
@@ -28,3 +26,7 @@ const UPDATE_CATEGORY = gql`
     }
   }
 `;
+
+export const useUpdateCategory = () => {
+  return useMutation(UPDATE_CATEGORY);
+};

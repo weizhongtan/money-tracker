@@ -10,13 +10,13 @@ import {
   notification,
 } from 'antd';
 import { gql } from 'apollo-boost';
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled, { ThemeContext } from 'styled-components';
 import uuid from 'uuid/v4';
 
-import { Select } from '../../components';
+import { ButtonSelect, Select } from '../../components';
 import { BaseDataContext, CategoriesList, toMoney } from '../../lib';
 import { useTransactions } from './data';
 
@@ -87,8 +87,6 @@ const TransactionsView = ({ startDate, endDate }) => {
   }, {});
 
   const categories = new CategoriesList(baseData.categories);
-
-  console.log(categories);
 
   const updateTransactionsCategory = async ({
     transactionIds,
@@ -282,43 +280,6 @@ const TransactionsView = ({ startDate, endDate }) => {
         />
       </Table>
     </>
-  );
-};
-
-const ButtonSelect = ({
-  buttonText,
-  buttonTextDefault,
-  children,
-  onChange,
-  ...props
-}) => {
-  const [isOpen, setOpen] = useState(false);
-  if (isOpen) {
-    return (
-      <Select
-        onChange={async (...args) => {
-          await onChange(...args);
-          setOpen(false);
-        }}
-        onBlur={() => setOpen(false)}
-        defaultOpen
-        autoFocus
-        {...props}
-      >
-        {children}
-      </Select>
-    );
-  }
-  return (
-    <Button
-      size={props.size}
-      onPointerEnter={() => {
-        setOpen(true);
-      }}
-      type={buttonText ? 'dashed' : 'primary'}
-    >
-      {buttonText || buttonTextDefault}
-    </Button>
   );
 };
 
