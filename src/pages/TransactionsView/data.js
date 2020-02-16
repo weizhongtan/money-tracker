@@ -80,8 +80,10 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
               from: accountByFromAccountId?.name,
             },
             description: description,
-            category: categories.getName(category?.id),
-            categoryId: category?.id,
+            category: {
+              fullName: categories.getName(category?.id),
+              id: category?.id,
+            },
           };
         }
       )

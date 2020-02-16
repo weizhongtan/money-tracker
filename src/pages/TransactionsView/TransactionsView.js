@@ -10,8 +10,7 @@ import {
   notification,
 } from 'antd';
 import { gql } from 'apollo-boost';
-import _ from 'lodash';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled, { ThemeContext } from 'styled-components';
@@ -89,8 +88,11 @@ const TransactionsView = ({ startDate, endDate }) => {
 
   const categories = new CategoriesList(baseData.categories);
 
+  console.log(categories);
+
   const updateTransactionsCategory = async ({
     transactionIds,
+    newCategoryFullName,
     newCategoryId,
     currentCategoryIds,
   }) => {
@@ -154,10 +156,11 @@ const TransactionsView = ({ startDate, endDate }) => {
       >
         <Select
           placeholder="Select category"
-          onChange={categoryId => {
+          onChange={({ id, fullName }) => {
             updateTransactionsCategory({
               transactionIds: selectedRows.map(x => x.key),
-              newCategoryId: categoryId,
+              newCategoryFullName: fullName,
+              newCategoryId: id,
               currentCategoryIds: selectedRows.map(x => x.categoryId),
             });
             setSelectedRows([]);
@@ -165,9 +168,9 @@ const TransactionsView = ({ startDate, endDate }) => {
           showSearch
           optionFilterProp="label"
         >
-          {categories.get().map(({ id, name, isSub }) => (
-            <Option key={id} value={id} label={name}>
-              {isSub ? name : <Parent>{name}</Parent>}
+          {categories.get().map(({ id, fullName, isSub }) => (
+            <Option key={{ id, fullName }} value={id} label={fullName}>
+              {isSub ? fullName : <Parent>{fullName}</Parent>}
             </Option>
           ))}
         </Select>
@@ -200,19 +203,6 @@ const TransactionsView = ({ startDate, endDate }) => {
           onChange: (_, rows) => setSelectedRows(rows),
         }}
         size="small"
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: () => {
-              const selectedRowsClone = [...selectedRows];
-              if (selectedRowsClone.find(row => row.key === record.key)) {
-                _.remove(selectedRowsClone, row => row.key === record.key);
-              } else {
-                selectedRowsClone.push(record);
-              }
-              setSelectedRows(selectedRowsClone);
-            },
-          };
-        }}
       >
         <Column
           title="Date"
@@ -263,36 +253,72 @@ const TransactionsView = ({ startDate, endDate }) => {
             value: name,
           }))}
           onFilter={(value, record) => record.category === value}
-          render={(currentCategoryName, record) => {
-            const categoryId = categories.getId(currentCategoryName);
+          render={({ fullName, id: categoryId }, record) => {
             return (
-              <>
-                <Select
-                  value={categoryId}
-                  onChange={async newCategoryId => {
-                    await updateTransactionsCategory({
-                      transactionIds: [record.key],
-                      newCategoryId,
-                      currentCategoryIds: [categoryId],
-                    });
-                  }}
-                  showSearch
-                  optionFilterProp="label"
-                  size="small"
-                >
-                  {categories.get().map(({ id, name, isSub }) => (
-                    <Option key={id} value={id} label={name}>
-                      {isSub ? name : <Parent>{name}</Parent>}
-                    </Option>
-                  ))}
-                </Select>
-                {!currentCategoryName && <Icon type="exclamation-circle" />}
-              </>
+              <ButtonSelect
+                value={categoryId}
+                onChange={async newCategoryId => {
+                  await updateTransactionsCategory({
+                    transactionIds: [record.key],
+                    newCategoryFullName: fullName,
+                    newCategoryId,
+                    currentCategoryIds: [categoryId],
+                  });
+                }}
+                showSearch
+                optionFilterProp="label"
+                size="small"
+                buttonText={fullName}
+                buttonTextDefault="Set category"
+              >
+                {categories.get().map(({ id, fullName, isSub }) => (
+                  <Option key={{ id, fullName }} value={id} label={fullName}>
+                    {isSub ? fullName : <Parent>{fullName}</Parent>}
+                  </Option>
+                ))}
+              </ButtonSelect>
             );
           }}
         />
       </Table>
     </>
+  );
+};
+
+const ButtonSelect = ({
+  buttonText,
+  buttonTextDefault,
+  children,
+  onChange,
+  ...props
+}) => {
+  const [isOpen, setOpen] = useState(false);
+  if (isOpen) {
+    return (
+      <Select
+        onChange={async (...args) => {
+          await onChange(...args);
+          setOpen(false);
+        }}
+        onBlur={() => setOpen(false)}
+        defaultOpen
+        autoFocus
+        {...props}
+      >
+        {children}
+      </Select>
+    );
+  }
+  return (
+    <Button
+      size={props.size}
+      onPointerEnter={() => {
+        setOpen(true);
+      }}
+      type={buttonText ? 'dashed' : 'primary'}
+    >
+      {buttonText || buttonTextDefault}
+    </Button>
   );
 };
 

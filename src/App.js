@@ -19,6 +19,7 @@ import { BaseDataContext } from './lib';
 import BreakdownView from './pages/BreakdownView';
 import CumulativeView from './pages/CumulativeView';
 import DateRangeSelect from './pages/DateRangeSelect';
+import ManageView from './pages/ManageView';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
 import theme from './theme';
@@ -61,6 +62,12 @@ const routes = [
     component: TimelineView,
     Icon: <Icon type="clock-circle" />,
   },
+  {
+    path: '/manage',
+    title: 'Manage',
+    component: ManageView,
+    Icon: <Icon type="setting" />,
+  },
 ];
 
 const GET_BASE_DATA = gql`
@@ -71,7 +78,9 @@ const GET_BASE_DATA = gql`
     }
     categories: view_categories_with_parents(order_by: { full_name: asc }) {
       id
-      name: full_name
+      name
+      parentCategoryName: parent_category_name
+      fullName: full_name
     }
   }
 `;
