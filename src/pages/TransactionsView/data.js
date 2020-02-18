@@ -8,9 +8,9 @@ const GET_TRANSACTIONS = gql`
   query GetTransactions(
     $startDate: timestamptz
     $endDate: timestamptz
-    $searchText: String
-    $searchAmount: numeric
-    $searchAmountComplement: numeric
+    $searchText: String!
+    $searchAmount: numeric!
+    $searchAmountComplement: numeric!
   ) {
     transactions_aggregate(
       where: {
@@ -50,18 +50,17 @@ const GET_TRANSACTIONS = gql`
 export const useTransactions = ({ startDate, endDate, searchText }) => {
   const baseData = useContext(BaseDataContext);
 
-  const searchAmount = Number(searchText) || null;
-  const searchAmountComplement = searchAmount ? -searchAmount : null;
-  console.log(searchAmount);
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, {
-    variables: {
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
-      searchText: `%${searchText}%`,
-      searchAmount,
-      searchAmountComplement,
-    },
-  });
+  const searchAmount = Number(searchText) || 0;
+  const searchAmountComplement = -searchAmount;
+  const variables = {
+    startDate: startDate?.toISOString(),
+    endDate: endDate?.toISOString(),
+    searchText: `%${searchText}%`,
+    searchAmount,
+    searchAmountComplement,
+  };
+  console.log(variables);
+  const { loading, error, data } = useQuery(GET_TRANSACTIONS, { variables });
 
   const categories = new CategoriesList(baseData.categories);
 

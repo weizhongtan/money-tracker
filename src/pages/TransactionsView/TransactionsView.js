@@ -130,7 +130,8 @@ const TransactionsView = ({ startDate, endDate }) => {
           title="Date"
           dataIndex="date"
           key="date"
-          render={date => <TimeAgo date={date} />}
+          // render={date => <TimeAgo date={date} />}
+          render={date => date.toDateString()}
         />
         <Column
           title="Account"
