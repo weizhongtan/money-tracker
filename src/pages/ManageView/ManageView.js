@@ -1,10 +1,6 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { ResponsiveBar } from '@nivo/bar';
 import { Table } from 'antd';
-import { gql } from 'apollo-boost';
 import moment from 'moment';
-import React, { useState } from 'react';
-import { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
 
 import { ButtonSelect, Radio, Select } from '../../components';
@@ -17,6 +13,7 @@ const { Column } = Table;
 const ManageView = ({ startDate, endDate }) => {
   const baseData = useContext(BaseDataContext);
 
+  console.log(typeof useUpdateCategory);
   const [updateCategory] = useUpdateCategory();
 
   const categories = new CategoriesList(baseData.categories);
@@ -40,7 +37,9 @@ const ManageView = ({ startDate, endDate }) => {
             return (
               <ButtonSelect
                 value={id}
-                onChange={() => {}}
+                onChange={({ id, fullName }) => {
+                  updateCategory();
+                }}
                 showSearch
                 optionFilterProp="label"
                 size="small"
@@ -50,11 +49,7 @@ const ManageView = ({ startDate, endDate }) => {
                 {categories.get().map(
                   ({ id, fullName, isSub }) =>
                     !isSub && (
-                      <Option
-                        key={{ id, fullName }}
-                        value={id}
-                        label={fullName}
-                      >
+                      <Option key={id} label={fullName}>
                         {fullName}
                       </Option>
                     )

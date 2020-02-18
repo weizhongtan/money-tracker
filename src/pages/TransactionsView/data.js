@@ -1,8 +1,8 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { useContext } from 'react';
 
-import { BaseDataContext, CategoriesList } from '../../lib';
+import { BaseDataContext, CategoriesList, reversible } from '../../lib';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
@@ -90,4 +90,60 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
       .flat(),
     count: data?.transactions_aggregate.aggregate.count,
   };
+};
+
+const UPDATE_TRANSACTIONS = gql`
+  mutation UpdateTransactions($transactionIds: [uuid!]!, $categoryId: uuid) {
+    update_transactions(
+      where: { id: { _in: $transactionIds } }
+      _set: { category_id: $categoryId, updated_at: "now" }
+    ) {
+      returning {
+        category_id
+      }
+      affected_rows
+    }
+  }
+`;
+
+export const useUpdateTransactionsCategory = categories => {
+  const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS);
+
+  const updateTransactionsCategory = reversible({
+    action: async ({
+      transactionIds,
+      newCategoryFullName,
+      newCategoryId,
+      currentCategoryIds,
+    }) => {
+      const { data } = await updateTransaction({
+        variables: {
+          transactionIds,
+          categoryId: newCategoryId,
+        },
+        refetchQueries: ['GetTransactions'],
+      });
+      return `Updated: ${categories.getName(newCategoryId)} (${
+        data.update_transactions.affected_rows
+      } records)`;
+    },
+    undo: async ({ transactionIds, currentCategoryIds }) => {
+      const results = await Promise.all(
+        currentCategoryIds.map(async (categoryId, index) => {
+          const { data } = await updateTransaction({
+            variables: {
+              transactionIds: [transactionIds[index]],
+              categoryId,
+            },
+            refetchQueries: ['GetTransactions'],
+          });
+          return data.update_transactions.affected_rows;
+        })
+      );
+      const recordsUpdated = results.reduce((acc, val) => acc + val, 0);
+      return `Undid: ${recordsUpdated} records`;
+    },
+  });
+
+  return [updateTransactionsCategory];
 };

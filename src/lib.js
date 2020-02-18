@@ -1,4 +1,6 @@
+import { Button, notification } from 'antd';
 import React from 'react';
+import uuid from 'uuid/v4';
 
 export const toMoney = (number, compact = true) =>
   new Intl.NumberFormat('en-EN', {
@@ -25,3 +27,30 @@ export class CategoriesList {
 }
 
 export const BaseDataContext = React.createContext({});
+
+export const reversible = ({ action, undo }) => async (...args) => {
+  const actionMessage = await action(...args);
+  const key = uuid();
+  notification.success({
+    key,
+    message: actionMessage,
+    description: (
+      <Button
+        icon="undo"
+        size="small"
+        onClick={async () => {
+          notification.close(key);
+          const undoMessage = await undo(...args);
+          notification.success({
+            key: uuid(),
+            message: undoMessage,
+            placement: 'topLeft',
+          });
+        }}
+      >
+        Undo
+      </Button>
+    ),
+    placement: 'topLeft',
+  });
+};

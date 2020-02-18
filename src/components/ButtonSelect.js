@@ -19,7 +19,6 @@ const ButtonSelect = ({
           setOpen(false);
         }}
         onBlur={() => setOpen(false)}
-        defaultOpen
         autoFocus
         {...props}
       >

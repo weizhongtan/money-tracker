@@ -1,42 +1,16 @@
-import { useMutation } from '@apollo/react-hooks';
-import {
-  Affix,
-  Avatar,
-  Button,
-  Drawer,
-  Icon,
-  Input,
-  Table,
-  notification,
-} from 'antd';
-import { gql } from 'apollo-boost';
+import { Affix, Avatar, Button, Drawer, Icon, Input, Table } from 'antd';
 import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled, { ThemeContext } from 'styled-components';
-import uuid from 'uuid/v4';
 
 import { ButtonSelect, Select } from '../../components';
 import { BaseDataContext, CategoriesList, toMoney } from '../../lib';
-import { useTransactions } from './data';
+import { useTransactions, useUpdateTransactionsCategory } from './data';
 
 const { Option } = Select;
 const { Column } = Table;
 const { Search } = Input;
-
-const UPDATE_TRANSACTIONS = gql`
-  mutation UpdateTransactions($transactionIds: [uuid!]!, $categoryId: uuid) {
-    update_transactions(
-      where: { id: { _in: $transactionIds } }
-      _set: { category_id: $categoryId, updated_at: "now" }
-    ) {
-      returning {
-        category_id
-      }
-      affected_rows
-    }
-  }
-`;
 
 const Amount = styled.span`
   display: block;
@@ -56,7 +30,11 @@ const TransactionsView = ({ startDate, endDate }) => {
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
 
-  const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS);
+  const categories = new CategoriesList(baseData.categories);
+
+  const [updateTransactionsCategory] = useUpdateTransactionsCategory(
+    categories
+  );
   const { loading, error, transactions, count } = useTransactions({
     startDate,
     endDate,
@@ -86,60 +64,6 @@ const TransactionsView = ({ startDate, endDate }) => {
     };
   }, {});
 
-  const categories = new CategoriesList(baseData.categories);
-
-  const updateTransactionsCategory = async ({
-    transactionIds,
-    newCategoryFullName,
-    newCategoryId,
-    currentCategoryIds,
-  }) => {
-    const { data } = await updateTransaction({
-      variables: {
-        transactionIds,
-        categoryId: newCategoryId,
-      },
-      refetchQueries: ['GetTransactions'],
-    });
-    const key = uuid();
-    notification.success({
-      key,
-      message: `Updated: ${categories.getName(newCategoryId)} (${
-        data.update_transactions.affected_rows
-      } records)`,
-      description: (
-        <Button
-          icon="undo"
-          size="small"
-          onClick={async () => {
-            notification.close(key);
-            const results = await Promise.all(
-              currentCategoryIds.map(async (categoryId, index) => {
-                const { data } = await updateTransaction({
-                  variables: {
-                    transactionIds: [transactionIds[index]],
-                    categoryId,
-                  },
-                  refetchQueries: ['GetTransactions'],
-                });
-                return data.update_transactions.affected_rows;
-              })
-            );
-            const recordsUpdated = results.reduce((acc, val) => acc + val, 0);
-            notification.success({
-              key: uuid(),
-              message: `Undid: ${recordsUpdated} records`,
-              placement: 'topLeft',
-            });
-          }}
-        >
-          Undo
-        </Button>
-      ),
-      placement: 'topLeft',
-    });
-  };
-
   return (
     <>
       <Drawer
@@ -154,12 +78,12 @@ const TransactionsView = ({ startDate, endDate }) => {
       >
         <Select
           placeholder="Select category"
-          onChange={({ id, fullName }) => {
+          onChange={(id, { props }) => {
             updateTransactionsCategory({
               transactionIds: selectedRows.map(x => x.key),
-              newCategoryFullName: fullName,
+              newCategoryFullName: props.label,
               newCategoryId: id,
-              currentCategoryIds: selectedRows.map(x => x.categoryId),
+              currentCategoryIds: selectedRows.map(x => x.category?.id),
             });
             setSelectedRows([]);
           }}
@@ -167,7 +91,7 @@ const TransactionsView = ({ startDate, endDate }) => {
           optionFilterProp="label"
         >
           {categories.get().map(({ id, fullName, isSub }) => (
-            <Option key={{ id, fullName }} value={id} label={fullName}>
+            <Option key={id} label={fullName}>
               {isSub ? fullName : <Parent>{fullName}</Parent>}
             </Option>
           ))}
@@ -255,8 +179,8 @@ const TransactionsView = ({ startDate, endDate }) => {
             return (
               <ButtonSelect
                 value={categoryId}
-                onChange={async newCategoryId => {
-                  await updateTransactionsCategory({
+                onChange={newCategoryId => {
+                  updateTransactionsCategory({
                     transactionIds: [record.key],
                     newCategoryFullName: fullName,
                     newCategoryId,
@@ -270,7 +194,7 @@ const TransactionsView = ({ startDate, endDate }) => {
                 buttonTextDefault="Set category"
               >
                 {categories.get().map(({ id, fullName, isSub }) => (
-                  <Option key={{ id, fullName }} value={id} label={fullName}>
+                  <Option key={id} label={fullName}>
                     {isSub ? fullName : <Parent>{fullName}</Parent>}
                   </Option>
                 ))}

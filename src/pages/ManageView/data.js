@@ -1,13 +1,8 @@
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import React, { useState } from 'react';
-import { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
 
-import { Radio, Select, Wrapper } from '../../components';
-import { BaseDataContext, CategoriesList, toMoney } from '../../lib';
-
-const { Option } = Select;
+import { reversible } from '../../lib';
 
 const UPDATE_CATEGORY = gql`
   mutation UpdateCategory(
@@ -28,5 +23,21 @@ const UPDATE_CATEGORY = gql`
 `;
 
 export const useUpdateCategory = () => {
-  return useMutation(UPDATE_CATEGORY);
+  const [updateCategory] = useMutation(UPDATE_CATEGORY);
+  return [
+    reversible({
+      async action({ categoryId, newParentCategoryId, newName, newType }) {
+        const { data } = await updateCategory({
+          variables: {
+            categoryId,
+            parentCategoryId: newParentCategoryId,
+            name: newName,
+            type: newType,
+          },
+          refetchQueries: ['GetBaseData'],
+        });
+      },
+      async undo() {},
+    }),
+  ];
 };
