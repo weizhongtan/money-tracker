@@ -35,18 +35,18 @@ function csvParser(data) {
   return raw;
 }
 
+const pathname = '../../private/_transformed_monzo_transactions.csv';
+const accountName = 'Monzo';
+
 (async () => {
-  const inPath = path.resolve(
-    __dirname,
-    '../../private/Statement Download 2020-Feb-15 0-41-58.ofx'
-  );
+  const inPath = path.resolve(__dirname, pathname);
 
   const rawData = await readFile(inPath, 'utf8');
   const extension = path.extname(inPath);
   const parser = extension === '.ofx' ? ofxParser : csvParser;
 
   const toAccount = await getAccount({
-    legacy_key: '1',
+    name: accountName,
   });
 
   const parsedJson = parser(rawData).map(t => ({
