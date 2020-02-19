@@ -29,12 +29,16 @@ export class CategoriesList {
 export const BaseDataContext = React.createContext({});
 
 export const reversible = ({ action, undo }) => async (...args) => {
-  const actionMessage = await action(...args);
+  const result = await action(...args);
+  // TODO: refactor to use object API in all cases
+  const actionMessage = result.message || result;
+  const { type = 'success' } = result;
   const key = uuid();
-  notification.success({
+  // see types: https://ant.design/components/notification/#API
+  notification[type]({
     key,
     message: actionMessage,
-    description: (
+    description: type === 'success' && (
       <Button
         icon="undo"
         size="small"

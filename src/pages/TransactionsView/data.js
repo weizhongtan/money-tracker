@@ -31,10 +31,12 @@ const GET_TRANSACTIONS = gql`
         date
         amount
         description
-        accountByFromAccountId {
+        accountByToAccountId {
+          id
           name
         }
-        accountByToAccountId {
+        accountByFromAccountId {
+          id
           name
         }
         category {
@@ -74,9 +76,9 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
           date,
           amount,
           accountByToAccountId,
+          accountByFromAccountId,
           description,
           category,
-          accountByFromAccountId,
         }) => {
           return {
             key: id,
@@ -86,13 +88,19 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
               isOut: Number(amount) < 0,
             },
             account: {
-              to: accountByToAccountId?.name,
-              from: accountByFromAccountId?.name,
+              to: {
+                id: accountByToAccountId?.id,
+                name: accountByToAccountId?.name,
+              },
+              from: {
+                id: accountByFromAccountId?.id,
+                name: accountByFromAccountId?.name,
+              },
             },
             description: description,
             category: {
-              fullName: categories.getName(category?.id),
               id: category?.id,
+              fullName: categories.getName(category?.id),
             },
           };
         }
@@ -102,30 +110,41 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
   };
 };
 
-const UPDATE_TRANSACTIONS = gql`
-  mutation UpdateTransactions($transactionIds: [uuid!]!, $categoryId: uuid) {
+const UPDATE_TRANSACTIONS_CATEGORY = gql`
+  mutation UpdateTransactions1($transactionIds: [uuid!]!, $categoryId: uuid) {
     update_transactions(
       where: { id: { _in: $transactionIds } }
       _set: { category_id: $categoryId, updated_at: "now" }
     ) {
-      returning {
-        category_id
-      }
+      affected_rows
+    }
+  }
+`;
+
+const UPDATE_TRANSACTION_FROM_ACCOUNT = gql`
+  mutation UpdateTransactions2($transactionId: uuid!, $fromAccountId: uuid) {
+    update_transactions(
+      where: { id: { _eq: $transactionId } }
+      _set: { from_account_id: $fromAccountId, updated_at: "now" }
+    ) {
       affected_rows
     }
   }
 `;
 
 export const useUpdateTransactionsCategory = categories => {
-  const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS);
+  const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS_CATEGORY);
+  const [updateTransactionFromAccount] = useMutation(
+    UPDATE_TRANSACTION_FROM_ACCOUNT
+  );
 
   const updateTransactionsCategory = reversible({
-    action: async ({
+    async action({
       transactionIds,
       newCategoryFullName,
       newCategoryId,
       currentCategoryIds,
-    }) => {
+    }) {
       const { data } = await updateTransaction({
         variables: {
           transactionIds,
@@ -137,7 +156,7 @@ export const useUpdateTransactionsCategory = categories => {
         data.update_transactions.affected_rows
       } records)`;
     },
-    undo: async ({ transactionIds, currentCategoryIds }) => {
+    async undo({ transactionIds, currentCategoryIds }) {
       const results = await Promise.all(
         currentCategoryIds.map(async (categoryId, index) => {
           const { data } = await updateTransaction({
@@ -155,5 +174,54 @@ export const useUpdateTransactionsCategory = categories => {
     },
   });
 
-  return [updateTransactionsCategory];
+  const pairTransactions = reversible({
+    async action({ transactionIds, toAccountIds, amounts }) {
+      console.log({ transactionIds, toAccountIds, amounts });
+      if (toAccountIds[0] === toAccountIds[1]) {
+        return {
+          message: 'Transactions go to the same account',
+          type: 'error',
+        };
+      }
+
+      if (amounts[0] !== amounts[1]) {
+        return {
+          message: 'Transactions do not match',
+          type: 'error',
+        };
+      }
+      await updateTransactionFromAccount({
+        variables: {
+          transactionId: transactionIds[0],
+          fromAccountId: toAccountIds[1],
+        },
+      });
+      await updateTransactionFromAccount({
+        variables: {
+          transactionId: transactionIds[1],
+          fromAccountId: toAccountIds[0],
+        },
+        refetchQueries: ['GetTransactions'],
+      });
+      return 'Linked transactions';
+    },
+    async undo({ transactionIds }) {
+      await updateTransactionFromAccount({
+        variables: {
+          transactionId: transactionIds[0],
+          fromAccountId: null,
+        },
+      });
+      await updateTransactionFromAccount({
+        variables: {
+          transactionId: transactionIds[1],
+          fromAccountId: null,
+        },
+        refetchQueries: ['GetTransactions'],
+      });
+      return 'Undid: link';
+    },
+  });
+
+  return [updateTransactionsCategory, pairTransactions];
 };

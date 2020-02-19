@@ -32,9 +32,10 @@ const TransactionsView = ({ startDate, endDate }) => {
 
   const categories = new CategoriesList(baseData.categories);
 
-  const [updateTransactionsCategory] = useUpdateTransactionsCategory(
-    categories
-  );
+  const [
+    updateTransactionsCategory,
+    pairTransactions,
+  ] = useUpdateTransactionsCategory(categories);
   const { loading, error, transactions, count } = useTransactions({
     startDate,
     endDate,
@@ -99,6 +100,25 @@ const TransactionsView = ({ startDate, endDate }) => {
         <Button type="primary" onClick={() => setSelectedRows([])}>
           Deselect {selectedRows.length} row(s)
         </Button>
+        {selectedRows.length === 2 && (
+          <Button
+            type="primary"
+            onClick={() => {
+              console.log(selectedRows);
+              const transactionIds = selectedRows.map(x => x.key);
+              const toAccountIds = selectedRows.map(x => x.account.to.id);
+              const amounts = selectedRows.map(x => Math.abs(x.amount.value));
+              pairTransactions({
+                transactionIds,
+                toAccountIds,
+                amounts,
+              });
+              setSelectedRows([]);
+            }}
+          >
+            Pair transactions
+          </Button>
+        )}
       </Drawer>
       <Affix offsetTop={0.01}>
         <DebounceInput
@@ -147,11 +167,11 @@ const TransactionsView = ({ startDate, endDate }) => {
             const arrow = <Icon type={isOut ? 'right' : 'left'} />;
             return (
               <>
-                {avatars[to]}
-                {from && (
+                {avatars[to.name]}
+                {from.name && (
                   <>
                     {' '}
-                    {arrow} {avatars[from]}
+                    {arrow} {avatars[from.name]}
                   </>
                 )}
               </>
