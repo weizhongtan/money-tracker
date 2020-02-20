@@ -107,11 +107,13 @@ const TransactionsView = ({ startDate, endDate }) => {
               console.log(selectedRows);
               const transactionIds = selectedRows.map(x => x.key);
               const toAccountIds = selectedRows.map(x => x.account.to.id);
-              const amounts = selectedRows.map(x => Math.abs(x.amount.value));
+              const amounts = selectedRows.map(x => x.amount.value);
+              const pairIds = selectedRows.map(x => x.pairId);
               pairTransactions({
                 transactionIds,
                 toAccountIds,
                 amounts,
+                pairIds,
               });
               setSelectedRows([]);
             }}

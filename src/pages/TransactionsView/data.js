@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { useContext } from 'react';
+import uuid from 'uuid/v4';
 
 import { BaseDataContext, CategoriesList, reversible } from '../../lib';
 
@@ -79,6 +80,7 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
           accountByFromAccountId,
           description,
           category,
+          pair_id,
         }) => {
           return {
             key: id,
@@ -102,6 +104,7 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
               id: category?.id,
               fullName: categories.getName(category?.id),
             },
+            pairId: pair_id,
           };
         }
       )
@@ -122,10 +125,18 @@ const UPDATE_TRANSACTIONS_CATEGORY = gql`
 `;
 
 const UPDATE_TRANSACTION_FROM_ACCOUNT = gql`
-  mutation UpdateTransactions2($transactionId: uuid!, $fromAccountId: uuid) {
+  mutation UpdateTransactions2(
+    $transactionId: uuid!
+    $fromAccountId: uuid
+    $pairId: uuid
+  ) {
     update_transactions(
       where: { id: { _eq: $transactionId } }
-      _set: { from_account_id: $fromAccountId, updated_at: "now" }
+      _set: {
+        from_account_id: $fromAccountId
+        updated_at: "now"
+        pair_id: $pairId
+      }
     ) {
       affected_rows
     }
@@ -175,7 +186,7 @@ export const useUpdateTransactionsCategory = categories => {
   });
 
   const pairTransactions = reversible({
-    async action({ transactionIds, toAccountIds, amounts }) {
+    async action({ transactionIds, toAccountIds, amounts, pairIds }) {
       console.log({ transactionIds, toAccountIds, amounts });
       if (toAccountIds[0] === toAccountIds[1]) {
         return {
@@ -184,22 +195,34 @@ export const useUpdateTransactionsCategory = categories => {
         };
       }
 
-      if (amounts[0] !== amounts[1]) {
+      // transactions must mirror each other, i.e. first amount must complement second amount
+      if (amounts[0] !== -amounts[1]) {
         return {
           message: 'Transactions do not match',
           type: 'error',
         };
       }
+
+      if (pairIds.some(x => x)) {
+        return {
+          message: 'Transactions are already paired',
+          type: 'error',
+        };
+      }
+
+      const pairId = uuid();
       await updateTransactionFromAccount({
         variables: {
           transactionId: transactionIds[0],
           fromAccountId: toAccountIds[1],
+          pairId,
         },
       });
       await updateTransactionFromAccount({
         variables: {
           transactionId: transactionIds[1],
           fromAccountId: toAccountIds[0],
+          pairId,
         },
         refetchQueries: ['GetTransactions'],
       });
@@ -210,12 +233,14 @@ export const useUpdateTransactionsCategory = categories => {
         variables: {
           transactionId: transactionIds[0],
           fromAccountId: null,
+          pairId: null,
         },
       });
       await updateTransactionFromAccount({
         variables: {
           transactionId: transactionIds[1],
           fromAccountId: null,
+          pairId: null,
         },
         refetchQueries: ['GetTransactions'],
       });
