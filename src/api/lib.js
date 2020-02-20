@@ -19,13 +19,13 @@ exports.createTransaction = async ({
   description,
   toAccount,
 }) => {
-  // search for any transaction with a date of 3 days either side,
-  // the same amount, to the same account
+  // search for any transaction with a date of 1 day either side,
+  // the same amount, to the same account, the same description
   const startDate = moment(date)
-    .subtract(3, 'days')
+    .subtract(1, 'days')
     .toISOString();
   const endDate = moment(date)
-    .add(3, 'days')
+    .add(1, 'days')
     .toISOString();
   const existing = await Transaction.findOne({
     where: {
@@ -37,6 +37,7 @@ exports.createTransaction = async ({
         [Sequelize.Op.eq]: amount,
       },
       to_account_id: toAccount.id,
+      description: description,
     },
   });
   if (existing) {

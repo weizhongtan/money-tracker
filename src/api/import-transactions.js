@@ -35,8 +35,9 @@ function csvParser(data) {
   return raw;
 }
 
-const pathname = '../../private/_transformed_monzo_transactions.csv';
-const accountName = 'Monzo';
+const pathname =
+  '/Users/wzt/Downloads/finance/_transformed_tandem_transactions.csv';
+const accountName = 'Tandem';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);
