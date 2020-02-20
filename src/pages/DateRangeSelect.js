@@ -9,16 +9,6 @@ const DateRangeSelect = ({ startDate, setStartDate, endDate, setEndDate }) => {
     <div>
       <Menu theme="dark">
         <Menu.Item>
-          <WeekPicker
-            onChange={date => {
-              setStartDate(moment(date).startOf('week'));
-              setEndDate(moment(date).endOf('week'));
-            }}
-            placeholder="Select week"
-            value={startDate}
-          />
-        </Menu.Item>
-        <Menu.Item>
           <MonthPicker
             onChange={date => {
               setStartDate(moment(date).startOf('month'));
@@ -26,13 +16,14 @@ const DateRangeSelect = ({ startDate, setStartDate, endDate, setEndDate }) => {
             }}
             placeholder="Select month"
             value={startDate}
+            format="MMMM YYYY"
           />
         </Menu.Item>
         <Menu.Item>
           <RangePicker
             onChange={([start, end]) => {
-              setStartDate(start);
-              setEndDate(end);
+              setStartDate(moment(start).startOf('day'));
+              setEndDate(moment(end).endOf('day'));
             }}
             value={[startDate, endDate]}
             ranges={{
