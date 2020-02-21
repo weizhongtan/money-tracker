@@ -1,4 +1,14 @@
-import { Affix, Avatar, Button, Drawer, Icon, Input, Table } from 'antd';
+import {
+  Affix,
+  Avatar,
+  Button,
+  Drawer,
+  Icon,
+  Input,
+  Table,
+  Tooltip,
+} from 'antd';
+import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
@@ -50,17 +60,18 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
       ...acc,
       [name]: (
         <>
-          <Avatar
-            style={{
-              background: Object.entries(theme.colors.presetPrimaryColors).find(
-                (_, _index) => index === _index
-              )[1],
-            }}
-            size="small"
-          >
-            {name[0]}
-          </Avatar>{' '}
-          {name}
+          <Tooltip title={name}>
+            <Avatar
+              style={{
+                background: Object.entries(
+                  theme.colors.presetPrimaryColors
+                ).find((_, _index) => index === _index)[1],
+              }}
+              size="small"
+            >
+              {name[0]}
+            </Avatar>
+          </Tooltip>
         </>
       ),
     };
@@ -153,8 +164,12 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           title="Date"
           dataIndex="date"
           key="date"
-          // render={date => <TimeAgo date={date} />}
-          render={date => date.toDateString()}
+          // render={date => }
+          render={date => (
+            <Tooltip title={<TimeAgo date={date} />}>
+              {moment(date).format('DD/MM/YY')}
+            </Tooltip>
+          )}
         />
         <Column
           title="Account"
@@ -164,7 +179,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             text: name,
             value: name,
           }))}
-          onFilter={(value, record) => record.account === value}
+          onFilter={(value, record) => record.account.to.name === value}
           render={({ to, from }, record) => {
             const { isOut } = record.amount;
             const arrow = <Icon type={isOut ? 'right' : 'left'} />;
