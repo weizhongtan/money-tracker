@@ -1,6 +1,7 @@
 import {
   Affix,
   Avatar,
+  Badge,
   Button,
   Drawer,
   Icon,
@@ -20,7 +21,9 @@ import { useTransactions, useUpdateTransactionsCategory } from './data';
 
 const { Option } = Select;
 const { Column } = Table;
-const { Search } = Input;
+const Search = styled(Input.Search)`
+  width: 100%;
+`;
 
 const Amount = styled.span`
   display: block;
@@ -85,9 +88,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
         visible={!!selectedRows.length}
         mask={false}
         height={52}
-        bodyStyle={{
-          padding: '10px',
-        }}
+        bodyStyle={{ padding: '10px' }}
       >
         <Select
           placeholder="Select category"
@@ -116,7 +117,6 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           <Button
             type="primary"
             onClick={() => {
-              console.log(selectedRows);
               const transactionIds = selectedRows.map(x => x.key);
               const toAccountIds = selectedRows.map(x => x.account.to.id);
               const amounts = selectedRows.map(x => x.amount.value);
@@ -146,8 +146,14 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           }}
           loading={loading}
           autoFocus
+          addonAfter={
+            <Badge
+              count={count}
+              overflowCount={Number.MAX_SAFE_INTEGER}
+              style={{ backgroundColor: '#52c41a' }}
+            />
+          }
         />
-        <span>{count} records</span>
       </Affix>
       <Table
         dataSource={transactions}

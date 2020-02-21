@@ -21,7 +21,11 @@ const GET_BALANCE = gql`
       name
     }
     balance: func_transactions_by_account_grouped_cumulative(
-      args: { v_account_id: $accountId, v_group_by: $groupBy }
+      args: {
+        v_account_id: $accountId
+        v_group_by: $groupBy
+        v_start_date: $startDate
+      }
       where: { date: { _gte: $startDate, _lte: $endDate } }
       order_by: { date: asc }
     ) {
