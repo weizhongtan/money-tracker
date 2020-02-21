@@ -4,15 +4,21 @@ CREATE TABLE __transactions_group_by (
    sum numeric(19, 2)
 );
 
--- get a cumulative sum of transaction amounts over time for a given account, grouped by time period
-CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_account_id uuid, v_group_by text)
+-- get a cumulative sum of transaction amounts over time for a given account, grouped by time period, from a start date
+CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_account_id uuid, v_group_by text, v_start_date timestamptz)
    RETURNS SETOF __transactions_group_by
    AS $$
    WITH data AS (
       -- first row should be the initial amount from the account
-      -- date is before all other transactions
+      -- date is equal to the given start date
       SELECT
-         '2000-01-01T00:00:00.000Z' AS group_date,
+         CASE
+         -- if v_account_id is not provided, create one record with the sum total of all initial accounts
+         WHEN v_account_id IS NULL THEN
+            date_trunc(v_group_by, v_start_date)
+         ELSE
+            v_start_date
+         END AS group_date,
          initial_amount AS sum
       FROM
          accounts
