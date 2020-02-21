@@ -15,7 +15,7 @@ export class CategoriesList {
   constructor(categories) {
     this.categories = categories.map(cat => ({
       ...cat,
-      isSub: !cat.parent?.name,
+      isSub: !!cat.parent?.name,
     }));
   }
   get() {

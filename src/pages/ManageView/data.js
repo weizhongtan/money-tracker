@@ -1,19 +1,23 @@
 import { useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import React, { useState } from 'react';
 
 import { reversible } from '../../lib';
 
 const UPDATE_CATEGORY = gql`
   mutation UpdateCategory(
-    $categoryId: uuid!
-    $parentCategoryId: string
-    $name: string
-    $type: string
+    $id: uuid!
+    $parentCategoryId: uuid
+    $name: String
+    $type: String
   ) {
     update_categories(
-      where: { id: { _eq: $categoryId } }
-      _set: { parent_category_id: $parentCategoryId, name: $name, type: $type }
+      where: { id: { _eq: $id } }
+      _set: {
+        parent_category_id: $parentCategoryId
+        name: $name
+        type: $type
+        updated_at: "now"
+      }
     ) {
       returning {
         id
@@ -26,18 +30,30 @@ export const useUpdateCategory = () => {
   const [updateCategory] = useMutation(UPDATE_CATEGORY);
   return [
     reversible({
-      async action({ categoryId, newParentCategoryId, newName, newType }) {
-        const { data } = await updateCategory({
+      async action({ record, newParentCategoryId, newName, newType }) {
+        await updateCategory({
           variables: {
-            categoryId,
+            id: record.id,
             parentCategoryId: newParentCategoryId,
-            name: newName,
-            type: newType,
+            name: newName ?? record.name,
+            type: newType ?? record.type,
           },
           refetchQueries: ['GetBaseData'],
         });
+        return 'Updated';
       },
-      async undo() {},
+      async undo({ record }) {
+        await updateCategory({
+          variables: {
+            id: record.id,
+            parentCategoryId: record.parent.id,
+            name: record.name,
+            type: record.type,
+          },
+          refetchQueries: ['GetBaseData'],
+        });
+        return 'Undid';
+      },
     }),
   ];
 };

@@ -2,7 +2,7 @@ import { DatePicker, Menu } from 'antd';
 import moment from 'moment';
 import React from 'react';
 
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+const { MonthPicker, RangePicker } = DatePicker;
 
 const DateRangeSelect = ({ startDate, setStartDate, endDate, setEndDate }) => {
   return (
