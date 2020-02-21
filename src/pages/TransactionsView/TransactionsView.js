@@ -203,6 +203,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           render={({ value, isOut }) => (
             <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
           )}
+          sorter={(a, b) => a.amount.value - b.amount.value}
         />
         <Column title="Description" dataIndex="description" key="description" />
         <Column
