@@ -138,9 +138,9 @@ const TimelineView = ({ startDate, endDate }) => {
         visible={isVisible}
         onClose={() => setVisible(false)}
         height="75%"
-        // bodyStyle={{
-        //   padding: '10px',
-        // }}
+        bodyStyle={{
+          padding: '10px',
+        }}
       >
         <TransactionsView
           startDate={transactionViewDates.startDate}

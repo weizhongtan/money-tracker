@@ -182,7 +182,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           onFilter={(value, record) => record.account.to.name === value}
           render={({ to, from }, record) => {
             const { isOut } = record.amount;
-            const arrow = <Icon type={isOut ? 'right' : 'left'} />;
+            const arrow = <Icon type={isOut ? 'arrow-right' : 'arrow-left'} />;
             return (
               <>
                 {avatars[to.name]}
