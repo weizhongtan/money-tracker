@@ -1,4 +1,0 @@
-/* extends height of open dropdown */
-.dropdown .ul {
-  max-height: unset !important;
-}

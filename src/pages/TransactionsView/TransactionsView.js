@@ -23,7 +23,7 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const TransactionsView = ({ startDate, endDate }) => {
+const TransactionsView = ({ startDate, endDate, categoryId }) => {
   const theme = useContext(ThemeContext);
   const baseData = useContext(BaseDataContext);
 
@@ -39,6 +39,7 @@ const TransactionsView = ({ startDate, endDate }) => {
   const { loading, error, transactions, count } = useTransactions({
     startDate,
     endDate,
+    categoryId,
     searchText,
   });
   if (loading && typeof transactions === 'undefined') return null;

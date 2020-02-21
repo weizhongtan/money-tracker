@@ -9,6 +9,7 @@ const GET_TRANSACTIONS = gql`
   query GetTransactions(
     $startDate: timestamptz
     $endDate: timestamptz
+    $categoryIds: [uuid!]
     $searchText: String!
     $searchAmount: numeric!
     $searchAmountComplement: numeric!
@@ -16,6 +17,7 @@ const GET_TRANSACTIONS = gql`
     transactions_aggregate(
       where: {
         date: { _gte: $startDate, _lte: $endDate }
+        category_id: { _in: $categoryIds }
         _or: [
           { description: { _ilike: $searchText } }
           { amount: { _eq: $searchAmount } }
@@ -50,14 +52,29 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
-export const useTransactions = ({ startDate, endDate, searchText }) => {
+export const useTransactions = ({
+  startDate,
+  endDate,
+  categoryId,
+  searchText,
+}) => {
   const baseData = useContext(BaseDataContext);
 
   const searchAmount = Number(searchText) || 0;
   const searchAmountComplement = -searchAmount;
+  const categoryIds = baseData.categories
+    .filter(cat => {
+      const parentId = cat.parent?.id || cat.id;
+      if (!categoryId || parentId === categoryId || cat.id === categoryId) {
+        return true;
+      }
+      return false;
+    })
+    .map(x => x.id);
   const variables = {
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
+    categoryIds,
     searchText: `%${searchText}%`,
     searchAmount,
     searchAmountComplement,
@@ -102,7 +119,7 @@ export const useTransactions = ({ startDate, endDate, searchText }) => {
             description: description,
             category: {
               id: category?.id,
-              fullName: categories.getName(category?.id),
+              fullName: categories.getFullName(category?.id),
             },
             pairId: pair_id,
           };
@@ -163,7 +180,7 @@ export const useUpdateTransactionsCategory = categories => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      return `Updated: ${categories.getName(newCategoryId)} (${
+      return `Updated: ${categories.getFullName(newCategoryId)} (${
         data.update_transactions.affected_rows
       } records)`;
     },

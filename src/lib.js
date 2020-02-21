@@ -15,13 +15,13 @@ export class CategoriesList {
   constructor(categories) {
     this.categories = categories.map(cat => ({
       ...cat,
-      isSub: !!cat.parentCategoryName,
+      isSub: !cat.parent?.name,
     }));
   }
   get() {
     return this.categories;
   }
-  getName(id) {
+  getFullName(id) {
     return this.categories.find(({ id: _id }) => _id === id)?.fullName;
   }
 }

@@ -1,7 +1,6 @@
-import './TimelineView.css';
-
 import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveBar } from '@nivo/bar';
+import { Drawer } from 'antd';
 import { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -10,6 +9,7 @@ import styled, { ThemeContext } from 'styled-components';
 
 import { Radio, Select, Wrapper } from '../components';
 import { BaseDataContext, CategoriesList, toMoney } from '../lib';
+import TransactionsView from './TransactionsView';
 
 const { Option } = Select;
 
@@ -42,7 +42,7 @@ const GET_AMOUNT_GROUPS = gql`
   }
 `;
 
-const Bar = ({ data, mean }) => {
+const Bar = ({ data, mean, ...props }) => {
   const theme = useContext(ThemeContext);
 
   return (
@@ -86,6 +86,7 @@ const Bar = ({ data, mean }) => {
           legend: `Mean: ${toMoney(mean)}`,
         },
       ]}
+      {...props}
     />
   );
 };
@@ -99,6 +100,11 @@ const TimelineView = ({ startDate, endDate }) => {
 
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');
+  const [isVisible, setVisible] = useState(false);
+  const [transactionViewDates, setTransactionViewDates] = useState({
+    startDate: null,
+    endDate: null,
+  });
 
   const { loading, error, data } = useQuery(GET_AMOUNT_GROUPS, {
     variables: {
@@ -120,13 +126,28 @@ const TimelineView = ({ startDate, endDate }) => {
   const categories = new CategoriesList([
     {
       id: null,
-      name: 'All Categories',
+      fullName: 'All Categories',
     },
     ...baseData.categories,
   ]);
 
   return (
     <Wrapper>
+      <Drawer
+        placement="bottom"
+        visible={isVisible}
+        onClose={() => setVisible(false)}
+        height="75%"
+        // bodyStyle={{
+        //   padding: '10px',
+        // }}
+      >
+        <TransactionsView
+          startDate={transactionViewDates.startDate}
+          endDate={transactionViewDates.endDate}
+          categoryId={categoryId}
+        />
+      </Drawer>
       <Select
         value={categoryId}
         onChange={setCategoryId}
@@ -134,9 +155,9 @@ const TimelineView = ({ startDate, endDate }) => {
         optionFilterProp="label"
         dropdownClassName="dropdown"
       >
-        {categories.get().map(({ id, name, isSub }) => (
-          <Option key={id} value={id} label={name}>
-            {isSub ? name : <Parent>{name}</Parent>}
+        {categories.get().map(({ id, fullName, isSub }) => (
+          <Option key={id} value={id} label={fullName}>
+            {isSub ? fullName : <Parent>{fullName}</Parent>}
           </Option>
         ))}
       </Select>
@@ -149,7 +170,16 @@ const TimelineView = ({ startDate, endDate }) => {
         <Radio.Button value="month">Month</Radio.Button>
         <Radio.Button value="year">Year</Radio.Button>
       </Radio.Group>
-      <Bar data={groups} mean={data.aggregate.aggregate.avg.sum} />
+      <Bar
+        data={groups}
+        mean={data.aggregate.aggregate.avg.sum}
+        onClick={({ data: { date } }) => {
+          const startDate = moment(date);
+          const endDate = moment(startDate).endOf(precision);
+          setTransactionViewDates({ startDate, endDate });
+          setVisible(true);
+        }}
+      />
     </Wrapper>
   );
 };
