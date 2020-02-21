@@ -210,11 +210,11 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           title="Category"
           dataIndex="category"
           key="category"
-          filters={categories.get().map(({ name }) => ({
-            text: name,
-            value: name,
+          filters={categories.get().map(({ fullName }) => ({
+            text: fullName,
+            value: fullName,
           }))}
-          onFilter={(value, record) => record.category === value}
+          onFilter={(value, record) => record.category.fullName === value}
           render={({ fullName, id: categoryId }, record) => {
             return (
               <ButtonSelect

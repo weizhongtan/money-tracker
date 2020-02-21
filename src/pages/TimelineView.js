@@ -136,6 +136,7 @@ const TimelineView = ({ startDate, endDate }) => {
       <Drawer
         placement="bottom"
         visible={isVisible}
+        closable={false}
         onClose={() => setVisible(false)}
         height="75%"
         bodyStyle={{
