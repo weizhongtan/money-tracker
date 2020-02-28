@@ -1,194 +1,161 @@
 {
-  "functions": [
-    {
-      "function": "func_transactions_by_account_grouped_cumulative",
-      "configuration": {}
-    },
-    { "function": "func_transactions_by_category_grouped", "configuration": {} }
-  ],
-  "remote_schemas": [],
-  "query_collections": [],
-  "allowlist": [],
   "version": 2,
   "tables": [
     {
-      "table": "__transactions_group_by",
-      "is_enum": false,
-      "configuration": {
-        "custom_root_fields": {
-          "select": null,
-          "select_by_pk": null,
-          "select_aggregate": null,
-          "insert": null,
-          "update": null,
-          "delete": null
-        },
-        "custom_column_names": {}
-      },
-      "object_relationships": [],
-      "array_relationships": [],
-      "insert_permissions": [],
-      "select_permissions": [],
-      "update_permissions": [],
-      "delete_permissions": [],
-      "event_triggers": [],
-      "computed_fields": []
+      "table": {
+        "schema": "public",
+        "name": "__categories_group_by"
+      }
     },
     {
-      "table": "accounts",
-      "is_enum": false,
-      "configuration": {
-        "custom_root_fields": {
-          "select": null,
-          "select_by_pk": null,
-          "select_aggregate": null,
-          "insert": null,
-          "update": null,
-          "delete": null
-        },
-        "custom_column_names": {}
+      "table": {
+        "schema": "public",
+        "name": "__transactions_group_by"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "accounts"
       },
-      "object_relationships": [],
       "array_relationships": [
         {
+          "name": "transactions",
           "using": {
             "foreign_key_constraint_on": {
               "column": "from_account_id",
-              "table": "transactions"
+              "table": {
+                "schema": "public",
+                "name": "transactions"
+              }
             }
-          },
-          "name": "transactions",
-          "comment": null
+          }
         },
         {
+          "name": "transactionsByToAccountId",
           "using": {
             "foreign_key_constraint_on": {
               "column": "to_account_id",
-              "table": "transactions"
+              "table": {
+                "schema": "public",
+                "name": "transactions"
+              }
             }
-          },
-          "name": "transactionsByToAccountId",
-          "comment": null
+          }
         }
-      ],
-      "insert_permissions": [],
-      "select_permissions": [],
-      "update_permissions": [],
-      "delete_permissions": [],
-      "event_triggers": [],
-      "computed_fields": []
+      ]
     },
     {
-      "table": "categories",
-      "is_enum": false,
-      "configuration": {
-        "custom_root_fields": {
-          "select": null,
-          "select_by_pk": null,
-          "select_aggregate": null,
-          "insert": null,
-          "update": null,
-          "delete": null
-        },
-        "custom_column_names": {}
-      },
-      "object_relationships": [],
-      "array_relationships": [
-        {
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "category_id",
-              "table": "transactions"
-            }
-          },
-          "name": "transactions",
-          "comment": null
-        }
-      ],
-      "insert_permissions": [],
-      "select_permissions": [],
-      "update_permissions": [],
-      "delete_permissions": [],
-      "event_triggers": [],
-      "computed_fields": []
-    },
-    {
-      "table": "cumulative_by_day",
-      "is_enum": false,
-      "configuration": {
-        "custom_root_fields": {
-          "select": null,
-          "select_by_pk": null,
-          "select_aggregate": null,
-          "insert": null,
-          "update": null,
-          "delete": null
-        },
-        "custom_column_names": {}
-      },
-      "object_relationships": [],
-      "array_relationships": [],
-      "insert_permissions": [],
-      "select_permissions": [],
-      "update_permissions": [],
-      "delete_permissions": [],
-      "event_triggers": [],
-      "computed_fields": []
-    },
-    {
-      "table": "transactions",
-      "is_enum": false,
-      "configuration": {
-        "custom_root_fields": {
-          "select": null,
-          "select_by_pk": null,
-          "select_aggregate": null,
-          "insert": null,
-          "update": null,
-          "delete": null
-        },
-        "custom_column_names": {}
+      "table": {
+        "schema": "public",
+        "name": "categories"
       },
       "object_relationships": [
         {
-          "using": { "foreign_key_constraint_on": "from_account_id" },
-          "name": "accountByFromAccountId",
-          "comment": null
-        },
-        {
-          "using": { "foreign_key_constraint_on": "to_account_id" },
-          "name": "accountByToAccountId",
-          "comment": null
-        },
-        {
-          "using": { "foreign_key_constraint_on": "category_id" },
           "name": "category",
-          "comment": null
-        },
-        {
-          "using": { "foreign_key_constraint_on": "paired_with_id" },
-          "name": "transaction",
-          "comment": null
+          "using": {
+            "foreign_key_constraint_on": "parent_category_id"
+          }
         }
       ],
       "array_relationships": [
         {
+          "name": "categories",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "parent_category_id",
+              "table": {
+                "schema": "public",
+                "name": "categories"
+              }
+            }
+          }
+        },
+        {
+          "name": "transactions",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "category_id",
+              "table": {
+                "schema": "public",
+                "name": "transactions"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "transactions"
+      },
+      "object_relationships": [
+        {
+          "name": "accountByFromAccountId",
+          "using": {
+            "foreign_key_constraint_on": "from_account_id"
+          }
+        },
+        {
+          "name": "accountByToAccountId",
+          "using": {
+            "foreign_key_constraint_on": "to_account_id"
+          }
+        },
+        {
+          "name": "category",
+          "using": {
+            "foreign_key_constraint_on": "category_id"
+          }
+        },
+        {
+          "name": "transaction",
+          "using": {
+            "foreign_key_constraint_on": "paired_with_id"
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "transactions",
           "using": {
             "foreign_key_constraint_on": {
               "column": "paired_with_id",
-              "table": "transactions"
+              "table": {
+                "schema": "public",
+                "name": "transactions"
+              }
             }
-          },
-          "name": "transactions",
-          "comment": null
+          }
         }
-      ],
-      "insert_permissions": [],
-      "select_permissions": [],
-      "update_permissions": [],
-      "delete_permissions": [],
-      "event_triggers": [],
-      "computed_fields": []
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "view_categories_with_parents"
+      }
+    }
+  ],
+  "functions": [
+    {
+      "function": {
+        "schema": "public",
+        "name": "func_category_by_date_type"
+      }
+    },
+    {
+      "function": {
+        "schema": "public",
+        "name": "func_transactions_by_account_grouped_cumulative"
+      }
+    },
+    {
+      "function": {
+        "schema": "public",
+        "name": "func_transactions_by_category_grouped"
+      }
     }
   ]
 }
