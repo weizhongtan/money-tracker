@@ -13,7 +13,7 @@ services:
   graphql-engine:
     image: hasura/graphql-engine:v1.1.0
     ports:
-      - '3001:3001'
+      - '8080:8080'
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/moneytracker

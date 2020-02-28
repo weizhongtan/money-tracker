@@ -38,14 +38,14 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "api:up": "docker-compose up -d",
+    "api:up": "docker-compose up -d --force-recreate",
     "api:down": "docker-compose down",
     "db": "pgcli postgres://postgres:postgrespassword@localhost:5432/moneytracker",
     "bootstrap:xml-to-json": "node src/api/migration/xml-to-json.js",
     "bootstrap:json-to-postgres": "node src/api/migration/json-to-postgres.js",
     "import": "node src/api/import-transactions.js"
   },
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:8080/",
   "eslintConfig": {
     "extends": "react-app"
   },
