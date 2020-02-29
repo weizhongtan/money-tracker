@@ -1,10 +1,10 @@
+import { Icon as LegacyIcon } from '@ant-design/compatible';
 import {
   Affix,
   Avatar,
   Badge,
   Button,
   Drawer,
-  Icon,
   Input,
   Table,
   Tooltip,
@@ -188,7 +188,9 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           onFilter={(value, record) => record.account.to.name === value}
           render={({ to, from }, record) => {
             const { isOut } = record.amount;
-            const arrow = <Icon type={isOut ? 'arrow-right' : 'arrow-left'} />;
+            const arrow = (
+              <LegacyIcon type={isOut ? 'arrow-right' : 'arrow-left'} />
+            );
             return (
               <>
                 {avatars[to.name]}

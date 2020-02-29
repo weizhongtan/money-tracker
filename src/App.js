@@ -1,7 +1,14 @@
 import 'antd/dist/antd.css';
 
+import {
+  BarsOutlined,
+  ClockCircleOutlined,
+  FundOutlined,
+  PieChartOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
-import { Icon, Layout, Menu } from 'antd';
+import { Layout, Menu } from 'antd';
 import ApolloClient, { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
@@ -42,31 +49,31 @@ const routes = [
     path: '/transactions',
     title: 'Transactions',
     component: TransactionsView,
-    Icon: <Icon type="bars" />,
+    Icon: <BarsOutlined />,
   },
   {
     path: '/cumulative',
     title: 'Cumulative',
     component: CumulativeView,
-    Icon: <Icon type="fund" />,
+    Icon: <FundOutlined />,
   },
   {
     path: '/breakdown',
     title: 'Breakdown',
     component: BreakdownView,
-    Icon: <Icon type="pie-chart" />,
+    Icon: <PieChartOutlined />,
   },
   {
     path: '/timeline',
     title: 'Timeline',
     component: TimelineView,
-    Icon: <Icon type="clock-circle" />,
+    Icon: <ClockCircleOutlined />,
   },
   {
     path: '/manage',
     title: 'Manage',
     component: ManageView,
-    Icon: <Icon type="setting" />,
+    Icon: <SettingOutlined />,
   },
 ];
 const GET_BASE_DATA = gql`

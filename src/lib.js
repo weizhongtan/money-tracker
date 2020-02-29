@@ -1,3 +1,4 @@
+import { UndoOutlined } from '@ant-design/icons';
 import { Button, notification } from 'antd';
 import React from 'react';
 import uuid from 'uuid/v4';
@@ -40,7 +41,7 @@ export const reversible = ({ action, undo }) => async (...args) => {
     message: actionMessage,
     description: type === 'success' && (
       <Button
-        icon="undo"
+        icon={<UndoOutlined />}
         size="small"
         onClick={async () => {
           notification.close(key);

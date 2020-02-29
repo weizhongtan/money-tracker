@@ -1,4 +1,5 @@
-import { Icon, Table, Tooltip } from 'antd';
+import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { Table, Tooltip } from 'antd';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
@@ -82,7 +83,7 @@ const ManageView = ({ startDate, endDate }) => {
           key="type"
           render={name => {
             const isExpense = name === 'expense';
-            const TypeIcon = styled(Icon)`
+            const TypeIcon = styled(LegacyIcon)`
               color: ${({ theme: { positive, neutral } }) =>
                 isExpense ? neutral : positive};
             `;
