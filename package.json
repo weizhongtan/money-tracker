@@ -6,7 +6,7 @@
     "url": "https://github.com/weizhongtan/money-tracker"
   },
   "dependencies": {
-    "@ant-design/colors": "^3.2.2",
+    "@ant-design/colors": "^4.0.0",
     "@ant-design/compatible": "0.0.1-rc.1",
     "@ant-design/icons": "^4.0.0",
     "@apollo/react-hooks": "^3.1.3",
