@@ -97,7 +97,7 @@ const Parent = styled.span`
 const TimelineView = ({ startDate, endDate }) => {
   const baseData = useBaseData();
 
-  const [categoryId, setCategoryId] = useState(null);
+  const [categoryId, setCategoryId] = useState('all');
   const [precision, setPrecision] = useState('month');
   const [isVisible, setVisible] = useState(false);
   const [transactionViewDates, setTransactionViewDates] = useState({
@@ -109,7 +109,7 @@ const TimelineView = ({ startDate, endDate }) => {
     variables: {
       startDate,
       endDate,
-      categoryId,
+      categoryId: categoryId === 'all' ? null : categoryId,
       groupBy: precision,
     },
   });
@@ -124,7 +124,7 @@ const TimelineView = ({ startDate, endDate }) => {
 
   const categories = new CategoriesList([
     {
-      id: null,
+      id: 'all',
       fullName: 'All Categories',
     },
     ...baseData.categories,
@@ -153,7 +153,6 @@ const TimelineView = ({ startDate, endDate }) => {
         onChange={setCategoryId}
         showSearch
         optionFilterProp="label"
-        dropdownClassName="dropdown"
       >
         {categories.get().map(({ id, fullName, isSub }) => (
           <Option key={id} value={id} label={fullName}>

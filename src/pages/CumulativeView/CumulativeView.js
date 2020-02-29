@@ -3,8 +3,8 @@ import moment from 'moment';
 import React, { useState } from 'react';
 
 import { Radio, Select, Wrapper } from '../../components';
-import { toMoney, useBaseData } from '../../lib';
-import { useBalances } from './data';
+import { toMoney } from '../../lib';
+import { useData } from './data';
 
 const { Option } = Select;
 
@@ -41,18 +41,17 @@ const getBottomAxisProp = (startDate, endDate) => {
 };
 
 const CumulativeView = ({ startDate, endDate }) => {
-  const [accountId, setAccountId] = useState(null);
+  const [accountId, setAccountId] = useState('all');
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
   const [precision, setPrecision] = useState(defaultPrecision);
-  const { accounts } = useBaseData();
-  const { loading, error, balances } = useBalances({
+  const { loading, error, balances, accounts } = useData({
     startDate,
     endDate,
     accountId,
     precision,
   });
-  if (loading || typeof balances === 'undefined') return null;
+  if (loading && typeof balances === 'undefined') return null;
   if (error) return 'error';
 
   const series = [
@@ -85,7 +84,7 @@ const CumulativeView = ({ startDate, endDate }) => {
   return (
     <Wrapper>
       <Select
-        defaultValue={accountId}
+        value={accountId}
         onChange={setAccountId}
         showSearch
         optionFilterProp="label"

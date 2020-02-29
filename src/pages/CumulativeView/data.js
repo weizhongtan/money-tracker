@@ -1,6 +1,8 @@
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
+import { useBaseData } from '../../lib';
+
 const GET_BALANCE = gql`
   query GetBalance(
     $startDate: timestamptz
@@ -23,19 +25,29 @@ const GET_BALANCE = gql`
   }
 `;
 
-export const useBalances = ({ startDate, endDate, accountId, precision }) => {
+export const useData = ({ startDate, endDate, accountId, precision }) => {
+  const { accounts } = useBaseData();
   const { loading, error, data } = useQuery(GET_BALANCE, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
-      accountId,
+      accountId: accountId === 'all' ? null : accountId,
       groupBy: precision,
     },
   });
 
-  return {
+  const ret = {
     loading,
     error,
     balances: data?.balances,
+    accounts: [
+      {
+        id: 'all',
+        name: 'All accounts',
+      },
+      ...accounts,
+    ],
   };
+  console.log({ ret });
+  return ret;
 };
