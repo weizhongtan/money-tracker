@@ -48,34 +48,41 @@ const routes = [
   {
     path: '/transactions',
     title: 'Transactions',
-    component: TransactionsView,
     Icon: <BarsOutlined />,
+    component: TransactionsView,
   },
   {
     path: '/cumulative',
     title: 'Cumulative',
-    component: CumulativeView,
     Icon: <FundOutlined />,
+    component: CumulativeView,
   },
   {
     path: '/breakdown',
     title: 'Breakdown',
-    component: BreakdownView,
     Icon: <PieChartOutlined />,
+    component: BreakdownView,
   },
   {
     path: '/timeline',
     title: 'Timeline',
-    component: TimelineView,
     Icon: <ClockCircleOutlined />,
+    component: TimelineView,
   },
   {
     path: '/manage',
     title: 'Manage',
-    component: ManageView,
     Icon: <SettingOutlined />,
+    children: [
+      {
+        path: '/categories',
+        title: 'Categories',
+        component: ManageView,
+      },
+    ],
   },
 ];
+
 const GET_BASE_DATA = gql`
   query GetBaseData {
     accounts(order_by: { legacy_key: asc }) {
@@ -137,6 +144,16 @@ function App() {
       .subtract(1, 'year')
       .startOf('year')
   );
+  const [openKeys, setOpenKeys] = useState(
+    [
+      routes
+        .filter(({ children }) => children)
+        .find(({ children }) =>
+          children.some(child => location.pathname.includes(child.path))
+        )?.path,
+    ].filter(x => x)
+  );
+  console.log(openKeys);
   const [endDate, setEndDate] = useState(moment());
   const { loading, error, data } = useBaseData();
   if (loading || error) return null;
@@ -151,14 +168,37 @@ function App() {
             onSelect={({ key }) => {
               history.push(key);
             }}
+            openKeys={openKeys}
+            onOpenChange={setOpenKeys}
             mode="inline"
           >
-            {routes.map(({ path, title, Icon }) => (
-              <Menu.Item key={path}>
-                {Icon}
-                <span>{title}</span>
-              </Menu.Item>
-            ))}
+            {routes.map(({ path, title, Icon, children }) => {
+              if (!children) {
+                return (
+                  <Menu.Item key={path}>
+                    {Icon}
+                    <span>{title}</span>
+                  </Menu.Item>
+                );
+              }
+              return (
+                <Menu.SubMenu
+                  key={path}
+                  title={
+                    <span>
+                      {Icon}
+                      <span>{title}</span>
+                    </span>
+                  }
+                >
+                  {children.map(child => (
+                    <Menu.Item key={path + child.path}>
+                      <span>{child.title}</span>
+                    </Menu.Item>
+                  ))}
+                </Menu.SubMenu>
+              );
+            })}
           </Menu>
           <DateRangeSelect
             {...{
@@ -171,11 +211,32 @@ function App() {
         </Layout.Sider>
         <Content>
           <Switch>
-            {routes.map(({ path, component: Component }) => (
+            {routes.map(({ path, component: Component, children }) => (
               <Route
                 key={path}
                 path={path}
-                render={() => <Component {...{ startDate, endDate }} />}
+                render={({ match }) => {
+                  if (!children) {
+                    return <Component {...{ startDate, endDate }} />;
+                  }
+                  return (
+                    <>
+                      {children.map(child => {
+                        const Component = child.component;
+                        return (
+                          <Route
+                            key={match.url + child.path}
+                            path={match.url + child.path}
+                            render={() => (
+                              <Component {...{ startDate, endDate }} />
+                            )}
+                          />
+                        );
+                      })}
+                      <Redirect to={match.url + children[0].path} />
+                    </>
+                  );
+                }}
               />
             ))}
             <Redirect to={routes[0].path} />

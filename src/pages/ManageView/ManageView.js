@@ -1,4 +1,4 @@
-import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import { Table, Tooltip } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
@@ -35,12 +35,7 @@ const ManageView = ({ startDate, endDate }) => {
         }}
         size="small"
       >
-        <Column
-          title="Name"
-          dataIndex="name"
-          key="name"
-          render={name => name}
-        />
+        <Column title="Name" dataIndex="name" key="name" />
         <Column
           title="Parent Category"
           dataIndex="parent"
@@ -83,13 +78,14 @@ const ManageView = ({ startDate, endDate }) => {
           key="type"
           render={name => {
             const isExpense = name === 'expense';
-            const TypeIcon = styled(LegacyIcon)`
+            const Icon = isExpense ? MinusCircleOutlined : PlusCircleOutlined;
+            const TypeIcon = styled(Icon)`
               color: ${({ theme: { positive, neutral } }) =>
                 isExpense ? neutral : positive};
             `;
             return (
               <Tooltip title={name}>
-                <TypeIcon type={isExpense ? 'minus-circle' : 'plus-circle'} />
+                <TypeIcon />
               </Tooltip>
             );
           }}

@@ -18,6 +18,7 @@ export class CategoriesList {
     this.categories = categories.map(cat => ({
       ...cat,
       isSub: !!cat.parent?.name,
+      key: cat.fullName,
     }));
   }
   get() {
