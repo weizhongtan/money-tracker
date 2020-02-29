@@ -1,9 +1,8 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import { useContext } from 'react';
 import uuid from 'uuid/v4';
 
-import { BaseDataContext, CategoriesList, reversible } from '../../lib';
+import { CategoriesList, reversible, useBaseData } from '../../lib';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
@@ -58,7 +57,7 @@ export const useTransactions = ({
   categoryId,
   searchText,
 }) => {
-  const baseData = useContext(BaseDataContext);
+  const baseData = useBaseData();
 
   const searchAmount = Number(searchText) || 0;
   const searchAmountComplement = -searchAmount;

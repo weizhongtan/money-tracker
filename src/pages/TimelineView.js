@@ -4,11 +4,10 @@ import { Drawer } from 'antd';
 import { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
-import { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 
 import { Radio, Select, Wrapper } from '../components';
-import { BaseDataContext, CategoriesList, toMoney } from '../lib';
+import { CategoriesList, toMoney, useBaseData, useTheme } from '../lib';
 import TransactionsView from './TransactionsView';
 
 const { Option } = Select;
@@ -43,7 +42,7 @@ const GET_AMOUNT_GROUPS = gql`
 `;
 
 const Bar = ({ data, mean, ...props }) => {
-  const theme = useContext(ThemeContext);
+  const theme = useTheme();
 
   return (
     <ResponsiveBar
@@ -96,7 +95,7 @@ const Parent = styled.span`
 `;
 
 const TimelineView = ({ startDate, endDate }) => {
-  const baseData = useContext(BaseDataContext);
+  const baseData = useBaseData();
 
   const [categoryId, setCategoryId] = useState(null);
   const [precision, setPrecision] = useState('month');

@@ -1,39 +1,12 @@
-import { useQuery } from '@apollo/react-hooks';
 import { ResponsiveLine } from '@nivo/line';
-import { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 
-import { Radio, Select, Wrapper } from '../components';
-import { toMoney } from '../lib';
+import { Radio, Select, Wrapper } from '../../components';
+import { toMoney, useBaseData } from '../../lib';
+import { useBalances } from './data';
 
 const { Option } = Select;
-
-const GET_BALANCE = gql`
-  query GetBalance(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $accountId: uuid
-    $groupBy: String
-  ) {
-    accounts {
-      id
-      name
-    }
-    balance: func_transactions_by_account_grouped_cumulative(
-      args: {
-        v_account_id: $accountId
-        v_group_by: $groupBy
-        v_start_date: $startDate
-      }
-      where: { date: { _gte: $startDate, _lte: $endDate } }
-      order_by: { date: asc }
-    ) {
-      date
-      sum
-    }
-  }
-`;
 
 const getBottomAxisProp = (startDate, endDate) => {
   const duration = endDate.diff(startDate, 'days');
@@ -72,21 +45,20 @@ const CumulativeView = ({ startDate, endDate }) => {
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
   const [precision, setPrecision] = useState(defaultPrecision);
-  const { loading, error, data } = useQuery(GET_BALANCE, {
-    variables: {
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
-      accountId,
-      groupBy: precision,
-    },
+  const { accounts } = useBaseData();
+  const { loading, error, balances } = useBalances({
+    startDate,
+    endDate,
+    accountId,
+    precision,
   });
-  if (loading && typeof data === 'undefined') return null;
+  if (loading || typeof balances === 'undefined') return null;
   if (error) return 'error';
 
   const series = [
     {
       id: '£',
-      data: data?.balance.map(({ date, sum }) => ({
+      data: balances.map(({ date, sum }) => ({
         x: moment(date).format('YYYY-MM-DD'),
         y: sum,
       })),
@@ -109,14 +81,6 @@ const CumulativeView = ({ startDate, endDate }) => {
       y: lastDataPoint.y,
     });
   }
-
-  const accounts = [
-    {
-      id: null,
-      name: 'All Accounts',
-    },
-    ...data?.accounts,
-  ];
 
   return (
     <Wrapper>

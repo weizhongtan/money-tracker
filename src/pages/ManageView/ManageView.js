@@ -1,17 +1,17 @@
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Table, Tooltip } from 'antd';
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { ButtonSelect, Select } from '../../components';
-import { BaseDataContext, CategoriesList } from '../../lib';
+import { CategoriesList, useBaseData } from '../../lib';
 import { useUpdateCategory } from './data';
 
 const { Option } = Select;
 const { Column } = Table;
 
 const ManageView = ({ startDate, endDate }) => {
-  const baseData = useContext(BaseDataContext);
+  const baseData = useBaseData();
 
   const [updateCategory] = useUpdateCategory();
 

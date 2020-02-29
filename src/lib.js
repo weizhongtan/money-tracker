@@ -1,6 +1,7 @@
 import { UndoOutlined } from '@ant-design/icons';
 import { Button, notification } from 'antd';
-import React from 'react';
+import React, { useContext } from 'react';
+import { ThemeContext } from 'styled-components';
 import uuid from 'uuid/v4';
 
 export const toMoney = (number, compact = true) =>
@@ -28,6 +29,10 @@ export class CategoriesList {
 }
 
 export const BaseDataContext = React.createContext({});
+
+export const useBaseData = () => useContext(BaseDataContext);
+
+export const useTheme = () => useContext(ThemeContext);
 
 export const reversible = ({ action, undo }) => async (...args) => {
   const result = await action(...args);

@@ -10,13 +10,13 @@ import {
   Tooltip,
 } from 'antd';
 import moment from 'moment';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
-import styled, { ThemeContext } from 'styled-components';
+import styled from 'styled-components';
 
 import { ButtonSelect, Select } from '../../components';
-import { BaseDataContext, CategoriesList, toMoney } from '../../lib';
+import { CategoriesList, toMoney, useBaseData, useTheme } from '../../lib';
 import { useTransactions, useUpdateTransactionsCategory } from './data';
 
 const { Option } = Select;
@@ -37,8 +37,8 @@ const Parent = styled.span`
 `;
 
 const TransactionsView = ({ startDate, endDate, categoryId }) => {
-  const theme = useContext(ThemeContext);
-  const baseData = useContext(BaseDataContext);
+  const theme = useTheme();
+  const baseData = useBaseData();
 
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState([]);
