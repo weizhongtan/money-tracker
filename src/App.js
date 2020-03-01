@@ -26,7 +26,8 @@ import { BaseDataContext } from './lib';
 import BreakdownView from './pages/BreakdownView';
 import CumulativeView from './pages/CumulativeView';
 import DateRangeSelect from './pages/DateRangeSelect';
-import ManageView from './pages/ManageView';
+import ManageAccountsView from './pages/ManageAccountsView';
+import ManageCategoriesView from './pages/ManageCategoriesView';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
 import theme from './theme';
@@ -77,7 +78,12 @@ const routes = [
       {
         path: '/categories',
         title: 'Categories',
-        component: ManageView,
+        component: ManageCategoriesView,
+      },
+      {
+        path: '/accounts',
+        title: 'Accounts',
+        component: ManageAccountsView,
       },
     ],
   },
@@ -85,12 +91,17 @@ const routes = [
 
 const GET_BASE_DATA = gql`
   query GetBaseData {
-    accounts(order_by: { legacy_key: asc }) {
+    accounts: view_accounts(order_by: { legacy_key: asc }) {
       id
+      key: id
       name
+      initialAmount: initial_amount
+      sum
+      minimum
     }
     categories: view_categories_with_parents(order_by: { full_name: asc }) {
       id
+      key: id
       name
       parentCategoryName: parent_category_name
       parentCategoryId: parent_category_id
@@ -113,22 +124,12 @@ const useBaseData = () => {
     data: {
       accounts: data.accounts,
       categories: data.categories.map(
-        ({
-          id,
-          name,
-          parentCategoryName,
-          parentCategoryId,
-          fullName,
-          type,
-        }) => ({
-          id,
-          name,
+        ({ parentCategoryName, parentCategoryId, ...rest }) => ({
           parent: {
             name: parentCategoryName,
             id: parentCategoryId,
           },
-          fullName,
-          type,
+          ...rest,
         })
       ),
     },
@@ -153,7 +154,6 @@ function App() {
         )?.path,
     ].filter(x => x)
   );
-  console.log(openKeys);
   const [endDate, setEndDate] = useState(moment());
   const { loading, error, data } = useBaseData();
   if (loading || error) return null;
@@ -233,7 +233,7 @@ function App() {
                           />
                         );
                       })}
-                      <Redirect to={match.url + children[0].path} />
+                      {/* <Redirect to={match.url + children[0].path} /> */}
                     </>
                   );
                 }}

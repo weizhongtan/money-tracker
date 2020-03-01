@@ -10,7 +10,7 @@ import { useUpdateCategory } from './data';
 const { Option } = Select;
 const { Column } = Table;
 
-const ManageView = ({ startDate, endDate }) => {
+const ManageCategoriesView = ({ startDate, endDate }) => {
   const baseData = useBaseData();
 
   const [updateCategory] = useUpdateCategory();
@@ -95,4 +95,4 @@ const ManageView = ({ startDate, endDate }) => {
   );
 };
 
-export default ManageView;
+export default ManageCategoriesView;
