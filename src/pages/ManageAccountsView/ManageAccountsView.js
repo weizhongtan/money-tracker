@@ -1,19 +1,13 @@
-import { MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
-import { Table, Tooltip } from 'antd';
+import { Table } from 'antd';
 import React from 'react';
-import styled from 'styled-components';
 
-import { ButtonSelect, Select } from '../../components';
-import { CategoriesList, toMoney, useBaseData } from '../../lib';
-import { useUpdateCategory } from './data';
+import { Amount } from '../../components';
+import { toMoney, useBaseData } from '../../lib';
 
-const { Option } = Select;
 const { Column } = Table;
 
 const ManageAccountsView = ({ startDate, endDate }) => {
   const baseData = useBaseData();
-
-  console.log(baseData.accounts);
 
   return (
     <>
@@ -23,13 +17,17 @@ const ManageAccountsView = ({ startDate, endDate }) => {
           title="Initial Amount"
           dataIndex="initialAmount"
           key="initialAmount"
-          render={amount => toMoney(amount, false)}
+          render={amount => (
+            <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
+          )}
         />
         <Column
           title="Sum"
           dataIndex="sum"
           key="sum"
-          render={amount => toMoney(amount, false)}
+          render={amount => (
+            <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
+          )}
         />
       </Table>
     </>

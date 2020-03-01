@@ -78,7 +78,6 @@ export const useTransactions = ({
     searchAmount,
     searchAmountComplement,
   };
-  console.log(variables);
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, { variables });
 
   const categories = new CategoriesList(baseData.categories);

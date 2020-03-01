@@ -15,7 +15,7 @@ import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
-import { ButtonSelect, Select } from '../../components';
+import { Amount, ButtonSelect, Select } from '../../components';
 import { CategoriesList, toMoney, useBaseData, useTheme } from '../../lib';
 import { useTransactions, useUpdateTransactionsCategory } from './data';
 
@@ -23,13 +23,6 @@ const { Option } = Select;
 const { Column } = Table;
 const Search = styled(Input.Search)`
   width: 100%;
-`;
-
-const Amount = styled.span`
-  display: block;
-  text-align: right;
-  color: ${({ positive, theme }) =>
-    positive ? theme.positive : theme.neutral};
 `;
 
 const Parent = styled.span`
