@@ -1,4 +1,4 @@
-import { Icon as LegacyIcon } from '@ant-design/compatible';
+import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import {
   Affix,
   Avatar,
@@ -21,6 +21,7 @@ import { useTransactions, useUpdateTransactionsCategory } from './data';
 
 const { Option } = Select;
 const { Column } = Table;
+
 const Search = styled(Input.Search)`
   width: 100%;
 `;
@@ -29,8 +30,48 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const TransactionsView = ({ startDate, endDate, categoryId }) => {
+const AccountAvatar = ({ name }) => {
   const theme = useTheme();
+  return (
+    <Avatar
+      style={{
+        background: theme.colors.presetPrimaryColors.gold,
+      }}
+      size="small"
+    >
+      {name[0]}
+    </Avatar>
+  );
+};
+
+const AccountIndicator = ({ to, from, isOut }) => {
+  const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
+  return (
+    <Tooltip
+      title={() => (
+        <>
+          {to}
+          {from && (
+            <>
+              {' '}
+              {arrow} {from}
+            </>
+          )}
+        </>
+      )}
+    >
+      <AccountAvatar name={to} />
+      {from && (
+        <>
+          {' '}
+          {arrow} <AccountAvatar name={from} />
+        </>
+      )}
+    </Tooltip>
+  );
+};
+
+const TransactionsView = ({ startDate, endDate, categoryId }) => {
   const baseData = useBaseData();
 
   const [searchText, setSearchText] = useState('');
@@ -50,28 +91,6 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
   });
   if (loading && typeof transactions === 'undefined') return null;
   if (error) return 'error';
-
-  const avatars = baseData.accounts.reduce((acc, { name }, index) => {
-    return {
-      ...acc,
-      [name]: (
-        <>
-          <Tooltip title={name}>
-            <Avatar
-              style={{
-                background: Object.entries(
-                  theme.colors.presetPrimaryColors
-                ).find((_, _index) => index === _index)[1],
-              }}
-              size="small"
-            >
-              {name[0]}
-            </Avatar>
-          </Tooltip>
-        </>
-      ),
-    };
-  }, {});
 
   return (
     <>
@@ -180,20 +199,12 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           }))}
           onFilter={(value, record) => record.account.to.name === value}
           render={({ to, from }, record) => {
-            const { isOut } = record.amount;
-            const arrow = (
-              <LegacyIcon type={isOut ? 'arrow-right' : 'arrow-left'} />
-            );
             return (
-              <>
-                {avatars[to.name]}
-                {from.name && (
-                  <>
-                    {' '}
-                    {arrow} {avatars[from.name]}
-                  </>
-                )}
-              </>
+              <AccountIndicator
+                to={to.name}
+                from={from.name}
+                isOut={record.account.isOut}
+              />
             );
           }}
         />
