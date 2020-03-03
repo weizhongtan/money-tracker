@@ -255,7 +255,9 @@ function App() {
                 }}
               />
             ))}
-            <Redirect to={routes[0].path} />
+            <Redirect
+              to={{ pathname: routes[0].path, search: location.search }}
+            />
           </Switch>
         </Content>
       </Layout>
