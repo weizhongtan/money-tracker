@@ -21,6 +21,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
+import { useUrlState } from 'with-url-state';
 
 import { BaseDataContext } from './lib';
 import BreakdownView from './pages/BreakdownView';
@@ -140,11 +141,25 @@ function App() {
   const location = useLocation();
   const history = useHistory();
 
-  const [startDate, setStartDate] = useState(
-    moment()
-      .subtract(1, 'year')
-      .startOf('year')
+  const [urlState, setUrlState] = useUrlState(
+    {
+      startDate: moment()
+        .subtract(1, 'year')
+        .startOf('year')
+        .toISOString(),
+      endDate: moment().toISOString(),
+    },
+    { history }
   );
+  const startDate = moment(urlState.startDate);
+  const endDate = moment(urlState.endDate);
+  const setDates = ({ startDate, endDate }) => {
+    setUrlState({
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    });
+  };
+
   const [openKeys, setOpenKeys] = useState(
     [
       routes
@@ -154,7 +169,6 @@ function App() {
         )?.path,
     ].filter(x => x)
   );
-  const [endDate, setEndDate] = useState(moment());
   const { loading, error, data } = useBaseData();
   if (loading || error) return null;
 
@@ -166,7 +180,10 @@ function App() {
             theme="dark"
             selectedKeys={location.pathname}
             onSelect={({ key }) => {
-              history.push(key);
+              history.push({
+                pathname: key,
+                search: location.search,
+              });
             }}
             openKeys={openKeys}
             onOpenChange={setOpenKeys}
@@ -203,9 +220,8 @@ function App() {
           <DateRangeSelect
             {...{
               startDate,
-              setStartDate,
               endDate,
-              setEndDate,
+              setDates,
             }}
           />
         </Layout.Sider>

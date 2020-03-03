@@ -4,15 +4,17 @@ import React from 'react';
 
 const { MonthPicker, RangePicker } = DatePicker;
 
-const DateRangeSelect = ({ startDate, setStartDate, endDate, setEndDate }) => {
+const DateRangeSelect = ({ startDate, endDate, setDates }) => {
   return (
     <div>
       <Menu theme="dark">
         <Menu.Item>
           <MonthPicker
             onChange={date => {
-              setStartDate(moment(date).startOf('month'));
-              setEndDate(moment(date).endOf('month'));
+              setDates({
+                startDate: moment(date).startOf('month'),
+                endDate: moment(date).endOf('month'),
+              });
             }}
             placeholder="Select month"
             value={startDate}
@@ -22,8 +24,10 @@ const DateRangeSelect = ({ startDate, setStartDate, endDate, setEndDate }) => {
         <Menu.Item>
           <RangePicker
             onChange={([start, end]) => {
-              setStartDate(moment(start).startOf('day'));
-              setEndDate(moment(end).endOf('day'));
+              setDates({
+                startDate: moment(start).startOf('day'),
+                endDate: moment(end).endOf('day'),
+              });
             }}
             value={[startDate, endDate]}
             ranges={{
