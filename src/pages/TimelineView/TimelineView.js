@@ -41,7 +41,7 @@ const GET_AMOUNT_GROUPS = gql`
   }
 `;
 
-const Bar = ({ data, mean, ...props }) => {
+const Bar = ({ data, mean, precision, ...props }) => {
   const theme = useTheme();
 
   return (
@@ -82,7 +82,7 @@ const Bar = ({ data, mean, ...props }) => {
             strokeWidth: 1,
             strokeDasharray: 5,
           },
-          legend: `Mean: ${toMoney(mean)}`,
+          legend: `${toMoney(mean)}/${precision}`,
         },
       ]}
       {...props}
@@ -172,6 +172,7 @@ const TimelineView = ({ startDate, endDate }) => {
       <Bar
         data={groups}
         mean={data.aggregate.aggregate.avg.sum}
+        precision={precision}
         onClick={({ data: { date } }) => {
           const startDate = moment(date);
           const endDate = moment(startDate).endOf(precision);

@@ -23,6 +23,7 @@ const DateRangeSelect = ({ startDate, endDate, setDates }) => {
         </Menu.Item>
         <Menu.Item>
           <RangePicker
+            picker="month"
             onChange={([start, end]) => {
               setDates({
                 startDate: moment(start).startOf('day'),
