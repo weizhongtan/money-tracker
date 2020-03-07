@@ -1,15 +1,19 @@
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
+import { useBaseData } from '../../lib';
+
 const GET_CATEGORIES = gql`
   query GetCategories(
     $startDate: timestamp
     $endDate: timestamp
+    $accountId: String
     $categoryType: String
     $groupByParent: Boolean
   ) {
     categories: func_category_by_date_type(
       args: {
+        v_account_id: $accountId
         v_category_type: $categoryType
         v_end_date: $endDate
         v_start_date: $startDate
@@ -21,6 +25,7 @@ const GET_CATEGORIES = gql`
     }
     amount: func_category_by_date_type_aggregate(
       args: {
+        v_account_id: $accountId
         v_category_type: $categoryType
         v_end_date: $endDate
         v_start_date: $startDate
@@ -36,11 +41,13 @@ const GET_CATEGORIES = gql`
   }
 `;
 
-export const useCategories = ({ startDate, endDate, grouping }) => {
+export const useCategories = ({ startDate, endDate, accountId, grouping }) => {
+  const { accounts } = useBaseData();
   const { loading, error, data } = useQuery(GET_CATEGORIES, {
     variables: {
       startDate,
       endDate,
+      accountId: accountId === 'all' ? null : accountId,
       categoryType: 'expense',
       groupByParent: grouping === 'category',
     },
@@ -49,6 +56,13 @@ export const useCategories = ({ startDate, endDate, grouping }) => {
   return {
     loading,
     error,
+    accounts: [
+      {
+        id: 'all',
+        name: 'All accounts',
+      },
+      ...accounts,
+    ],
     categories: data?.categories
       .map(category => ({
         id: category.name,

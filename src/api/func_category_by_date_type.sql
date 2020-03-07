@@ -1,5 +1,5 @@
 -- reference table for graphql only
-CREATE TABLE __categories_group_by (
+CREATE TABLE __category_by_date_type (
   name text,
   sum numeric(19, 2)
 );
@@ -9,8 +9,8 @@ CREATE TABLE __categories_group_by (
 -- - which match a category type (income/expense)
 -- - which match a category level (parent/child)
 
-CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamp, v_end_date timestamp, v_category_type text, v_parent boolean)
-  RETURNS SETOF __categories_group_by
+CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamp, v_end_date timestamp, v_account_id text, v_category_type text, v_parent boolean)
+  RETURNS SETOF __category_by_date_type
   AS $$
   WITH data AS (
     SELECT
@@ -27,18 +27,21 @@ CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamp, v
       transactions t
       INNER JOIN categories c ON t.category_id = c.id
       LEFT JOIN categories pc ON c.parent_category_id = pc.id
-    WHERE
-      t.date >= v_start_date
-      AND t.date <= v_end_date
-      AND coalesce(pc.type, c.type) = v_category_type
+    WHERE (v_account_id IS NULL
+      OR t.to_account_id = v_account_id)
+    AND t.date >= v_start_date
+    AND t.date <= v_end_date
+    AND coalesce(pc.type, c.type) = v_category_type
+    -- exclude internal transfers
+    AND t.from_account_id IS NULL
 )
-  SELECT
-    data.category_name,
-    sum(data.amount)
-  FROM
-    data
-  GROUP BY
-    data.category_name;
+SELECT
+  data.category_name,
+  sum(data.amount)
+FROM
+  data
+GROUP BY
+  data.category_name;
 
 $$
 LANGUAGE sql

@@ -2,9 +2,11 @@ import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
 import React, { useState } from 'react';
 
-import { Radio, Wrapper } from '../../components';
+import { Radio, Select, Wrapper } from '../../components';
 import { toMoney, toPercent } from '../../lib';
 import { useCategories } from './data';
+
+const { Option } = Select;
 
 const Pie = ({ data, total }) => (
   <ResponsivePie
@@ -100,11 +102,13 @@ const Bar = ({ data, total }) => (
 );
 
 const BreakdownView = ({ startDate, endDate }) => {
+  const [accountId, setAccountId] = useState('all');
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
-  const { loading, error, categories, total } = useCategories({
+  const { loading, error, accounts, categories, total } = useCategories({
     startDate,
     endDate,
+    accountId,
     grouping,
   });
   if (loading && typeof categories === 'undefined') return null;
@@ -114,6 +118,18 @@ const BreakdownView = ({ startDate, endDate }) => {
 
   return (
     <Wrapper>
+      <Select
+        value={accountId}
+        onChange={setAccountId}
+        showSearch
+        optionFilterProp="label"
+      >
+        {accounts.map(({ id, name }) => (
+          <Option value={id} key={id} label={name}>
+            {name}
+          </Option>
+        ))}
+      </Select>
       <Radio.Group
         buttonStyle="solid"
         defaultValue={graph}
@@ -130,6 +146,7 @@ const BreakdownView = ({ startDate, endDate }) => {
         <Radio.Button value="subcategory">Subcategory</Radio.Button>
         <Radio.Button value="category">Category</Radio.Button>
       </Radio.Group>
+      <span>Total: {toMoney(total)}</span>
       <Graph data={categories} total={total} />
     </Wrapper>
   );
