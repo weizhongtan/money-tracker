@@ -52,6 +52,7 @@ export const useCategories = ({ startDate, endDate, accountId, grouping }) => {
       categoryType: 'expense',
       groupByParent: grouping === 'category',
     },
+    fetchPolicy: 'no-cache',
   });
 
   return {
