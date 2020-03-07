@@ -1,5 +1,6 @@
 -- reference table for graphql only
 CREATE TABLE __category_by_date_type (
+  id text,
   name text,
   sum numeric(19, 2)
 );
@@ -34,15 +35,23 @@ CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamp, v
     AND coalesce(pc.type, c.type) = v_category_type
     -- exclude internal transfers
     AND t.from_account_id IS NULL
+),
+grouped_data AS (
+  SELECT
+    data.category_name,
+    sum(data.amount) AS sum
+  FROM
+    data
+  GROUP BY
+    data.category_name
 )
 SELECT
-  data.category_name,
-  sum(data.amount)
+  c.id,
+  gd.category_name,
+  gd.sum
 FROM
-  data
-GROUP BY
-  data.category_name;
-
+  grouped_data gd
+  LEFT JOIN categories c ON c.name = gd.category_name
 $$
 LANGUAGE sql
 STABLE;

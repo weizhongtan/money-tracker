@@ -1,16 +1,19 @@
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
+import { Drawer } from 'antd';
 import React, { useState } from 'react';
 
 import { Radio, Select, Wrapper } from '../../components';
 import { toMoney, toPercent } from '../../lib';
+import TransactionsView from '../TransactionsView';
 import { useCategories } from './data';
 
 const { Option } = Select;
 
-const Pie = ({ data, total }) => (
+const Pie = ({ data, total, onClick, ...props }) => (
   <ResponsivePie
     data={data}
+    onClick={data => onClick(data._id)}
     margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
     pixelRatio={2}
     innerRadius={0.5}
@@ -65,12 +68,14 @@ const Pie = ({ data, total }) => (
         symbolShape: 'circle',
       },
     ]}
+    {...props}
   />
 );
 
-const Bar = ({ data, total }) => (
+const Bar = ({ data, total, onClick, ...props }) => (
   <ResponsiveBar
     data={data}
+    onClick={({ data: { _id } }) => onClick(_id)}
     indexBy="name"
     margin={{ top: 50, right: 60, bottom: 50, left: 200 }}
     minValue="auto"
@@ -98,6 +103,7 @@ const Bar = ({ data, total }) => (
     labelSkipHeight={12}
     labelTextColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
     isInteractive={true}
+    {...props}
   />
 );
 
@@ -105,6 +111,10 @@ const BreakdownView = ({ startDate, endDate }) => {
   const [accountId, setAccountId] = useState('all');
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
+  const [isVisible, setVisible] = useState(false);
+  const [transactionViewCategoryId, setTransactionViewCategoryId] = useState(
+    null
+  );
   const { loading, error, accounts, categories, total } = useCategories({
     startDate,
     endDate,
@@ -118,6 +128,22 @@ const BreakdownView = ({ startDate, endDate }) => {
 
   return (
     <Wrapper>
+      <Drawer
+        placement="bottom"
+        visible={isVisible}
+        closable={false}
+        onClose={() => setVisible(false)}
+        height="75%"
+        bodyStyle={{
+          padding: '10px',
+        }}
+      >
+        <TransactionsView
+          startDate={startDate}
+          endDate={endDate}
+          categoryId={transactionViewCategoryId}
+        />
+      </Drawer>
       <Select
         value={accountId}
         onChange={setAccountId}
@@ -147,7 +173,14 @@ const BreakdownView = ({ startDate, endDate }) => {
         <Radio.Button value="category">Category</Radio.Button>
       </Radio.Group>
       <span>Total: {toMoney(total)}</span>
-      <Graph data={categories} total={total} />
+      <Graph
+        data={categories}
+        total={total}
+        onClick={id => {
+          setTransactionViewCategoryId(id);
+          setVisible(true);
+        }}
+      />
     </Wrapper>
   );
 };

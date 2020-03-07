@@ -20,6 +20,7 @@ const GET_CATEGORIES = gql`
         v_parent: $groupByParent
       }
     ) {
+      id
       name
       sum
     }
@@ -65,6 +66,9 @@ export const useCategories = ({ startDate, endDate, accountId, grouping }) => {
     ],
     categories: data?.categories
       .map(category => ({
+        // _id will be used for transaction view
+        _id: category.id,
+        // id is used by pie chart for labels, so must be readable name
         id: category.name,
         name: category.name,
         label: category.name,
