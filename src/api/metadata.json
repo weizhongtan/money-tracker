@@ -134,6 +134,12 @@
     {
       "table": {
         "schema": "public",
+        "name": "view_accounts"
+      }
+    },
+    {
+      "table": {
+        "schema": "public",
         "name": "view_categories_with_parents"
       }
     }
