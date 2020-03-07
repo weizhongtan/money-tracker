@@ -6,9 +6,9 @@ import { CategoriesList, reversible, useBaseData } from '../../lib';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $categoryIds: [uuid!]
+    $startDate: timestamp
+    $endDate: timestamp
+    $categoryIds: [String!]
     $searchText: String!
     $searchAmount: numeric!
     $searchAmountComplement: numeric!
@@ -129,7 +129,10 @@ export const useTransactions = ({
 };
 
 const UPDATE_TRANSACTIONS_CATEGORY = gql`
-  mutation UpdateTransactions1($transactionIds: [uuid!]!, $categoryId: uuid) {
+  mutation UpdateTransactions1(
+    $transactionIds: [String!]!
+    $categoryId: String
+  ) {
     update_transactions(
       where: { id: { _in: $transactionIds } }
       _set: { category_id: $categoryId, updated_at: "now" }
@@ -141,9 +144,9 @@ const UPDATE_TRANSACTIONS_CATEGORY = gql`
 
 const UPDATE_TRANSACTION_FROM_ACCOUNT = gql`
   mutation UpdateTransactions2(
-    $transactionId: uuid!
-    $fromAccountId: uuid
-    $pairId: uuid
+    $transactionId: String!
+    $fromAccountId: String
+    $pairId: String
   ) {
     update_transactions(
       where: { id: { _eq: $transactionId } }

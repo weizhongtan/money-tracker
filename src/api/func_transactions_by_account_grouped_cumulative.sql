@@ -1,11 +1,11 @@
 -- reference table for graphql only
 CREATE TABLE __transactions_group_by (
-   date timestamptz,
+   date timestamp,
    sum numeric(19, 2)
 );
 
 -- get a cumulative sum of transaction amounts over time for a given account, grouped by time period, from a start date
-CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_account_id uuid, v_group_by text, v_start_date timestamptz)
+CREATE OR REPLACE FUNCTION func_transactions_by_account_grouped_cumulative (v_account_id text, v_group_by text, v_start_date timestamp)
    RETURNS SETOF __transactions_group_by
    AS $$
    WITH data AS (

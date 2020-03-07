@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  created_at                                          DateTime
+  id                                                  String         @id
+  initial_amount                                      Float
+  legacy_key                                          String
+  minimum                                             Float
+  name                                                String
+  updated_at                                          DateTime
+  transactions_accountsTotransactions_from_account_id transactions[] @relation("accountsTotransactions_from_account_id")
+  transactions_accountsTotransactions_to_account_id   transactions[] @relation("accountsTotransactions_to_account_id")
+}
+
+model categories {
+  created_at         DateTime
+  id                 String         @id
+  legacy_key         String
+  name               String
+  type               String?
+  updated_at         DateTime
+  parent_category_id categories?    @relation("categoriesTocategories_parent_category_id")
+  categories         categories[]   @relation("categoriesTocategories_parent_category_id")
+  transactions       transactions[]
+}
+
+model transactions {
+  amount          Float
+  created_at      DateTime
+  date            DateTime
+  description     String
+  id              String         @id
+  pair_id         String?
+  updated_at      DateTime
+  category_id     categories?
+  from_account_id accounts?      @relation("accountsTotransactions_from_account_id")
+  paired_with_id  transactions?  @relation("transactionsTotransactions_paired_with_id")
+  to_account_id   accounts?      @relation("accountsTotransactions_to_account_id")
+  transactions    transactions[] @relation("transactionsTotransactions_paired_with_id")
+}

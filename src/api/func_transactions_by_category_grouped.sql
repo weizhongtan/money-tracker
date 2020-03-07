@@ -1,11 +1,11 @@
 -- reference table for graphql only
 CREATE TABLE __transactions_group_by (
-   date timestamptz,
+   date timestamp,
    sum numeric(19, 2)
 );
 
 -- get the aggregate sum of transaction amounts which match a given category, grouped by a time period
-CREATE OR REPLACE FUNCTION func_transactions_by_category_grouped (v_category_id uuid, v_group_by text)
+CREATE OR REPLACE FUNCTION func_transactions_by_category_grouped (v_category_id text, v_group_by text)
    RETURNS SETOF __transactions_group_by
    AS $$
    WITH data AS (
@@ -35,7 +35,7 @@ CREATE OR REPLACE FUNCTION func_transactions_by_category_grouped (v_category_id 
       SELECT
          *
       FROM
-         generate_series('2017-01-01 00:00'::timestamp, now(), ('1 ' || v_group_by)::interval) AS group_date) s
+         generate_series('2017-01-01 00:00'::timestamp, now()::timestamp, ('1 ' || v_group_by)::interval) AS group_date) s
    LEFT JOIN data d ON d.group_date = s.group_date;
 
 $$

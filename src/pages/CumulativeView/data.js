@@ -5,9 +5,9 @@ import { useBaseData } from '../../lib';
 
 const GET_BALANCE = gql`
   query GetBalance(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $accountId: uuid
+    $startDate: timestamp
+    $endDate: timestamp
+    $accountId: String
     $groupBy: String
   ) {
     balances: func_transactions_by_account_grouped_cumulative(

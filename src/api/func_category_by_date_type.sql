@@ -9,7 +9,7 @@ CREATE TABLE __categories_group_by (
 -- - which match a category type (income/expense)
 -- - which match a category level (parent/child)
 
-CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamptz, v_end_date timestamptz, v_category_type text, v_parent boolean)
+CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamp, v_end_date timestamp, v_category_type text, v_parent boolean)
   RETURNS SETOF __categories_group_by
   AS $$
   WITH data AS (

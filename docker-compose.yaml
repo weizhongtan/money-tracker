@@ -8,15 +8,15 @@ services:
     volumes:
       - ~/docker/volumes/postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_PASSWORD: postgrespassword
-      POSTGRES_DB: moneytracker
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
   graphql-engine:
     image: hasura/graphql-engine:v1.1.0
     ports:
       - '8080:8080'
     restart: always
     environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/moneytracker
+      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${DB_PASSWORD}@postgres:5432/${DB_NAME}
       HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # set to "false" to disable console
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret

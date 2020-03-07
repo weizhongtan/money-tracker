@@ -3,8 +3,8 @@ import { gql } from 'apollo-boost';
 
 const GET_CATEGORIES = gql`
   query GetCategories(
-    $startDate: timestamptz
-    $endDate: timestamptz
+    $startDate: timestamp
+    $endDate: timestamp
     $categoryType: String
     $groupByParent: Boolean
   ) {
