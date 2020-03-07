@@ -25,7 +25,9 @@ const GET_AMOUNT_GROUPS = gql`
       order_by: { date: asc }
     ) {
       date
-      sum
+      balance
+      expense
+      income
     }
     aggregate: func_transactions_by_category_grouped_aggregate(
       args: { v_category_id: $categoryId, v_group_by: $groupBy }
@@ -34,25 +36,28 @@ const GET_AMOUNT_GROUPS = gql`
     ) {
       aggregate {
         avg {
-          sum
+          balance
+          expense
+          income
         }
       }
     }
   }
 `;
 
-const Bar = ({ data, mean, precision, ...props }) => {
+const Bar = ({ data, mean, precision, amountType, ...props }) => {
   const theme = useTheme();
 
   return (
     <ResponsiveBar
       data={data}
-      keys={['positive', 'neutral']}
+      groupMode="grouped"
+      keys={amountType.split(',')}
       indexBy="date"
       margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
       minValue="auto"
       maxValue="auto"
-      colors={({ id }) => theme[id]}
+      colors={({ id }) => theme.amountType[id]}
       axisTop={{
         tickSize: 0,
         tickPadding: 5,
@@ -99,6 +104,7 @@ const TimelineView = ({ startDate, endDate }) => {
 
   const [categoryId, setCategoryId] = useState('all');
   const [precision, setPrecision] = useState('month');
+  const [amountType, setAmountType] = useState('balance');
   const [isVisible, setVisible] = useState(false);
   const [transactionViewDates, setTransactionViewDates] = useState({
     startDate: null,
@@ -116,10 +122,11 @@ const TimelineView = ({ startDate, endDate }) => {
   if (loading && typeof data === 'undefined') return null;
   if (error) return 'error';
 
-  const groups = data.groups.map(({ date, sum }) => ({
+  const groups = data.groups.map(({ date, balance, expense, income }) => ({
     date: moment(date).format('YYYY-MM-DD'),
-    [sum > 0 ? 'positive' : 'neutral']: sum,
-    sum,
+    balance,
+    expense: Math.abs(expense),
+    income,
   }));
 
   const categories = new CategoriesList([
@@ -169,10 +176,24 @@ const TimelineView = ({ startDate, endDate }) => {
         <Radio.Button value="month">Month</Radio.Button>
         <Radio.Button value="year">Year</Radio.Button>
       </Radio.Group>
+      <Radio.Group
+        buttonStyle="solid"
+        defaultValue={amountType}
+        onChange={event => setAmountType(event.target.value)}
+      >
+        <Radio.Button value="balance">Balance</Radio.Button>
+        <Radio.Button value="expense,income">{'Expense & Income'}</Radio.Button>
+      </Radio.Group>
       <Bar
         data={groups}
-        mean={data.aggregate.aggregate.avg.sum}
+        // TODO: fix this
+        mean={
+          data.aggregate.aggregate.avg[
+            amountType === 'expense,income' ? 'expense' : 'balance'
+          ]
+        }
         precision={precision}
+        amountType={amountType}
         onClick={({ data: { date } }) => {
           const startDate = moment(date);
           const endDate = moment(startDate).endOf(precision);
