@@ -18,7 +18,7 @@ const DateRangeSelect = ({ startDate, endDate, setDates }) => {
             }}
             placeholder="Select month"
             value={startDate}
-            format="MMMM YYYY"
+            format="MMM YYYY"
           />
         </Menu.Item>
         <Menu.Item>

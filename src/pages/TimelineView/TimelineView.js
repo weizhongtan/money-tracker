@@ -40,12 +40,24 @@ const GET_AMOUNT_GROUPS = gql`
           expense
           income
         }
+        max {
+          balance
+          expense
+          income
+        }
       }
     }
   }
 `;
 
-const Bar = ({ data, mean, precision, amountType, ...props }) => {
+const Bar = ({
+  data,
+  meanValues,
+  maxValue,
+  precision,
+  amountType,
+  ...props
+}) => {
   const theme = useTheme();
 
   return (
@@ -56,7 +68,7 @@ const Bar = ({ data, mean, precision, amountType, ...props }) => {
       indexBy="date"
       margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
       minValue="auto"
-      maxValue="auto"
+      maxValue={Math.max(maxValue, 0)}
       colors={({ id }) => theme.amountType[id]}
       axisTop={{
         tickSize: 0,
@@ -78,18 +90,16 @@ const Bar = ({ data, mean, precision, amountType, ...props }) => {
       labelTextColor={{ from: 'color', modifiers: [['brighter', 6]] }}
       isInteractive={true}
       tooltip={({ value }) => toMoney(value, false)}
-      markers={[
-        {
-          axis: 'y',
-          value: mean,
-          lineStyle: {
-            stroke: 'rgba(0, 0, 0, .35)',
-            strokeWidth: 1,
-            strokeDasharray: 5,
-          },
-          legend: `${toMoney(mean)}/${precision}`,
+      markers={meanValues.map(value => ({
+        axis: 'y',
+        value: value,
+        lineStyle: {
+          stroke: 'rgba(0, 0, 0, .35)',
+          strokeWidth: 1,
+          strokeDasharray: 5,
         },
-      ]}
+        legend: `${toMoney(value)}/${precision}`,
+      }))}
       {...props}
     />
   );
@@ -136,6 +146,19 @@ const TimelineView = ({ startDate, endDate }) => {
     },
     ...baseData.categories,
   ]);
+
+  const meanValues = Object.entries(data.aggregate.aggregate.avg)
+    .filter(([key, val]) => amountType.includes(key))
+    .map(([, val]) => Math.abs(val));
+  let maxValue;
+  if (amountType === 'balance') {
+    maxValue = data.aggregate.aggregate.max.balance;
+  } else {
+    maxValue = Math.max(
+      Math.abs(data.aggregate.aggregate.max.expense),
+      Math.abs(data.aggregate.aggregate.max.income)
+    );
+  }
 
   return (
     <Wrapper>
@@ -186,12 +209,8 @@ const TimelineView = ({ startDate, endDate }) => {
       </Radio.Group>
       <Bar
         data={groups}
-        // TODO: fix this
-        mean={
-          data.aggregate.aggregate.avg[
-            amountType === 'expense,income' ? 'expense' : 'balance'
-          ]
-        }
+        meanValues={meanValues}
+        maxValue={maxValue}
         precision={precision}
         amountType={amountType}
         onClick={({ data: { date } }) => {
