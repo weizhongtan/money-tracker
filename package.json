@@ -40,9 +40,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "api:up": "DB_NAME=prisma DB_PASSWORD=postgrespassword docker-compose up -d --force-recreate",
+    "db": "pgcli postgres://postgres:postgrespassword@localhost:5432/moneytracker",
+    "api:up": "DB_NAME=moneytracker DB_PASSWORD=postgrespassword docker-compose up -d --force-recreate",
     "api:down": "docker-compose down",
-    "db": "pgcli postgres://postgres:postgrespassword@localhost:5432/prisma",
     "bootstrap:xml-to-json": "node src/api/migration/xml-to-json.js",
     "bootstrap:json-to-postgres": "node src/api/migration/json-to-postgres.js",
     "import": "node src/api/import-transactions.js"
@@ -69,7 +69,6 @@
     }
   },
   "devDependencies": {
-    "prettier": "1.18.2",
-    "prisma2": "^2.0.0-preview024"
+    "prettier": "1.18.2"
   }
 }

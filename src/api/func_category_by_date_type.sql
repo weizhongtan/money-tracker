@@ -1,6 +1,6 @@
 -- reference table for graphql only
 CREATE TABLE __category_by_date_type (
-  id text,
+  id uuid,
   name text,
   sum numeric(19, 2)
 );
@@ -10,7 +10,7 @@ CREATE TABLE __category_by_date_type (
 -- - which match a category type (income/expense)
 -- - which match a category level (parent/child)
 
-CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamp, v_end_date timestamp, v_account_id text, v_category_type text, v_parent boolean)
+CREATE OR REPLACE FUNCTION func_category_by_date_type (v_start_date timestamptz, v_end_date timestamptz, v_account_id uuid, v_category_type text, v_parent boolean)
   RETURNS SETOF __category_by_date_type
   AS $$
   WITH data AS (

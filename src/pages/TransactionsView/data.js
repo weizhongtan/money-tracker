@@ -6,9 +6,9 @@ import { CategoriesList, reversible, useBaseData } from '../../lib';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
-    $startDate: timestamp
-    $endDate: timestamp
-    $categoryIds: [String!]
+    $startDate: timestamptz
+    $endDate: timestamptz
+    $categoryIds: [uuid!]
     $searchText: String!
     $searchAmount: numeric!
     $searchAmountComplement: numeric!
