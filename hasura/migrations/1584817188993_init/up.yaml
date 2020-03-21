@@ -1,0 +1,93 @@
+- args:
+    functions:
+    - function:
+        name: func_category_by_date_type
+        schema: public
+    - function:
+        name: func_transactions_by_account_grouped_cumulative
+        schema: public
+    - function:
+        name: func_transactions_by_category_grouped
+        schema: public
+    tables:
+    - table:
+        name: __category_by_date_type
+        schema: public
+    - table:
+        name: __transactions_by_category_grouped
+        schema: public
+    - table:
+        name: __transactions_group_by
+        schema: public
+    - array_relationships:
+      - name: transactions
+        using:
+          foreign_key_constraint_on:
+            column: from_account_id
+            table:
+              name: transactions
+              schema: public
+      - name: transactionsByToAccountId
+        using:
+          foreign_key_constraint_on:
+            column: to_account_id
+            table:
+              name: transactions
+              schema: public
+      table:
+        name: accounts
+        schema: public
+    - array_relationships:
+      - name: categories
+        using:
+          foreign_key_constraint_on:
+            column: parent_category_id
+            table:
+              name: categories
+              schema: public
+      - name: transactions
+        using:
+          foreign_key_constraint_on:
+            column: category_id
+            table:
+              name: transactions
+              schema: public
+      object_relationships:
+      - name: category
+        using:
+          foreign_key_constraint_on: parent_category_id
+      table:
+        name: categories
+        schema: public
+    - array_relationships:
+      - name: transactions
+        using:
+          foreign_key_constraint_on:
+            column: paired_with_id
+            table:
+              name: transactions
+              schema: public
+      object_relationships:
+      - name: accountByFromAccountId
+        using:
+          foreign_key_constraint_on: from_account_id
+      - name: accountByToAccountId
+        using:
+          foreign_key_constraint_on: to_account_id
+      - name: category
+        using:
+          foreign_key_constraint_on: category_id
+      - name: transaction
+        using:
+          foreign_key_constraint_on: paired_with_id
+      table:
+        name: transactions
+        schema: public
+    - table:
+        name: view_accounts
+        schema: public
+    - table:
+        name: view_categories_with_parents
+        schema: public
+    version: 2
+  type: replace_metadata
