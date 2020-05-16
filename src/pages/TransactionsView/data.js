@@ -36,10 +36,12 @@ const GET_TRANSACTIONS = gql`
         accountByToAccountId {
           id
           name
+          colour
         }
         accountByFromAccountId {
           id
           name
+          colour
         }
         category {
           id
@@ -108,10 +110,12 @@ export const useTransactions = ({
               to: {
                 id: accountByToAccountId?.id,
                 name: accountByToAccountId?.name,
+                colour: accountByToAccountId?.colour,
               },
               from: {
                 id: accountByFromAccountId?.id,
                 name: accountByFromAccountId?.name,
+                colour: accountByFromAccountId?.colour,
               },
             },
             description: description,

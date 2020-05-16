@@ -29,6 +29,7 @@ const ManageAccountsView = ({ startDate, endDate }) => {
             <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
           )}
         />
+        <Column title="Colour" dataIndex="colour" key="colour" />
       </Table>
     </>
   );

@@ -99,6 +99,7 @@ const GET_BASE_DATA = gql`
       initialAmount: initial_amount
       sum
       minimum
+      colour
     }
     categories: view_categories_with_parents(order_by: { full_name: asc }) {
       id

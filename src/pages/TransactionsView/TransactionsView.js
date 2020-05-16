@@ -30,12 +30,14 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const AccountAvatar = ({ name }) => {
+const AccountAvatar = ({ name, colour }) => {
   const theme = useTheme();
   return (
     <Avatar
       style={{
-        background: theme.colors.presetPrimaryColors.gold,
+        background:
+          theme.colors.presetPrimaryColors[colour] ??
+          theme.colors.presetPrimaryColors.grey,
       }}
       size="small"
     >
@@ -50,21 +52,21 @@ const AccountIndicator = ({ to, from, isOut }) => {
     <Tooltip
       title={() => (
         <>
-          {to}
-          {from && (
+          {to.name}
+          {from.name && (
             <>
               {' '}
-              {arrow} {from}
+              {arrow} {from.name}
             </>
           )}
         </>
       )}
     >
-      <AccountAvatar name={to} />
-      {from && (
+      <AccountAvatar name={to.name} colour={to.colour} />
+      {from.name && (
         <>
           {' '}
-          {arrow} <AccountAvatar name={from} />
+          {arrow} <AccountAvatar name={from.name} colour={from.colour} />
         </>
       )}
     </Tooltip>
@@ -201,8 +203,8 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           render={({ to, from }, record) => {
             return (
               <AccountIndicator
-                to={to.name}
-                from={from.name}
+                to={to}
+                from={from}
                 isOut={record.account.isOut}
               />
             );

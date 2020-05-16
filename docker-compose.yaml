@@ -17,7 +17,7 @@ services:
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${DB_PASSWORD}@postgres:5432/${DB_NAME}
-      HASURA_GRAPHQL_ENABLE_CONSOLE: 'true' # use cli for all migrations
+      HASURA_GRAPHQL_ENABLE_CONSOLE: 'false' # use cli for all migrations
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       ## uncomment next line to set an admin secret
       # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
