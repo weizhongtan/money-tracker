@@ -1,0 +1,79 @@
+- table:
+    schema: public
+    name: __category_by_date_type
+- table:
+    schema: public
+    name: __transactions_by_category_grouped
+- table:
+    schema: public
+    name: __transactions_group_by
+- table:
+    schema: public
+    name: accounts
+  array_relationships:
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: from_account_id
+        table:
+          schema: public
+          name: transactions
+  - name: transactionsByToAccountId
+    using:
+      foreign_key_constraint_on:
+        column: to_account_id
+        table:
+          schema: public
+          name: transactions
+- table:
+    schema: public
+    name: categories
+  object_relationships:
+  - name: category
+    using:
+      foreign_key_constraint_on: parent_category_id
+  array_relationships:
+  - name: categories
+    using:
+      foreign_key_constraint_on:
+        column: parent_category_id
+        table:
+          schema: public
+          name: categories
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: category_id
+        table:
+          schema: public
+          name: transactions
+- table:
+    schema: public
+    name: transactions
+  object_relationships:
+  - name: accountByFromAccountId
+    using:
+      foreign_key_constraint_on: from_account_id
+  - name: accountByToAccountId
+    using:
+      foreign_key_constraint_on: to_account_id
+  - name: category
+    using:
+      foreign_key_constraint_on: category_id
+  - name: transaction
+    using:
+      foreign_key_constraint_on: paired_with_id
+  array_relationships:
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: paired_with_id
+        table:
+          schema: public
+          name: transactions
+- table:
+    schema: public
+    name: view_accounts
+- table:
+    schema: public
+    name: view_categories_with_parents
