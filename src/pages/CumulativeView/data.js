@@ -36,7 +36,7 @@ export const useData = ({ startDate, endDate, accountId, precision }) => {
     },
   });
 
-  const ret = {
+  return {
     loading,
     error,
     balances: data?.balances,
@@ -48,6 +48,4 @@ export const useData = ({ startDate, endDate, accountId, precision }) => {
       ...accounts,
     ],
   };
-  console.log({ ret });
-  return ret;
 };

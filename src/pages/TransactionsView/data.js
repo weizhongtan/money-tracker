@@ -39,12 +39,12 @@ const GET_TRANSACTIONS = gql`
         date
         amount
         description
-        accountByToAccountId {
+        account {
           id
           name
           colour
         }
-        accountByFromAccountId {
+        linkedAccount {
           id
           name
           colour
@@ -103,8 +103,8 @@ export const useTransactions = ({
           id,
           date,
           amount,
-          accountByToAccountId,
-          accountByFromAccountId,
+          account,
+          linkedAccount,
           description,
           category,
           pair_id,
@@ -118,14 +118,14 @@ export const useTransactions = ({
             },
             account: {
               to: {
-                id: accountByToAccountId?.id,
-                name: accountByToAccountId?.name,
-                colour: accountByToAccountId?.colour,
+                id: account?.id,
+                name: account?.name,
+                colour: account?.colour,
               },
-              from: {
-                id: accountByFromAccountId?.id,
-                name: accountByFromAccountId?.name,
-                colour: accountByFromAccountId?.colour,
+              linked: {
+                id: linkedAccount?.id,
+                name: linkedAccount?.name,
+                colour: linkedAccount?.colour,
               },
             },
             description: description,
@@ -153,16 +153,16 @@ const UPDATE_TRANSACTIONS_CATEGORY = gql`
   }
 `;
 
-const UPDATE_TRANSACTION_FROM_ACCOUNT = gql`
+const UPDATE_TRANSACTION_LINKED_ACCOUNT = gql`
   mutation UpdateTransactions2(
     $transactionId: uuid!
-    $fromAccountId: uuid
+    $linkedAccountId: uuid
     $pairId: uuid
   ) {
     update_transactions(
       where: { id: { _eq: $transactionId } }
       _set: {
-        from_account_id: $fromAccountId
+        linked_account_id: $linkedAccountId
         updated_at: "now"
         pair_id: $pairId
       }
@@ -174,8 +174,8 @@ const UPDATE_TRANSACTION_FROM_ACCOUNT = gql`
 
 export const useUpdateTransactionsCategory = categories => {
   const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS_CATEGORY);
-  const [updateTransactionFromAccount] = useMutation(
-    UPDATE_TRANSACTION_FROM_ACCOUNT
+  const [updateTransactionLinkedAccount] = useMutation(
+    UPDATE_TRANSACTION_LINKED_ACCOUNT
   );
 
   const updateTransactionsCategory = reversible({
@@ -215,9 +215,9 @@ export const useUpdateTransactionsCategory = categories => {
   });
 
   const pairTransactions = reversible({
-    async action({ transactionIds, toAccountIds, amounts, pairIds }) {
-      console.log({ transactionIds, toAccountIds, amounts });
-      if (toAccountIds[0] === toAccountIds[1]) {
+    async action({ transactionIds, accountIds, amounts, pairIds }) {
+      console.log({ transactionIds, accountIds, amounts });
+      if (accountIds[0] === accountIds[1]) {
         return {
           message: 'Transactions go to the same account',
           type: 'error',
@@ -240,17 +240,17 @@ export const useUpdateTransactionsCategory = categories => {
       }
 
       const pairId = uuid();
-      await updateTransactionFromAccount({
+      await updateTransactionLinkedAccount({
         variables: {
           transactionId: transactionIds[0],
-          fromAccountId: toAccountIds[1],
+          linkedAccountId: accountIds[1],
           pairId,
         },
       });
-      await updateTransactionFromAccount({
+      await updateTransactionLinkedAccount({
         variables: {
           transactionId: transactionIds[1],
-          fromAccountId: toAccountIds[0],
+          linkedAccountId: accountIds[0],
           pairId,
         },
         refetchQueries: ['GetTransactions'],
@@ -258,17 +258,17 @@ export const useUpdateTransactionsCategory = categories => {
       return 'Linked transactions';
     },
     async undo({ transactionIds }) {
-      await updateTransactionFromAccount({
+      await updateTransactionLinkedAccount({
         variables: {
           transactionId: transactionIds[0],
-          fromAccountId: null,
+          linkedAccountId: null,
           pairId: null,
         },
       });
-      await updateTransactionFromAccount({
+      await updateTransactionLinkedAccount({
         variables: {
           transactionId: transactionIds[1],
-          fromAccountId: null,
+          linkedAccountId: null,
           pairId: null,
         },
         refetchQueries: ['GetTransactions'],

@@ -46,27 +46,27 @@ const AccountAvatar = ({ name, colour }) => {
   );
 };
 
-const AccountIndicator = ({ to, from, isOut }) => {
+const AccountIndicator = ({ to, linked, isOut }) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
   return (
     <Tooltip
       title={() => (
         <>
           {to.name}
-          {from.name && (
+          {linked.name && (
             <>
               {' '}
-              {arrow} {from.name}
+              {arrow} {linked.name}
             </>
           )}
         </>
       )}
     >
       <AccountAvatar name={to.name} colour={to.colour} />
-      {from.name && (
+      {linked.name && (
         <>
           {' '}
-          {arrow} <AccountAvatar name={from.name} colour={from.colour} />
+          {arrow} <AccountAvatar name={linked.name} colour={linked.colour} />
         </>
       )}
     </Tooltip>
@@ -132,12 +132,12 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             type="primary"
             onClick={() => {
               const transactionIds = selectedRows.map(x => x.key);
-              const toAccountIds = selectedRows.map(x => x.account.to.id);
+              const accountIds = selectedRows.map(x => x.account.to.id);
               const amounts = selectedRows.map(x => x.amount.value);
               const pairIds = selectedRows.map(x => x.pairId);
               pairTransactions({
                 transactionIds,
-                toAccountIds,
+                accountIds,
                 amounts,
                 pairIds,
               });
@@ -200,12 +200,12 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             value: name,
           }))}
           onFilter={(value, record) => record.account.to.name === value}
-          render={({ to, from }, record) => {
+          render={({ to, linked }, record) => {
             return (
               <AccountIndicator
                 to={to}
-                from={from}
-                isOut={record.account.isOut}
+                linked={linked}
+                isOut={record.amount.isOut}
               />
             );
           }}

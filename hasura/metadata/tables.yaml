@@ -14,14 +14,14 @@
   - name: transactions
     using:
       foreign_key_constraint_on:
-        column: from_account_id
+        column: linked_account_id
         table:
           schema: public
           name: transactions
   - name: transactionsByToAccountId
     using:
       foreign_key_constraint_on:
-        column: to_account_id
+        column: account_id
         table:
           schema: public
           name: transactions
@@ -51,15 +51,15 @@
     schema: public
     name: transactions
   object_relationships:
-  - name: accountByFromAccountId
+  - name: account
     using:
-      foreign_key_constraint_on: from_account_id
-  - name: accountByToAccountId
-    using:
-      foreign_key_constraint_on: to_account_id
+      foreign_key_constraint_on: account_id
   - name: category
     using:
       foreign_key_constraint_on: category_id
+  - name: linkedAccount
+    using:
+      foreign_key_constraint_on: linked_account_id
   - name: transaction
     using:
       foreign_key_constraint_on: paired_with_id

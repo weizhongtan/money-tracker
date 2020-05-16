@@ -3,13 +3,18 @@ const { AccountInit, CategoryInit, TransactionInit } = require('./models');
 const customTypes = require('./types');
 const DataTypes = Object.assign({}, Sequelize, customTypes);
 
-const sequelize = new Sequelize('moneytracker', 'wzt', '', {
-  host: 'localhost',
-  dialect: 'postgres',
-  define: {
-    underscored: true,
-  },
-});
+const sequelize = new Sequelize(
+  'moneytracker',
+  'postgres',
+  'postgrespassword',
+  {
+    host: 'localhost',
+    dialect: 'postgres',
+    define: {
+      underscored: true,
+    },
+  }
+);
 
 const Account = AccountInit(sequelize, DataTypes);
 const Category = CategoryInit(sequelize, DataTypes);

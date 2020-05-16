@@ -36,7 +36,7 @@ exports.createTransaction = async ({
       amount: {
         [Sequelize.Op.eq]: amount,
       },
-      to_account_id: toAccount.id,
+      account_id: toAccount.id,
       description: description,
     },
   });
