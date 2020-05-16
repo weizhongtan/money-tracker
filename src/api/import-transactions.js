@@ -5,7 +5,7 @@ const { promisify } = require('util');
 const ofx = require('ofx');
 
 const readFile = promisify(fs.readFile);
-const { createTransaction, getAccount } = require('./lib');
+const { createTransaction } = require('./lib');
 
 function ofxParser(data) {
   const raw = ofx.parse(data);
@@ -29,14 +29,14 @@ function ofxParser(data) {
 
 function csvParser(data) {
   const raw = csvjson.toObject(data, {
-    delimiter: ';',
+    delimiter: ',',
     wrap: false,
   });
   return raw;
 }
 
-const pathname = '/Users/wzt/Downloads/TANW45133441-20200516.ofx';
-const accountName = 'Natwest Reward';
+const pathname = '/Users/wzt/Downloads/finance/TANW45133441-20200516.ofx';
+const accountId = '';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);
@@ -45,13 +45,9 @@ const accountName = 'Natwest Reward';
   const extension = path.extname(inPath);
   const parser = extension === '.ofx' ? ofxParser : csvParser;
 
-  const toAccount = await getAccount({
-    name: accountName,
-  });
-
   const parsedJson = parser(rawData).map(t => ({
     ...t,
-    toAccount,
+    accountId,
   }));
 
   console.log(parsedJson);

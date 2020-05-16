@@ -48,6 +48,7 @@ const AccountAvatar = ({ name, colour }) => {
 
 const AccountIndicator = ({ to, linked, isOut }) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
+  if (!to.name) return null;
   return (
     <Tooltip
       title={() => (
