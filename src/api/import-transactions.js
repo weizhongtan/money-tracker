@@ -35,9 +35,8 @@ function csvParser(data) {
   return raw;
 }
 
-const pathname =
-  '/Users/wzt/Downloads/finance/_transformed_tandem_transactions.csv';
-const accountName = 'Tandem';
+const pathname = '/Users/wzt/Downloads/TANW45133441-20200516.ofx';
+const accountName = 'Natwest Reward';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);
