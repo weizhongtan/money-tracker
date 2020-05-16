@@ -152,16 +152,17 @@ FROM (
    LEFT JOIN grouped_data d ON d.group_date = s.group_date;
 $$;
 CREATE TABLE public.accounts (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     legacy_key text NOT NULL,
     name text NOT NULL,
     initial_amount numeric(19,2) NOT NULL,
     minimum numeric(19,2) NOT NULL,
     created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    updated_at timestamp with time zone NOT NULL,
+    colour text
 );
 CREATE TABLE public.categories (
-    id uuid NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     legacy_key text NOT NULL,
     name text NOT NULL,
     type text,
@@ -170,13 +171,13 @@ CREATE TABLE public.categories (
     parent_category_id uuid
 );
 CREATE TABLE public.transactions (
-    id uuid NOT NULL,
-    date timestamp with time zone NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    date timestamp with time zone DEFAULT now() NOT NULL,
     amount numeric(19,2) NOT NULL,
     description text NOT NULL,
     pair_id uuid,
-    created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
     from_account_id uuid,
     to_account_id uuid,
     category_id uuid,
@@ -208,7 +209,8 @@ CREATE VIEW public.view_accounts AS
     ac.initial_amount,
     ac.minimum,
     ac.created_at,
-    ac.updated_at
+    ac.updated_at,
+    ac.colour
    FROM (data
      JOIN public.accounts ac ON ((data.account_id = ac.id)));
 CREATE VIEW public.view_categories_with_parents AS

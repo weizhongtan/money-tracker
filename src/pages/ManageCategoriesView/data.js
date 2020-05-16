@@ -5,8 +5,8 @@ import { reversible } from '../../lib';
 
 const UPDATE_CATEGORY = gql`
   mutation UpdateCategory(
-    $id: String!
-    $parentCategoryId: String
+    $id: uuid!
+    $parentCategoryId: uuid
     $name: String
     $type: String
   ) {

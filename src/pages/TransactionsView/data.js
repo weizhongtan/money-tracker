@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 
 import { CategoriesList, reversible, useBaseData } from '../../lib';
 
@@ -9,6 +9,7 @@ const GET_TRANSACTIONS = gql`
     $startDate: timestamptz
     $endDate: timestamptz
     $categoryIds: [uuid!]
+    $includeNullCategory: Boolean
     $searchText: String!
     $searchAmount: numeric!
     $searchAmountComplement: numeric!
@@ -16,7 +17,12 @@ const GET_TRANSACTIONS = gql`
     transactions_aggregate(
       where: {
         date: { _gte: $startDate, _lte: $endDate }
-        category_id: { _in: $categoryIds }
+        _and: {
+          _or: [
+            { category_id: { _in: $categoryIds } }
+            { category_id: { _is_null: $includeNullCategory } }
+          ]
+        }
         _or: [
           { description: { _ilike: $searchText } }
           { amount: { _eq: $searchAmount } }
@@ -65,8 +71,11 @@ export const useTransactions = ({
   const searchAmountComplement = -searchAmount;
   const categoryIds = baseData.categories
     .filter(cat => {
-      const parentId = cat.parent?.id || cat.id;
-      if (!categoryId || parentId === categoryId || cat.id === categoryId) {
+      if (
+        !categoryId ||
+        cat.parent?.id === categoryId ||
+        cat.id === categoryId
+      ) {
         return true;
       }
       return false;
@@ -76,6 +85,7 @@ export const useTransactions = ({
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
     categoryIds,
+    includeNullCategory: !categoryId,
     searchText: `%${searchText}%`,
     searchAmount,
     searchAmountComplement,
@@ -133,10 +143,7 @@ export const useTransactions = ({
 };
 
 const UPDATE_TRANSACTIONS_CATEGORY = gql`
-  mutation UpdateTransactions1(
-    $transactionIds: [String!]!
-    $categoryId: String
-  ) {
+  mutation UpdateTransactions1($transactionIds: [uuid!]!, $categoryId: uuid) {
     update_transactions(
       where: { id: { _in: $transactionIds } }
       _set: { category_id: $categoryId, updated_at: "now" }
@@ -148,9 +155,9 @@ const UPDATE_TRANSACTIONS_CATEGORY = gql`
 
 const UPDATE_TRANSACTION_FROM_ACCOUNT = gql`
   mutation UpdateTransactions2(
-    $transactionId: String!
-    $fromAccountId: String
-    $pairId: String
+    $transactionId: uuid!
+    $fromAccountId: uuid
+    $pairId: uuid
   ) {
     update_transactions(
       where: { id: { _eq: $transactionId } }
