@@ -16,20 +16,26 @@ exports.createTransaction = async ({
 }) => {
   const query = gql`
     query MyQuery(
-      $accountId: uuid
-      $amount: numeric
-      $date: timestamptz
-      $description: String
+      $accountId: uuid!
+      $amount: numeric!
+      $date: timestamptz!
+      $description: String!
     ) {
       transactions(
         where: {
-          account_id: { _eq: $accountId }
-          amount: { _eq: $amount }
-          date: { _eq: $date }
-          description: { _eq: $description }
+          _and: [
+            { account_id: { _eq: $accountId } }
+            { amount: { _eq: $amount } }
+            { date: { _eq: $date } }
+            { description: { _eq: $description } }
+          ]
         }
       ) {
         id
+        account_id
+        amount
+        date
+        description
       }
     }
   `;
@@ -41,14 +47,16 @@ exports.createTransaction = async ({
       date,
       description,
     },
+    fetchPolicy: 'no-cache',
   });
 
   if (res.data.transactions.length) {
-    console.error(`Transaction already exists: ${res.data.transactions[0].id}`);
+    console.log(res.data.transactions.length);
+    console.error(`Transaction already exists`, res.data.transactions[0]);
     return false;
   }
 
-  const MUTATION = gql`
+  const mutation = gql`
     mutation MyMutation(
       $accountId: uuid
       $amount: numeric
@@ -68,7 +76,7 @@ exports.createTransaction = async ({
     }
   `;
   await client.mutate({
-    mutation: MUTATION,
+    mutation,
     variables: {
       accountId,
       amount,

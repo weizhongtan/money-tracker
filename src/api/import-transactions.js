@@ -29,14 +29,15 @@ function ofxParser(data) {
 
 function csvParser(data) {
   const raw = csvjson.toObject(data, {
-    delimiter: ',',
+    delimiter: ';',
     wrap: false,
   });
   return raw;
 }
 
-const pathname = '/Users/wzt/Downloads/finance/TANW45133441-20200516.ofx';
-const accountId = '';
+const pathname =
+  '/Users/wzt/Downloads/finance/_transformed_marcus_transactions.csv';
+const accountId = 'b2d97dd6-2085-4404-b3e0-2abc1f6d1d29';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);
