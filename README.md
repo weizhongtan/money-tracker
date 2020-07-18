@@ -19,6 +19,13 @@ $ npm run api:up
 $ npm start
 ```
 
+To update the database:
+
+```sh
+$ cd hasura
+$ hasura console
+```
+
 Migrate an existing Homebank xhb file:
 
 ```sh
