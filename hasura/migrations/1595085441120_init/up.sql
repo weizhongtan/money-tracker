@@ -22,12 +22,12 @@ CREATE FUNCTION public.func_category_by_date_type(v_start_date timestamp with ti
       INNER JOIN categories c ON t.category_id = c.id
       LEFT JOIN categories pc ON c.parent_category_id = pc.id
     WHERE (v_account_id IS NULL
-      OR t.to_account_id = v_account_id)
+      OR t.account_id = v_account_id)
     AND t.date >= v_start_date
     AND t.date <= v_end_date
     AND coalesce(pc.type, c.type) = v_category_type
     -- exclude internal transfers
-    AND t.from_account_id IS NULL
+    AND t.linked_account_id IS NULL
 ),
 grouped_data AS (
   SELECT
@@ -80,7 +80,7 @@ CREATE FUNCTION public.func_transactions_by_account_grouped_cumulative(v_account
       WHERE
          -- if v_account_id is not provided, match all transactions
          v_account_id IS NULL
-         OR to_account_id = v_account_id
+         OR account_id = v_account_id
       GROUP BY
          group_date
 )
@@ -153,21 +153,21 @@ FROM (
 $$;
 CREATE TABLE public.accounts (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    legacy_key text NOT NULL,
+    legacy_key text,
     name text NOT NULL,
-    initial_amount numeric(19,2) NOT NULL,
-    minimum numeric(19,2) NOT NULL,
-    created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL,
+    initial_amount numeric(19,2) DEFAULT 0 NOT NULL,
+    minimum numeric(19,2) DEFAULT 0 NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
     colour text
 );
 CREATE TABLE public.categories (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    legacy_key text NOT NULL,
+    legacy_key text,
     name text NOT NULL,
     type text,
-    created_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
     parent_category_id uuid
 );
 CREATE TABLE public.transactions (
@@ -178,8 +178,8 @@ CREATE TABLE public.transactions (
     pair_id uuid,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
     updated_at timestamp with time zone DEFAULT now() NOT NULL,
-    from_account_id uuid,
-    to_account_id uuid,
+    linked_account_id uuid,
+    account_id uuid,
     category_id uuid,
     paired_with_id uuid
 );
@@ -193,7 +193,7 @@ CREATE VIEW public.view_accounts AS
                  SELECT sum(tr.amount) AS sum,
                     ac_1.id AS account_id
                    FROM (public.transactions tr
-                     JOIN public.accounts ac_1 ON ((tr.to_account_id = ac_1.id)))
+                     JOIN public.accounts ac_1 ON ((tr.account_id = ac_1.id)))
                   GROUP BY ac_1.id
                 )
          SELECT sum(data_1.amount) AS sum,
@@ -233,8 +233,8 @@ ALTER TABLE ONLY public.categories
 ALTER TABLE ONLY public.transactions
     ADD CONSTRAINT transactions_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(id) ON UPDATE CASCADE ON DELETE SET NULL;
 ALTER TABLE ONLY public.transactions
-    ADD CONSTRAINT transactions_from_account_id_fkey FOREIGN KEY (from_account_id) REFERENCES public.accounts(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT transactions_from_account_id_fkey FOREIGN KEY (linked_account_id) REFERENCES public.accounts(id) ON UPDATE CASCADE ON DELETE SET NULL;
 ALTER TABLE ONLY public.transactions
     ADD CONSTRAINT transactions_paired_with_id_fkey FOREIGN KEY (paired_with_id) REFERENCES public.transactions(id) ON UPDATE CASCADE ON DELETE SET NULL;
 ALTER TABLE ONLY public.transactions
-    ADD CONSTRAINT transactions_to_account_id_fkey FOREIGN KEY (to_account_id) REFERENCES public.accounts(id) ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT transactions_to_account_id_fkey FOREIGN KEY (account_id) REFERENCES public.accounts(id) ON UPDATE CASCADE ON DELETE SET NULL;
