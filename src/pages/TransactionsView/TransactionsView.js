@@ -30,12 +30,14 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const AccountAvatar = ({ name }) => {
+const AccountAvatar = ({ name, colour }) => {
   const theme = useTheme();
   return (
     <Avatar
       style={{
-        background: theme.colors.presetPrimaryColors.gold,
+        background:
+          theme.colors.presetPrimaryColors[colour] ??
+          theme.colors.presetPrimaryColors.grey,
       }}
       size="small"
     >
@@ -44,27 +46,28 @@ const AccountAvatar = ({ name }) => {
   );
 };
 
-const AccountIndicator = ({ to, from, isOut }) => {
+const AccountIndicator = ({ to, linked, isOut }) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
+  if (!to.name) return null;
   return (
     <Tooltip
       title={() => (
         <>
-          {to}
-          {from && (
+          {to.name}
+          {linked.name && (
             <>
               {' '}
-              {arrow} {from}
+              {arrow} {linked.name}
             </>
           )}
         </>
       )}
     >
-      <AccountAvatar name={to} />
-      {from && (
+      <AccountAvatar name={to.name} colour={to.colour} />
+      {linked.name && (
         <>
           {' '}
-          {arrow} <AccountAvatar name={from} />
+          {arrow} <AccountAvatar name={linked.name} colour={linked.colour} />
         </>
       )}
     </Tooltip>
@@ -130,12 +133,12 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             type="primary"
             onClick={() => {
               const transactionIds = selectedRows.map(x => x.key);
-              const toAccountIds = selectedRows.map(x => x.account.to.id);
+              const accountIds = selectedRows.map(x => x.account.to.id);
               const amounts = selectedRows.map(x => x.amount.value);
               const pairIds = selectedRows.map(x => x.pairId);
               pairTransactions({
                 transactionIds,
-                toAccountIds,
+                accountIds,
                 amounts,
                 pairIds,
               });
@@ -198,12 +201,12 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             value: name,
           }))}
           onFilter={(value, record) => record.account.to.name === value}
-          render={({ to, from }, record) => {
+          render={({ to, linked }, record) => {
             return (
               <AccountIndicator
-                to={to.name}
-                from={from.name}
-                isOut={record.account.isOut}
+                to={to}
+                linked={linked}
+                isOut={record.amount.isOut}
               />
             );
           }}

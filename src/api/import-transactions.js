@@ -5,7 +5,7 @@ const { promisify } = require('util');
 const ofx = require('ofx');
 
 const readFile = promisify(fs.readFile);
-const { createTransaction, getAccount } = require('./lib');
+const { createTransaction } = require('./lib');
 
 function ofxParser(data) {
   const raw = ofx.parse(data);
@@ -36,8 +36,8 @@ function csvParser(data) {
 }
 
 const pathname =
-  '/Users/wzt/Downloads/finance/_transformed_tandem_transactions.csv';
-const accountName = 'Tandem';
+  '/Users/wzt/Downloads/finance/_transformed_marcus_transactions.csv';
+const accountId = 'b2d97dd6-2085-4404-b3e0-2abc1f6d1d29';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);
@@ -46,13 +46,9 @@ const accountName = 'Tandem';
   const extension = path.extname(inPath);
   const parser = extension === '.ofx' ? ofxParser : csvParser;
 
-  const toAccount = await getAccount({
-    name: accountName,
-  });
-
   const parsedJson = parser(rawData).map(t => ({
     ...t,
-    toAccount,
+    accountId,
   }));
 
   console.log(parsedJson);

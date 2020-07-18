@@ -5,9 +5,9 @@ import { useBaseData } from '../../lib';
 
 const GET_CATEGORIES = gql`
   query GetCategories(
-    $startDate: timestamp
-    $endDate: timestamp
-    $accountId: String
+    $startDate: timestamptz
+    $endDate: timestamptz
+    $accountId: uuid
     $categoryType: String
     $groupByParent: Boolean
   ) {

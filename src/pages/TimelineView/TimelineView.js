@@ -14,9 +14,9 @@ const { Option } = Select;
 
 const GET_AMOUNT_GROUPS = gql`
   query GetAmountGroups(
-    $startDate: timestamp
-    $endDate: timestamp
-    $categoryId: String
+    $startDate: timestamptz
+    $endDate: timestamptz
+    $categoryId: uuid
     $groupBy: String
   ) {
     groups: func_transactions_by_category_grouped(
