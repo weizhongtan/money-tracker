@@ -8,12 +8,11 @@ Visualise your personal finances.
 
 - Docker
 - Docker compose
-- Postgres
 - Node.js
 
 ## Quick start
 
-Make sure Postgres and Docker are running. Then:
+Make Docker is running. Then:
 
 ```sh
 $ npm run api:up
