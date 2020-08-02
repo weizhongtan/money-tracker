@@ -1,5 +1,6 @@
 const { default: ApolloClient, gql } = require('apollo-boost');
 const fetch = require('node-fetch');
+const moment = require('moment');
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/v1/graphql',
@@ -16,7 +17,8 @@ exports.createTransaction = async ({
     query MyQuery(
       $accountId: uuid!
       $amount: numeric!
-      $date: timestamptz!
+      $startDate: timestamptz!
+      $endDate: timestamptz!
       $description: String!
     ) {
       transactions(
@@ -24,7 +26,7 @@ exports.createTransaction = async ({
           _and: [
             { account_id: { _eq: $accountId } }
             { amount: { _eq: $amount } }
-            { date: { _eq: $date } }
+            { date: { _gte: $startDate, _lt: $endDate } }
             { description: { _eq: $description } }
           ]
         }
@@ -37,12 +39,23 @@ exports.createTransaction = async ({
       }
     }
   `;
+  // do not add transactions that exist already
+  // match any existing transaction to the same account, for the same amount, with the same description
+  const startDate = new Date(date);
+  startDate.setHours(0);
+  startDate.setMinutes(0);
+  startDate.setSeconds(0);
+  startDate.setMilliseconds(0);
+  const endDate = moment(startDate)
+    .add(1, 'day')
+    .toDate();
   const res = await client.query({
     query,
     variables: {
       accountId,
       amount,
-      date,
+      startDate,
+      endDate,
       description,
     },
     fetchPolicy: 'no-cache',

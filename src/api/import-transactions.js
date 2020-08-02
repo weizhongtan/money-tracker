@@ -35,18 +35,33 @@ function csvParser(data) {
   return raw;
 }
 
+function qifParser(data) {
+  console.log(data);
+}
+
+const parsers = {
+  ofx: ofxParser,
+  csv: csvParser,
+  qif: qifParser,
+};
+
 const pathname =
-  '/Users/wzt/Downloads/Statement Download 2020-Aug-02 15-27-07.ofx';
-const accountId = 'c6653994-7fdc-48c0-aeac-4fc1318b5d5a';
+  '/Users/wzt/Downloads/finance/_transformed_monzo_transactions.csv';
+const accountId = '1fb07973-de2e-4709-a53a-f9a8f90b3aed';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);
 
   const rawData = await readFile(inPath, 'utf8');
   const extension = path.extname(inPath);
-  const parser = extension === '.ofx' ? ofxParser : csvParser;
+  const parser = parsers[extension.substring(1)];
 
-  const parsedJson = parser(rawData).map(t => ({
+  const data = parser(rawData);
+  if (!data) {
+    throw new Error('parser return nothing!');
+  }
+
+  const parsedJson = data.map(t => ({
     ...t,
     accountId,
   }));
