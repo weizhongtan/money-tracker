@@ -153,6 +153,14 @@ const UPDATE_TRANSACTIONS_CATEGORY = gql`
   }
 `;
 
+const DELETE_TRANSACTIONS = gql`
+  mutation DeleteTransactions($transactionIds: [uuid!]!) {
+    delete_transactions(where: { id: { _in: $transactionIds } }) {
+      affected_rows
+    }
+  }
+`;
+
 const UPDATE_TRANSACTION_LINKED_ACCOUNT = gql`
   mutation UpdateTransactions2(
     $transactionId: uuid!
@@ -174,6 +182,7 @@ const UPDATE_TRANSACTION_LINKED_ACCOUNT = gql`
 
 export const useUpdateTransactionsCategory = categories => {
   const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS_CATEGORY);
+  const [_deleteTransactions] = useMutation(DELETE_TRANSACTIONS);
   const [updateTransactionLinkedAccount] = useMutation(
     UPDATE_TRANSACTION_LINKED_ACCOUNT
   );
@@ -212,6 +221,19 @@ export const useUpdateTransactionsCategory = categories => {
       const recordsUpdated = results.reduce((acc, val) => acc + val, 0);
       return `Undid: ${recordsUpdated} records`;
     },
+  });
+
+  const deleteTransactions = reversible({
+    async action({ transactionIds }) {
+      const { data } = await _deleteTransactions({
+        variables: {
+          transactionIds,
+        },
+        refetchQueries: ['GetTransactions'],
+      });
+      return `Deleted ${data.delete_transactions.affected_rows} rows`;
+    },
+    async undo() {},
   });
 
   const pairTransactions = reversible({
@@ -316,5 +338,10 @@ export const useUpdateTransactionsCategory = categories => {
     },
   });
 
-  return [updateTransactionsCategory, pairTransactions, unPairTransactions];
+  return [
+    updateTransactionsCategory,
+    deleteTransactions,
+    pairTransactions,
+    unPairTransactions,
+  ];
 };

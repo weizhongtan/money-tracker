@@ -84,6 +84,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
 
   const [
     updateTransactionsCategory,
+    deleteTransactions,
     pairTransactions,
     unPairTransactions,
   ] = useUpdateTransactionsCategory(categories);
@@ -169,6 +170,18 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             )}
           </>
         )}
+        <Button
+          type="primary"
+          danger
+          onClick={async () => {
+            deleteTransactions({
+              transactionIds: selectedRows.map(x => x.key),
+            });
+            setSelectedRows([]);
+          }}
+        >
+          Delete {selectedRows.length} row(s)
+        </Button>
       </Drawer>
       <Affix offsetTop={0.01}>
         <DebounceInput
