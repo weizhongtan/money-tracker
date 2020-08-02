@@ -255,7 +255,7 @@ export const useUpdateTransactionsCategory = categories => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      return 'Linked transactions';
+      return 'Paired transactions';
     },
     async undo({ transactionIds }) {
       await updateTransactionLinkedAccount({
@@ -273,9 +273,48 @@ export const useUpdateTransactionsCategory = categories => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      return 'Undid: link';
+      return 'Undid: pair';
     },
   });
 
-  return [updateTransactionsCategory, pairTransactions];
+  const unPairTransactions = reversible({
+    async action({ transactionIds }) {
+      await updateTransactionLinkedAccount({
+        variables: {
+          transactionId: transactionIds[0],
+          linkedAccountId: null,
+          pairId: null,
+        },
+      });
+      await updateTransactionLinkedAccount({
+        variables: {
+          transactionId: transactionIds[1],
+          linkedAccountId: null,
+          pairId: null,
+        },
+        refetchQueries: ['GetTransactions'],
+      });
+      return 'Unpaired transactions';
+    },
+    async undo({ transactionIds, linkedAccountIds, pairId }) {
+      await updateTransactionLinkedAccount({
+        variables: {
+          transactionId: transactionIds[0],
+          linkedAccountId: linkedAccountIds[0],
+          pairId,
+        },
+      });
+      await updateTransactionLinkedAccount({
+        variables: {
+          transactionId: transactionIds[1],
+          linkedAccountId: linkedAccountIds[1],
+          pairId,
+        },
+        refetchQueries: ['GetTransactions'],
+      });
+      return 'Undid: unpair';
+    },
+  });
+
+  return [updateTransactionsCategory, pairTransactions, unPairTransactions];
 };

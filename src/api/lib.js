@@ -1,7 +1,5 @@
-const boost = require('apollo-boost');
+const { default: ApolloClient, gql } = require('apollo-boost');
 const fetch = require('node-fetch');
-
-const { default: ApolloClient, gql } = boost;
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/v1/graphql',

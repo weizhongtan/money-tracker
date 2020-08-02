@@ -37,8 +37,8 @@ export const useTheme = () => useContext(ThemeContext);
 export const reversible = ({ action, undo }) => async (...args) => {
   const result = await action(...args);
   // TODO: refactor to use object API in all cases
-  const actionMessage = result.message || result;
-  const { type = 'success' } = result;
+  const actionMessage = result?.message || result || 'did the thing';
+  const type = result?.type || 'success';
   const key = uuid();
   // see types: https://ant.design/components/notification/#API
   notification[type]({

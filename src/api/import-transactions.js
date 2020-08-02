@@ -36,8 +36,8 @@ function csvParser(data) {
 }
 
 const pathname =
-  '/Users/wzt/Downloads/finance/_transformed_marcus_transactions.csv';
-const accountId = 'b2d97dd6-2085-4404-b3e0-2abc1f6d1d29';
+  '/Users/wzt/Downloads/Statement Download 2020-Aug-02 15-27-07.ofx';
+const accountId = 'c6653994-7fdc-48c0-aeac-4fc1318b5d5a';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);

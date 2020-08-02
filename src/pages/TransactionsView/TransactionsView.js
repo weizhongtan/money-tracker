@@ -85,6 +85,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
   const [
     updateTransactionsCategory,
     pairTransactions,
+    unPairTransactions,
   ] = useUpdateTransactionsCategory(categories);
   const { loading, error, transactions, count } = useTransactions({
     startDate,
@@ -129,24 +130,44 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           Deselect {selectedRows.length} row(s)
         </Button>
         {selectedRows.length === 2 && (
-          <Button
-            type="primary"
-            onClick={() => {
-              const transactionIds = selectedRows.map(x => x.key);
-              const accountIds = selectedRows.map(x => x.account.to.id);
-              const amounts = selectedRows.map(x => x.amount.value);
-              const pairIds = selectedRows.map(x => x.pairId);
-              pairTransactions({
-                transactionIds,
-                accountIds,
-                amounts,
-                pairIds,
-              });
-              setSelectedRows([]);
-            }}
-          >
-            Pair transactions
-          </Button>
+          <>
+            <Button
+              type="primary"
+              onClick={() => {
+                const transactionIds = selectedRows.map(x => x.key);
+                const accountIds = selectedRows.map(x => x.account.to.id);
+                const amounts = selectedRows.map(x => x.amount.value);
+                const pairIds = selectedRows.map(x => x.pairId);
+                pairTransactions({
+                  transactionIds,
+                  accountIds,
+                  amounts,
+                  pairIds,
+                });
+                setSelectedRows([]);
+              }}
+            >
+              Pair transactions
+            </Button>
+            {selectedRows[0].pairId === selectedRows[1].pairId && (
+              <Button
+                type="primary"
+                danger
+                onClick={() => {
+                  unPairTransactions({
+                    transactionIds: selectedRows.map(x => x.key),
+                    linkedAccountIds: selectedRows.map(
+                      x => x.account.linked.id
+                    ),
+                    pairId: selectedRows[0].pairId,
+                  });
+                  setSelectedRows([]);
+                }}
+              >
+                Unpair transactions
+              </Button>
+            )}
+          </>
         )}
       </Drawer>
       <Affix offsetTop={0.01}>
