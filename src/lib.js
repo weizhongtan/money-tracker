@@ -50,7 +50,7 @@ export const reversible = ({ action, undo }) => async (...args) => {
         size="small"
         onClick={async () => {
           notification.close(key);
-          const undoMessage = await undo(...args);
+          const undoMessage = await undo(result, ...args);
           notification.success({
             key: uuid(),
             message: undoMessage,

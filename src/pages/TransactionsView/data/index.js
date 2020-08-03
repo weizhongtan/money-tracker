@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { v4 as uuid } from 'uuid';
 
-import { CategoriesList, reversible, useBaseData } from '../../lib';
+import { CategoriesList, reversible, useBaseData } from '../../../lib';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
@@ -161,18 +161,29 @@ const DELETE_TRANSACTIONS = gql`
   }
 `;
 
-const UPDATE_TRANSACTION_LINKED_ACCOUNT = gql`
-  mutation UpdateTransactions2(
-    $transactionId: uuid!
-    $linkedAccountId: uuid
-    $pairId: uuid
+const UNPAIR_TRANSACTIONS = gql`
+  mutation UnpairTransactions($pairIds: [uuid!]!) {
+    update_transactions(
+      where: { pair_id: { _in: $pairIds } }
+      _set: { linked_account_id: null, updated_at: "now", pair_id: null }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+const PAIR_TRANSACTIONS = gql`
+  mutation PairTransactions(
+    $transactionIds: [uuid!]!
+    $setLinkedAccountId: uuid
+    $setPairId: uuid
   ) {
     update_transactions(
-      where: { id: { _eq: $transactionId } }
+      where: { id: { _in: $transactionIds } }
       _set: {
-        linked_account_id: $linkedAccountId
         updated_at: "now"
-        pair_id: $pairId
+        linked_account_id: $setLinkedAccountId
+        pair_id: $setPairId
       }
     ) {
       affected_rows
@@ -183,9 +194,8 @@ const UPDATE_TRANSACTION_LINKED_ACCOUNT = gql`
 export const useUpdateTransactionsCategory = categories => {
   const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS_CATEGORY);
   const [_deleteTransactions] = useMutation(DELETE_TRANSACTIONS);
-  const [updateTransactionLinkedAccount] = useMutation(
-    UPDATE_TRANSACTION_LINKED_ACCOUNT
-  );
+  const [_pairTransactions] = useMutation(PAIR_TRANSACTIONS);
+  const [_unpairTransactions] = useMutation(UNPAIR_TRANSACTIONS);
 
   const updateTransactionsCategory = reversible({
     async action({
@@ -205,7 +215,7 @@ export const useUpdateTransactionsCategory = categories => {
         data.update_transactions.affected_rows
       } records)`;
     },
-    async undo({ transactionIds, currentCategoryIds }) {
+    async undo(result, { transactionIds, currentCategoryIds }) {
       const results = await Promise.all(
         currentCategoryIds.map(async (categoryId, index) => {
           const { data } = await updateTransaction({
@@ -261,37 +271,28 @@ export const useUpdateTransactionsCategory = categories => {
         };
       }
 
-      const pairId = uuid();
-      await updateTransactionLinkedAccount({
+      const setPairId = uuid();
+      await _pairTransactions({
         variables: {
-          transactionId: transactionIds[0],
-          linkedAccountId: accountIds[1],
-          pairId,
+          transactionIds: [transactionIds[0]],
+          setLinkedAccountId: accountIds[1],
+          setPairId,
         },
       });
-      await updateTransactionLinkedAccount({
+      await _pairTransactions({
         variables: {
-          transactionId: transactionIds[1],
-          linkedAccountId: accountIds[0],
-          pairId,
+          transactionIds: [transactionIds[1]],
+          setLinkedAccountId: accountIds[0],
+          setPairId,
         },
         refetchQueries: ['GetTransactions'],
       });
       return 'Paired transactions';
     },
-    async undo({ transactionIds }) {
-      await updateTransactionLinkedAccount({
+    async undo(result, { setPairId }) {
+      await _unpairTransactions({
         variables: {
-          transactionId: transactionIds[0],
-          linkedAccountId: null,
-          pairId: null,
-        },
-      });
-      await updateTransactionLinkedAccount({
-        variables: {
-          transactionId: transactionIds[1],
-          linkedAccountId: null,
-          pairId: null,
+          pairIds: [setPairId],
         },
         refetchQueries: ['GetTransactions'],
       });
@@ -299,42 +300,18 @@ export const useUpdateTransactionsCategory = categories => {
     },
   });
 
-  const unPairTransactions = reversible({
-    async action({ transactionIds }) {
-      await updateTransactionLinkedAccount({
+  const unpairTransactions = reversible({
+    async action({ pairIds }) {
+      await _unpairTransactions({
         variables: {
-          transactionId: transactionIds[0],
-          linkedAccountId: null,
-          pairId: null,
-        },
-      });
-      await updateTransactionLinkedAccount({
-        variables: {
-          transactionId: transactionIds[1],
-          linkedAccountId: null,
-          pairId: null,
+          pairIds,
         },
         refetchQueries: ['GetTransactions'],
       });
       return 'Unpaired transactions';
     },
-    async undo({ transactionIds, linkedAccountIds, pairId }) {
-      await updateTransactionLinkedAccount({
-        variables: {
-          transactionId: transactionIds[0],
-          linkedAccountId: linkedAccountIds[0],
-          pairId,
-        },
-      });
-      await updateTransactionLinkedAccount({
-        variables: {
-          transactionId: transactionIds[1],
-          linkedAccountId: linkedAccountIds[1],
-          pairId,
-        },
-        refetchQueries: ['GetTransactions'],
-      });
-      return 'Undid: unpair';
+    async undo() {
+      return 'Undo not implemented 🤷🏻‍♂️';
     },
   });
 
@@ -342,6 +319,6 @@ export const useUpdateTransactionsCategory = categories => {
     updateTransactionsCategory,
     deleteTransactions,
     pairTransactions,
-    unPairTransactions,
+    unpairTransactions,
   ];
 };

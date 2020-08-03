@@ -86,7 +86,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
     updateTransactionsCategory,
     deleteTransactions,
     pairTransactions,
-    unPairTransactions,
+    unpairTransactions,
   ] = useUpdateTransactionsCategory(categories);
   const { loading, error, transactions, count } = useTransactions({
     startDate,
@@ -150,26 +150,21 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             >
               Pair transactions
             </Button>
-            {selectedRows[0].pairId === selectedRows[1].pairId && (
-              <Button
-                type="primary"
-                danger
-                onClick={() => {
-                  unPairTransactions({
-                    transactionIds: selectedRows.map(x => x.key),
-                    linkedAccountIds: selectedRows.map(
-                      x => x.account.linked.id
-                    ),
-                    pairId: selectedRows[0].pairId,
-                  });
-                  setSelectedRows([]);
-                }}
-              >
-                Unpair transactions
-              </Button>
-            )}
           </>
         )}
+        <Button
+          type="primary"
+          danger
+          onClick={() => {
+            unpairTransactions({
+              transactionIds: selectedRows.map(x => x.key),
+              pairIds: selectedRows.map(x => x.pairId),
+            });
+            setSelectedRows([]);
+          }}
+        >
+          Unpair transactions
+        </Button>
         <Button
           type="primary"
           danger

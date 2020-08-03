@@ -42,7 +42,7 @@ export const useUpdateCategory = () => {
         });
         return 'Updated';
       },
-      async undo({ record }) {
+      async undo(result, { record }) {
         await updateCategory({
           variables: {
             id: record.id,
