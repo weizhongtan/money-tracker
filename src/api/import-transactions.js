@@ -7,24 +7,34 @@ const ofx = require('ofx');
 const readFile = promisify(fs.readFile);
 const { createTransaction } = require('./lib');
 
+const picked = [];
+const recursivePickBy = (key, val) => {
+  if (key === 'STMTTRN') {
+    picked.push(val);
+  } else if (Array.isArray(val)) {
+    val.forEach(o => recursivePickBy(null, o));
+  } else if (val && typeof val === 'object' && val.constructor === Object) {
+    Object.entries(val).forEach(([_key, _val]) => {
+      recursivePickBy(_key, _val);
+    });
+  }
+};
+
 function ofxParser(data) {
   const raw = ofx.parse(data);
-  return raw.OFX.BANKMSGSRSV1.STMTTRNRS.STMTRS.BANKTRANLIST.STMTTRN.map(
-    (rawTransaction, index) => {
-      const rawDate = rawTransaction.DTPOSTED;
-      return {
-        date: new Date(
-          `${[
-            rawDate.slice(0, 4),
-            rawDate.slice(4, 6),
-            rawDate.slice(6, 8),
-          ].join('-')}T00:00:${String(index).padStart(2, '0')}Z`
-        ).toISOString(),
-        amount: Number(rawTransaction.TRNAMT),
-        description: rawTransaction.NAME,
-      };
-    }
-  );
+  recursivePickBy(null, raw);
+  return picked.flat().map((rawTransaction, index) => {
+    const rawDate = rawTransaction.DTPOSTED;
+    return {
+      date: new Date(
+        [rawDate.slice(0, 4), rawDate.slice(4, 6), rawDate.slice(6, 8)].join(
+          '-'
+        )
+      ).toISOString(),
+      amount: Number(rawTransaction.TRNAMT),
+      description: rawTransaction.NAME,
+    };
+  });
 }
 
 function csvParser(data) {
@@ -41,13 +51,13 @@ function qifParser(data) {
 
 const parsers = {
   ofx: ofxParser,
+  qfx: ofxParser,
   csv: csvParser,
   qif: qifParser,
 };
 
-const pathname =
-  '/Users/wzt/Downloads/finance/_transformed_monzo_transactions.csv';
-const accountId = '1fb07973-de2e-4709-a53a-f9a8f90b3aed';
+const pathname = '/Users/wzt/Downloads/amex.ofx';
+const accountId = '8d296146-8d6a-4dbc-b2ec-8dd772bf3654';
 
 (async () => {
   const inPath = path.resolve(__dirname, pathname);

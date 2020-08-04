@@ -139,13 +139,13 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
                 const accountIds = selectedRows.map(x => x.account.to.id);
                 const amounts = selectedRows.map(x => x.amount.value);
                 const pairIds = selectedRows.map(x => x.pairId);
+                setSelectedRows([]);
                 pairTransactions({
                   transactionIds,
                   accountIds,
                   amounts,
                   pairIds,
                 });
-                setSelectedRows([]);
               }}
             >
               Pair transactions
