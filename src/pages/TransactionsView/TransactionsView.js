@@ -15,8 +15,8 @@ import { DebounceInput } from 'react-debounce-input';
 import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
-import { Amount, ButtonSelect, Select } from '../../components';
-import { CategoriesList, toMoney, useBaseData, useTheme } from '../../lib';
+import { AccountAvatar, Amount, ButtonSelect, Select } from '../../components';
+import { CategoriesList, toMoney, useBaseData } from '../../lib';
 import { useTransactions, useUpdateTransactionsCategory } from './data';
 
 const { Option } = Select;
@@ -29,22 +29,6 @@ const Search = styled(Input.Search)`
 const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
-
-const AccountAvatar = ({ name, colour }) => {
-  const theme = useTheme();
-  return (
-    <Avatar
-      style={{
-        background:
-          theme.colors.presetPrimaryColors[colour] ??
-          theme.colors.presetPrimaryColors.grey,
-      }}
-      size="small"
-    >
-      {name[0]}
-    </Avatar>
-  );
-};
 
 const AccountIndicator = ({ to, linked, isOut }) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
