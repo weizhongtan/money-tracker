@@ -4,18 +4,27 @@ import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 import { v4 as uuid } from 'uuid';
 
-export const toMoney = (number, compact = true) =>
+import { Account, Category } from './types';
+
+export const toMoney = (amount: number, compact = true) =>
   new Intl.NumberFormat('en-EN', {
     style: 'currency',
     currency: 'GBP',
     ...(compact ? { notation: 'compact' } : {}),
-  }).format(number);
+  }).format(amount);
 
-export const toPercent = number => `${(Math.abs(number) * 100).toFixed(2)}%`;
+export const toPercent = (amount: number) =>
+  `${(Math.abs(amount) * 100).toFixed(2)}%`;
+
+interface SuperCategory extends Category {
+  isSub: boolean;
+}
 
 export class CategoriesList {
-  constructor(categories) {
-    this.categories = categories.map(cat => ({
+  categories: SuperCategory[];
+
+  constructor(categories: Category[]) {
+    this.categories = categories.map((cat) => ({
       ...cat,
       isSub: !!cat.parent?.name,
     }));
@@ -23,22 +32,42 @@ export class CategoriesList {
   get() {
     return this.categories;
   }
-  getFullName(id) {
+  getFullName(id: string) {
     return this.categories.find(({ id: _id }) => _id === id)?.fullName;
   }
 }
 
-export const BaseDataContext = React.createContext({});
+interface UserData {
+  accounts: Account[];
+  categories: Category[];
+}
 
-export const useBaseData = () => useContext(BaseDataContext);
+export const BaseDataContext = React.createContext<UserData>({
+  accounts: [],
+  categories: [],
+});
+
+export const useBaseData = (): UserData => useContext(BaseDataContext);
 
 export const useTheme = () => useContext(ThemeContext);
 
-export const reversible = ({ action, undo }) => async (...args) => {
-  const result = await action(...args);
+interface Result {
+  message: string;
+  type: 'success' | 'error' | 'info' | 'warning';
+}
+
+export const reversible = ({
+  action,
+  undo,
+}: {
+  action(...args: any): Result | string;
+  undo<T>(result: T, ...args: any): string;
+}) => async (...args: any) => {
+  const result = action(...args);
   // TODO: refactor to use object API in all cases
-  const actionMessage = result?.message || result || 'did the thing';
-  const type = result?.type || 'success';
+  const actionMessage =
+    typeof result === 'string' ? result : result?.message || 'did the thing';
+  const type = typeof result === 'string' ? 'success' : result?.type;
   const key = uuid();
   // see types: https://ant.design/components/notification/#API
   notification[type]({

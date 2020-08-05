@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import React from 'react';
 
-import { AccountAvatar, Amount } from '../../components';
+import { AccountAvatar, Amount, Button } from '../../components';
 import { toMoney, useBaseData } from '../../lib';
 
 const { Column } = Table;

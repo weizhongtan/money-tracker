@@ -1,14 +1,5 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import {
-  Affix,
-  Avatar,
-  Badge,
-  Button,
-  Drawer,
-  Input,
-  Table,
-  Tooltip,
-} from 'antd';
+import { Affix, Badge, Button, Drawer, Input, Table, Tooltip } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
@@ -17,6 +8,7 @@ import styled from 'styled-components';
 
 import { AccountAvatar, Amount, ButtonSelect, Select } from '../../components';
 import { CategoriesList, toMoney, useBaseData } from '../../lib';
+import { Account, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactionsCategory } from './data';
 
 const { Option } = Select;
@@ -30,7 +22,15 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const AccountIndicator = ({ to, linked, isOut }) => {
+const AccountIndicator = ({
+  to,
+  linked,
+  isOut,
+}: {
+  to: Account;
+  linked: Account;
+  isOut: boolean;
+}) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
   if (!to.name) return null;
   return (
@@ -47,22 +47,32 @@ const AccountIndicator = ({ to, linked, isOut }) => {
         </>
       )}
     >
-      <AccountAvatar name={to.name} colour={to.colour} />
-      {linked.name && (
-        <>
-          {' '}
-          {arrow} <AccountAvatar name={linked.name} colour={linked.colour} />
-        </>
-      )}
+      <>
+        <AccountAvatar name={to.name} colour={to.colour} />
+        {linked.name && (
+          <>
+            {' '}
+            {arrow} <AccountAvatar name={linked.name} colour={linked.colour} />
+          </>
+        )}
+      </>
     </Tooltip>
   );
 };
 
-const TransactionsView = ({ startDate, endDate, categoryId }) => {
+const TransactionsView = ({
+  startDate,
+  endDate,
+  categoryId,
+}: {
+  startDate: string;
+  endDate: Date;
+  categoryId: string;
+}) => {
   const baseData = useBaseData();
 
   const [searchText, setSearchText] = useState('');
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState<Transaction[]>([]);
 
   const categories = new CategoriesList(baseData.categories);
 
@@ -93,12 +103,12 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
       >
         <Select
           placeholder="Select category"
-          onChange={(id, { props }) => {
+          onChange={(id, option) => {
             updateTransactionsCategory({
-              transactionIds: selectedRows.map(x => x.key),
-              newCategoryFullName: props.label,
+              transactionIds: selectedRows.map((x) => x.key),
+              newCategoryFullName: 'props' in option ? option.props.label : '',
               newCategoryId: id,
-              currentCategoryIds: selectedRows.map(x => x.category?.id),
+              currentCategoryIds: selectedRows.map((x) => x.category?.id),
             });
             setSelectedRows([]);
           }}
@@ -106,7 +116,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           optionFilterProp="label"
         >
           {categories.get().map(({ id, fullName, isSub }) => (
-            <Option key={id} label={fullName}>
+            <Option value={id} key={id} label={fullName}>
               {isSub ? fullName : <Parent>{fullName}</Parent>}
             </Option>
           ))}
@@ -119,10 +129,10 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             <Button
               type="primary"
               onClick={() => {
-                const transactionIds = selectedRows.map(x => x.key);
-                const accountIds = selectedRows.map(x => x.account.to.id);
-                const amounts = selectedRows.map(x => x.amount.value);
-                const pairIds = selectedRows.map(x => x.pairId);
+                const transactionIds = selectedRows.map((x) => x.key);
+                const accountIds = selectedRows.map((x) => x.account.to.id);
+                const amounts = selectedRows.map((x) => x.amount.value);
+                const pairIds = selectedRows.map((x) => x.pairId);
                 setSelectedRows([]);
                 pairTransactions({
                   transactionIds,
@@ -141,8 +151,8 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           danger
           onClick={() => {
             unpairTransactions({
-              transactionIds: selectedRows.map(x => x.key),
-              pairIds: selectedRows.map(x => x.pairId),
+              transactionIds: selectedRows.map((x) => x.key),
+              pairIds: selectedRows.map((x) => x.pairId),
             });
             setSelectedRows([]);
           }}
@@ -154,7 +164,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           danger
           onClick={async () => {
             deleteTransactions({
-              transactionIds: selectedRows.map(x => x.key),
+              transactionIds: selectedRows.map((x) => x.key),
             });
             setSelectedRows([]);
           }}
@@ -169,7 +179,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           element={Search}
           placeholder="Search..."
           value={searchText}
-          onChange={event => {
+          onChange={(event) => {
             setSearchText(event.target.value);
           }}
           loading={loading}
@@ -189,7 +199,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           defaultPageSize: 50,
         }}
         rowSelection={{
-          selectedRowKeys: selectedRows.map(x => x.key),
+          selectedRowKeys: selectedRows.map((x) => x.key),
           onChange: (_, rows) => setSelectedRows(rows),
         }}
         size="small"
@@ -198,10 +208,9 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           title="Date"
           dataIndex="date"
           key="date"
-          // render={date => }
-          render={date => (
+          render={(date) => (
             <Tooltip title={<TimeAgo date={date} />}>
-              {moment(date).format('DD/MM/YY')}
+              <>{moment(date).format('DD/MM/YY')}</>
             </Tooltip>
           )}
         />
@@ -213,7 +222,9 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             text: name,
             value: name,
           }))}
-          onFilter={(value, record) => record.account.to.name === value}
+          onFilter={(value, record: Transaction) =>
+            record.account.to.name === value
+          }
           render={({ to, linked }, record) => {
             return (
               <AccountIndicator
@@ -231,7 +242,9 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
           render={({ value, isOut }) => (
             <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
           )}
-          sorter={(a, b) => a.amount.value - b.amount.value}
+          sorter={(a: Transaction, b: Transaction) =>
+            a.amount.value - b.amount.value
+          }
           align="right"
         />
         <Column title="Description" dataIndex="description" key="description" />
@@ -243,12 +256,14 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
             text: fullName,
             value: fullName,
           }))}
-          onFilter={(value, record) => record.category.fullName === value}
+          onFilter={(value, record: Transaction) =>
+            record.category?.fullName === value
+          }
           render={({ fullName, id: categoryId }, record) => {
             return (
               <ButtonSelect
                 value={categoryId}
-                onChange={newCategoryId => {
+                onChange={(newCategoryId: string) => {
                   updateTransactionsCategory({
                     transactionIds: [record.key],
                     newCategoryFullName: fullName,
@@ -263,7 +278,7 @@ const TransactionsView = ({ startDate, endDate, categoryId }) => {
                 buttonTextDefault="Set category"
               >
                 {categories.get().map(({ id, fullName, isSub }) => (
-                  <Option key={id} label={fullName}>
+                  <Option value={id} key={id} label={fullName}>
                     {isSub ? fullName : <Parent>{fullName}</Parent>}
                   </Option>
                 ))}

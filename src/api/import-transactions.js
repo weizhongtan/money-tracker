@@ -20,7 +20,7 @@ const recursivePickBy = (key, val) => {
   }
 };
 
-function ofxParser(data) {
+async function ofxParser(data) {
   const raw = ofx.parse(data);
   recursivePickBy(null, raw);
   return picked.flat().map((rawTransaction, index) => {
@@ -56,7 +56,7 @@ const parsers = {
   qif: qifParser,
 };
 
-const pathname = '/Users/wzt/Downloads/amex.ofx';
+const pathname = '/Users/wzt/Downloads/activity.qfx';
 const accountId = '8d296146-8d6a-4dbc-b2ec-8dd772bf3654';
 
 (async () => {
@@ -66,7 +66,7 @@ const accountId = '8d296146-8d6a-4dbc-b2ec-8dd772bf3654';
   const extension = path.extname(inPath);
   const parser = parsers[extension.substring(1)];
 
-  const data = parser(rawData);
+  const data = await parser(rawData);
   if (!data) {
     throw new Error('parser return nothing!');
   }
