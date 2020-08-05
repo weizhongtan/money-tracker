@@ -98,17 +98,15 @@ const CumulativeView = ({ startDate, endDate }) => {
       <Radio.Group
         buttonStyle="solid"
         defaultValue={precision}
-        onChange={event => setPrecision(event.target.value)}
+        onChange={(event) => setPrecision(event.target.value)}
       >
         <Radio.Button value="day">Day</Radio.Button>
         <Radio.Button value="week">Week</Radio.Button>
         <Radio.Button value="month">Month</Radio.Button>
       </Radio.Group>
       <ResponsiveLine
-        margin={{ top: 20, right: 20, bottom: 40, left: 50 }}
-        animate
         data={series}
-        enableArea
+        margin={{ top: 20, right: 20, bottom: 40, left: 50 }}
         xScale={{
           type: 'time',
           format: '%Y-%m-%d',
@@ -119,14 +117,17 @@ const CumulativeView = ({ startDate, endDate }) => {
           min: Math.min(...series[0].data.map(({ y }) => y)) > 0 ? 0 : 'auto',
           max: Math.max(...series[0].data.map(({ y }) => y)) < 0 ? 0 : 'auto',
         }}
+        curve="stepAfter"
         axisLeft={{
           format: toMoney,
         }}
         axisBottom={getBottomAxisProp(startDate, endDate)}
-        curve="stepAfter"
+        animate
+        enableArea
         pointSize={7}
         pointBorderWidth={1}
         pointBorderColor="#fff"
+        pointLabel="y"
         enableSlices="x"
       />
     </Wrapper>
