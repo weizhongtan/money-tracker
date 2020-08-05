@@ -103,7 +103,6 @@ const TransactionsView = ({
       >
         <Select
           onSelect={(id, { label }) => {
-            console.log({ id, label });
             updateTransactionsCategory({
               transactionIds: selectedRows.map((x) => x.key),
               newCategoryFullName: label,
