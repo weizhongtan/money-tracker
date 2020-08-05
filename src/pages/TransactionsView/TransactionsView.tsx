@@ -65,7 +65,7 @@ const TransactionsView = ({
   endDate,
   categoryId,
 }: {
-  startDate: string;
+  startDate: Date;
   endDate: Date;
   categoryId: string;
 }) => {

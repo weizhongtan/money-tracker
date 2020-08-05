@@ -50,7 +50,7 @@ const GET_AMOUNT_GROUPS = gql`
   }
 `;
 
-const Bar = ({
+const Graph = ({
   data,
   meanValues,
   maxValue,
@@ -74,14 +74,14 @@ const Bar = ({
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        format: x => moment(x).format('MMM YY'),
+        format: (x) => moment(x).format('MMM YY'),
       }}
       axisLeft={null}
       axisBottom={{
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        format: x => moment(x).format('MMM YY'),
+        format: (x) => moment(x).format('MMM YY'),
       }}
       enableGridY
       labelFormat={toMoney}
@@ -90,7 +90,7 @@ const Bar = ({
       labelTextColor={{ from: 'color', modifiers: [['brighter', 6]] }}
       isInteractive={true}
       tooltip={({ value }) => toMoney(value, false)}
-      markers={meanValues.map(value => ({
+      markers={meanValues.map((value) => ({
         axis: 'y',
         value: value,
         lineStyle: {
@@ -193,7 +193,7 @@ const TimelineView = ({ startDate, endDate }) => {
       <Radio.Group
         buttonStyle="solid"
         defaultValue={precision}
-        onChange={event => setPrecision(event.target.value)}
+        onChange={(event) => setPrecision(event.target.value)}
       >
         <Radio.Button value="day">Day</Radio.Button>
         <Radio.Button value="month">Month</Radio.Button>
@@ -202,12 +202,12 @@ const TimelineView = ({ startDate, endDate }) => {
       <Radio.Group
         buttonStyle="solid"
         defaultValue={amountType}
-        onChange={event => setAmountType(event.target.value)}
+        onChange={(event) => setAmountType(event.target.value)}
       >
         <Radio.Button value="balance">Balance</Radio.Button>
         <Radio.Button value="expense,income">{'Expense & Income'}</Radio.Button>
       </Radio.Group>
-      <Bar
+      <Graph
         data={groups}
         meanValues={meanValues}
         maxValue={maxValue}

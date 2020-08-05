@@ -60,10 +60,10 @@ export const reversible = ({
   action,
   undo,
 }: {
-  action(...args: any): Result | string;
-  undo<T>(result: T, ...args: any): string;
+  action(...args: any): Promise<Result | string>;
+  undo<T>(result: T, ...args: any): Promise<string> | void;
 }) => async (...args: any) => {
-  const result = action(...args);
+  const result = await action(...args);
   // TODO: refactor to use object API in all cases
   const actionMessage =
     typeof result === 'string' ? result : result?.message || 'did the thing';
@@ -82,7 +82,7 @@ export const reversible = ({
           const undoMessage = await undo(result, ...args);
           notification.success({
             key: uuid(),
-            message: undoMessage,
+            message: <>{undoMessage ?? 'undid the thing'}</>,
             placement: 'topLeft',
           });
         }}

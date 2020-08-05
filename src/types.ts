@@ -1,4 +1,5 @@
 export interface Account {
+  id: string;
   name: string;
   colour: string;
 }
@@ -23,9 +24,10 @@ export interface Transaction {
 }
 
 export interface Category {
+  id: string;
   parent: {
+    id: string;
     name: string;
   };
-  id: string;
   fullName: string;
 }
