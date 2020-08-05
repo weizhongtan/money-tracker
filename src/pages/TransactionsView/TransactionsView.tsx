@@ -102,17 +102,18 @@ const TransactionsView = ({
         bodyStyle={{ padding: '10px' }}
       >
         <Select
-          placeholder="Select category"
-          onChange={(id, option) => {
+          onSelect={(id, { label }) => {
+            console.log({ id, label });
             updateTransactionsCategory({
               transactionIds: selectedRows.map((x) => x.key),
-              newCategoryFullName: 'props' in option ? option.props.label : '',
+              newCategoryFullName: label,
               newCategoryId: id,
               currentCategoryIds: selectedRows.map((x) => x.category?.id),
             });
             setSelectedRows([]);
           }}
           showSearch
+          value="Select category"
           optionFilterProp="label"
         >
           {categories.get().map(({ id, fullName, isSub }) => (
