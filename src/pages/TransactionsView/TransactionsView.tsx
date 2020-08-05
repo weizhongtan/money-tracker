@@ -47,7 +47,7 @@ const AccountIndicator = ({
         </>
       )}
     >
-      <>
+      <div>
         <AccountAvatar name={to.name} colour={to.colour} />
         {linked.name && (
           <>
@@ -55,7 +55,7 @@ const AccountIndicator = ({
             {arrow} <AccountAvatar name={linked.name} colour={linked.colour} />
           </>
         )}
-      </>
+      </div>
     </Tooltip>
   );
 };
