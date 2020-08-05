@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost';
 import { v4 as uuid } from 'uuid';
 
 import { CategoriesList, reversible, useBaseData } from '../../../lib';
+import { Account, Category } from '../../../types';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
@@ -64,13 +65,18 @@ export const useTransactions = ({
   endDate,
   categoryId,
   searchText,
+}: {
+  startDate: Date;
+  endDate: Date;
+  categoryId: string;
+  searchText: string;
 }) => {
   const baseData = useBaseData();
 
   const searchAmount = Number(searchText) || 0;
   const searchAmountComplement = -searchAmount;
   const categoryIds = baseData.categories
-    .filter(cat => {
+    .filter((cat) => {
       if (
         !categoryId ||
         cat.parent?.id === categoryId ||
@@ -80,7 +86,7 @@ export const useTransactions = ({
       }
       return false;
     })
-    .map(x => x.id);
+    .map((x) => x.id);
   const variables = {
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
@@ -108,6 +114,15 @@ export const useTransactions = ({
           description,
           category,
           pair_id,
+        }: {
+          id: string;
+          date: string;
+          amount: string;
+          account: Account;
+          linkedAccount: Account;
+          description: string;
+          category: Category;
+          pair_id: string;
         }) => {
           return {
             key: id,
@@ -191,7 +206,7 @@ const PAIR_TRANSACTIONS = gql`
   }
 `;
 
-export const useUpdateTransactionsCategory = categories => {
+export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
   const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS_CATEGORY);
   const [_deleteTransactions] = useMutation(DELETE_TRANSACTIONS);
   const [_pairTransactions] = useMutation(PAIR_TRANSACTIONS);
@@ -215,7 +230,13 @@ export const useUpdateTransactionsCategory = categories => {
         data.update_transactions.affected_rows
       } records)`;
     },
-    async undo(result, { transactionIds, currentCategoryIds }) {
+    async undo(
+      result,
+      {
+        transactionIds,
+        currentCategoryIds,
+      }: { transactionIds: string[]; currentCategoryIds: string[] }
+    ) {
       const results = await Promise.all(
         currentCategoryIds.map(async (categoryId, index) => {
           const { data } = await updateTransaction({
@@ -243,11 +264,21 @@ export const useUpdateTransactionsCategory = categories => {
       });
       return `Deleted ${data.delete_transactions.affected_rows} rows`;
     },
-    async undo() {},
+    undo() {},
   });
 
   const pairTransactions = reversible({
-    async action({ transactionIds, accountIds, amounts, pairIds }) {
+    async action({
+      transactionIds,
+      accountIds,
+      amounts,
+      pairIds,
+    }: {
+      transactionIds: string[];
+      accountIds: string[];
+      amounts: number[];
+      pairIds: string[];
+    }) {
       console.log({ transactionIds, accountIds, amounts });
       if (accountIds[0] === accountIds[1]) {
         return {
@@ -264,7 +295,7 @@ export const useUpdateTransactionsCategory = categories => {
         };
       }
 
-      if (pairIds.some(x => x)) {
+      if (pairIds.some((x) => x)) {
         return {
           message: 'Transactions are already paired',
           type: 'error',
