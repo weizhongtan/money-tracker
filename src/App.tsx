@@ -32,6 +32,7 @@ import ManageCategoriesView from './pages/ManageCategoriesView';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
 import theme from './theme';
+import { Account } from './types';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -46,7 +47,19 @@ const Content = styled(Layout.Content)`
   background: #fff;
 `;
 
-const routes = [
+interface IRoute {
+  path: string;
+  title: string;
+  Icon: React.ReactElement;
+  component?: React.FC<{ startDate: moment.Moment; endDate: moment.Moment }>;
+  children?: {
+    path: string;
+    title: string;
+    component: React.FC<{ startDate: moment.Moment; endDate: moment.Moment }>;
+  }[];
+}
+
+const routes: IRoute[] = [
   {
     path: '/transactions',
     title: 'Transactions',
@@ -113,9 +126,24 @@ const GET_BASE_DATA = gql`
   }
 `;
 
+interface RawCategory {
+  id: string;
+  key: string;
+  name: string;
+  parentCategoryName: string;
+  parentCategoryId: string;
+  fullName: string;
+  type: string;
+}
+
+interface TData {
+  accounts: Account[];
+  categories: RawCategory[];
+}
+
 const useBaseData = () => {
-  const { loading, error, data } = useQuery(GET_BASE_DATA);
-  if (loading || error) {
+  const { loading, error, data } = useQuery<TData>(GET_BASE_DATA);
+  if (loading || error || data === undefined) {
     return {
       loading,
       error,
@@ -144,34 +172,40 @@ function App() {
 
   const [urlState, setUrlState] = useUrlState(
     {
-      startDate: moment()
-        .subtract(1, 'year')
-        .startOf('year')
-        .toISOString(),
+      startDate: moment().subtract(1, 'year').startOf('year').toISOString(),
       endDate: moment().toISOString(),
     },
     { history }
   );
   const startDate = moment(urlState.startDate);
   const endDate = moment(urlState.endDate);
-  const setDates = ({ startDate, endDate }) => {
+  const setDates = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+  }) => {
     setUrlState({
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
     });
   };
 
-  const [openKeys, setOpenKeys] = useState(
-    [
-      routes
-        .filter(({ children }) => children)
-        .find(({ children }) =>
-          children.some(child => location.pathname.includes(child.path))
-        )?.path,
-    ].filter(x => x)
-  );
+  const defaultOpenKeys = [
+    routes
+      .filter(({ children }) => children)
+      .find(({ children }) =>
+        (children as any[]).some((child) =>
+          location.pathname.includes(child.path)
+        )
+      )?.path,
+  ].filter((x) => typeof x === 'string');
+
+  const [openKeys, setOpenKeys] = useState(defaultOpenKeys);
   const { loading, error, data } = useBaseData();
-  if (loading || error) return null;
+
+  if (loading || error || data === undefined) return null;
 
   return (
     <BaseDataContext.Provider value={data}>
@@ -179,14 +213,14 @@ function App() {
         <Layout.Sider collapsible>
           <Menu
             theme="dark"
-            selectedKeys={location.pathname}
+            selectedKeys={[location.pathname]}
             onSelect={({ key }) => {
               history.push({
                 pathname: key,
                 search: location.search,
               });
             }}
-            openKeys={openKeys}
+            openKeys={openKeys as string[]}
             onOpenChange={setOpenKeys}
             mode="inline"
           >
@@ -209,7 +243,7 @@ function App() {
                     </span>
                   }
                 >
-                  {children.map(child => (
+                  {children.map((child) => (
                     <Menu.Item key={path + child.path}>
                       <span>{child.title}</span>
                     </Menu.Item>
@@ -234,11 +268,15 @@ function App() {
                 path={path}
                 render={({ match }) => {
                   if (!children) {
-                    return <Component {...{ startDate, endDate }} />;
+                    if (Component) {
+                      return <Component {...{ startDate, endDate }} />;
+                    } else {
+                      throw Error('children or component not defined.');
+                    }
                   }
                   return (
                     <>
-                      {children.map(child => {
+                      {children.map((child) => {
                         const Component = child.component;
                         return (
                           <Route

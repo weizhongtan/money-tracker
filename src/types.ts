@@ -1,7 +1,24 @@
+import moment from 'moment';
+
 export interface Account {
   id: string;
+  key: string;
   name: string;
+  initialAmount: number;
+  sum: number;
+  minimum: number;
   colour: string;
+}
+
+export interface Category {
+  id: string;
+  key: string;
+  name: string;
+  parent?: {
+    id: string;
+    name: string;
+  };
+  fullName?: string;
 }
 
 export interface Transaction {
@@ -23,11 +40,7 @@ export interface Transaction {
   };
 }
 
-export interface Category {
-  id: string;
-  parent: {
-    id: string;
-    name: string;
-  };
-  fullName: string;
+export interface TimePeriod {
+  startDate: moment.Moment;
+  endDate: moment.Moment;
 }

@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 import { AccountAvatar, Amount, ButtonSelect, Select } from '../../components';
 import { CategoriesList, toMoney, useBaseData } from '../../lib';
-import { Account, Transaction } from '../../types';
+import { Account, TimePeriod, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactionsCategory } from './data';
 
 const { Option } = Select;
@@ -60,14 +60,14 @@ const AccountIndicator = ({
   );
 };
 
-const TransactionsView = ({
+type Props = TimePeriod & {
+  categoryId?: string;
+};
+
+const TransactionsView: React.FC<Props> = ({
   startDate,
   endDate,
   categoryId,
-}: {
-  startDate: Date;
-  endDate: Date;
-  categoryId: string;
 }) => {
   const baseData = useBaseData();
 
@@ -89,7 +89,7 @@ const TransactionsView = ({
     searchText,
   });
   if (loading && typeof transactions === 'undefined') return null;
-  if (error) return 'error';
+  if (error) return <>error</>;
 
   return (
     <>
@@ -102,10 +102,9 @@ const TransactionsView = ({
         bodyStyle={{ padding: '10px' }}
       >
         <Select
-          onSelect={(id, { label }) => {
+          onSelect={(id) => {
             updateTransactionsCategory({
               transactionIds: selectedRows.map((x) => x.key),
-              newCategoryFullName: label,
               newCategoryId: id,
               currentCategoryIds: selectedRows.map((x) => x.category?.id),
             });
@@ -252,9 +251,9 @@ const TransactionsView = ({
           title="Category"
           dataIndex="category"
           key="category"
-          filters={categories.get().map(({ fullName }) => ({
-            text: fullName,
-            value: fullName,
+          filters={categories.get().map(({ name }) => ({
+            text: name,
+            value: name,
           }))}
           onFilter={(value, record: Transaction) =>
             record.category?.fullName === value

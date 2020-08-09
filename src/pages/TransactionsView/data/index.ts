@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 
 import { CategoriesList, reversible, useBaseData } from '../../../lib';
@@ -66,9 +67,9 @@ export const useTransactions = ({
   categoryId,
   searchText,
 }: {
-  startDate: Date;
-  endDate: Date;
-  categoryId: string;
+  startDate: moment.Moment;
+  endDate: moment.Moment;
+  categoryId?: string;
   searchText: string;
 }) => {
   const baseData = useBaseData();
@@ -98,8 +99,6 @@ export const useTransactions = ({
   };
   const { loading, error, data } = useQuery(GET_TRANSACTIONS, { variables });
 
-  const categories = new CategoriesList(baseData.categories);
-
   return {
     loading,
     error,
@@ -119,10 +118,10 @@ export const useTransactions = ({
           date: string;
           amount: string;
           account: Account;
-          linkedAccount: Account;
+          linkedAccount?: Account;
           description: string;
-          category: Category;
-          pair_id: string;
+          category?: Category;
+          pair_id?: string;
         }) => {
           return {
             key: id,
@@ -146,7 +145,7 @@ export const useTransactions = ({
             description: description,
             category: {
               id: category?.id,
-              fullName: categories.getFullName(category?.id),
+              fullName: category?.name,
             },
             pairId: pair_id,
           };
@@ -215,9 +214,10 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
   const updateTransactionsCategory = reversible({
     async action({
       transactionIds,
-      newCategoryFullName,
       newCategoryId,
-      currentCategoryIds,
+    }: {
+      transactionIds: string[];
+      newCategoryId: string;
     }) {
       const { data } = await updateTransaction({
         variables: {
@@ -351,5 +351,5 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
     deleteTransactions,
     pairTransactions,
     unpairTransactions,
-  ];
+  ] as const;
 };

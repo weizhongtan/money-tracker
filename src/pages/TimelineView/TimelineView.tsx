@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/react-hooks';
-import { ResponsiveBar } from '@nivo/bar';
+import { BarSvgProps, ResponsiveBar } from '@nivo/bar';
 import { Drawer } from 'antd';
 import { gql } from 'apollo-boost';
 import moment from 'moment';
@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import { Radio, Select, Wrapper } from '../../components';
 import { CategoriesList, toMoney, useBaseData, useTheme } from '../../lib';
+import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 
 const { Option } = Select;
@@ -50,7 +51,15 @@ const GET_AMOUNT_GROUPS = gql`
   }
 `;
 
-const Graph = ({
+type GraphProps = {
+  data: any;
+  meanValues: any[];
+  maxValue: number;
+  precision: moment.unitOfTime.StartOf;
+  amountType: string;
+} & BarSvgProps;
+
+const Graph: React.FC<GraphProps> = ({
   data,
   meanValues,
   maxValue,
@@ -84,12 +93,12 @@ const Graph = ({
         format: (x) => moment(x).format('MMM YY'),
       }}
       enableGridY
-      labelFormat={toMoney}
+      labelFormat={(x) => toMoney(Number(x))}
       labelSkipWidth={12}
       labelSkipHeight={12}
       labelTextColor={{ from: 'color', modifiers: [['brighter', 6]] }}
       isInteractive={true}
-      tooltip={({ value }) => toMoney(value, false)}
+      tooltip={({ value }) => <>{toMoney(value, false)}</>}
       markers={meanValues.map((value) => ({
         axis: 'y',
         value: value,
@@ -109,19 +118,46 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const TimelineView = ({ startDate, endDate }) => {
+type TimeLineViewProps = TimePeriod;
+
+const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
   const baseData = useBaseData();
 
   const [categoryId, setCategoryId] = useState('all');
-  const [precision, setPrecision] = useState('month');
+  const [precision, setPrecision] = useState<moment.unitOfTime.StartOf>(
+    'month'
+  );
   const [amountType, setAmountType] = useState('balance');
   const [isVisible, setVisible] = useState(false);
-  const [transactionViewDates, setTransactionViewDates] = useState({
-    startDate: null,
-    endDate: null,
+  const [transactionViewDates, setTransactionViewDates] = useState<TimePeriod>({
+    startDate,
+    endDate,
   });
 
-  const { loading, error, data } = useQuery(GET_AMOUNT_GROUPS, {
+  interface TData {
+    groups: {
+      date: string;
+      balance: number;
+      expense: number;
+      income: number;
+    }[];
+    aggregate: {
+      aggregate: {
+        avg: {
+          balance: number;
+          expense: number;
+          income: number;
+        };
+        max: {
+          balance: number;
+          expense: number;
+          income: number;
+        };
+      };
+    };
+  }
+
+  const { loading, error, data } = useQuery<TData>(GET_AMOUNT_GROUPS, {
     variables: {
       startDate,
       endDate,
@@ -129,8 +165,8 @@ const TimelineView = ({ startDate, endDate }) => {
       groupBy: precision,
     },
   });
-  if (loading && typeof data === 'undefined') return null;
-  if (error) return 'error';
+  if (loading || typeof data === 'undefined') return null;
+  if (error) return <>error</>;
 
   const groups = data.groups.map(({ date, balance, expense, income }) => ({
     date: moment(date).format('YYYY-MM-DD'),
@@ -142,7 +178,8 @@ const TimelineView = ({ startDate, endDate }) => {
   const categories = new CategoriesList([
     {
       id: 'all',
-      fullName: 'All Categories',
+      key: 'all',
+      name: 'All Categories',
     },
     ...baseData.categories,
   ]);
@@ -164,7 +201,11 @@ const TimelineView = ({ startDate, endDate }) => {
     <Wrapper>
       <Drawer
         placement="bottom"
-        visible={isVisible}
+        visible={
+          isVisible &&
+          !!transactionViewDates.startDate &&
+          !!transactionViewDates.endDate
+        }
         closable={false}
         onClose={() => setVisible(false)}
         height="75%"
@@ -180,13 +221,13 @@ const TimelineView = ({ startDate, endDate }) => {
       </Drawer>
       <Select
         value={categoryId}
-        onChange={setCategoryId}
+        onSelect={(val) => setCategoryId(val as string)}
         showSearch
         optionFilterProp="label"
       >
-        {categories.get().map(({ id, fullName, isSub }) => (
-          <Option key={id} value={id} label={fullName}>
-            {isSub ? fullName : <Parent>{fullName}</Parent>}
+        {categories.get().map(({ id, name, isSub }) => (
+          <Option key={id} value={id} label={name}>
+            {isSub ? name : <Parent>{name}</Parent>}
           </Option>
         ))}
       </Select>

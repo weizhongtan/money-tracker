@@ -5,12 +5,15 @@ import styled from 'styled-components';
 
 import { ButtonSelect, Select } from '../../components';
 import { CategoriesList, useBaseData } from '../../lib';
+import { Category, TimePeriod } from '../../types';
 import { useUpdateCategory } from './data';
 
 const { Option } = Select;
 const { Column } = Table;
 
-const ManageCategoriesView = ({ startDate, endDate }) => {
+type Props = TimePeriod;
+
+const ManageCategoriesView: React.FC<Props> = () => {
   const baseData = useBaseData();
 
   const [updateCategory] = useUpdateCategory();
@@ -18,8 +21,8 @@ const ManageCategoriesView = ({ startDate, endDate }) => {
   const categories = new CategoriesList([
     {
       id: 'none',
-      fullName: '❌',
-      parent: {},
+      key: 'none',
+      name: '❌',
     },
     ...baseData.categories,
   ]);
@@ -40,11 +43,11 @@ const ManageCategoriesView = ({ startDate, endDate }) => {
           title="Parent Category"
           dataIndex="parent"
           key="parent"
-          render={(parent, record) => {
+          render={(parent, record: Category) => {
             return (
               <ButtonSelect
                 value={parent.id}
-                onChange={id => {
+                onChange={(id: string) => {
                   updateCategory({
                     record,
                     newParentCategoryId: id === 'none' ? null : id,
@@ -62,6 +65,7 @@ const ManageCategoriesView = ({ startDate, endDate }) => {
                   .map(({ id, fullName }) => (
                     <Option
                       key={id}
+                      value={id}
                       label={fullName}
                       disabled={id === record.id}
                     >
@@ -76,7 +80,7 @@ const ManageCategoriesView = ({ startDate, endDate }) => {
           title="Type"
           dataIndex="type"
           key="type"
-          render={name => {
+          render={(name) => {
             const isExpense = name === 'expense';
             const Icon = isExpense ? MinusCircleOutlined : PlusCircleOutlined;
             const TypeIcon = styled(Icon)`

@@ -26,7 +26,7 @@ export class CategoriesList {
   constructor(categories: Category[]) {
     this.categories = categories.map((cat) => ({
       ...cat,
-      isSub: !!cat.parent?.name,
+      isSub: cat.name.includes(':'),
     }));
   }
   get() {

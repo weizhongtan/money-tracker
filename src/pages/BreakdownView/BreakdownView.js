@@ -13,7 +13,7 @@ const { Option } = Select;
 const Pie = ({ data, total, onClick, ...props }) => (
   <ResponsivePie
     data={data}
-    onClick={data => onClick(data._id)}
+    onClick={(data) => onClick(data._id)}
     margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
     pixelRatio={2}
     innerRadius={0.5}
@@ -98,7 +98,7 @@ const Bar = ({ data, total, onClick, ...props }) => (
     }}
     enableGridX={true}
     enableGridY={false}
-    labelFormat={x => `${toMoney(x)} (${toPercent(x / total)})`}
+    labelFormat={(x) => `${toMoney(x)} (${toPercent(x / total)})`}
     labelSkipWidth={12}
     labelSkipHeight={12}
     labelTextColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
@@ -122,7 +122,7 @@ const BreakdownView = ({ startDate, endDate }) => {
     grouping,
   });
   if (loading && typeof categories === 'undefined') return null;
-  if (error) return 'error';
+  if (error) return <>error</>;
 
   const Graph = graph === 'pie' ? Pie : Bar;
 
@@ -159,7 +159,7 @@ const BreakdownView = ({ startDate, endDate }) => {
       <Radio.Group
         buttonStyle="solid"
         defaultValue={graph}
-        onChange={event => setGraph(event.target.value)}
+        onChange={(event) => setGraph(event.target.value)}
       >
         <Radio.Button value="pie">Pie</Radio.Button>
         <Radio.Button value="bar">Bar</Radio.Button>
@@ -167,7 +167,7 @@ const BreakdownView = ({ startDate, endDate }) => {
       <Radio.Group
         buttonStyle="solid"
         defaultValue={grouping}
-        onChange={event => setGrouping(event.target.value)}
+        onChange={(event) => setGrouping(event.target.value)}
       >
         <Radio.Button value="subcategory">Subcategory</Radio.Button>
         <Radio.Button value="category">Category</Radio.Button>
@@ -176,7 +176,7 @@ const BreakdownView = ({ startDate, endDate }) => {
       <Graph
         data={categories}
         total={total}
-        onClick={id => {
+        onClick={(id) => {
           setTransactionViewCategoryId(id);
           setVisible(true);
         }}

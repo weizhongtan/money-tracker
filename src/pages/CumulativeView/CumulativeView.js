@@ -52,7 +52,7 @@ const CumulativeView = ({ startDate, endDate }) => {
     precision,
   });
   if (loading && typeof balances === 'undefined') return null;
-  if (error) return 'error';
+  if (error) return <>'error'</>;
 
   const series = [
     {
