@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { ApolloError, gql } from 'apollo-boost';
 import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 
 import { CategoriesList, reversible, useBaseData } from '../../../lib';
-import { Account, Category } from '../../../types';
+import { Account, Category, Transaction } from '../../../types';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
@@ -71,7 +71,12 @@ export const useTransactions = ({
   endDate: moment.Moment;
   categoryId?: string;
   searchText: string;
-}) => {
+}): {
+  loading: boolean;
+  error?: ApolloError;
+  transactions?: Transaction[];
+  count?: number;
+} => {
   const baseData = useBaseData();
 
   const searchAmount = Number(searchText) || 0;
@@ -97,61 +102,57 @@ export const useTransactions = ({
     searchAmount,
     searchAmountComplement,
   };
-  const { loading, error, data } = useQuery(GET_TRANSACTIONS, { variables });
+
+  interface TData {
+    transactions_aggregate: {
+      aggregate: {
+        count: number;
+      };
+      nodes: {
+        id: string;
+        date: string;
+        amount: string;
+        account: Account;
+        linkedAccount?: Account;
+        description: string;
+        category?: Category;
+        pair_id?: string;
+      }[];
+    };
+  }
+  const { loading, error, data } = useQuery<TData>(GET_TRANSACTIONS, {
+    variables,
+  });
 
   return {
     loading,
     error,
-    transactions: data?.transactions_aggregate.nodes
-      .map(
-        ({
-          id,
-          date,
-          amount,
+    transactions: data?.transactions_aggregate.nodes.map(
+      ({
+        id,
+        date,
+        amount,
+        account,
+        linkedAccount,
+        description,
+        category,
+        pair_id,
+      }) => {
+        return {
+          key: id,
+          date: new Date(date),
+          amount: {
+            value: Number(amount),
+            isOut: Number(amount) < 0,
+          },
           account,
           linkedAccount,
           description,
           category,
-          pair_id,
-        }: {
-          id: string;
-          date: string;
-          amount: string;
-          account: Account;
-          linkedAccount?: Account;
-          description: string;
-          category?: Category;
-          pair_id?: string;
-        }) => {
-          return {
-            key: id,
-            date: new Date(date),
-            amount: {
-              value: Number(amount),
-              isOut: Number(amount) < 0,
-            },
-            account: {
-              to: {
-                id: account?.id,
-                name: account?.name,
-                colour: account?.colour,
-              },
-              linked: {
-                id: linkedAccount?.id,
-                name: linkedAccount?.name,
-                colour: linkedAccount?.colour,
-              },
-            },
-            description: description,
-            category: {
-              id: category?.id,
-              fullName: category?.name,
-            },
-            pairId: pair_id,
-          };
-        }
-      )
-      .flat(),
+          pairId: pair_id,
+        };
+      }
+    ),
     count: data?.transactions_aggregate.aggregate.count,
   };
 };
@@ -163,6 +164,11 @@ const UPDATE_TRANSACTIONS_CATEGORY = gql`
       _set: { category_id: $categoryId, updated_at: "now" }
     ) {
       affected_rows
+      returning {
+        category {
+          name
+        }
+      }
     }
   }
 `;
@@ -211,14 +217,12 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
   const [_pairTransactions] = useMutation(PAIR_TRANSACTIONS);
   const [_unpairTransactions] = useMutation(UNPAIR_TRANSACTIONS);
 
-  const updateTransactionsCategory = reversible({
-    async action({
-      transactionIds,
-      newCategoryId,
-    }: {
-      transactionIds: string[];
-      newCategoryId: string;
-    }) {
+  const updateTransactionsCategory = reversible<{
+    transactionIds: string[];
+    newCategoryId: string;
+    currentCategoryIds: (string | undefined)[];
+  }>({
+    async action({ transactionIds, newCategoryId }) {
       const { data } = await updateTransaction({
         variables: {
           transactionIds,
@@ -226,17 +230,13 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      return `Updated: ${categories.getFullName(newCategoryId)} (${
-        data.update_transactions.affected_rows
-      } records)`;
+      const categoryName = data.update_transactions.returning.category.name;
+      const { affected_rows } = data.update_transactions;
+      return {
+        message: `Updated: ${categoryName} (${affected_rows} records)`,
+      };
     },
-    async undo(
-      result,
-      {
-        transactionIds,
-        currentCategoryIds,
-      }: { transactionIds: string[]; currentCategoryIds: string[] }
-    ) {
+    async undo(_, { transactionIds, currentCategoryIds }) {
       const results = await Promise.all(
         currentCategoryIds.map(async (categoryId, index) => {
           const { data } = await updateTransaction({
@@ -254,7 +254,9 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
     },
   });
 
-  const deleteTransactions = reversible({
+  const deleteTransactions = reversible<{
+    transactionIds: string[];
+  }>({
     async action({ transactionIds }) {
       const { data } = await _deleteTransactions({
         variables: {
@@ -262,24 +264,25 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      return `Deleted ${data.delete_transactions.affected_rows} rows`;
+      return {
+        message: `Deleted ${data.delete_transactions.affected_rows} rows`,
+      };
     },
     undo() {},
   });
 
-  const pairTransactions = reversible({
-    async action({
-      transactionIds,
-      accountIds,
-      amounts,
-      pairIds,
-    }: {
+  const pairTransactions = reversible<
+    {
       transactionIds: string[];
       accountIds: string[];
       amounts: number[];
-      pairIds: string[];
-    }) {
-      console.log({ transactionIds, accountIds, amounts });
+      pairIds: (string | undefined)[];
+    },
+    {
+      setPairId?: string;
+    }
+  >({
+    async action({ transactionIds, accountIds, amounts, pairIds }) {
       if (accountIds[0] === accountIds[1]) {
         return {
           message: 'Transactions go to the same account',
@@ -318,9 +321,15 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      return 'Paired transactions';
+      return {
+        message: 'Paired transactions',
+        setPairId,
+      };
     },
-    async undo(result, { setPairId }) {
+    async undo({ setPairId }) {
+      if (!setPairId) {
+        return 'Didnt get pair ID';
+      }
       await _unpairTransactions({
         variables: {
           pairIds: [setPairId],
@@ -331,7 +340,7 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
     },
   });
 
-  const unpairTransactions = reversible({
+  const unpairTransactions = reversible<{ pairIds: (string | undefined)[] }>({
     async action({ pairIds }) {
       await _unpairTransactions({
         variables: {
@@ -339,7 +348,9 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      return 'Unpaired transactions';
+      return {
+        message: 'Unpaired transactions',
+      };
     },
     async undo() {
       return 'Undo not implemented 🤷🏻‍♂️';

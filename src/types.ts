@@ -18,26 +18,20 @@ export interface Category {
     id: string;
     name: string;
   };
-  fullName?: string;
 }
 
 export interface Transaction {
-  account: {
-    to: {
-      id: string;
-      name: string;
-    };
-  };
+  key: string;
+  date: Date;
   amount: {
     value: number;
     isOut: boolean;
   };
-  pairId: string;
-  key: string;
-  category?: {
-    id: string;
-    fullName: string;
-  };
+  account: Account;
+  linkedAccount?: Account;
+  description: string;
+  category?: Category;
+  pairId?: string;
 }
 
 export interface TimePeriod {

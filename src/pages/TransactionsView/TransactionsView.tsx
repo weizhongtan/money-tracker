@@ -22,26 +22,27 @@ const Parent = styled.span`
   color: ${({ theme }) => theme.neutral};
 `;
 
-const AccountIndicator = ({
+type AccountIndicatorProps = {
+  to: Account;
+  linked?: Account;
+  isOut: boolean;
+};
+
+const AccountIndicator: React.FC<AccountIndicatorProps> = ({
   to,
   linked,
   isOut,
-}: {
-  to: Account;
-  linked: Account;
-  isOut: boolean;
 }) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
-  if (!to.name) return null;
   return (
     <Tooltip
       title={() => (
         <>
           {to.name}
-          {linked.name && (
+          {linked?.name && (
             <>
               {' '}
-              {arrow} {linked.name}
+              {arrow} {linked?.name}
             </>
           )}
         </>
@@ -49,10 +50,11 @@ const AccountIndicator = ({
     >
       <div>
         <AccountAvatar name={to.name} colour={to.colour} />
-        {linked.name && (
+        {linked?.name && (
           <>
             {' '}
-            {arrow} <AccountAvatar name={linked.name} colour={linked.colour} />
+            {arrow}{' '}
+            <AccountAvatar name={linked?.name} colour={linked?.colour} />
           </>
         )}
       </div>
@@ -88,7 +90,7 @@ const TransactionsView: React.FC<Props> = ({
     categoryId,
     searchText,
   });
-  if (loading && typeof transactions === 'undefined') return null;
+  if (loading || typeof transactions === 'undefined') return null;
   if (error) return <>error</>;
 
   return (
@@ -102,21 +104,23 @@ const TransactionsView: React.FC<Props> = ({
         bodyStyle={{ padding: '10px' }}
       >
         <Select
+          value="Select category"
           onSelect={(id) => {
             updateTransactionsCategory({
               transactionIds: selectedRows.map((x) => x.key),
-              newCategoryId: id,
-              currentCategoryIds: selectedRows.map((x) => x.category?.id),
+              newCategoryId: id as string,
+              currentCategoryIds: selectedRows.map(
+                (x) => x.category?.id
+              ) as string[],
             });
             setSelectedRows([]);
           }}
           showSearch
-          value="Select category"
           optionFilterProp="label"
         >
-          {categories.get().map(({ id, fullName, isSub }) => (
-            <Option value={id} key={id} label={fullName}>
-              {isSub ? fullName : <Parent>{fullName}</Parent>}
+          {categories.get().map(({ id, name, isSub }) => (
+            <Option value={id} key={id} label={name}>
+              {isSub ? name : <Parent>{name}</Parent>}
             </Option>
           ))}
         </Select>
@@ -129,7 +133,7 @@ const TransactionsView: React.FC<Props> = ({
               type="primary"
               onClick={() => {
                 const transactionIds = selectedRows.map((x) => x.key);
-                const accountIds = selectedRows.map((x) => x.account.to.id);
+                const accountIds = selectedRows.map((x) => x.account.id);
                 const amounts = selectedRows.map((x) => x.amount.value);
                 const pairIds = selectedRows.map((x) => x.pairId);
                 setSelectedRows([]);
@@ -149,9 +153,14 @@ const TransactionsView: React.FC<Props> = ({
           type="primary"
           danger
           onClick={() => {
+            const pairIds = selectedRows
+              .map((x) => x.pairId)
+              .filter((y) => typeof y === 'string');
+            if (!pairIds.length) {
+              return;
+            }
             unpairTransactions({
-              transactionIds: selectedRows.map((x) => x.key),
-              pairIds: selectedRows.map((x) => x.pairId),
+              pairIds,
             });
             setSelectedRows([]);
           }}
@@ -213,7 +222,7 @@ const TransactionsView: React.FC<Props> = ({
             </Tooltip>
           )}
         />
-        <Column
+        <Column<Transaction>
           title="Account"
           dataIndex="account"
           key="account"
@@ -221,14 +230,12 @@ const TransactionsView: React.FC<Props> = ({
             text: name,
             value: name,
           }))}
-          onFilter={(value, record: Transaction) =>
-            record.account.to.name === value
-          }
-          render={({ to, linked }, record) => {
+          onFilter={(value, record) => record.account.name === value}
+          render={(_, record) => {
             return (
               <AccountIndicator
-                to={to}
-                linked={linked}
+                to={record.account}
+                linked={record.linkedAccount}
                 isOut={record.amount.isOut}
               />
             );
@@ -256,29 +263,28 @@ const TransactionsView: React.FC<Props> = ({
             value: name,
           }))}
           onFilter={(value, record: Transaction) =>
-            record.category?.fullName === value
+            record.category?.name === value
           }
-          render={({ fullName, id: categoryId }, record) => {
+          render={(_, record) => {
             return (
               <ButtonSelect
-                value={categoryId}
+                value={record.category?.id}
                 onChange={(newCategoryId: string) => {
                   updateTransactionsCategory({
                     transactionIds: [record.key],
-                    newCategoryFullName: fullName,
                     newCategoryId,
-                    currentCategoryIds: [categoryId],
+                    currentCategoryIds: [record.category?.id],
                   });
                 }}
                 showSearch
                 optionFilterProp="label"
                 size="small"
-                buttonText={fullName}
+                buttonText={record.category?.name}
                 buttonTextDefault="Set category"
               >
-                {categories.get().map(({ id, fullName, isSub }) => (
-                  <Option value={id} key={id} label={fullName}>
-                    {isSub ? fullName : <Parent>{fullName}</Parent>}
+                {categories.get().map(({ id, name, isSub }) => (
+                  <Option value={id} key={id} label={name}>
+                    {isSub ? name : <Parent>{name}</Parent>}
                   </Option>
                 ))}
               </ButtonSelect>

@@ -32,9 +32,6 @@ export class CategoriesList {
   get() {
     return this.categories;
   }
-  getFullName(id: string) {
-    return this.categories.find(({ id: _id }) => _id === id)?.fullName;
-  }
 }
 
 interface UserData {
@@ -51,45 +48,49 @@ export const useBaseData = (): UserData => useContext(BaseDataContext);
 
 export const useTheme = () => useContext(ThemeContext);
 
-interface Result {
-  message: string;
-  type: 'success' | 'error' | 'info' | 'warning';
-}
+type BaseResult = {
+  message?: string;
+  type?: 'success' | 'error' | 'info' | 'warning';
+};
 
-export const reversible = ({
+export function reversible<ArgType, Result = BaseResult>({
   action,
   undo,
 }: {
-  action(...args: any): Promise<Result | string>;
-  undo<T>(result: T, ...args: any): Promise<string> | void;
-}) => async (...args: any) => {
-  const result = await action(...args);
-  // TODO: refactor to use object API in all cases
-  const actionMessage =
-    typeof result === 'string' ? result : result?.message || 'did the thing';
-  const type = typeof result === 'string' ? 'success' : result?.type;
-  const key = uuid();
-  // see types: https://ant.design/components/notification/#API
-  notification[type]({
-    key,
-    message: actionMessage,
-    description: type === 'success' && (
-      <Button
-        icon={<UndoOutlined />}
-        size="small"
-        onClick={async () => {
-          notification.close(key);
-          const undoMessage = await undo(result, ...args);
-          notification.success({
-            key: uuid(),
-            message: <>{undoMessage ?? 'undid the thing'}</>,
-            placement: 'topLeft',
-          });
-        }}
-      >
-        Undo
-      </Button>
-    ),
-    placement: 'topLeft',
-  });
-};
+  action: (...args: ArgType[]) => Promise<Result & BaseResult>;
+  undo: (
+    result: Result & BaseResult,
+    ...args: ArgType[]
+  ) => Promise<string> | void;
+}) {
+  return async (...args: ArgType[]) => {
+    const result = await action(...args);
+    // TODO: refactor to use object API in all cases
+    const actionMessage = result.message || 'did the thing';
+    const type = result.type ?? 'success';
+    const key = uuid();
+    // see types: https://ant.design/components/notification/#API
+    notification[type]({
+      key,
+      message: actionMessage,
+      description: type === 'success' && (
+        <Button
+          icon={<UndoOutlined />}
+          size="small"
+          onClick={async () => {
+            notification.close(key);
+            const undoMessage = await undo(result, ...args);
+            notification.success({
+              key: uuid(),
+              message: <>{undoMessage ?? 'undid the thing'}</>,
+              placement: 'topLeft',
+            });
+          }}
+        >
+          Undo
+        </Button>
+      ),
+      placement: 'topLeft',
+    });
+  };
+}

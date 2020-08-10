@@ -62,14 +62,14 @@ const ManageCategoriesView: React.FC<Props> = () => {
                 {categories
                   .get()
                   .filter(({ isSub }) => !isSub)
-                  .map(({ id, fullName }) => (
+                  .map(({ id, name }) => (
                     <Option
                       key={id}
                       value={id}
-                      label={fullName}
+                      label={name}
                       disabled={id === record.id}
                     >
-                      {fullName}
+                      {name}
                     </Option>
                   ))}
               </ButtonSelect>
