@@ -32,7 +32,7 @@ import ManageCategoriesView from './pages/ManageCategoriesView';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
 import theme from './theme';
-import { Account } from './types';
+import { Account, Category } from './types';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -118,27 +118,14 @@ const GET_BASE_DATA = gql`
       id
       key: id
       name
-      parentCategoryName: parent_category_name
-      parentCategoryId: parent_category_id
-      fullName: full_name
       type
     }
   }
 `;
 
-interface RawCategory {
-  id: string;
-  key: string;
-  name: string;
-  parentCategoryName: string;
-  parentCategoryId: string;
-  fullName: string;
-  type: string;
-}
-
 interface TData {
   accounts: Account[];
-  categories: RawCategory[];
+  categories: Category[];
 }
 
 const useBaseData = () => {
@@ -153,15 +140,7 @@ const useBaseData = () => {
   return {
     data: {
       accounts: data.accounts,
-      categories: data.categories.map(
-        ({ parentCategoryName, parentCategoryId, ...rest }) => ({
-          parent: {
-            name: parentCategoryName,
-            id: parentCategoryId,
-          },
-          ...rest,
-        })
-      ),
+      categories: data.categories,
     },
   };
 };

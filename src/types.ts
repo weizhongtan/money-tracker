@@ -14,10 +14,7 @@ export interface Category {
   id: string;
   key: string;
   name: string;
-  parent?: {
-    id: string;
-    name: string;
-  };
+  type?: string;
 }
 
 export interface Transaction {
