@@ -83,11 +83,7 @@ export const useTransactions = ({
   const searchAmountComplement = -searchAmount;
   const categoryIds = baseData.categories
     .filter((cat) => {
-      if (
-        !categoryId ||
-        cat.parent?.id === categoryId ||
-        cat.id === categoryId
-      ) {
+      if (!categoryId || cat.id === categoryId) {
         return true;
       }
       return false;
