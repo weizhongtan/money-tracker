@@ -32,7 +32,7 @@ import ManageCategoriesView from './pages/ManageCategoriesView';
 import TimelineView from './pages/TimelineView';
 import TransactionsView from './pages/TransactionsView';
 import theme from './theme';
-import { Account, Category } from './types';
+import { Account, Category, TimePeriod } from './types';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
@@ -51,11 +51,11 @@ interface IRoute {
   path: string;
   title: string;
   Icon: React.ReactElement;
-  component?: React.FC<{ startDate: moment.Moment; endDate: moment.Moment }>;
+  component?: React.FC<TimePeriod>;
   children?: {
     path: string;
     title: string;
-    component: React.FC<{ startDate: moment.Moment; endDate: moment.Moment }>;
+    component: React.FC<TimePeriod>;
   }[];
 }
 
@@ -158,13 +158,7 @@ function App() {
   );
   const startDate = moment(urlState.startDate);
   const endDate = moment(urlState.endDate);
-  const setDates = ({
-    startDate,
-    endDate,
-  }: {
-    startDate: moment.Moment;
-    endDate: moment.Moment;
-  }) => {
+  const setDates = ({ startDate, endDate }: TimePeriod) => {
     setUrlState({
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),

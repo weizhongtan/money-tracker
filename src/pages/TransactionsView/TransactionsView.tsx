@@ -269,12 +269,14 @@ const TransactionsView: React.FC<Props> = ({
             return (
               <ButtonSelect
                 value={record.category?.id}
-                onChange={(newCategoryId: string) => {
-                  updateTransactionsCategory({
-                    transactionIds: [record.key],
-                    newCategoryId,
-                    currentCategoryIds: [record.category?.id],
-                  });
+                onChange={(newCategoryId) => {
+                  if (typeof newCategoryId === 'string') {
+                    updateTransactionsCategory({
+                      transactionIds: [record.key],
+                      newCategoryId,
+                      currentCategoryIds: [record.category?.id],
+                    });
+                  }
                 }}
                 showSearch
                 optionFilterProp="label"

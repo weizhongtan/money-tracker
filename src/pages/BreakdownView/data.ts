@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 import { useBaseData } from '../../lib';
+import { TimePeriod } from '../../types';
 
 const GET_CATEGORIES = gql`
   query GetCategories(
@@ -42,9 +43,32 @@ const GET_CATEGORIES = gql`
   }
 `;
 
-export const useCategories = ({ startDate, endDate, accountId, grouping }) => {
+interface TData {
+  categories: {
+    id: string;
+    name: string;
+    sum: number;
+  }[];
+  amount: {
+    aggregate: {
+      sum: {
+        sum: number;
+      };
+    };
+  };
+}
+
+export const useCategories = ({
+  startDate,
+  endDate,
+  accountId,
+  grouping,
+}: TimePeriod & {
+  accountId: string;
+  grouping: string;
+}) => {
   const { accounts } = useBaseData();
-  const { loading, error, data } = useQuery(GET_CATEGORIES, {
+  const { loading, error, data } = useQuery<TData>(GET_CATEGORIES, {
     variables: {
       startDate,
       endDate,
@@ -66,7 +90,7 @@ export const useCategories = ({ startDate, endDate, accountId, grouping }) => {
       ...accounts,
     ],
     categories: data?.categories
-      .map(category => ({
+      .map((category) => ({
         // _id will be used for transaction view
         _id: category.id,
         // id is used by pie chart for labels, so must be readable name

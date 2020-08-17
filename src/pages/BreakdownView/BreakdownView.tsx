@@ -1,21 +1,28 @@
 import { ResponsiveBar } from '@nivo/bar';
-import { ResponsivePie } from '@nivo/pie';
+import { PieDatum, ResponsivePie } from '@nivo/pie';
 import { Drawer } from 'antd';
 import React, { useState } from 'react';
 
 import { Radio, Select, Wrapper } from '../../components';
 import { toMoney, toPercent } from '../../lib';
+import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 import { useCategories } from './data';
 
 const { Option } = Select;
 
-const Pie = ({ data, total, onClick, ...props }) => (
+type GraphProps = {
+  data: PieDatum[];
+  total: number;
+  onClick: (categoryId: string) => void;
+};
+
+const Pie: React.FC<GraphProps> = ({ data, total, onClick, ...props }) => (
   <ResponsivePie
     data={data}
-    onClick={(data) => onClick(data._id)}
+    onClick={(data) => onClick(data._id as string)}
     margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
-    pixelRatio={2}
+    // pixelRatio={2}
     innerRadius={0.5}
     padAngle={0.7}
     cornerRadius={3}
@@ -72,33 +79,33 @@ const Pie = ({ data, total, onClick, ...props }) => (
   />
 );
 
-const Bar = ({ data, total, onClick, ...props }) => (
+const Bar: React.FC<GraphProps> = ({ data, total, onClick, ...props }) => (
   <ResponsiveBar
     data={data}
-    onClick={({ data: { _id } }) => onClick(_id)}
+    onClick={({ data }) => onClick(data._id as string)}
     indexBy="name"
     margin={{ top: 50, right: 60, bottom: 50, left: 200 }}
     minValue="auto"
     maxValue="auto"
     layout="horizontal"
     colors={{ scheme: 'paired' }}
-    colorBy="index"
+    // colorBy="index"
     axisTop={{
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      format: toMoney,
+      format: (label) => toMoney(label),
     }}
     axisRight={null}
     axisBottom={{
       tickSize: 5,
       tickPadding: 5,
       tickRotation: 0,
-      format: toMoney,
+      format: (label) => toMoney(label),
     }}
     enableGridX={true}
     enableGridY={false}
-    labelFormat={(x) => `${toMoney(x)} (${toPercent(x / total)})`}
+    labelFormat={(x) => `${toMoney(x)} (${toPercent(Number(x) / total)})`}
     labelSkipWidth={12}
     labelSkipHeight={12}
     labelTextColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
@@ -107,21 +114,26 @@ const Bar = ({ data, total, onClick, ...props }) => (
   />
 );
 
-const BreakdownView = ({ startDate, endDate }) => {
+type BreakdownViewProps = TimePeriod;
+
+const BreakdownView: React.FC<BreakdownViewProps> = ({
+  startDate,
+  endDate,
+}) => {
   const [accountId, setAccountId] = useState('all');
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
   const [isVisible, setVisible] = useState(false);
-  const [transactionViewCategoryId, setTransactionViewCategoryId] = useState(
-    null
-  );
+  const [transactionViewCategoryId, setTransactionViewCategoryId] = useState<
+    string
+  >();
   const { loading, error, accounts, categories, total } = useCategories({
     startDate,
     endDate,
     accountId,
     grouping,
   });
-  if (loading && typeof categories === 'undefined') return null;
+  if (loading || typeof categories === 'undefined') return null;
   if (error) return <>error</>;
 
   const Graph = graph === 'pie' ? Pie : Bar;
@@ -146,8 +158,9 @@ const BreakdownView = ({ startDate, endDate }) => {
       </Drawer>
       <Select
         value={accountId}
-        onChange={setAccountId}
+        onSelect={(val) => typeof val === 'string' && setAccountId(val)}
         showSearch
+        // optionFilterProp="label"
         optionFilterProp="label"
       >
         {accounts.map(({ id, name }) => (
@@ -172,10 +185,10 @@ const BreakdownView = ({ startDate, endDate }) => {
         <Radio.Button value="subcategory">Subcategory</Radio.Button>
         <Radio.Button value="category">Category</Radio.Button>
       </Radio.Group>
-      <span>Total: {toMoney(total)}</span>
+      {total && <span>Total: {toMoney(total)}</span>}
       <Graph
         data={categories}
-        total={total}
+        total={total ?? 0}
         onClick={(id) => {
           setTransactionViewCategoryId(id);
           setVisible(true);

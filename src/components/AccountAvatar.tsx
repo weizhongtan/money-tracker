@@ -3,7 +3,12 @@ import React from 'react';
 
 import { useTheme } from '../lib';
 
-const AccountAvatar = ({ name, colour }) => {
+type Props = {
+  name: string;
+  colour: string;
+};
+
+const AccountAvatar: React.FC<Props> = ({ name, colour }) => {
   const theme = useTheme();
   return (
     <Avatar

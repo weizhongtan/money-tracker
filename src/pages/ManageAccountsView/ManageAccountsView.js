@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import React from 'react';
 
-import { AccountAvatar, Amount, Button } from '../../components';
+import { AccountAvatar, Amount } from '../../components';
 import { toMoney, useBaseData } from '../../lib';
 
 const { Column } = Table;
@@ -25,7 +25,7 @@ const ManageAccountsView = ({ startDate, endDate }) => {
           title="Initial Amount"
           dataIndex="initialAmount"
           key="initialAmount"
-          render={amount => (
+          render={(amount) => (
             <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
           )}
           align="right"
@@ -34,7 +34,7 @@ const ManageAccountsView = ({ startDate, endDate }) => {
           title="Sum"
           dataIndex="sum"
           key="sum"
-          render={amount => (
+          render={(amount) => (
             <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
           )}
           align="right"

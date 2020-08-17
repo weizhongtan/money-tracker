@@ -1,10 +1,9 @@
 import { useMutation, useQuery } from '@apollo/react-hooks';
-import { ApolloError, gql } from 'apollo-boost';
-import moment from 'moment';
+import { gql } from 'apollo-boost';
 import { v4 as uuid } from 'uuid';
 
 import { CategoriesList, reversible, useBaseData } from '../../../lib';
-import { Account, Category, Transaction } from '../../../types';
+import { Account, Category, TimePeriod } from '../../../types';
 
 const GET_TRANSACTIONS = gql`
   query GetTransactions(
@@ -66,17 +65,10 @@ export const useTransactions = ({
   endDate,
   categoryId,
   searchText,
-}: {
-  startDate: moment.Moment;
-  endDate: moment.Moment;
+}: TimePeriod & {
   categoryId?: string;
   searchText: string;
-}): {
-  loading: boolean;
-  error?: ApolloError;
-  transactions?: Transaction[];
-  count?: number;
-} => {
+}) => {
   const baseData = useBaseData();
 
   const searchAmount = Number(searchText) || 0;

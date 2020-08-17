@@ -6,12 +6,12 @@ import { v4 as uuid } from 'uuid';
 
 import { Account, Category } from './types';
 
-export const toMoney = (amount: number, compact = true) =>
+export const toMoney = (amount: number | string, compact = true) =>
   new Intl.NumberFormat('en-EN', {
     style: 'currency',
     currency: 'GBP',
     ...(compact ? { notation: 'compact' } : {}),
-  }).format(amount);
+  }).format(Number(amount));
 
 export const toPercent = (amount: number) =>
   `${(Math.abs(amount) * 100).toFixed(2)}%`;
@@ -53,18 +53,18 @@ type BaseResult = {
   type?: 'success' | 'error' | 'info' | 'warning';
 };
 
-export function reversible<ArgType, Result = BaseResult>({
+export function reversible<ArgType, ResultType = BaseResult>({
   action,
   undo,
 }: {
-  action: (...args: ArgType[]) => Promise<Result & BaseResult>;
+  action: (arg: ArgType) => Promise<ResultType & BaseResult>;
   undo: (
-    result: Result & BaseResult,
-    ...args: ArgType[]
+    result: ResultType & BaseResult,
+    arg: ArgType
   ) => Promise<string> | void;
 }) {
-  return async (...args: ArgType[]) => {
-    const result = await action(...args);
+  return async (arg: ArgType) => {
+    const result = await action(arg);
     // TODO: refactor to use object API in all cases
     const actionMessage = result.message || 'did the thing';
     const type = result.type ?? 'success';
@@ -79,7 +79,7 @@ export function reversible<ArgType, Result = BaseResult>({
           size="small"
           onClick={async () => {
             notification.close(key);
-            const undoMessage = await undo(result, ...args);
+            const undoMessage = await undo(result, arg);
             notification.success({
               key: uuid(),
               message: <>{undoMessage ?? 'undid the thing'}</>,

@@ -2,7 +2,7 @@ import { Button as _Button } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import Select from './Select';
+import Select, { SelectProps, SelectValue } from './Select';
 
 const Button = styled(_Button)`
   text-align: left;
@@ -11,23 +11,30 @@ const Button = styled(_Button)`
   overflow: hidden;
 `;
 
+interface Props extends SelectProps<SelectValue> {
+  buttonText?: string;
+  buttonTextDefault: string;
+}
+
 const ButtonSelect = ({
   buttonText,
   buttonTextDefault,
   children,
-  onChange,
+  onChange = () => {},
+  size,
   ...props
-}) => {
+}: Props) => {
   const [isOpen, setOpen] = useState(false);
   if (isOpen) {
     return (
       <Select
-        onChange={async (...args) => {
-          await onChange(...args);
+        onChange={(...args) => {
+          onChange(...args);
           setOpen(false);
         }}
         onBlur={() => setOpen(false)}
         autoFocus
+        size={size}
         {...props}
       >
         {children}
@@ -36,7 +43,7 @@ const ButtonSelect = ({
   }
   return (
     <Button
-      size={props.size}
+      size={size}
       onPointerEnter={() => {
         setOpen(true);
       }}
