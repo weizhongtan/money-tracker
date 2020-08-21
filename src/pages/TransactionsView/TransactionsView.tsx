@@ -62,11 +62,11 @@ const AccountIndicator: React.FC<AccountIndicatorProps> = ({
   );
 };
 
-type Props = TimePeriod & {
+type TransactionsViewProps = TimePeriod & {
   categoryId?: string;
 };
 
-const TransactionsView: React.FC<Props> = ({
+const TransactionsView: React.FC<TransactionsViewProps> = ({
   startDate,
   endDate,
   categoryId,

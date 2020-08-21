@@ -10,7 +10,6 @@ const GET_TRANSACTIONS = gql`
     $startDate: timestamptz
     $endDate: timestamptz
     $categoryIds: [uuid!]
-    $includeNullCategory: Boolean
     $searchText: String!
     $searchAmount: numeric!
     $searchAmountComplement: numeric!
@@ -18,16 +17,20 @@ const GET_TRANSACTIONS = gql`
     transactions_aggregate(
       where: {
         date: { _gte: $startDate, _lte: $endDate }
-        _and: {
-          _or: [
-            { category_id: { _in: $categoryIds } }
-            { category_id: { _is_null: $includeNullCategory } }
-          ]
-        }
-        _or: [
-          { description: { _ilike: $searchText } }
-          { amount: { _eq: $searchAmount } }
-          { amount: { _eq: $searchAmountComplement } }
+        _and: [
+          {
+            _or: [
+              { category_id: { _in: $categoryIds } }
+              { category_id: { _is_null: true } }
+            ]
+          }
+          {
+            _or: [
+              { description: { _ilike: $searchText } }
+              { amount: { _eq: $searchAmount } }
+              { amount: { _eq: $searchAmountComplement } }
+            ]
+          }
         ]
       }
       order_by: { date: desc }
@@ -73,19 +76,18 @@ export const useTransactions = ({
 
   const searchAmount = Number(searchText) || 0;
   const searchAmountComplement = -searchAmount;
-  const categoryIds = baseData.categories
-    .filter((cat) => {
-      if (!categoryId || cat.id === categoryId) {
-        return true;
-      }
-      return false;
-    })
-    .map((x) => x.id);
+  let categoryIds;
+  if (categoryId) {
+    categoryIds = baseData.categories
+      .filter((cat) => cat.id === categoryId)
+      .map((x) => x.id);
+  } else {
+    categoryIds = baseData.categories.map((x) => x.id);
+  }
   const variables = {
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
     categoryIds,
-    includeNullCategory: !categoryId,
     searchText: `%${searchText}%`,
     searchAmount,
     searchAmountComplement,
