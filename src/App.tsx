@@ -178,7 +178,7 @@ function App() {
   const [openKeys, setOpenKeys] = useState(defaultOpenKeys);
   const { loading, error, data } = useBaseData();
 
-  if (loading || error || data === undefined) return null;
+  if (loading || error || !data) return null;
 
   return (
     <BaseDataContext.Provider value={data}>
@@ -189,11 +189,12 @@ function App() {
             selectedKeys={[location.pathname]}
             onSelect={({ key }) => {
               history.push({
-                pathname: key,
+                pathname: key as string,
                 search: location.search,
               });
             }}
-            openKeys={openKeys as string[]}
+            openKeys={openKeys.map((x) => String(x))}
+            // @ts-ignore
             onOpenChange={setOpenKeys}
             mode="inline"
           >
