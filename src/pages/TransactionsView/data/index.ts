@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { gql } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { v4 as uuid } from 'uuid';
 
 import { CategoriesList, reversible, useBaseData } from '../../../lib';

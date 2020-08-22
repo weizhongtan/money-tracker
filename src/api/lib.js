@@ -1,4 +1,4 @@
-const { default: ApolloClient, gql } = require('apollo-boost');
+const { ApolloClient, gql } = require('@apollo/client');
 const fetch = require('node-fetch');
 const moment = require('moment');
 
@@ -46,9 +46,7 @@ exports.createTransaction = async ({
   startDate.setMinutes(0);
   startDate.setSeconds(0);
   startDate.setMilliseconds(0);
-  const endDate = moment(startDate)
-    .add(1, 'day')
-    .toDate();
+  const endDate = moment(startDate).add(1, 'day').toDate();
   const res = await client.query({
     query,
     variables: {

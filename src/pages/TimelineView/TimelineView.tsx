@@ -1,7 +1,6 @@
-import { useQuery } from '@apollo/react-hooks';
+import { gql, useQuery } from '@apollo/client';
 import { BarSvgProps, ResponsiveBar } from '@nivo/bar';
 import { Drawer } from 'antd';
-import { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 import styled from 'styled-components';

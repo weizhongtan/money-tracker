@@ -7,9 +7,14 @@ import {
   PieChartOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { ApolloProvider, useQuery } from '@apollo/react-hooks';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  gql,
+  useQuery,
+} from '@apollo/client';
 import { Layout, Menu } from 'antd';
-import ApolloClient, { gql } from 'apollo-boost';
 import moment from 'moment';
 import React, { useState } from 'react';
 import {
@@ -280,6 +285,7 @@ function App() {
 
 const client = new ApolloClient({
   uri: 'http://localhost:3000/v1/graphql',
+  cache: new InMemoryCache(),
 });
 
 function Wrappers() {
