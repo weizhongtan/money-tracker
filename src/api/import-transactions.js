@@ -12,7 +12,7 @@ const recursivePickBy = (key, val) => {
   if (key === 'STMTTRN') {
     picked.push(val);
   } else if (Array.isArray(val)) {
-    val.forEach(o => recursivePickBy(null, o));
+    val.forEach((o) => recursivePickBy(null, o));
   } else if (val && typeof val === 'object' && val.constructor === Object) {
     Object.entries(val).forEach(([_key, _val]) => {
       recursivePickBy(_key, _val);
@@ -23,6 +23,7 @@ const recursivePickBy = (key, val) => {
 async function ofxParser(data) {
   const raw = ofx.parse(data);
   recursivePickBy(null, raw);
+  console.log({ raw });
   return picked.flat().map((rawTransaction, index) => {
     const rawDate = rawTransaction.DTPOSTED;
     return {
@@ -56,7 +57,7 @@ const parsers = {
   qif: qifParser,
 };
 
-const pathname = '/Users/wzt/Downloads/activity.qfx';
+const pathname = '/Users/wzt/Downloads/amex.qfx';
 const accountId = '8d296146-8d6a-4dbc-b2ec-8dd772bf3654';
 
 (async () => {
@@ -67,23 +68,24 @@ const accountId = '8d296146-8d6a-4dbc-b2ec-8dd772bf3654';
   const parser = parsers[extension.substring(1)];
 
   const data = await parser(rawData);
-  if (!data) {
+  if (!data || !data.length) {
     throw new Error('parser return nothing!');
   }
 
-  const parsedJson = data.map(t => ({
+  const parsedJson = data.map((t) => ({
     ...t,
     accountId,
   }));
 
+  console.log('parsedJson');
   console.log(parsedJson);
 
-  const proms = parsedJson.map(t => {
+  const proms = parsedJson.map((t) => {
     return createTransaction(t);
   });
   const results = await Promise.all(proms);
 
-  const created = results.filter(x => x).length;
+  const created = results.filter((x) => x).length;
   const skipped = results.length - created;
 
   console.log(`Created ${created} records`);

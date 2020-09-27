@@ -1,10 +1,15 @@
-const { ApolloClient, gql } = require('@apollo/client');
+const {
+  ApolloClient,
+  gql,
+  HttpLink,
+  InMemoryCache,
+} = require('@apollo/client');
 const fetch = require('node-fetch');
 const moment = require('moment');
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/v1/graphql',
-  fetch,
+  link: new HttpLink({ uri: 'http://localhost:3000/v1/graphql', fetch }),
+  cache: new InMemoryCache(),
 });
 
 exports.createTransaction = async ({
