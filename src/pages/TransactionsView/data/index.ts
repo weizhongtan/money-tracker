@@ -220,7 +220,7 @@ export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      const categoryName = data.update_transactions.returning.category.name;
+      const categoryName = data.update_transactions.returning[0].category.name;
       const { affected_rows } = data.update_transactions;
       return {
         message: `Updated: ${categoryName} (${affected_rows} records)`,
