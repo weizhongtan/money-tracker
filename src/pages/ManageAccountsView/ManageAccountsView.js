@@ -40,6 +40,7 @@ const ManageAccountsView = ({ startDate, endDate }) => {
           align="right"
         />
         <Column title="Colour" dataIndex="colour" key="colour" />
+        <Column title="ID" dataIndex="id" key="id" />
       </Table>
     </>
   );
