@@ -33,6 +33,11 @@ $ npm run bootstrap:xml-to-json
 $ npm run bootstrap:json-to-postgres
 ```
 
+TODO:
+
+- key monzo transactions by tx\_ id so that we dont get duplicates
+- add description column into final description for split bills and missing notes
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
