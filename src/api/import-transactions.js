@@ -57,7 +57,7 @@ const parsers = {
   qif: qifParser,
 };
 
-const pathname = '/Users/wzt/Downloads/amex.qfx';
+const pathname = '/Users/wzt/dev/weizhongtan/money-tracker/private/amex.qfx';
 const accountId = '8d296146-8d6a-4dbc-b2ec-8dd772bf3654';
 
 (async () => {
