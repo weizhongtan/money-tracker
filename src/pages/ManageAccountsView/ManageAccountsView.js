@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Table, Upload } from 'antd';
+import { Button, Table, Upload, notification } from 'antd';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
@@ -67,7 +67,8 @@ const ManageAccountsView = ({ startDate, endDate }) => {
   return (
     <>
       <Upload
-        customRequest={async ({ file }) => {
+        showUploadList={false}
+        customRequest={async ({ file, onSuccess }) => {
           const accountId = '8d296146-8d6a-4dbc-b2ec-8dd772bf3654';
 
           const rawData = await file.text();
@@ -100,6 +101,19 @@ const ManageAccountsView = ({ startDate, endDate }) => {
 
           console.log(`Created ${created} records`);
           console.log(`Skipped ${skipped} records`);
+
+          onSuccess();
+
+          notification.success({
+            message: 'Import complete',
+            description: (
+              <>
+                <p>Created {created} records</p>
+                <p>Skipped {skipped} records</p>
+              </>
+            ),
+            placement: 'topLeft',
+          });
         }}
       >
         <Button icon={<UploadOutlined />}>Click to Upload</Button>
