@@ -5,7 +5,7 @@ import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
 
-import { AccountAvatar, Amount } from '../../components';
+import { AccountAvatar, Amount, DateDisplay } from '../../components';
 import { toMoney, useBaseData } from '../../lib';
 import { Account } from '../../types';
 import { useCreateTransaction } from './data';
@@ -117,6 +117,12 @@ const AccountsTable = (props: TableProps<Account>) => {
           <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
         )}
         align="right"
+      />
+      <Column
+        title="Most Recent Transaction"
+        dataIndex="mostRecentTransactionDate"
+        key="mostRecentTransactionDate"
+        render={(date) => <DateDisplay date={date} asTimeAgo />}
       />
       <Column title="Colour" dataIndex="colour" key="colour" />
       <Column

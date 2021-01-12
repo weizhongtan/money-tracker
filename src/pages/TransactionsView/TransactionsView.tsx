@@ -1,12 +1,16 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { Affix, Badge, Button, Drawer, Input, Table, Tooltip } from 'antd';
-import moment from 'moment';
 import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
-import TimeAgo from 'react-timeago';
 import styled from 'styled-components';
 
-import { AccountAvatar, Amount, ButtonSelect, Select } from '../../components';
+import {
+  AccountAvatar,
+  Amount,
+  ButtonSelect,
+  DateDisplay,
+  Select,
+} from '../../components';
 import { CategoriesList, toMoney, useBaseData } from '../../lib';
 import { Account, TimePeriod, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactionsCategory } from './data';
@@ -212,15 +216,11 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
         }}
         size="small"
       >
-        <Column
+        <Column<Transaction>
           title="Date"
           dataIndex="date"
           key="date"
-          render={(date) => (
-            <Tooltip title={<TimeAgo date={date} />}>
-              <>{moment(date).format('DD/MM/YY')}</>
-            </Tooltip>
-          )}
+          render={(date) => <DateDisplay date={date} />}
         />
         <Column<Transaction>
           title="Account"

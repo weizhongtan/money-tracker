@@ -9,6 +9,7 @@ Visualise your personal finances.
 - Docker
 - Docker compose
 - Node.js
+- hasura-cli installed globally
 
 ## Quick start
 
@@ -24,6 +25,14 @@ To update the database:
 ```sh
 $ cd hasura
 $ hasura console
+```
+
+Make modifications using the web UI.
+
+To query the database directly:
+
+```sh
+$ npm run db
 ```
 
 Migrate an existing Homebank xhb file:

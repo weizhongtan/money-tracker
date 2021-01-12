@@ -118,6 +118,7 @@ const GET_BASE_DATA = gql`
       sum
       minimum
       colour
+      mostRecentTransactionDate: most_recent_transaction_date
     }
     categories: view_categories_with_parents(order_by: { full_name: asc }) {
       id
