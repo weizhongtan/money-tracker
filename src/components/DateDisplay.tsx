@@ -8,7 +8,7 @@ type Props = {
   asTimeAgo?: boolean;
 };
 
-const DateDisplay = ({ date, asTimeAgo = false }: Props) => {
+const DateDisplay: React.FC<Props> = ({ date, asTimeAgo = false }) => {
   if (asTimeAgo) {
     return (
       <Tooltip title={moment(date).format('DD/MM/YY')}>

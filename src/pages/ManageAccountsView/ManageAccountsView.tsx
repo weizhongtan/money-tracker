@@ -77,7 +77,7 @@ const parsers: { [index: string]: Parser } = {
   qif: qifParser,
 };
 
-const AccountsTable = (props: TableProps<Account>) => {
+const AccountsTable: React.FC<TableProps<Account>> = (props) => {
   const [createTransaction] = useCreateTransaction();
 
   return (

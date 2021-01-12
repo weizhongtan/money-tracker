@@ -16,14 +16,14 @@ interface Props extends SelectProps<SelectValue> {
   buttonTextDefault: string;
 }
 
-const ButtonSelect = ({
+const ButtonSelect: React.FC<Props> = ({
   buttonText,
   buttonTextDefault,
   children,
   onChange = () => {},
   size,
   ...props
-}: Props) => {
+}) => {
   const [isOpen, setOpen] = useState(false);
   if (isOpen) {
     return (
