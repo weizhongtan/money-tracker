@@ -2,6 +2,13 @@ import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client';
 import moment from 'moment';
 
+interface Transaction {
+  accountId: string;
+  amount: number;
+  date: string;
+  description: string;
+}
+
 export const useCreateTransaction = () => {
   const client = useApolloClient();
 
@@ -10,7 +17,7 @@ export const useCreateTransaction = () => {
     amount,
     date,
     description,
-  }) => {
+  }: Transaction) => {
     const query = gql`
       query MyQuery(
         $accountId: uuid!
