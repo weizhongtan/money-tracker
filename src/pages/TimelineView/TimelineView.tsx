@@ -52,7 +52,10 @@ const GET_AMOUNT_GROUPS = gql`
 
 type GraphProps = {
   data: any;
-  meanValues: any[];
+  meanValues: {
+    key: string;
+    value: number;
+  }[];
   maxValue: number;
   precision: moment.unitOfTime.StartOf;
   amountType: string;
@@ -98,12 +101,12 @@ const Graph: React.FC<GraphProps> = ({
       labelTextColor={{ from: 'color', modifiers: [['brighter', 6]] }}
       isInteractive={true}
       tooltip={({ value }) => <>{toMoney(value, false)}</>}
-      markers={meanValues.map((value) => ({
+      markers={meanValues.map(({ key, value }) => ({
         axis: 'y',
         value: value,
         lineStyle: {
-          stroke: 'rgba(0, 0, 0, .35)',
-          strokeWidth: 1,
+          stroke: theme.amountType[key],
+          strokeWidth: 2,
           strokeDasharray: 5,
         },
         legend: `${toMoney(value)}/${precision}`,
@@ -185,7 +188,15 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
 
   const meanValues = Object.entries(data.aggregate.aggregate.avg)
     .filter(([key, val]) => amountType.includes(key))
-    .map(([, val]) => Math.abs(val));
+    .map(([key, value]) => {
+      if (amountType === 'balance') {
+        return { key, value };
+      }
+      // make expense and income mean absolute for comparison purposes
+      return { key, value: Math.abs(value) };
+    });
+
+  // sets the graph bounds based on the data
   let maxValue;
   if (amountType === 'balance') {
     maxValue = data.aggregate.aggregate.max.balance;
