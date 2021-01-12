@@ -112,7 +112,7 @@ const ManageAccountsView = () => {
         <Column title="Colour" dataIndex="colour" key="colour" />
         <Column
           title="Actions"
-          dataIndex="actions"
+          dataIndex="id"
           key="id"
           render={(accountId) => (
             <Upload
