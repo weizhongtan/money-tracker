@@ -1,11 +1,13 @@
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Table, Upload, notification } from 'antd';
+import { TableProps } from 'antd/lib/table';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
 
 import { AccountAvatar, Amount } from '../../components';
 import { toMoney, useBaseData } from '../../lib';
+import { Account } from '../../types';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -75,97 +77,126 @@ const parsers: { [index: string]: Parser } = {
   qif: qifParser,
 };
 
-const ManageAccountsView = () => {
-  const baseData = useBaseData();
+const AccountsTable = (props: TableProps<Account>) => {
   const [createTransaction] = useCreateTransaction();
 
   return (
+    <Table
+      size="small"
+      rowClassName={(record) => {
+        if (record.sum === 0) {
+          return 'inactive';
+        }
+        return '';
+      }}
+      {...props}
+    >
+      <Column
+        title="Name"
+        key="name"
+        render={({ name, colour }) => (
+          <>
+            <AccountAvatar name={name} colour={colour} /> {name}
+          </>
+        )}
+      />
+      <Column
+        title="Initial Amount"
+        dataIndex="initialAmount"
+        key="initialAmount"
+        render={(amount) => (
+          <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
+        )}
+        align="right"
+      />
+      <Column
+        title="Sum"
+        dataIndex="sum"
+        key="sum"
+        render={(amount) => (
+          <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
+        )}
+        align="right"
+      />
+      <Column title="Colour" dataIndex="colour" key="colour" />
+      <Column
+        title="Actions"
+        dataIndex="id"
+        key="id"
+        render={(accountId) => (
+          <Upload
+            showUploadList={false}
+            customRequest={async ({ file }) => {
+              const rawData = await file.text();
+
+              const sections = file.name.split('.');
+              const ext = sections[sections.length - 1];
+
+              const parser = parsers[ext];
+
+              const data = await parser(rawData);
+              if (!data || !data.length) {
+                throw new Error('parser return nothing!');
+              }
+
+              const parsedJson = data.map((t) => ({
+                ...t,
+                accountId,
+              }));
+
+              console.log('parsedJson');
+              console.log(parsedJson);
+
+              const proms = parsedJson.map((t) => {
+                return createTransaction(t);
+              });
+              const results = await Promise.all(proms);
+
+              const created = results.filter((x) => x).length;
+              const skipped = results.length - created;
+
+              console.log(`Created ${created} records`);
+              console.log(`Skipped ${skipped} records`);
+
+              notification.success({
+                message: 'Import complete',
+                description: (
+                  <>
+                    <p>Created {created} records</p>
+                    <p>Skipped {skipped} records</p>
+                  </>
+                ),
+                placement: 'topLeft',
+              });
+            }}
+          >
+            <Button icon={<UploadOutlined />}>Upload Transactions</Button>
+          </Upload>
+        )}
+      />
+    </Table>
+  );
+};
+
+const ManageAccountsView = () => {
+  const baseData = useBaseData();
+
+  const active: Account[] = [];
+  const inactive: Account[] = [];
+
+  // assume that accounts with no money are inactive
+  baseData.accounts.forEach((account) => {
+    if (account.sum === 0) {
+      inactive.push(account);
+    } else {
+      active.push(account);
+    }
+  });
+
+  return (
     <>
-      <Table dataSource={baseData.accounts} size="small">
-        <Column
-          title="Name"
-          key="name"
-          render={({ name, colour }) => (
-            <>
-              <AccountAvatar name={name} colour={colour} /> {name}
-            </>
-          )}
-        />
-        <Column
-          title="Initial Amount"
-          dataIndex="initialAmount"
-          key="initialAmount"
-          render={(amount) => (
-            <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
-          )}
-          align="right"
-        />
-        <Column
-          title="Sum"
-          dataIndex="sum"
-          key="sum"
-          render={(amount) => (
-            <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
-          )}
-          align="right"
-        />
-        <Column title="Colour" dataIndex="colour" key="colour" />
-        <Column
-          title="Actions"
-          dataIndex="id"
-          key="id"
-          render={(accountId) => (
-            <Upload
-              showUploadList={false}
-              customRequest={async ({ file }) => {
-                const rawData = await file.text();
-
-                const sections = file.name.split('.');
-                const ext = sections[sections.length - 1];
-
-                const parser = parsers[ext];
-
-                const data = await parser(rawData);
-                if (!data || !data.length) {
-                  throw new Error('parser return nothing!');
-                }
-
-                const parsedJson = data.map((t) => ({
-                  ...t,
-                  accountId,
-                }));
-
-                console.log('parsedJson');
-                console.log(parsedJson);
-
-                const proms = parsedJson.map((t) => {
-                  return createTransaction(t);
-                });
-                const results = await Promise.all(proms);
-
-                const created = results.filter((x) => x).length;
-                const skipped = results.length - created;
-
-                console.log(`Created ${created} records`);
-                console.log(`Skipped ${skipped} records`);
-
-                notification.success({
-                  message: 'Import complete',
-                  description: (
-                    <>
-                      <p>Created {created} records</p>
-                      <p>Skipped {skipped} records</p>
-                    </>
-                  ),
-                  placement: 'topLeft',
-                });
-              }}
-            >
-              <Button icon={<UploadOutlined />}>Upload Transactions</Button>
-            </Upload>
-          )}
-        />
-      </Table>
+      <AccountsTable dataSource={active} title={() => 'Active accounts'} />
+      <AccountsTable dataSource={inactive} title={() => 'Inactive accounts'} />
     </>
   );
 };
