@@ -186,17 +186,8 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
 const ManageAccountsView = () => {
   const baseData = useBaseData();
 
-  const active: Account[] = [];
-  const inactive: Account[] = [];
-
-  // assume that accounts with no money are inactive
-  baseData.accounts.forEach((account) => {
-    if (account.sum === 0) {
-      inactive.push(account);
-    } else {
-      active.push(account);
-    }
-  });
+  const active = baseData.accounts.filter((x) => x.status === 'active');
+  const inactive = baseData.accounts.filter((x) => x.status === 'inactive');
 
   return (
     <>

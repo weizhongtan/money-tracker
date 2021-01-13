@@ -102,7 +102,7 @@ const routes: IRoute[] = [
 
 const GET_BASE_DATA = gql`
   query GetBaseData {
-    accounts: view_accounts(order_by: { legacy_key: asc }) {
+    accounts: view_accounts(order_by: { name: asc }) {
       id
       key: id
       name
@@ -111,6 +111,7 @@ const GET_BASE_DATA = gql`
       minimum
       colour
       mostRecentTransactionDate: most_recent_transaction_date
+      status
     }
     categories: view_categories_with_parents(order_by: { full_name: asc }) {
       id

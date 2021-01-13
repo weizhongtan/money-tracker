@@ -8,6 +8,7 @@ export interface Account {
   sum: number;
   minimum: number;
   colour: string;
+  status: 'active' | 'inactive';
 }
 
 export interface Category {
