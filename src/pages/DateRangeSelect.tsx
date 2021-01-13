@@ -11,6 +11,40 @@ type Props = TimePeriod & {
 };
 
 const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
+  const ranges: {
+    [index: string]: [moment.Moment, moment.Moment];
+  } = {
+    'This Month': [moment().startOf('month'), moment().endOf('month')],
+    'This Year': [moment().startOf('year'), moment().endOf('year')],
+    'Last Month': [
+      moment().subtract(1, 'month').startOf('month'),
+      moment().subtract(1, 'month').endOf('month'),
+    ],
+    'Last 3 Months': [
+      moment().subtract(3, 'month').startOf('month'),
+      moment().endOf('month'),
+    ],
+    'Last 6 Months': [
+      moment().subtract(6, 'month').startOf('month'),
+      moment().endOf('month'),
+    ],
+    'Last 12 Months': [
+      moment().subtract(12, 'month').startOf('month'),
+      moment().endOf('month'),
+    ],
+    'Last Year': [
+      moment().subtract(1, 'year').startOf('year'),
+      moment().subtract(1, 'year').endOf('year'),
+    ],
+    'Entire Range': [moment('2017-01-01').startOf('year'), moment()],
+  };
+
+  // add the past 3 years
+  for (let i = 0; i < 3; i += 1) {
+    const year = String(moment().subtract(i, 'year').year());
+    ranges[year] = [moment(year).startOf('year'), moment(year).endOf('year')];
+  }
+
   return (
     <div>
       <Menu theme="dark">
@@ -41,34 +75,7 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
               }
             }}
             value={[startDate, endDate]}
-            ranges={{
-              'This Month': [
-                moment().startOf('month'),
-                moment().endOf('month'),
-              ],
-              'This Year': [moment().startOf('year'), moment().endOf('year')],
-              'Last Month': [
-                moment().subtract(1, 'month').startOf('month'),
-                moment().subtract(1, 'month').endOf('month'),
-              ],
-              'Last 3 Months': [
-                moment().subtract(3, 'month').startOf('month'),
-                moment().endOf('month'),
-              ],
-              'Last 6 Months': [
-                moment().subtract(6, 'month').startOf('month'),
-                moment().endOf('month'),
-              ],
-              'Last 12 Months': [
-                moment().subtract(12, 'month').startOf('month'),
-                moment().endOf('month'),
-              ],
-              'Last Year': [
-                moment().subtract(1, 'year').startOf('year'),
-                moment().subtract(1, 'year').endOf('year'),
-              ],
-              'Entire Range': [moment('2017-01-01').startOf('year'), moment()],
-            }}
+            ranges={ranges}
           />
         </Menu.Item>
       </Menu>
