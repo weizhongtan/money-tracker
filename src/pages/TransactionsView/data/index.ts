@@ -10,6 +10,7 @@ const GET_TRANSACTIONS = gql`
     $startDate: timestamptz
     $endDate: timestamptz
     $categoryIds: [uuid!]
+    $accountId: uuid
     $searchText: String!
     $searchAmount: numeric!
     $searchAmountComplement: numeric!
@@ -19,9 +20,14 @@ const GET_TRANSACTIONS = gql`
         date: { _gte: $startDate, _lte: $endDate }
         _and: [
           {
-            _or: [
-              { category_id: { _in: $categoryIds } }
-              { category_id: { _is_null: true } }
+            _and: [
+              {
+                _or: [
+                  { category_id: { _in: $categoryIds } }
+                  { category_id: { _is_null: true } }
+                ]
+              }
+              { account_id: { _eq: $accountId } }
             ]
           }
           {
@@ -85,9 +91,11 @@ export const useTransactions = ({
   startDate,
   endDate,
   categoryId,
+  accountId,
   searchText,
 }: TimePeriod & {
   categoryId?: string;
+  accountId?: string;
   searchText: string;
 }) => {
   const baseData = useBaseData();
@@ -106,6 +114,7 @@ export const useTransactions = ({
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
     categoryIds,
+    accountId,
     searchText: `%${searchText}%`,
     searchAmount,
     searchAmountComplement,

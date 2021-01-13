@@ -21,7 +21,6 @@ const Pie: React.FC<GraphProps> = ({ data, total, onClick, ...props }) => (
     data={data}
     onClick={(data) => onClick(data._id as string)}
     margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
-    // pixelRatio={2}
     innerRadius={0.5}
     padAngle={0.7}
     cornerRadius={3}
@@ -144,13 +143,13 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
           startDate={startDate}
           endDate={endDate}
           categoryId={transactionViewCategoryId}
+          accountId={accountId === 'all' ? undefined : accountId}
         />
       </PageDrawer>
       <Select
         value={accountId}
         onSelect={(val) => typeof val === 'string' && setAccountId(val)}
         showSearch
-        // optionFilterProp="label"
         optionFilterProp="label"
       >
         {accounts.map(({ id, name }) => (

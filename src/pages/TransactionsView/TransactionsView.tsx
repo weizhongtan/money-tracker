@@ -188,12 +188,14 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
 
 type TransactionsViewProps = TimePeriod & {
   categoryId?: string;
+  accountId?: string;
 };
 
 const TransactionsView: React.FC<TransactionsViewProps> = ({
   startDate,
   endDate,
   categoryId,
+  accountId,
 }) => {
   const baseData = useBaseData();
   const theme = useTheme();
@@ -211,6 +213,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
     startDate,
     endDate,
     categoryId,
+    accountId,
     searchText,
   });
   if (error) return <>error</>;
