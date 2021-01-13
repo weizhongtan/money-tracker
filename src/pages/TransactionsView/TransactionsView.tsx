@@ -37,21 +37,23 @@ const Parent = styled.span`
 
 type AccountIndicatorProps = {
   to: Account;
-  linked?: Account;
   isOut: boolean;
+  onClick?: () => void;
+  linked?: Account;
 };
 
 const AccountIndicator: React.FC<AccountIndicatorProps> = ({
   to,
   linked,
   isOut,
+  onClick,
 }) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
   return (
     <Tooltip
       title={() => (
         <>
-          {to.name}
+          Filter to {to.name}
           {linked?.name && (
             <>
               {' '}
@@ -62,12 +64,16 @@ const AccountIndicator: React.FC<AccountIndicatorProps> = ({
       )}
     >
       <div>
-        <AccountAvatar name={to.name} colour={to.colour} />
+        <AccountAvatar name={to.name} colour={to.colour} onClick={onClick} />
         {linked?.name && (
           <>
             {' '}
             {arrow}{' '}
-            <AccountAvatar name={linked?.name} colour={linked?.colour} />
+            <AccountAvatar
+              name={linked?.name}
+              colour={linked?.colour}
+              onClick={onClick}
+            />
           </>
         )}
       </div>
@@ -195,6 +201,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
 
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState<Transaction[]>([]);
+  const [accountNameFilter, setAccountNameFilter] = useState<any[] | null>([]);
 
   const categories = new CategoriesList(baseData.categories);
 
@@ -235,7 +242,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
         />
       </Affix>
       {
-        <Table
+        <Table<Transaction>
           dataSource={transactions}
           pagination={{
             defaultPageSize: 50,
@@ -246,6 +253,9 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           }}
           size="small"
           loading={loading}
+          onChange={(pagination, filters, sorter) => {
+            setAccountNameFilter(filters.account);
+          }}
         >
           <Column<Transaction>
             title="Date"
@@ -257,6 +267,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
             title="Account"
             dataIndex="account"
             key="account"
+            filteredValue={accountNameFilter}
             filters={baseData.accounts.map(({ name }) => ({
               text: name,
               value: name,
@@ -268,6 +279,9 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
                   to={record.account}
                   linked={record.linkedAccount}
                   isOut={record.amount.isOut}
+                  onClick={() => {
+                    setAccountNameFilter([record.account.name]);
+                  }}
                 />
               );
             }}
