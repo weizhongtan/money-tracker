@@ -4,11 +4,12 @@ import React, { useState } from 'react';
 
 import { Radio, Select, Wrapper } from '../../components';
 import { toMoney } from '../../lib';
+import { TimePeriod } from '../../types';
 import { useData } from './data';
 
 const { Option } = Select;
 
-const getBottomAxisProp = (startDate, endDate) => {
+const getBottomAxisProp = ({ startDate, endDate }: TimePeriod) => {
   const duration = endDate.diff(startDate, 'days');
   if (duration <= 7) {
     return {
@@ -40,7 +41,12 @@ const getBottomAxisProp = (startDate, endDate) => {
   };
 };
 
-const CumulativeView = ({ startDate, endDate }) => {
+type CumulativeViewProps = TimePeriod;
+
+const CumulativeView: React.FC<CumulativeViewProps> = ({
+  startDate,
+  endDate,
+}) => {
   const [accountId, setAccountId] = useState('all');
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
@@ -51,7 +57,7 @@ const CumulativeView = ({ startDate, endDate }) => {
     accountId,
     precision,
   });
-  if (loading && typeof balances === 'undefined') return null;
+  if (loading || balances === undefined) return null;
   if (error) return <>'error'</>;
 
   const series = [
@@ -85,7 +91,7 @@ const CumulativeView = ({ startDate, endDate }) => {
     <Wrapper>
       <Select
         value={accountId}
-        onChange={setAccountId}
+        onSelect={(val) => setAccountId(val as string)}
         showSearch
         optionFilterProp="label"
       >
@@ -121,14 +127,21 @@ const CumulativeView = ({ startDate, endDate }) => {
         axisLeft={{
           format: toMoney,
         }}
-        axisBottom={getBottomAxisProp(startDate, endDate)}
+        axisBottom={getBottomAxisProp({ startDate, endDate })}
         animate
         enableArea
         pointSize={7}
         pointBorderWidth={1}
         pointBorderColor="#fff"
-        pointLabel="y"
         enableSlices="x"
+        sliceTooltip={({ slice }) => {
+          const { data } = slice.points[0];
+          return (
+            <span>
+              {moment(data.x).format('DD MMM YY')} - {toMoney(data.y, false)}
+            </span>
+          );
+        }}
       />
     </Wrapper>
   );

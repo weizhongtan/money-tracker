@@ -2,6 +2,7 @@ import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client';
 
 import { useBaseData } from '../../lib';
+import { TimePeriod } from '../../types';
 
 const GET_BALANCE = gql`
   query GetBalance(
@@ -25,9 +26,24 @@ const GET_BALANCE = gql`
   }
 `;
 
-export const useData = ({ startDate, endDate, accountId, precision }) => {
+interface TData {
+  balances: {
+    date: string;
+    sum: number;
+  }[];
+}
+
+export const useData = ({
+  startDate,
+  endDate,
+  accountId,
+  precision,
+}: TimePeriod & {
+  accountId: string;
+  precision: string;
+}) => {
   const { accounts } = useBaseData();
-  const { loading, error, data } = useQuery(GET_BALANCE, {
+  const { loading, error, data } = useQuery<TData>(GET_BALANCE, {
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),

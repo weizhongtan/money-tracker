@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 
 import { Account, Category } from './types';
 
-export const toMoney = (amount: number | string, compact = true) =>
+export const toMoney = (amount: number | string | Date, compact = true) =>
   new Intl.NumberFormat('en-EN', {
     style: 'currency',
     currency: 'GBP',
