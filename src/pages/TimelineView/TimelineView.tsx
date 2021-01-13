@@ -41,13 +41,40 @@ const GET_AMOUNT_GROUPS = gql`
         }
         max {
           balance
-          expense
           income
+        }
+        min {
+          expense
         }
       }
     }
   }
 `;
+
+interface TData {
+  groups: {
+    date: string;
+    balance: number;
+    expense: number;
+    income: number;
+  }[];
+  aggregate: {
+    aggregate: {
+      avg: {
+        balance: number;
+        expense: number;
+        income: number;
+      };
+      max: {
+        balance: number;
+        income: number;
+      };
+      min: {
+        expense: number;
+      };
+    };
+  };
+}
 
 type GraphProps = {
   data: any;
@@ -134,35 +161,14 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
   const [precision, setPrecision] = useState<moment.unitOfTime.StartOf>(
     'month'
   );
-  const [amountType, setAmountType] = useState('balance');
+  const [amountType, setAmountType] = useState<'balance' | 'expense,income'>(
+    'balance'
+  );
   const [isVisible, setVisible] = useState(false);
   const [transactionViewDates, setTransactionViewDates] = useState<TimePeriod>({
     startDate,
     endDate,
   });
-
-  interface TData {
-    groups: {
-      date: string;
-      balance: number;
-      expense: number;
-      income: number;
-    }[];
-    aggregate: {
-      aggregate: {
-        avg: {
-          balance: number;
-          expense: number;
-          income: number;
-        };
-        max: {
-          balance: number;
-          expense: number;
-          income: number;
-        };
-      };
-    };
-  }
 
   const { loading, error, data } = useQuery<TData>(GET_AMOUNT_GROUPS, {
     variables: {
@@ -207,7 +213,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     maxValue = data.aggregate.aggregate.max.balance;
   } else {
     maxValue = Math.max(
-      Math.abs(data.aggregate.aggregate.max.expense),
+      Math.abs(data.aggregate.aggregate.min.expense),
       Math.abs(data.aggregate.aggregate.max.income)
     );
   }

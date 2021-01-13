@@ -63,6 +63,24 @@ const GET_TRANSACTIONS = gql`
   }
 `;
 
+interface TData {
+  transactions_aggregate: {
+    aggregate: {
+      count: number;
+    };
+    nodes: {
+      id: string;
+      date: string;
+      amount: string;
+      account: Account;
+      linkedAccount?: Account;
+      description: string;
+      category: Category;
+      pair_id?: string;
+    }[];
+  };
+}
+
 export const useTransactions = ({
   startDate,
   endDate,
@@ -92,24 +110,6 @@ export const useTransactions = ({
     searchAmount,
     searchAmountComplement,
   };
-
-  interface TData {
-    transactions_aggregate: {
-      aggregate: {
-        count: number;
-      };
-      nodes: {
-        id: string;
-        date: string;
-        amount: string;
-        account: Account;
-        linkedAccount?: Account;
-        description: string;
-        category: Category;
-        pair_id?: string;
-      }[];
-    };
-  }
   const { loading, error, data } = useQuery<TData>(GET_TRANSACTIONS, {
     variables,
   });
