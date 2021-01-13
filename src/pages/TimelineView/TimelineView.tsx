@@ -100,7 +100,13 @@ const Graph: React.FC<GraphProps> = ({
       labelSkipHeight={12}
       labelTextColor={{ from: 'color', modifiers: [['brighter', 6]] }}
       isInteractive={true}
-      tooltip={({ value }) => <>{toMoney(value, false)}</>}
+      tooltip={({ indexValue, value }) => {
+        return (
+          <span>
+            {moment(indexValue).format('MMM YY')} - {toMoney(value, false)}
+          </span>
+        );
+      }}
       markers={meanValues.map(({ key, value }) => ({
         axis: 'y',
         value: value,
