@@ -1,4 +1,8 @@
-import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import {
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  FilterOutlined,
+} from '@ant-design/icons';
 import {
   Affix,
   Badge,
@@ -46,14 +50,13 @@ const AccountIndicator: React.FC<AccountIndicatorProps> = ({
   to,
   linked,
   isOut,
-  onClick,
 }) => {
   const arrow = isOut ? <ArrowRightOutlined /> : <ArrowLeftOutlined />;
   return (
     <Tooltip
       title={() => (
         <>
-          Filter to {to.name}
+          {to.name}
           {linked?.name && (
             <>
               {' '}
@@ -64,16 +67,12 @@ const AccountIndicator: React.FC<AccountIndicatorProps> = ({
       )}
     >
       <div>
-        <AccountAvatar name={to.name} colour={to.colour} onClick={onClick} />
+        <AccountAvatar name={to.name} colour={to.colour} />
         {linked?.name && (
           <>
             {' '}
             {arrow}{' '}
-            <AccountAvatar
-              name={linked?.name}
-              colour={linked?.colour}
-              onClick={onClick}
-            />
+            <AccountAvatar name={linked?.name} colour={linked?.colour} />
           </>
         )}
       </div>
@@ -116,7 +115,7 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
             updateTransactionsCategory({
               transactionIds: selectedRows.map((x) => x.key),
               newCategoryId: id as string,
-              currentCategoryIds: selectedRows.map((x) => x.category?.id),
+              currentCategoryIds: selectedRows.map((x) => x.category.id),
             });
             setSelectedRows([]);
           }}
@@ -201,7 +200,9 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
 
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState<Transaction[]>([]);
-  const [accountNameFilter, setAccountNameFilter] = useState<any[] | null>([]);
+  const [filters, setFilters] = useState<Record<string, any[] | null>>({
+    accounts: null,
+  });
 
   const categories = new CategoriesList(baseData.categories);
 
@@ -253,7 +254,10 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
         size="small"
         loading={loading}
         onChange={(pagination, filters, sorter) => {
-          setAccountNameFilter(filters.account);
+          setFilters({
+            accounts: filters.accounts,
+            categories: filters.categories,
+          });
         }}
       >
         <Column<Transaction>
@@ -266,7 +270,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           title="Account"
           dataIndex="account"
           key="account"
-          filteredValue={accountNameFilter}
+          filteredValue={filters.accounts}
           filters={baseData.accounts.map(({ name }) => ({
             text: name,
             value: name,
@@ -274,14 +278,23 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           onFilter={(value, record) => record.account.name === value}
           render={(_, record) => {
             return (
-              <AccountIndicator
-                to={record.account}
-                linked={record.linkedAccount}
-                isOut={record.amount.isOut}
-                onClick={() => {
-                  setAccountNameFilter([record.account.name]);
-                }}
-              />
+              <Space>
+                <Tooltip title={`Filter to ${record.account.name}`}>
+                  <FilterOutlined
+                    onClick={() => {
+                      setFilters({
+                        ...filters,
+                        accounts: [record.account.name],
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <AccountIndicator
+                  to={record.account}
+                  linked={record.linkedAccount}
+                  isOut={record.amount.isOut}
+                />
+              </Space>
             );
           }}
         />
@@ -300,36 +313,49 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           title="Category"
           dataIndex="category"
           key="category"
+          filteredValue={filters.categories}
           filters={categories.get().map(({ name }) => ({
             text: name,
             value: name,
           }))}
-          onFilter={(value, record) => record.category?.name === value}
+          onFilter={(value, record) => record.category.name === value}
           render={(_, record) => {
             return (
-              <ButtonSelect
-                value={record.category?.id}
-                onChange={(newCategoryId) => {
-                  updateTransactionsCategory({
-                    transactionIds: [record.key],
-                    newCategoryId: newCategoryId as string,
-                    currentCategoryIds: [record.category?.id],
-                  });
-                }}
-                showSearch
-                optionFilterProp="label"
-                size="small"
-                buttonText={record.category.name}
-                buttonType={
-                  record.category.name === 'None' ? 'primary' : 'dashed'
-                }
-              >
-                {categories.get().map(({ id, name, isSub }) => (
-                  <Option value={id} key={id} label={name}>
-                    {isSub ? name : <Parent>{name}</Parent>}
-                  </Option>
-                ))}
-              </ButtonSelect>
+              <Space>
+                <Tooltip title={`Filter to ${record.category.name}`}>
+                  <FilterOutlined
+                    onClick={() => {
+                      setFilters({
+                        ...filters,
+                        categories: [record.category.name],
+                      });
+                    }}
+                  />
+                </Tooltip>
+                <ButtonSelect
+                  value={record.category.id}
+                  onChange={(newCategoryId) => {
+                    updateTransactionsCategory({
+                      transactionIds: [record.key],
+                      newCategoryId: newCategoryId as string,
+                      currentCategoryIds: [record.category.id],
+                    });
+                  }}
+                  showSearch
+                  optionFilterProp="label"
+                  size="small"
+                  buttonText={record.category.name}
+                  buttonType={
+                    record.category.name === 'None' ? 'primary' : 'dashed'
+                  }
+                >
+                  {categories.get().map(({ id, name, isSub }) => (
+                    <Option value={id} key={id} label={name}>
+                      {isSub ? name : <Parent>{name}</Parent>}
+                    </Option>
+                  ))}
+                </ButtonSelect>
+              </Space>
             );
           }}
         />

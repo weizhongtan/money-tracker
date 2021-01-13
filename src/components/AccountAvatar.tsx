@@ -9,24 +9,17 @@ const Wrapper = styled.span``;
 type Props = AvatarProps & {
   name: string;
   colour: string;
-  onClick?: () => void;
 };
 
-const AccountAvatar: React.FC<Props> = ({
-  name,
-  colour,
-  onClick = () => {},
-  ...props
-}) => {
+const AccountAvatar: React.FC<Props> = ({ name, colour, ...props }) => {
   const theme = useTheme();
   return (
-    <Wrapper onClick={onClick}>
+    <Wrapper>
       <Avatar
         style={{
           background:
             theme.colors.presetPrimaryColors[colour] ??
             theme.colors.presetPrimaryColors.grey,
-          cursor: 'pointer',
         }}
         size="small"
         {...props}
