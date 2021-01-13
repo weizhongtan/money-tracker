@@ -241,109 +241,99 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           }
         />
       </Affix>
-      {
-        <Table<Transaction>
-          dataSource={transactions}
-          pagination={{
-            defaultPageSize: 50,
+      <Table<Transaction>
+        dataSource={transactions}
+        pagination={{
+          defaultPageSize: 50,
+        }}
+        rowSelection={{
+          selectedRowKeys: selectedRows.map((x) => x.key),
+          onChange: (_, rows) => setSelectedRows(rows),
+        }}
+        size="small"
+        loading={loading}
+        onChange={(pagination, filters, sorter) => {
+          setAccountNameFilter(filters.account);
+        }}
+      >
+        <Column<Transaction>
+          title="Date"
+          dataIndex="date"
+          key="date"
+          render={(date) => <DateDisplay date={date} />}
+        />
+        <Column<Transaction>
+          title="Account"
+          dataIndex="account"
+          key="account"
+          filteredValue={accountNameFilter}
+          filters={baseData.accounts.map(({ name }) => ({
+            text: name,
+            value: name,
+          }))}
+          onFilter={(value, record) => record.account.name === value}
+          render={(_, record) => {
+            return (
+              <AccountIndicator
+                to={record.account}
+                linked={record.linkedAccount}
+                isOut={record.amount.isOut}
+                onClick={() => {
+                  setAccountNameFilter([record.account.name]);
+                }}
+              />
+            );
           }}
-          rowSelection={{
-            selectedRowKeys: selectedRows.map((x) => x.key),
-            onChange: (_, rows) => setSelectedRows(rows),
+        />
+        <Column<Transaction>
+          title="Amount"
+          dataIndex="amount"
+          key="amount"
+          render={({ value, isOut }) => (
+            <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
+          )}
+          sorter={(a, b) => a.amount.value - b.amount.value}
+          align="right"
+        />
+        <Column title="Description" dataIndex="description" key="description" />
+        <Column<Transaction>
+          title="Category"
+          dataIndex="category"
+          key="category"
+          filters={categories.get().map(({ name }) => ({
+            text: name,
+            value: name,
+          }))}
+          onFilter={(value, record) => record.category?.name === value}
+          render={(_, record) => {
+            return (
+              <ButtonSelect
+                value={record.category?.id}
+                onChange={(newCategoryId) => {
+                  updateTransactionsCategory({
+                    transactionIds: [record.key],
+                    newCategoryId: newCategoryId as string,
+                    currentCategoryIds: [record.category?.id],
+                  });
+                }}
+                showSearch
+                optionFilterProp="label"
+                size="small"
+                buttonText={record.category.name}
+                buttonType={
+                  record.category.name === 'None' ? 'primary' : 'dashed'
+                }
+              >
+                {categories.get().map(({ id, name, isSub }) => (
+                  <Option value={id} key={id} label={name}>
+                    {isSub ? name : <Parent>{name}</Parent>}
+                  </Option>
+                ))}
+              </ButtonSelect>
+            );
           }}
-          size="small"
-          loading={loading}
-          onChange={(pagination, filters, sorter) => {
-            setAccountNameFilter(filters.account);
-          }}
-        >
-          <Column<Transaction>
-            title="Date"
-            dataIndex="date"
-            key="date"
-            render={(date) => <DateDisplay date={date} />}
-          />
-          <Column<Transaction>
-            title="Account"
-            dataIndex="account"
-            key="account"
-            filteredValue={accountNameFilter}
-            filters={baseData.accounts.map(({ name }) => ({
-              text: name,
-              value: name,
-            }))}
-            onFilter={(value, record) => record.account.name === value}
-            render={(_, record) => {
-              return (
-                <AccountIndicator
-                  to={record.account}
-                  linked={record.linkedAccount}
-                  isOut={record.amount.isOut}
-                  onClick={() => {
-                    setAccountNameFilter([record.account.name]);
-                  }}
-                />
-              );
-            }}
-          />
-          <Column
-            title="Amount"
-            dataIndex="amount"
-            key="amount"
-            render={({ value, isOut }) => (
-              <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
-            )}
-            sorter={(a: Transaction, b: Transaction) =>
-              a.amount.value - b.amount.value
-            }
-            align="right"
-          />
-          <Column
-            title="Description"
-            dataIndex="description"
-            key="description"
-          />
-          <Column
-            title="Category"
-            dataIndex="category"
-            key="category"
-            filters={categories.get().map(({ name }) => ({
-              text: name,
-              value: name,
-            }))}
-            onFilter={(value, record: Transaction) =>
-              record.category?.name === value
-            }
-            render={(_, record) => {
-              return (
-                <ButtonSelect
-                  value={record.category?.id}
-                  onChange={(newCategoryId) => {
-                    if (typeof newCategoryId === 'string') {
-                      updateTransactionsCategory({
-                        transactionIds: [record.key],
-                        newCategoryId,
-                        currentCategoryIds: [record.category?.id],
-                      });
-                    }
-                  }}
-                  showSearch
-                  optionFilterProp="label"
-                  size="small"
-                  buttonText={record.category?.name}
-                  buttonTextDefault="Set category"
-                >
-                  {categories.get().map(({ id, name, isSub }) => (
-                    <Option value={id} key={id} label={name}>
-                      {isSub ? name : <Parent>{name}</Parent>}
-                    </Option>
-                  ))}
-                </ButtonSelect>
-              );
-            }}
-          />
-        </Table>
-      }
+        />
+      </Table>
     </div>
   );
 };

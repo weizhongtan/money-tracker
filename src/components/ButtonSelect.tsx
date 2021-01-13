@@ -1,4 +1,4 @@
-import { Button as _Button } from 'antd';
+import _Button, { ButtonType } from 'antd/lib/button';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -12,13 +12,13 @@ const Button = styled(_Button)`
 `;
 
 interface Props extends SelectProps<SelectValue> {
-  buttonText?: string;
-  buttonTextDefault: string;
+  buttonText: string;
+  buttonType: ButtonType;
 }
 
 const ButtonSelect: React.FC<Props> = ({
   buttonText,
-  buttonTextDefault,
+  buttonType,
   children,
   onChange = () => {},
   size,
@@ -47,9 +47,9 @@ const ButtonSelect: React.FC<Props> = ({
       onPointerEnter={() => {
         setOpen(true);
       }}
-      type={buttonText ? 'dashed' : 'primary'}
+      type={buttonType}
     >
-      {buttonText || buttonTextDefault}
+      {buttonText}
     </Button>
   );
 };

@@ -105,7 +105,7 @@ export const useTransactions = ({
         account: Account;
         linkedAccount?: Account;
         description: string;
-        category?: Category;
+        category: Category;
         pair_id?: string;
       }[];
     };
@@ -148,7 +148,10 @@ export const useTransactions = ({
 };
 
 const UPDATE_TRANSACTIONS_CATEGORY = gql`
-  mutation UpdateTransactions1($transactionIds: [uuid!]!, $categoryId: uuid) {
+  mutation UpdateTransactionsCategory(
+    $transactionIds: [uuid!]!
+    $categoryId: uuid
+  ) {
     update_transactions(
       where: { id: { _in: $transactionIds } }
       _set: { category_id: $categoryId, updated_at: "now" }
@@ -209,7 +212,7 @@ export const useUpdateTransactions = () => {
 
   const updateTransactionsCategory = reversible<{
     transactionIds: string[];
-    newCategoryId: string;
+    newCategoryId?: string;
     currentCategoryIds: (string | undefined)[];
   }>({
     async action({ transactionIds, newCategoryId }) {

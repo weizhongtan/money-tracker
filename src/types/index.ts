@@ -27,7 +27,7 @@ export interface Transaction {
   account: Account;
   linkedAccount?: Account;
   description: string;
-  category?: Category;
+  category: Category;
   pairId?: string;
 }
 
