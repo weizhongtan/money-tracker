@@ -39,14 +39,6 @@ import TransactionsView from './pages/TransactionsView';
 import theme from './theme';
 import { Account, Category, TimePeriod } from './types';
 
-const Wrapper = styled.div`
-  box-sizing: border-box;
-  display: grid;
-  align-items: stretch;
-  height: 100%;
-  grid-template-rows: auto;
-`;
-
 const Content = styled(Layout.Content)`
   width: 100%;
   background: #fff;
@@ -181,15 +173,24 @@ function App() {
       )?.path,
   ].filter((x) => typeof x === 'string');
 
-  const [openKeys, setOpenKeys] = useState(defaultOpenKeys);
+  const [openKeys, setOpenKeys] = useState<any[]>(defaultOpenKeys);
   const { loading, error, data } = useBaseData();
 
   if (loading || error || !data) return null;
 
   return (
     <BaseDataContext.Provider value={data}>
-      <Layout hasSider>
-        <Layout.Sider collapsible>
+      <Layout>
+        <Layout.Sider
+          collapsible
+          style={{
+            overflow: 'auto',
+            height: '100vh',
+            position: 'sticky',
+            top: 0,
+            left: 0,
+          }}
+        >
           <Menu
             theme="dark"
             selectedKeys={[location.pathname]}
@@ -200,7 +201,6 @@ function App() {
               });
             }}
             openKeys={openKeys.map((x) => String(x))}
-            // @ts-ignore
             onOpenChange={setOpenKeys}
             mode="inline"
           >
@@ -240,45 +240,47 @@ function App() {
             }}
           />
         </Layout.Sider>
-        <Content>
-          <Switch>
-            {routes.map(({ path, component: Component, children }) => (
-              <Route
-                key={path}
-                path={path}
-                render={({ match }) => {
-                  if (!children) {
-                    if (Component) {
-                      return <Component {...{ startDate, endDate }} />;
-                    } else {
-                      throw Error('children or component not defined.');
+        <Layout>
+          <Content>
+            <Switch>
+              {routes.map(({ path, component: Component, children }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  render={({ match }) => {
+                    if (!children) {
+                      if (Component) {
+                        return <Component {...{ startDate, endDate }} />;
+                      } else {
+                        throw Error('children or component not defined.');
+                      }
                     }
-                  }
-                  return (
-                    <>
-                      {children.map((child) => {
-                        const Component = child.component;
-                        return (
-                          <Route
-                            key={match.url + child.path}
-                            path={match.url + child.path}
-                            render={() => (
-                              <Component {...{ startDate, endDate }} />
-                            )}
-                          />
-                        );
-                      })}
-                      {/* <Redirect to={match.url + children[0].path} /> */}
-                    </>
-                  );
-                }}
+                    return (
+                      <>
+                        {children.map((child) => {
+                          const Component = child.component;
+                          return (
+                            <Route
+                              key={match.url + child.path}
+                              path={match.url + child.path}
+                              render={() => (
+                                <Component {...{ startDate, endDate }} />
+                              )}
+                            />
+                          );
+                        })}
+                        {/* <Redirect to={match.url + children[0].path} /> */}
+                      </>
+                    );
+                  }}
+                />
+              ))}
+              <Redirect
+                to={{ pathname: routes[0].path, search: location.search }}
               />
-            ))}
-            <Redirect
-              to={{ pathname: routes[0].path, search: location.search }}
-            />
-          </Switch>
-        </Content>
+            </Switch>
+          </Content>
+        </Layout>
       </Layout>
     </BaseDataContext.Provider>
   );
@@ -289,18 +291,16 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-function Wrappers() {
+function Wrapper() {
   return (
     <ApolloProvider client={client}>
-      <Wrapper>
-        <ThemeProvider theme={theme}>
-          <Router>
-            <App />
-          </Router>
-        </ThemeProvider>
-      </Wrapper>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <App />
+        </Router>
+      </ThemeProvider>
     </ApolloProvider>
   );
 }
 
-export default Wrappers;
+export default Wrapper;
