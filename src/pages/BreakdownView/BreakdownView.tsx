@@ -1,9 +1,8 @@
 import { ResponsiveBar } from '@nivo/bar';
 import { PieDatum, ResponsivePie } from '@nivo/pie';
-import { Drawer } from 'antd';
 import React, { useState } from 'react';
 
-import { Radio, Select, Wrapper } from '../../components';
+import { PageDrawer, Radio, Select, Wrapper } from '../../components';
 import { toMoney, toPercent } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
@@ -140,22 +139,13 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
 
   return (
     <Wrapper>
-      <Drawer
-        placement="bottom"
-        visible={isVisible}
-        closable={false}
-        onClose={() => setVisible(false)}
-        height="75%"
-        bodyStyle={{
-          padding: '10px',
-        }}
-      >
+      <PageDrawer visible={isVisible} onClose={() => setVisible(false)}>
         <TransactionsView
           startDate={startDate}
           endDate={endDate}
           categoryId={transactionViewCategoryId}
         />
-      </Drawer>
+      </PageDrawer>
       <Select
         value={accountId}
         onSelect={(val) => typeof val === 'string' && setAccountId(val)}

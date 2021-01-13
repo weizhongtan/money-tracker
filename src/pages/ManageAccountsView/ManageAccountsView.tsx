@@ -167,10 +167,9 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
               notification.success({
                 message: 'Import complete',
                 description: (
-                  <>
-                    <p>Created {created} records</p>
-                    <p>Skipped {skipped} records</p>
-                  </>
+                  <span>
+                    Created {created} records, skipped {skipped} records
+                  </span>
                 ),
                 placement: 'topLeft',
               });

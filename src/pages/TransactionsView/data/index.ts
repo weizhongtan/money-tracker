@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { useMutation, useQuery } from '@apollo/client';
 import { v4 as uuid } from 'uuid';
 
-import { CategoriesList, reversible, useBaseData } from '../../../lib';
+import { reversible, useBaseData } from '../../../lib';
 import { Account, Category, TimePeriod } from '../../../types';
 
 const GET_TRANSACTIONS = gql`
@@ -201,7 +201,7 @@ const PAIR_TRANSACTIONS = gql`
   }
 `;
 
-export const useUpdateTransactionsCategory = (categories: CategoriesList) => {
+export const useUpdateTransactions = () => {
   const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS_CATEGORY);
   const [_deleteTransactions] = useMutation(DELETE_TRANSACTIONS);
   const [_pairTransactions] = useMutation(PAIR_TRANSACTIONS);

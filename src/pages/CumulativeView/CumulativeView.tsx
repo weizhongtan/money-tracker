@@ -1,4 +1,5 @@
 import { ResponsiveLine } from '@nivo/line';
+import { Space } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 
@@ -89,27 +90,30 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
 
   return (
     <Wrapper>
-      <Select
-        value={accountId}
-        onSelect={(val) => setAccountId(val as string)}
-        showSearch
-        optionFilterProp="label"
-      >
-        {accounts.map(({ id, name }) => (
-          <Option value={id} key={id} label={name}>
-            {name}
-          </Option>
-        ))}
-      </Select>
-      <Radio.Group
-        buttonStyle="solid"
-        defaultValue={precision}
-        onChange={(event) => setPrecision(event.target.value)}
-      >
-        <Radio.Button value="day">Day</Radio.Button>
-        <Radio.Button value="week">Week</Radio.Button>
-        <Radio.Button value="month">Month</Radio.Button>
-      </Radio.Group>
+      <Space>
+        <Select
+          value={accountId}
+          onSelect={(val) => setAccountId(val as string)}
+          showSearch
+          optionFilterProp="label"
+        >
+          {accounts.map(({ id, name }) => (
+            <Option value={id} key={id} label={name}>
+              {name}
+            </Option>
+          ))}
+        </Select>
+        <Radio.Group
+          buttonStyle="solid"
+          defaultValue={precision}
+          onChange={(event) => setPrecision(event.target.value)}
+        >
+          <Radio.Button value="day">Day</Radio.Button>
+          <Radio.Button value="week">Week</Radio.Button>
+          <Radio.Button value="month">Month</Radio.Button>
+        </Radio.Group>
+      </Space>
+
       <ResponsiveLine
         data={series}
         margin={{ top: 20, right: 20, bottom: 40, left: 50 }}

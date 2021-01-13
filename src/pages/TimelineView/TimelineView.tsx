@@ -1,11 +1,10 @@
 import { gql, useQuery } from '@apollo/client';
 import { BarSvgProps, ResponsiveBar } from '@nivo/bar';
-import { Drawer } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Radio, Select, Wrapper } from '../../components';
+import { PageDrawer, Radio, Select, Wrapper } from '../../components';
 import { CategoriesList, toMoney, useBaseData, useTheme } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
@@ -215,26 +214,20 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
 
   return (
     <Wrapper>
-      <Drawer
-        placement="bottom"
+      <PageDrawer
         visible={
           isVisible &&
           !!transactionViewDates.startDate &&
           !!transactionViewDates.endDate
         }
-        closable={false}
         onClose={() => setVisible(false)}
-        height="75%"
-        bodyStyle={{
-          padding: '10px',
-        }}
       >
         <TransactionsView
           startDate={transactionViewDates.startDate}
           endDate={transactionViewDates.endDate}
           categoryId={categoryId}
         />
-      </Drawer>
+      </PageDrawer>
       <Select
         value={categoryId}
         onSelect={(val) => setCategoryId(val as string)}
