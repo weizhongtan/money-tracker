@@ -7,6 +7,7 @@ import { Button, Form, Input, Table, Tooltip } from 'antd';
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { Radio } from '../../components';
 import { useBaseData } from '../../lib';
 import { Category, TimePeriod } from '../../types';
 import { useCreateCategory, useDeleteCategory } from './data';
@@ -49,9 +50,9 @@ const ManageCategoriesView: React.FC<Props> = () => {
   const [createCategory] = useCreateCategory();
   const [creating, setCreating] = React.useState(false);
 
-  const onFinish = async (values: { name: string }) => {
+  const onFinish = async (values: { name: string; type: string }) => {
     setCreating(true);
-    await createCategory(values.name);
+    await createCategory(values.name, values.type);
     setCreating(false);
   };
 
@@ -65,8 +66,18 @@ const ManageCategoriesView: React.FC<Props> = () => {
         >
           <Input />
         </Form.Item>
+        <Form.Item
+          name="type"
+          rules={[{ required: true }]}
+          initialValue="expense"
+        >
+          <Radio.Group buttonStyle="solid">
+            <Radio.Button value="expense">Expense</Radio.Button>
+            <Radio.Button value="income">Income</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
         <Form.Item>
-          <Button type="primary" loading={creating}>
+          <Button type="primary" loading={creating} htmlType="submit">
             Create
           </Button>
         </Form.Item>
