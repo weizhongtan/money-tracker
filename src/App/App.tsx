@@ -7,14 +7,8 @@ import {
   PieChartOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  gql,
-  useQuery,
-} from '@apollo/client';
-import { Layout, Menu } from 'antd';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { Layout, Menu, Spin } from 'antd';
 import moment from 'moment';
 import React, { useState } from 'react';
 import {
@@ -37,7 +31,8 @@ import ManageCategoriesView from '../pages/ManageCategoriesView';
 import TimelineView from '../pages/TimelineView';
 import TransactionsView from '../pages/TransactionsView';
 import theme from '../theme';
-import { Account, Category, TimePeriod } from '../types';
+import { TimePeriod } from '../types';
+import { useBaseData } from './data';
 
 const Content = styled(Layout.Content)`
   width: 100%;
@@ -100,50 +95,6 @@ const routes: IRoute[] = [
   },
 ];
 
-export const GET_BASE_DATA = gql`
-  query GetBaseData {
-    accounts: view_accounts(order_by: { name: asc }) {
-      id
-      key: id
-      name
-      initialAmount: initial_amount
-      sum
-      minimum
-      colour
-      mostRecentTransactionDate: most_recent_transaction_date
-      status
-    }
-    categories: view_categories_with_parents(order_by: { full_name: asc }) {
-      id
-      key: id
-      name
-      type
-    }
-  }
-`;
-
-export interface GetBaseData {
-  accounts: Account[];
-  categories: Category[];
-}
-
-const useBaseData = () => {
-  const { loading, error, data } = useQuery<GetBaseData>(GET_BASE_DATA);
-  if (loading || error || data === undefined) {
-    return {
-      loading,
-      error,
-    };
-  }
-
-  return {
-    data: {
-      accounts: data.accounts,
-      categories: data.categories,
-    },
-  };
-};
-
 function App() {
   const location = useLocation();
   const history = useHistory();
@@ -177,9 +128,11 @@ function App() {
   const [openKeys, setOpenKeys] = useState<any[]>(defaultOpenKeys);
   const { loading, error, data } = useBaseData();
 
-  if (loading || error || !data) return null;
+  if (error) return <>error</>;
 
-  return (
+  return loading ? (
+    <Spin />
+  ) : (
     <BaseDataContext.Provider value={data}>
       <Layout>
         <Layout.Sider

@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 
-import { GET_BASE_DATA, GetBaseData } from '../../App';
+import { GET_BASE_DATA, GetBaseData } from '../../App/data';
 import { Category } from '../../types';
 
 const CREATE_CATEGORY = gql`
