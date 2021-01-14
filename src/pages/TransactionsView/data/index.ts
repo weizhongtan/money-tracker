@@ -218,6 +218,7 @@ export const useUpdateTransactions = () => {
   const [_deleteTransactions] = useMutation(DELETE_TRANSACTIONS);
   const [_pairTransactions] = useMutation(PAIR_TRANSACTIONS);
   const [_unpairTransactions] = useMutation(UNPAIR_TRANSACTIONS);
+  const { references } = useBaseData();
 
   const updateTransactionsCategory = reversible<{
     transactionIds: string[];
@@ -320,6 +321,12 @@ export const useUpdateTransactions = () => {
           transactionIds: [transactionIds[1]],
           setLinkedAccountId: accountIds[0],
           setPairId,
+        },
+      });
+      await updateTransaction({
+        variables: {
+          transactionIds: transactionIds,
+          categoryId: references.internalTransferCategory.id,
         },
         refetchQueries: ['GetTransactions'],
       });

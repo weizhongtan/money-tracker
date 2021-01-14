@@ -36,3 +36,9 @@ export interface TimePeriod {
   startDate: moment.Moment;
   endDate: moment.Moment;
 }
+
+export interface BaseData {
+  accounts: Account[];
+  categories: Category[];
+  references: Record<string, Category>;
+}

@@ -1,6 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 
-import { Account, Category } from '../types';
+import { Account, BaseData, Category } from '../types';
 
 export const GET_BASE_DATA = gql`
   query GetBaseData {
@@ -38,14 +38,31 @@ export const useBaseData = () => {
       data: {
         accounts: [],
         categories: [],
+        references: {},
       },
     };
   }
 
-  return {
+  const baseData: {
+    loading: boolean;
+    error: boolean;
+    data: BaseData;
+  } = {
+    loading: false,
+    error: false,
     data: {
       accounts: data.accounts,
       categories: data.categories,
+      references: {},
     },
   };
+
+  const internalTransferCategory = data.categories.find(
+    (x) => x.name === 'Internal Transfer'
+  );
+  if (internalTransferCategory) {
+    baseData.data.references.internalTransferCategory = internalTransferCategory;
+  }
+
+  return baseData;
 };

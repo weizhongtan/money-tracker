@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 import { v4 as uuid } from 'uuid';
 
-import { Account, Category } from './types';
+import { BaseData, Category } from './types';
 
 export const toMoney = (amount: number | string | Date, compact = true) =>
   new Intl.NumberFormat('en-EN', {
@@ -34,17 +34,13 @@ export class CategoriesList {
   }
 }
 
-interface UserData {
-  accounts: Account[];
-  categories: Category[];
-}
-
-export const BaseDataContext = React.createContext<UserData>({
+export const BaseDataContext = React.createContext<BaseData>({
   accounts: [],
   categories: [],
+  references: {},
 });
 
-export const useBaseData = (): UserData => useContext(BaseDataContext);
+export const useBaseData = (): BaseData => useContext(BaseDataContext);
 
 export const useTheme = () => useContext(ThemeContext);
 
