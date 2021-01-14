@@ -100,7 +100,7 @@ const routes: IRoute[] = [
   },
 ];
 
-const GET_BASE_DATA = gql`
+export const GET_BASE_DATA = gql`
   query GetBaseData {
     accounts: view_accounts(order_by: { name: asc }) {
       id
@@ -122,13 +122,13 @@ const GET_BASE_DATA = gql`
   }
 `;
 
-interface TData {
+export interface GetBaseData {
   accounts: Account[];
   categories: Category[];
 }
 
 const useBaseData = () => {
-  const { loading, error, data } = useQuery<TData>(GET_BASE_DATA);
+  const { loading, error, data } = useQuery<GetBaseData>(GET_BASE_DATA);
   if (loading || error || data === undefined) {
     return {
       loading,
