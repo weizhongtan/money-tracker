@@ -62,7 +62,7 @@ const ManageCategoriesView: React.FC<Props> = () => {
         <Form.Item
           label="Category name"
           name="name"
-          rules={[{ required: true, message: 'Enter category name' }]}
+          rules={[{ required: true }]}
         >
           <Input />
         </Form.Item>

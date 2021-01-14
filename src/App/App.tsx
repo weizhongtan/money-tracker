@@ -39,6 +39,14 @@ const Content = styled(Layout.Content)`
   background: #fff;
 `;
 
+const Spinner = styled(Spin)`
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
 interface IRoute {
   path: string;
   title: string;
@@ -131,7 +139,7 @@ function App() {
   if (error) return <>error</>;
 
   return loading ? (
-    <Spin />
+    <Spinner />
   ) : (
     <BaseDataContext.Provider value={data}>
       <Layout>
