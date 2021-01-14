@@ -28,16 +28,16 @@ import {
 import styled, { ThemeProvider } from 'styled-components';
 import { useUrlState } from 'with-url-state';
 
-import { BaseDataContext } from './lib';
-import BreakdownView from './pages/BreakdownView';
-import CumulativeView from './pages/CumulativeView';
-import DateRangeSelect from './pages/DateRangeSelect';
-import ManageAccountsView from './pages/ManageAccountsView';
-import ManageCategoriesView from './pages/ManageCategoriesView';
-import TimelineView from './pages/TimelineView';
-import TransactionsView from './pages/TransactionsView';
-import theme from './theme';
-import { Account, Category, TimePeriod } from './types';
+import { BaseDataContext } from '../lib';
+import BreakdownView from '../pages/BreakdownView';
+import CumulativeView from '../pages/CumulativeView';
+import DateRangeSelect from '../pages/DateRangeSelect';
+import ManageAccountsView from '../pages/ManageAccountsView';
+import ManageCategoriesView from '../pages/ManageCategoriesView';
+import TimelineView from '../pages/TimelineView';
+import TransactionsView from '../pages/TransactionsView';
+import theme from '../theme';
+import { Account, Category, TimePeriod } from '../types';
 
 const Content = styled(Layout.Content)`
   width: 100%;
