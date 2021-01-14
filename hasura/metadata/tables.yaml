@@ -1,14 +1,5 @@
 - table:
     schema: public
-    name: __category_by_date_type
-- table:
-    schema: public
-    name: __transactions_by_category_grouped
-- table:
-    schema: public
-    name: __transactions_group_by
-- table:
-    schema: public
     name: accounts
   array_relationships:
   - name: transactions
@@ -47,6 +38,15 @@
         table:
           schema: public
           name: transactions
+- table:
+    schema: public
+    name: table_category_by_date_type
+- table:
+    schema: public
+    name: table_transactions_by_category_grouped
+- table:
+    schema: public
+    name: table_transactions_group_by
 - table:
     schema: public
     name: transactions
