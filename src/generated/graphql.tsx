@@ -18,7 +18,6 @@ export type Scalars = {
 
 /** columns and relationships of "accounts" */
 export type Accounts = {
-  __typename?: 'accounts';
   colour?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
@@ -79,14 +78,12 @@ export type AccountsTransactions_AggregateArgs = {
 
 /** aggregated selection of "accounts" */
 export type Accounts_Aggregate = {
-  __typename?: 'accounts_aggregate';
   aggregate?: Maybe<Accounts_Aggregate_Fields>;
   nodes: Array<Accounts>;
 };
 
 /** aggregate fields of "accounts" */
 export type Accounts_Aggregate_Fields = {
-  __typename?: 'accounts_aggregate_fields';
   avg?: Maybe<Accounts_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Accounts_Max_Fields>;
@@ -130,7 +127,6 @@ export type Accounts_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type Accounts_Avg_Fields = {
-  __typename?: 'accounts_avg_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
@@ -180,7 +176,6 @@ export type Accounts_Insert_Input = {
 
 /** aggregate max on columns */
 export type Accounts_Max_Fields = {
-  __typename?: 'accounts_max_fields';
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   initial_amount?: Maybe<Scalars['numeric']>;
@@ -203,7 +198,6 @@ export type Accounts_Max_Order_By = {
 
 /** aggregate min on columns */
 export type Accounts_Min_Fields = {
-  __typename?: 'accounts_min_fields';
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   initial_amount?: Maybe<Scalars['numeric']>;
@@ -226,7 +220,6 @@ export type Accounts_Min_Order_By = {
 
 /** response of any mutation on the table "accounts" */
 export type Accounts_Mutation_Response = {
-  __typename?: 'accounts_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -294,7 +287,6 @@ export type Accounts_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Accounts_Stddev_Fields = {
-  __typename?: 'accounts_stddev_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
@@ -307,7 +299,6 @@ export type Accounts_Stddev_Order_By = {
 
 /** aggregate stddev_pop on columns */
 export type Accounts_Stddev_Pop_Fields = {
-  __typename?: 'accounts_stddev_pop_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
@@ -320,7 +311,6 @@ export type Accounts_Stddev_Pop_Order_By = {
 
 /** aggregate stddev_samp on columns */
 export type Accounts_Stddev_Samp_Fields = {
-  __typename?: 'accounts_stddev_samp_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
@@ -333,7 +323,6 @@ export type Accounts_Stddev_Samp_Order_By = {
 
 /** aggregate sum on columns */
 export type Accounts_Sum_Fields = {
-  __typename?: 'accounts_sum_fields';
   initial_amount?: Maybe<Scalars['numeric']>;
   minimum?: Maybe<Scalars['numeric']>;
 };
@@ -366,7 +355,6 @@ export enum Accounts_Update_Column {
 
 /** aggregate var_pop on columns */
 export type Accounts_Var_Pop_Fields = {
-  __typename?: 'accounts_var_pop_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
@@ -379,7 +367,6 @@ export type Accounts_Var_Pop_Order_By = {
 
 /** aggregate var_samp on columns */
 export type Accounts_Var_Samp_Fields = {
-  __typename?: 'accounts_var_samp_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
@@ -392,7 +379,6 @@ export type Accounts_Var_Samp_Order_By = {
 
 /** aggregate variance on columns */
 export type Accounts_Variance_Fields = {
-  __typename?: 'accounts_variance_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
@@ -405,7 +391,6 @@ export type Accounts_Variance_Order_By = {
 
 /** columns and relationships of "categories" */
 export type Categories = {
-  __typename?: 'categories';
   /** An array relationship */
   categories: Array<Categories>;
   /** An aggregated array relationship */
@@ -467,14 +452,12 @@ export type CategoriesTransactions_AggregateArgs = {
 
 /** aggregated selection of "categories" */
 export type Categories_Aggregate = {
-  __typename?: 'categories_aggregate';
   aggregate?: Maybe<Categories_Aggregate_Fields>;
   nodes: Array<Categories>;
 };
 
 /** aggregate fields of "categories" */
 export type Categories_Aggregate_Fields = {
-  __typename?: 'categories_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Categories_Max_Fields>;
   min?: Maybe<Categories_Min_Fields>;
@@ -539,7 +522,6 @@ export type Categories_Insert_Input = {
 
 /** aggregate max on columns */
 export type Categories_Max_Fields = {
-  __typename?: 'categories_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -558,7 +540,6 @@ export type Categories_Max_Order_By = {
 
 /** aggregate min on columns */
 export type Categories_Min_Fields = {
-  __typename?: 'categories_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -577,7 +558,6 @@ export type Categories_Min_Order_By = {
 
 /** response of any mutation on the table "categories" */
 export type Categories_Mutation_Response = {
-  __typename?: 'categories_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -679,7 +659,6 @@ export type Func_Transactions_By_Category_Grouped_Args = {
 
 /** mutation root */
 export type Mutation_Root = {
-  __typename?: 'mutation_root';
   /** delete data from the table: "accounts" */
   delete_accounts?: Maybe<Accounts_Mutation_Response>;
   /** delete data from the table: "categories" */
@@ -868,7 +847,6 @@ export enum Order_By {
 
 /** query root */
 export type Query_Root = {
-  __typename?: 'query_root';
   /** fetch data from the table: "accounts" */
   accounts: Array<Accounts>;
   /** fetch aggregated fields from the table: "accounts" */
@@ -1200,7 +1178,6 @@ export type String_Comparison_Exp = {
 
 /** subscription root */
 export type Subscription_Root = {
-  __typename?: 'subscription_root';
   /** fetch data from the table: "accounts" */
   accounts: Array<Accounts>;
   /** fetch aggregated fields from the table: "accounts" */
@@ -1513,7 +1490,6 @@ export type Subscription_RootView_Categories_With_Parents_AggregateArgs = {
 
 /** columns and relationships of "table_category_by_date_type" */
 export type Table_Category_By_Date_Type = {
-  __typename?: 'table_category_by_date_type';
   id: Scalars['uuid'];
   name: Scalars['String'];
   sum: Scalars['numeric'];
@@ -1521,14 +1497,12 @@ export type Table_Category_By_Date_Type = {
 
 /** aggregated selection of "table_category_by_date_type" */
 export type Table_Category_By_Date_Type_Aggregate = {
-  __typename?: 'table_category_by_date_type_aggregate';
   aggregate?: Maybe<Table_Category_By_Date_Type_Aggregate_Fields>;
   nodes: Array<Table_Category_By_Date_Type>;
 };
 
 /** aggregate fields of "table_category_by_date_type" */
 export type Table_Category_By_Date_Type_Aggregate_Fields = {
-  __typename?: 'table_category_by_date_type_aggregate_fields';
   avg?: Maybe<Table_Category_By_Date_Type_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Table_Category_By_Date_Type_Max_Fields>;
@@ -1572,7 +1546,6 @@ export type Table_Category_By_Date_Type_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type Table_Category_By_Date_Type_Avg_Fields = {
-  __typename?: 'table_category_by_date_type_avg_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -1609,7 +1582,6 @@ export type Table_Category_By_Date_Type_Insert_Input = {
 
 /** aggregate max on columns */
 export type Table_Category_By_Date_Type_Max_Fields = {
-  __typename?: 'table_category_by_date_type_max_fields';
   name?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
 };
@@ -1622,7 +1594,6 @@ export type Table_Category_By_Date_Type_Max_Order_By = {
 
 /** aggregate min on columns */
 export type Table_Category_By_Date_Type_Min_Fields = {
-  __typename?: 'table_category_by_date_type_min_fields';
   name?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
 };
@@ -1635,7 +1606,6 @@ export type Table_Category_By_Date_Type_Min_Order_By = {
 
 /** response of any mutation on the table "table_category_by_date_type" */
 export type Table_Category_By_Date_Type_Mutation_Response = {
-  __typename?: 'table_category_by_date_type_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1681,7 +1651,6 @@ export type Table_Category_By_Date_Type_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Table_Category_By_Date_Type_Stddev_Fields = {
-  __typename?: 'table_category_by_date_type_stddev_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -1692,7 +1661,6 @@ export type Table_Category_By_Date_Type_Stddev_Order_By = {
 
 /** aggregate stddev_pop on columns */
 export type Table_Category_By_Date_Type_Stddev_Pop_Fields = {
-  __typename?: 'table_category_by_date_type_stddev_pop_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -1703,7 +1671,6 @@ export type Table_Category_By_Date_Type_Stddev_Pop_Order_By = {
 
 /** aggregate stddev_samp on columns */
 export type Table_Category_By_Date_Type_Stddev_Samp_Fields = {
-  __typename?: 'table_category_by_date_type_stddev_samp_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -1714,7 +1681,6 @@ export type Table_Category_By_Date_Type_Stddev_Samp_Order_By = {
 
 /** aggregate sum on columns */
 export type Table_Category_By_Date_Type_Sum_Fields = {
-  __typename?: 'table_category_by_date_type_sum_fields';
   sum?: Maybe<Scalars['numeric']>;
 };
 
@@ -1735,7 +1701,6 @@ export enum Table_Category_By_Date_Type_Update_Column {
 
 /** aggregate var_pop on columns */
 export type Table_Category_By_Date_Type_Var_Pop_Fields = {
-  __typename?: 'table_category_by_date_type_var_pop_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -1746,7 +1711,6 @@ export type Table_Category_By_Date_Type_Var_Pop_Order_By = {
 
 /** aggregate var_samp on columns */
 export type Table_Category_By_Date_Type_Var_Samp_Fields = {
-  __typename?: 'table_category_by_date_type_var_samp_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -1757,7 +1721,6 @@ export type Table_Category_By_Date_Type_Var_Samp_Order_By = {
 
 /** aggregate variance on columns */
 export type Table_Category_By_Date_Type_Variance_Fields = {
-  __typename?: 'table_category_by_date_type_variance_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -1768,7 +1731,6 @@ export type Table_Category_By_Date_Type_Variance_Order_By = {
 
 /** columns and relationships of "table_transactions_by_category_grouped" */
 export type Table_Transactions_By_Category_Grouped = {
-  __typename?: 'table_transactions_by_category_grouped';
   balance: Scalars['numeric'];
   date: Scalars['timestamptz'];
   expense: Scalars['numeric'];
@@ -1777,14 +1739,12 @@ export type Table_Transactions_By_Category_Grouped = {
 
 /** aggregated selection of "table_transactions_by_category_grouped" */
 export type Table_Transactions_By_Category_Grouped_Aggregate = {
-  __typename?: 'table_transactions_by_category_grouped_aggregate';
   aggregate?: Maybe<Table_Transactions_By_Category_Grouped_Aggregate_Fields>;
   nodes: Array<Table_Transactions_By_Category_Grouped>;
 };
 
 /** aggregate fields of "table_transactions_by_category_grouped" */
 export type Table_Transactions_By_Category_Grouped_Aggregate_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_aggregate_fields';
   avg?: Maybe<Table_Transactions_By_Category_Grouped_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Table_Transactions_By_Category_Grouped_Max_Fields>;
@@ -1827,7 +1787,6 @@ export type Table_Transactions_By_Category_Grouped_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type Table_Transactions_By_Category_Grouped_Avg_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_avg_fields';
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
@@ -1864,7 +1823,6 @@ export type Table_Transactions_By_Category_Grouped_Insert_Input = {
 
 /** aggregate max on columns */
 export type Table_Transactions_By_Category_Grouped_Max_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_max_fields';
   balance?: Maybe<Scalars['numeric']>;
   date?: Maybe<Scalars['timestamptz']>;
   expense?: Maybe<Scalars['numeric']>;
@@ -1881,7 +1839,6 @@ export type Table_Transactions_By_Category_Grouped_Max_Order_By = {
 
 /** aggregate min on columns */
 export type Table_Transactions_By_Category_Grouped_Min_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_min_fields';
   balance?: Maybe<Scalars['numeric']>;
   date?: Maybe<Scalars['timestamptz']>;
   expense?: Maybe<Scalars['numeric']>;
@@ -1898,7 +1855,6 @@ export type Table_Transactions_By_Category_Grouped_Min_Order_By = {
 
 /** response of any mutation on the table "table_transactions_by_category_grouped" */
 export type Table_Transactions_By_Category_Grouped_Mutation_Response = {
-  __typename?: 'table_transactions_by_category_grouped_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -1940,7 +1896,6 @@ export type Table_Transactions_By_Category_Grouped_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Table_Transactions_By_Category_Grouped_Stddev_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_stddev_fields';
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
@@ -1955,7 +1910,6 @@ export type Table_Transactions_By_Category_Grouped_Stddev_Order_By = {
 
 /** aggregate stddev_pop on columns */
 export type Table_Transactions_By_Category_Grouped_Stddev_Pop_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_stddev_pop_fields';
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
@@ -1970,7 +1924,6 @@ export type Table_Transactions_By_Category_Grouped_Stddev_Pop_Order_By = {
 
 /** aggregate stddev_samp on columns */
 export type Table_Transactions_By_Category_Grouped_Stddev_Samp_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_stddev_samp_fields';
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
@@ -1985,7 +1938,6 @@ export type Table_Transactions_By_Category_Grouped_Stddev_Samp_Order_By = {
 
 /** aggregate sum on columns */
 export type Table_Transactions_By_Category_Grouped_Sum_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_sum_fields';
   balance?: Maybe<Scalars['numeric']>;
   expense?: Maybe<Scalars['numeric']>;
   income?: Maybe<Scalars['numeric']>;
@@ -2000,7 +1952,6 @@ export type Table_Transactions_By_Category_Grouped_Sum_Order_By = {
 
 /** aggregate var_pop on columns */
 export type Table_Transactions_By_Category_Grouped_Var_Pop_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_var_pop_fields';
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
@@ -2015,7 +1966,6 @@ export type Table_Transactions_By_Category_Grouped_Var_Pop_Order_By = {
 
 /** aggregate var_samp on columns */
 export type Table_Transactions_By_Category_Grouped_Var_Samp_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_var_samp_fields';
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
@@ -2030,7 +1980,6 @@ export type Table_Transactions_By_Category_Grouped_Var_Samp_Order_By = {
 
 /** aggregate variance on columns */
 export type Table_Transactions_By_Category_Grouped_Variance_Fields = {
-  __typename?: 'table_transactions_by_category_grouped_variance_fields';
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
@@ -2045,21 +1994,18 @@ export type Table_Transactions_By_Category_Grouped_Variance_Order_By = {
 
 /** columns and relationships of "table_transactions_group_by" */
 export type Table_Transactions_Group_By = {
-  __typename?: 'table_transactions_group_by';
   date: Scalars['timestamptz'];
   sum: Scalars['numeric'];
 };
 
 /** aggregated selection of "table_transactions_group_by" */
 export type Table_Transactions_Group_By_Aggregate = {
-  __typename?: 'table_transactions_group_by_aggregate';
   aggregate?: Maybe<Table_Transactions_Group_By_Aggregate_Fields>;
   nodes: Array<Table_Transactions_Group_By>;
 };
 
 /** aggregate fields of "table_transactions_group_by" */
 export type Table_Transactions_Group_By_Aggregate_Fields = {
-  __typename?: 'table_transactions_group_by_aggregate_fields';
   avg?: Maybe<Table_Transactions_Group_By_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Table_Transactions_Group_By_Max_Fields>;
@@ -2102,7 +2048,6 @@ export type Table_Transactions_Group_By_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type Table_Transactions_Group_By_Avg_Fields = {
-  __typename?: 'table_transactions_group_by_avg_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -2131,7 +2076,6 @@ export type Table_Transactions_Group_By_Insert_Input = {
 
 /** aggregate max on columns */
 export type Table_Transactions_Group_By_Max_Fields = {
-  __typename?: 'table_transactions_group_by_max_fields';
   date?: Maybe<Scalars['timestamptz']>;
   sum?: Maybe<Scalars['numeric']>;
 };
@@ -2144,7 +2088,6 @@ export type Table_Transactions_Group_By_Max_Order_By = {
 
 /** aggregate min on columns */
 export type Table_Transactions_Group_By_Min_Fields = {
-  __typename?: 'table_transactions_group_by_min_fields';
   date?: Maybe<Scalars['timestamptz']>;
   sum?: Maybe<Scalars['numeric']>;
 };
@@ -2157,7 +2100,6 @@ export type Table_Transactions_Group_By_Min_Order_By = {
 
 /** response of any mutation on the table "table_transactions_group_by" */
 export type Table_Transactions_Group_By_Mutation_Response = {
-  __typename?: 'table_transactions_group_by_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2191,7 +2133,6 @@ export type Table_Transactions_Group_By_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Table_Transactions_Group_By_Stddev_Fields = {
-  __typename?: 'table_transactions_group_by_stddev_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -2202,7 +2143,6 @@ export type Table_Transactions_Group_By_Stddev_Order_By = {
 
 /** aggregate stddev_pop on columns */
 export type Table_Transactions_Group_By_Stddev_Pop_Fields = {
-  __typename?: 'table_transactions_group_by_stddev_pop_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -2213,7 +2153,6 @@ export type Table_Transactions_Group_By_Stddev_Pop_Order_By = {
 
 /** aggregate stddev_samp on columns */
 export type Table_Transactions_Group_By_Stddev_Samp_Fields = {
-  __typename?: 'table_transactions_group_by_stddev_samp_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -2224,7 +2163,6 @@ export type Table_Transactions_Group_By_Stddev_Samp_Order_By = {
 
 /** aggregate sum on columns */
 export type Table_Transactions_Group_By_Sum_Fields = {
-  __typename?: 'table_transactions_group_by_sum_fields';
   sum?: Maybe<Scalars['numeric']>;
 };
 
@@ -2235,7 +2173,6 @@ export type Table_Transactions_Group_By_Sum_Order_By = {
 
 /** aggregate var_pop on columns */
 export type Table_Transactions_Group_By_Var_Pop_Fields = {
-  __typename?: 'table_transactions_group_by_var_pop_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -2246,7 +2183,6 @@ export type Table_Transactions_Group_By_Var_Pop_Order_By = {
 
 /** aggregate var_samp on columns */
 export type Table_Transactions_Group_By_Var_Samp_Fields = {
-  __typename?: 'table_transactions_group_by_var_samp_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -2257,7 +2193,6 @@ export type Table_Transactions_Group_By_Var_Samp_Order_By = {
 
 /** aggregate variance on columns */
 export type Table_Transactions_Group_By_Variance_Fields = {
-  __typename?: 'table_transactions_group_by_variance_fields';
   sum?: Maybe<Scalars['Float']>;
 };
 
@@ -2282,7 +2217,6 @@ export type Timestamptz_Comparison_Exp = {
 
 /** columns and relationships of "transactions" */
 export type Transactions = {
-  __typename?: 'transactions';
   /** An object relationship */
   account: Accounts;
   account_id: Scalars['uuid'];
@@ -2331,14 +2265,12 @@ export type TransactionsTransactions_AggregateArgs = {
 
 /** aggregated selection of "transactions" */
 export type Transactions_Aggregate = {
-  __typename?: 'transactions_aggregate';
   aggregate?: Maybe<Transactions_Aggregate_Fields>;
   nodes: Array<Transactions>;
 };
 
 /** aggregate fields of "transactions" */
 export type Transactions_Aggregate_Fields = {
-  __typename?: 'transactions_aggregate_fields';
   avg?: Maybe<Transactions_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Transactions_Max_Fields>;
@@ -2382,7 +2314,6 @@ export type Transactions_Arr_Rel_Insert_Input = {
 
 /** aggregate avg on columns */
 export type Transactions_Avg_Fields = {
-  __typename?: 'transactions_avg_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
@@ -2442,7 +2373,6 @@ export type Transactions_Insert_Input = {
 
 /** aggregate max on columns */
 export type Transactions_Max_Fields = {
-  __typename?: 'transactions_max_fields';
   amount?: Maybe<Scalars['numeric']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   date?: Maybe<Scalars['timestamptz']>;
@@ -2461,7 +2391,6 @@ export type Transactions_Max_Order_By = {
 
 /** aggregate min on columns */
 export type Transactions_Min_Fields = {
-  __typename?: 'transactions_min_fields';
   amount?: Maybe<Scalars['numeric']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   date?: Maybe<Scalars['timestamptz']>;
@@ -2480,7 +2409,6 @@ export type Transactions_Min_Order_By = {
 
 /** response of any mutation on the table "transactions" */
 export type Transactions_Mutation_Response = {
-  __typename?: 'transactions_mutation_response';
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
@@ -2563,7 +2491,6 @@ export type Transactions_Set_Input = {
 
 /** aggregate stddev on columns */
 export type Transactions_Stddev_Fields = {
-  __typename?: 'transactions_stddev_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
@@ -2574,7 +2501,6 @@ export type Transactions_Stddev_Order_By = {
 
 /** aggregate stddev_pop on columns */
 export type Transactions_Stddev_Pop_Fields = {
-  __typename?: 'transactions_stddev_pop_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
@@ -2585,7 +2511,6 @@ export type Transactions_Stddev_Pop_Order_By = {
 
 /** aggregate stddev_samp on columns */
 export type Transactions_Stddev_Samp_Fields = {
-  __typename?: 'transactions_stddev_samp_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
@@ -2596,7 +2521,6 @@ export type Transactions_Stddev_Samp_Order_By = {
 
 /** aggregate sum on columns */
 export type Transactions_Sum_Fields = {
-  __typename?: 'transactions_sum_fields';
   amount?: Maybe<Scalars['numeric']>;
 };
 
@@ -2633,7 +2557,6 @@ export enum Transactions_Update_Column {
 
 /** aggregate var_pop on columns */
 export type Transactions_Var_Pop_Fields = {
-  __typename?: 'transactions_var_pop_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
@@ -2644,7 +2567,6 @@ export type Transactions_Var_Pop_Order_By = {
 
 /** aggregate var_samp on columns */
 export type Transactions_Var_Samp_Fields = {
-  __typename?: 'transactions_var_samp_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
@@ -2655,7 +2577,6 @@ export type Transactions_Var_Samp_Order_By = {
 
 /** aggregate variance on columns */
 export type Transactions_Variance_Fields = {
-  __typename?: 'transactions_variance_fields';
   amount?: Maybe<Scalars['Float']>;
 };
 
@@ -2680,7 +2601,6 @@ export type Uuid_Comparison_Exp = {
 
 /** columns and relationships of "view_accounts" */
 export type View_Accounts = {
-  __typename?: 'view_accounts';
   account_id?: Maybe<Scalars['uuid']>;
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -2697,14 +2617,12 @@ export type View_Accounts = {
 
 /** aggregated selection of "view_accounts" */
 export type View_Accounts_Aggregate = {
-  __typename?: 'view_accounts_aggregate';
   aggregate?: Maybe<View_Accounts_Aggregate_Fields>;
   nodes: Array<View_Accounts>;
 };
 
 /** aggregate fields of "view_accounts" */
 export type View_Accounts_Aggregate_Fields = {
-  __typename?: 'view_accounts_aggregate_fields';
   avg?: Maybe<View_Accounts_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<View_Accounts_Max_Fields>;
@@ -2742,7 +2660,6 @@ export type View_Accounts_Aggregate_Order_By = {
 
 /** aggregate avg on columns */
 export type View_Accounts_Avg_Fields = {
-  __typename?: 'view_accounts_avg_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
   sum?: Maybe<Scalars['Float']>;
@@ -2776,7 +2693,6 @@ export type View_Accounts_Bool_Exp = {
 
 /** aggregate max on columns */
 export type View_Accounts_Max_Fields = {
-  __typename?: 'view_accounts_max_fields';
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   initial_amount?: Maybe<Scalars['numeric']>;
@@ -2805,7 +2721,6 @@ export type View_Accounts_Max_Order_By = {
 
 /** aggregate min on columns */
 export type View_Accounts_Min_Fields = {
-  __typename?: 'view_accounts_min_fields';
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   initial_amount?: Maybe<Scalars['numeric']>;
@@ -2878,7 +2793,6 @@ export enum View_Accounts_Select_Column {
 
 /** aggregate stddev on columns */
 export type View_Accounts_Stddev_Fields = {
-  __typename?: 'view_accounts_stddev_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
   sum?: Maybe<Scalars['Float']>;
@@ -2893,7 +2807,6 @@ export type View_Accounts_Stddev_Order_By = {
 
 /** aggregate stddev_pop on columns */
 export type View_Accounts_Stddev_Pop_Fields = {
-  __typename?: 'view_accounts_stddev_pop_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
   sum?: Maybe<Scalars['Float']>;
@@ -2908,7 +2821,6 @@ export type View_Accounts_Stddev_Pop_Order_By = {
 
 /** aggregate stddev_samp on columns */
 export type View_Accounts_Stddev_Samp_Fields = {
-  __typename?: 'view_accounts_stddev_samp_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
   sum?: Maybe<Scalars['Float']>;
@@ -2923,7 +2835,6 @@ export type View_Accounts_Stddev_Samp_Order_By = {
 
 /** aggregate sum on columns */
 export type View_Accounts_Sum_Fields = {
-  __typename?: 'view_accounts_sum_fields';
   initial_amount?: Maybe<Scalars['numeric']>;
   minimum?: Maybe<Scalars['numeric']>;
   sum?: Maybe<Scalars['numeric']>;
@@ -2938,7 +2849,6 @@ export type View_Accounts_Sum_Order_By = {
 
 /** aggregate var_pop on columns */
 export type View_Accounts_Var_Pop_Fields = {
-  __typename?: 'view_accounts_var_pop_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
   sum?: Maybe<Scalars['Float']>;
@@ -2953,7 +2863,6 @@ export type View_Accounts_Var_Pop_Order_By = {
 
 /** aggregate var_samp on columns */
 export type View_Accounts_Var_Samp_Fields = {
-  __typename?: 'view_accounts_var_samp_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
   sum?: Maybe<Scalars['Float']>;
@@ -2968,7 +2877,6 @@ export type View_Accounts_Var_Samp_Order_By = {
 
 /** aggregate variance on columns */
 export type View_Accounts_Variance_Fields = {
-  __typename?: 'view_accounts_variance_fields';
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
   sum?: Maybe<Scalars['Float']>;
@@ -2983,7 +2891,6 @@ export type View_Accounts_Variance_Order_By = {
 
 /** columns and relationships of "view_categories_with_parents" */
 export type View_Categories_With_Parents = {
-  __typename?: 'view_categories_with_parents';
   full_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
@@ -2994,14 +2901,12 @@ export type View_Categories_With_Parents = {
 
 /** aggregated selection of "view_categories_with_parents" */
 export type View_Categories_With_Parents_Aggregate = {
-  __typename?: 'view_categories_with_parents_aggregate';
   aggregate?: Maybe<View_Categories_With_Parents_Aggregate_Fields>;
   nodes: Array<View_Categories_With_Parents>;
 };
 
 /** aggregate fields of "view_categories_with_parents" */
 export type View_Categories_With_Parents_Aggregate_Fields = {
-  __typename?: 'view_categories_with_parents_aggregate_fields';
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<View_Categories_With_Parents_Max_Fields>;
   min?: Maybe<View_Categories_With_Parents_Min_Fields>;
@@ -3039,7 +2944,6 @@ export type View_Categories_With_Parents_Bool_Exp = {
 
 /** aggregate max on columns */
 export type View_Categories_With_Parents_Max_Fields = {
-  __typename?: 'view_categories_with_parents_max_fields';
   full_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   parent_category_name?: Maybe<Scalars['String']>;
@@ -3056,7 +2960,6 @@ export type View_Categories_With_Parents_Max_Order_By = {
 
 /** aggregate min on columns */
 export type View_Categories_With_Parents_Min_Fields = {
-  __typename?: 'view_categories_with_parents_min_fields';
   full_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   parent_category_name?: Maybe<Scalars['String']>;
@@ -3103,49 +3006,33 @@ export type CreateCategoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateCategoryMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_categories?: Maybe<(
-    { __typename?: 'categories_mutation_response' }
-    & Pick<Categories_Mutation_Response, 'affected_rows'>
+export type CreateCategoryMutation = { insert_categories?: Maybe<(
+    Pick<Categories_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
-      { __typename?: 'categories' }
-      & Pick<Categories, 'id' | 'name' | 'type'>
+      Pick<Categories, 'id' | 'name' | 'type'>
       & { key: Categories['id'] }
     )> }
-  )> }
-);
+  )> };
 
 export type DeleteCategoryMutationVariables = Exact<{
   id?: Maybe<Scalars['uuid']>;
 }>;
 
 
-export type DeleteCategoryMutation = (
-  { __typename?: 'mutation_root' }
-  & { delete_categories?: Maybe<(
-    { __typename?: 'categories_mutation_response' }
-    & Pick<Categories_Mutation_Response, 'affected_rows'>
+export type DeleteCategoryMutation = { delete_categories?: Maybe<(
+    Pick<Categories_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
-      { __typename?: 'categories' }
-      & Pick<Categories, 'id' | 'name' | 'type'>
+      Pick<Categories, 'id' | 'name' | 'type'>
       & { key: Categories['id'] }
     )> }
-  )> }
-);
+  )> };
 
 export type DeleteTransactionsMutationVariables = Exact<{
   transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
 }>;
 
 
-export type DeleteTransactionsMutation = (
-  { __typename?: 'mutation_root' }
-  & { delete_transactions?: Maybe<(
-    { __typename?: 'transactions_mutation_response' }
-    & Pick<Transactions_Mutation_Response, 'affected_rows'>
-  )> }
-);
+export type DeleteTransactionsMutation = { delete_transactions?: Maybe<Pick<Transactions_Mutation_Response, 'affected_rows'>> };
 
 export type PairTransactionsMutationVariables = Exact<{
   transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
@@ -3154,26 +3041,14 @@ export type PairTransactionsMutationVariables = Exact<{
 }>;
 
 
-export type PairTransactionsMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_transactions?: Maybe<(
-    { __typename?: 'transactions_mutation_response' }
-    & Pick<Transactions_Mutation_Response, 'affected_rows'>
-  )> }
-);
+export type PairTransactionsMutation = { update_transactions?: Maybe<Pick<Transactions_Mutation_Response, 'affected_rows'>> };
 
 export type UnpairTransactionsMutationVariables = Exact<{
   pairIds: Array<Scalars['uuid']> | Scalars['uuid'];
 }>;
 
 
-export type UnpairTransactionsMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_transactions?: Maybe<(
-    { __typename?: 'transactions_mutation_response' }
-    & Pick<Transactions_Mutation_Response, 'affected_rows'>
-  )> }
-);
+export type UnpairTransactionsMutation = { update_transactions?: Maybe<Pick<Transactions_Mutation_Response, 'affected_rows'>> };
 
 export type UpdateTransactionsCategoryMutationVariables = Exact<{
   transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
@@ -3181,20 +3056,20 @@ export type UpdateTransactionsCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTransactionsCategoryMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_transactions?: Maybe<(
-    { __typename?: 'transactions_mutation_response' }
-    & Pick<Transactions_Mutation_Response, 'affected_rows'>
-    & { returning: Array<(
-      { __typename?: 'transactions' }
-      & { category: (
-        { __typename?: 'categories' }
-        & Pick<Categories, 'name'>
-      ) }
-    )> }
-  )> }
-);
+export type UpdateTransactionsCategoryMutation = { update_transactions?: Maybe<(
+    Pick<Transactions_Mutation_Response, 'affected_rows'>
+    & { returning: Array<{ category: Pick<Categories, 'name'> }> }
+  )> };
+
+export type GetAmountGroupsQueryVariables = Exact<{
+  startDate?: Maybe<Scalars['timestamptz']>;
+  endDate?: Maybe<Scalars['timestamptz']>;
+  categoryId?: Maybe<Scalars['uuid']>;
+  groupBy?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetAmountGroupsQuery = { groups: Array<Pick<Table_Transactions_By_Category_Grouped, 'date' | 'balance' | 'expense' | 'income'>>, aggregate: { aggregate?: Maybe<{ avg?: Maybe<Pick<Table_Transactions_By_Category_Grouped_Avg_Fields, 'balance' | 'expense' | 'income'>>, max?: Maybe<Pick<Table_Transactions_By_Category_Grouped_Max_Fields, 'balance' | 'income'>>, min?: Maybe<Pick<Table_Transactions_By_Category_Grouped_Min_Fields, 'expense'>> }> } };
 
 export type GetBalanceQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -3204,29 +3079,18 @@ export type GetBalanceQueryVariables = Exact<{
 }>;
 
 
-export type GetBalanceQuery = (
-  { __typename?: 'query_root' }
-  & { balances: Array<(
-    { __typename?: 'table_transactions_group_by' }
-    & Pick<Table_Transactions_Group_By, 'date' | 'sum'>
-  )> }
-);
+export type GetBalanceQuery = { balances: Array<Pick<Table_Transactions_Group_By, 'date' | 'sum'>> };
 
 export type GetBaseDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBaseDataQuery = (
-  { __typename?: 'query_root' }
-  & { accounts: Array<(
-    { __typename?: 'view_accounts' }
-    & Pick<View_Accounts, 'id' | 'name' | 'sum' | 'minimum' | 'colour' | 'status'>
+export type GetBaseDataQuery = { accounts: Array<(
+    Pick<View_Accounts, 'id' | 'name' | 'sum' | 'minimum' | 'colour' | 'status'>
     & { key: View_Accounts['id'], initialAmount: View_Accounts['initial_amount'], mostRecentTransactionDate: View_Accounts['most_recent_transaction_date'] }
   )>, categories: Array<(
-    { __typename?: 'categories' }
-    & Pick<Categories, 'id' | 'name' | 'type'>
+    Pick<Categories, 'id' | 'name' | 'type'>
     & { key: Categories['id'] }
-  )> }
-);
+  )> };
 
 export type GetCategoriesQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -3237,22 +3101,7 @@ export type GetCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type GetCategoriesQuery = (
-  { __typename?: 'query_root' }
-  & { categories: Array<(
-    { __typename?: 'table_category_by_date_type' }
-    & Pick<Table_Category_By_Date_Type, 'id' | 'name' | 'sum'>
-  )>, amount: (
-    { __typename?: 'table_category_by_date_type_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'table_category_by_date_type_aggregate_fields' }
-      & { sum?: Maybe<(
-        { __typename?: 'table_category_by_date_type_sum_fields' }
-        & Pick<Table_Category_By_Date_Type_Sum_Fields, 'sum'>
-      )> }
-    )> }
-  ) }
-);
+export type GetCategoriesQuery = { categories: Array<Pick<Table_Category_By_Date_Type, 'id' | 'name' | 'sum'>>, amount: { aggregate?: Maybe<{ sum?: Maybe<Pick<Table_Category_By_Date_Type_Sum_Fields, 'sum'>> }> } };
 
 export type GetTransactionsQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -3265,30 +3114,11 @@ export type GetTransactionsQueryVariables = Exact<{
 }>;
 
 
-export type GetTransactionsQuery = (
-  { __typename?: 'query_root' }
-  & { transactions_aggregate: (
-    { __typename?: 'transactions_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'transactions_aggregate_fields' }
-      & Pick<Transactions_Aggregate_Fields, 'count'>
-    )>, nodes: Array<(
-      { __typename?: 'transactions' }
-      & Pick<Transactions, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
+export type GetTransactionsQuery = { transactions_aggregate: { aggregate?: Maybe<Pick<Transactions_Aggregate_Fields, 'count'>>, nodes: Array<(
+      Pick<Transactions, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
       & { key: Transactions['id'] }
-      & { account: (
-        { __typename?: 'accounts' }
-        & Pick<Accounts, 'id' | 'name' | 'colour'>
-      ), linkedAccount?: Maybe<(
-        { __typename?: 'accounts' }
-        & Pick<Accounts, 'id' | 'name' | 'colour'>
-      )>, category: (
-        { __typename?: 'categories' }
-        & Pick<Categories, 'id' | 'name'>
-      ) }
-    )> }
-  ) }
-);
+      & { account: Pick<Accounts, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Accounts, 'id' | 'name' | 'colour'>>, category: Pick<Categories, 'id' | 'name'> }
+    )> } };
 
 
 export const CreateCategoryDocument = gql`
@@ -3504,6 +3334,61 @@ export function useUpdateTransactionsCategoryMutation(baseOptions?: Apollo.Mutat
 export type UpdateTransactionsCategoryMutationHookResult = ReturnType<typeof useUpdateTransactionsCategoryMutation>;
 export type UpdateTransactionsCategoryMutationResult = Apollo.MutationResult<UpdateTransactionsCategoryMutation>;
 export type UpdateTransactionsCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateTransactionsCategoryMutation, UpdateTransactionsCategoryMutationVariables>;
+export const GetAmountGroupsDocument = gql`
+    query GetAmountGroups($startDate: timestamptz, $endDate: timestamptz, $categoryId: uuid, $groupBy: String) {
+  groups: func_transactions_by_category_grouped(args: {v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
+    date
+    balance
+    expense
+    income
+  }
+  aggregate: func_transactions_by_category_grouped_aggregate(args: {v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
+    aggregate {
+      avg {
+        balance
+        expense
+        income
+      }
+      max {
+        balance
+        income
+      }
+      min {
+        expense
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAmountGroupsQuery__
+ *
+ * To run a query within a React component, call `useGetAmountGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAmountGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAmountGroupsQuery({
+ *   variables: {
+ *      startDate: // value for 'startDate'
+ *      endDate: // value for 'endDate'
+ *      categoryId: // value for 'categoryId'
+ *      groupBy: // value for 'groupBy'
+ *   },
+ * });
+ */
+export function useGetAmountGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GetAmountGroupsQuery, GetAmountGroupsQueryVariables>) {
+        return Apollo.useQuery<GetAmountGroupsQuery, GetAmountGroupsQueryVariables>(GetAmountGroupsDocument, baseOptions);
+      }
+export function useGetAmountGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAmountGroupsQuery, GetAmountGroupsQueryVariables>) {
+          return Apollo.useLazyQuery<GetAmountGroupsQuery, GetAmountGroupsQueryVariables>(GetAmountGroupsDocument, baseOptions);
+        }
+export type GetAmountGroupsQueryHookResult = ReturnType<typeof useGetAmountGroupsQuery>;
+export type GetAmountGroupsLazyQueryHookResult = ReturnType<typeof useGetAmountGroupsLazyQuery>;
+export type GetAmountGroupsQueryResult = Apollo.QueryResult<GetAmountGroupsQuery, GetAmountGroupsQueryVariables>;
 export const GetBalanceDocument = gql`
     query GetBalance($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $groupBy: String) {
   balances: func_transactions_by_account_grouped_cumulative(args: {v_account_id: $accountId, v_group_by: $groupBy, v_start_date: $startDate}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {

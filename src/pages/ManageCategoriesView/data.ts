@@ -12,7 +12,6 @@ export const useCreateCategory = () => {
       const existingData = cache.readQuery<GetBaseDataQuery>({
         query: GetBaseDataDocument,
       });
-
       if (existingData && newCategory) {
         cache.writeQuery({
           query: GetBaseDataDocument,

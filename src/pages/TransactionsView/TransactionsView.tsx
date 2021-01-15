@@ -24,7 +24,7 @@ import {
   DateDisplay,
   Select,
 } from '../../components';
-import { toMoney, useBaseData, useTheme } from '../../lib';
+import { useBaseData, useTheme } from '../../lib';
 import { Account, TimePeriod, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactions } from './data';
 
@@ -33,10 +33,6 @@ const { Column } = Table;
 
 const Search = styled(Input.Search)`
   width: 100%;
-`;
-
-const Parent = styled.span`
-  color: ${({ theme }) => theme.neutral};
 `;
 
 type AccountIndicatorProps = {
@@ -308,7 +304,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           title="Amount"
           dataIndex="amount"
           key="amount"
-          render={(_, { amount }) => <Amount>{toMoney(amount, false)}</Amount>}
+          render={(_, { amount }) => <Amount value={amount} />}
           sorter={(a, b) => a.amount - b.amount}
           align="right"
         />

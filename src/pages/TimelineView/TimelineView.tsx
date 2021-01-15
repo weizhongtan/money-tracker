@@ -1,81 +1,14 @@
-import { gql, useQuery } from '@apollo/client';
 import { BarSvgProps, ResponsiveBar } from '@nivo/bar';
 import moment from 'moment';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 
 import { PageDrawer, Radio, Select, Wrapper } from '../../components';
-import { Categories } from '../../generated/graphql';
+import { useGetAmountGroupsQuery } from '../../generated/graphql';
 import { toMoney, useBaseData, useTheme } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 
 const { Option } = Select;
-
-const GET_AMOUNT_GROUPS = gql`
-  query GetAmountGroups(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $categoryId: uuid
-    $groupBy: String
-  ) {
-    groups: func_transactions_by_category_grouped(
-      args: { v_category_id: $categoryId, v_group_by: $groupBy }
-      where: { date: { _gte: $startDate, _lte: $endDate } }
-      order_by: { date: asc }
-    ) {
-      date
-      balance
-      expense
-      income
-    }
-    aggregate: func_transactions_by_category_grouped_aggregate(
-      args: { v_category_id: $categoryId, v_group_by: $groupBy }
-      where: { date: { _gte: $startDate, _lte: $endDate } }
-      order_by: { date: asc }
-    ) {
-      aggregate {
-        avg {
-          balance
-          expense
-          income
-        }
-        max {
-          balance
-          income
-        }
-        min {
-          expense
-        }
-      }
-    }
-  }
-`;
-
-interface TData {
-  groups: {
-    date: string;
-    balance: number;
-    expense: number;
-    income: number;
-  }[];
-  aggregate: {
-    aggregate: {
-      avg: {
-        balance: number;
-        expense: number;
-        income: number;
-      };
-      max: {
-        balance: number;
-        income: number;
-      };
-      min: {
-        expense: number;
-      };
-    };
-  };
-}
 
 type GraphProps = {
   data: any;
@@ -149,10 +82,6 @@ const Graph: React.FC<GraphProps> = ({
   );
 };
 
-const Parent = styled.span`
-  color: ${({ theme }) => theme.neutral};
-`;
-
 type TimeLineViewProps = TimePeriod;
 
 const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
@@ -171,10 +100,10 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     endDate,
   });
 
-  const { loading, error, data } = useQuery<TData>(GET_AMOUNT_GROUPS, {
+  const { loading, error, data } = useGetAmountGroupsQuery({
     variables: {
-      startDate,
-      endDate,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       categoryId: categoryId === 'all' ? null : categoryId,
       groupBy: precision,
     },
@@ -193,7 +122,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     {
       id: 'all',
       name: 'All Categories',
-    } as Categories,
+    },
     ...baseData.categories,
   ];
 

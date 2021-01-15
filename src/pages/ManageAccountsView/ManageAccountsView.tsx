@@ -6,7 +6,7 @@ import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
 
 import { AccountAvatar, Amount, DateDisplay } from '../../components';
-import { toMoney, useBaseData } from '../../lib';
+import { useBaseData } from '../../lib';
 import { Account } from '../../types';
 import { useCreateTransaction } from './data';
 
@@ -104,16 +104,14 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
         title="Initial Amount"
         dataIndex="initialAmount"
         key="initialAmount"
-        render={(_, { initialAmount }) => (
-          <Amount>{toMoney(initialAmount, false)}</Amount>
-        )}
+        render={(_, { initialAmount }) => <Amount value={initialAmount} />}
         align="right"
       />
       <Column<Account>
         title="Sum"
         dataIndex="sum"
         key="sum"
-        render={(_, record) => <Amount>{toMoney(record.sum, false)}</Amount>}
+        render={(_, record) => <Amount value={record.sum} />}
         align="right"
       />
       <Column<Account>
