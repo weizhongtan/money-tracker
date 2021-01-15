@@ -38,6 +38,7 @@ query GetTransactions(
     }
     nodes {
       id
+      key: id
       date
       amount
       description

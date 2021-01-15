@@ -6,8 +6,8 @@ import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
 
 import { AccountAvatar, Amount, DateDisplay } from '../../components';
-import { View_Accounts } from '../../generated/graphql';
 import { toMoney, useBaseData } from '../../lib';
+import { Account } from '../../types';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -77,7 +77,7 @@ const parsers: { [index: string]: Parser } = {
   qif: qifParser,
 };
 
-const AccountsTable: React.FC<TableProps<View_Accounts>> = (props) => {
+const AccountsTable: React.FC<TableProps<Account>> = (props) => {
   const [createTransaction] = useCreateTransaction();
 
   return (
@@ -91,7 +91,7 @@ const AccountsTable: React.FC<TableProps<View_Accounts>> = (props) => {
       }}
       {...props}
     >
-      <Column
+      <Column<Account>
         title="Name"
         key="name"
         render={({ name, colour }) => (
@@ -100,32 +100,30 @@ const AccountsTable: React.FC<TableProps<View_Accounts>> = (props) => {
           </>
         )}
       />
-      <Column
+      <Column<Account>
         title="Initial Amount"
         dataIndex="initialAmount"
         key="initialAmount"
-        render={(amount) => (
-          <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
+        render={(_, { initialAmount }) => (
+          <Amount>{toMoney(initialAmount, false)}</Amount>
         )}
         align="right"
       />
-      <Column
+      <Column<Account>
         title="Sum"
         dataIndex="sum"
         key="sum"
-        render={(amount) => (
-          <Amount positive={amount > 0}>{toMoney(amount, false)}</Amount>
-        )}
+        render={(_, record) => <Amount>{toMoney(record.sum, false)}</Amount>}
         align="right"
       />
-      <Column
+      <Column<Account>
         title="Most Recent Transaction"
         dataIndex="mostRecentTransactionDate"
         key="mostRecentTransactionDate"
         render={(date) => <DateDisplay date={date} asTimeAgo />}
       />
-      <Column title="Colour" dataIndex="colour" key="colour" />
-      <Column
+      <Column<Account> title="Colour" dataIndex="colour" key="colour" />
+      <Column<Account>
         title="Actions"
         dataIndex="id"
         key="id"

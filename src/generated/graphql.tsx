@@ -3220,10 +3220,11 @@ export type GetBaseDataQuery = (
   & { accounts: Array<(
     { __typename?: 'view_accounts' }
     & Pick<View_Accounts, 'id' | 'name' | 'sum' | 'minimum' | 'colour' | 'status'>
-    & { initialAmount: View_Accounts['initial_amount'], mostRecentTransactionDate: View_Accounts['most_recent_transaction_date'] }
+    & { key: View_Accounts['id'], initialAmount: View_Accounts['initial_amount'], mostRecentTransactionDate: View_Accounts['most_recent_transaction_date'] }
   )>, categories: Array<(
     { __typename?: 'categories' }
     & Pick<Categories, 'id' | 'name' | 'type'>
+    & { key: Categories['id'] }
   )> }
 );
 
@@ -3274,6 +3275,7 @@ export type GetTransactionsQuery = (
     )>, nodes: Array<(
       { __typename?: 'transactions' }
       & Pick<Transactions, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
+      & { key: Transactions['id'] }
       & { account: (
         { __typename?: 'accounts' }
         & Pick<Accounts, 'id' | 'name' | 'colour'>
@@ -3543,6 +3545,7 @@ export const GetBaseDataDocument = gql`
     query GetBaseData {
   accounts: view_accounts(order_by: {name: asc}) {
     id
+    key: id
     name
     initialAmount: initial_amount
     sum
@@ -3553,6 +3556,7 @@ export const GetBaseDataDocument = gql`
   }
   categories(order_by: {name: asc}) {
     id
+    key: id
     name
     type
   }
@@ -3637,6 +3641,7 @@ export const GetTransactionsDocument = gql`
     }
     nodes {
       id
+      key: id
       date
       amount
       description

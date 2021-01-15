@@ -1,6 +1,7 @@
 query GetBaseData {
   accounts: view_accounts(order_by: { name: asc }) {
     id
+    key: id
     name
     initialAmount: initial_amount
     sum
@@ -11,6 +12,7 @@ query GetBaseData {
   }
   categories(order_by: { name: asc }) {
     id
+    key: id
     name
     type
   }

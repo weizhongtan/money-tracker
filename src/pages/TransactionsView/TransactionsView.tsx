@@ -140,7 +140,7 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
             const transactionIds = selectedRows.map((x) => x.id);
             const accountIds = selectedRows.map((x) => x.account.id);
             const amounts = selectedRows.map((x) => x.amount);
-            const pairIds = selectedRows.map((x) => x.pair_id ?? undefined);
+            const pairIds = selectedRows.map((x) => x.pair_id);
             setSelectedRows([]);
             pairTransactions({
               transactionIds,
@@ -160,9 +160,6 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
             const pairIds = selectedRows
               .map((x) => x.pair_id)
               .filter((y): y is string => typeof y === 'string');
-            if (!pairIds.length) {
-              return;
-            }
             unpairTransactions({
               pairIds,
             });
@@ -311,9 +308,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           title="Amount"
           dataIndex="amount"
           key="amount"
-          render={({ value, isOut }) => (
-            <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
-          )}
+          render={(_, { amount }) => <Amount>{toMoney(amount, false)}</Amount>}
           sorter={(a, b) => a.amount - b.amount}
           align="right"
         />
