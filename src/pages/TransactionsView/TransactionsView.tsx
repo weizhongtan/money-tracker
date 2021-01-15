@@ -24,7 +24,7 @@ import {
   DateDisplay,
   Select,
 } from '../../components';
-import { CategoriesList, toMoney, useBaseData, useTheme } from '../../lib';
+import { toMoney, useBaseData, useTheme } from '../../lib';
 import { Account, TimePeriod, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactions } from './data';
 
@@ -40,10 +40,10 @@ const Parent = styled.span`
 `;
 
 type AccountIndicatorProps = {
-  to: Account;
+  to: Pick<Account, 'name' | 'colour'>;
   isOut: boolean;
   onClick?: () => void;
-  linked?: Account;
+  linked?: Pick<Account, 'name' | 'colour'>;
 };
 
 const AccountIndicator: React.FC<AccountIndicatorProps> = ({
@@ -67,12 +67,15 @@ const AccountIndicator: React.FC<AccountIndicatorProps> = ({
       )}
     >
       <div>
-        <AccountAvatar name={to.name} colour={to.colour} />
+        <AccountAvatar name={to.name as string} colour={to.colour as string} />
         {linked?.name && (
           <>
             {' '}
             {arrow}{' '}
-            <AccountAvatar name={linked?.name} colour={linked?.colour} />
+            <AccountAvatar
+              name={linked?.name}
+              colour={linked?.colour as string}
+            />
           </>
         )}
       </div>
@@ -97,7 +100,7 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
     unpairTransactions,
   ] = useUpdateTransactions();
 
-  const categories = new CategoriesList(baseData.categories);
+  const categories = baseData.categories;
 
   return (
     <Drawer
@@ -113,7 +116,7 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
           value="Select category"
           onSelect={(id) => {
             updateTransactionsCategory({
-              transactionIds: selectedRows.map((x) => x.key),
+              transactionIds: selectedRows.map((x) => x.id),
               newCategoryId: id as string,
               currentCategoryIds: selectedRows.map((x) => x.category.id),
             });
@@ -122,9 +125,9 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
           showSearch
           optionFilterProp="label"
         >
-          {categories.get().map(({ id, name, isSub }) => (
+          {categories.map(({ id, name }) => (
             <Option value={id} key={id} label={name}>
-              {isSub ? name : <Parent>{name}</Parent>}
+              {name}
             </Option>
           ))}
         </Select>
@@ -134,10 +137,10 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
         <Button
           type="primary"
           onClick={() => {
-            const transactionIds = selectedRows.map((x) => x.key);
+            const transactionIds = selectedRows.map((x) => x.id);
             const accountIds = selectedRows.map((x) => x.account.id);
-            const amounts = selectedRows.map((x) => x.amount.value);
-            const pairIds = selectedRows.map((x) => x.pairId);
+            const amounts = selectedRows.map((x) => x.amount);
+            const pairIds = selectedRows.map((x) => x.pair_id ?? undefined);
             setSelectedRows([]);
             pairTransactions({
               transactionIds,
@@ -155,8 +158,8 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
           danger
           onClick={() => {
             const pairIds = selectedRows
-              .map((x) => x.pairId)
-              .filter((y) => typeof y === 'string');
+              .map((x) => x.pair_id)
+              .filter((y): y is string => typeof y === 'string');
             if (!pairIds.length) {
               return;
             }
@@ -173,7 +176,7 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
           danger
           onClick={async () => {
             deleteTransactions({
-              transactionIds: selectedRows.map((x) => x.key),
+              transactionIds: selectedRows.map((x) => x.id),
             });
             setSelectedRows([]);
           }}
@@ -206,7 +209,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
     accounts: null,
   });
 
-  const categories = new CategoriesList(baseData.categories);
+  const categories = baseData.categories;
 
   const [updateTransactionsCategory] = useUpdateTransactions();
   const { loading, error, transactions, count } = useTransactions({
@@ -251,7 +254,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           defaultPageSize: 50,
         }}
         rowSelection={{
-          selectedRowKeys: selectedRows.map((x) => x.key),
+          selectedRowKeys: selectedRows.map((x) => x.id),
           onChange: (_, rows) => setSelectedRows(rows),
         }}
         size="small"
@@ -274,10 +277,13 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           dataIndex="account"
           key="account"
           filteredValue={filters.accounts}
-          filters={baseData.accounts.map(({ name }) => ({
-            text: name,
-            value: name,
-          }))}
+          filters={baseData.accounts
+            .map((a) => a.name)
+            .filter((name): name is string => typeof name === 'string')
+            .map((name) => ({
+              text: name,
+              value: name,
+            }))}
           onFilter={(value, record) => record.account.name === value}
           render={(_, record) => {
             return (
@@ -295,7 +301,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
                 <AccountIndicator
                   to={record.account}
                   linked={record.linkedAccount}
-                  isOut={record.amount.isOut}
+                  isOut={false}
                 />
               </Space>
             );
@@ -308,7 +314,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={({ value, isOut }) => (
             <Amount positive={!isOut}>{toMoney(value, false)}</Amount>
           )}
-          sorter={(a, b) => a.amount.value - b.amount.value}
+          sorter={(a, b) => a.amount - b.amount}
           align="right"
         />
         <Column title="Description" dataIndex="description" key="description" />
@@ -317,7 +323,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           dataIndex="category"
           key="category"
           filteredValue={filters.categories}
-          filters={categories.get().map(({ name }) => ({
+          filters={categories.map(({ name }) => ({
             text: name,
             value: name,
           }))}
@@ -339,7 +345,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
                   value={record.category.id}
                   onChange={(newCategoryId) => {
                     updateTransactionsCategory({
-                      transactionIds: [record.key],
+                      transactionIds: [record.id],
                       newCategoryId: newCategoryId as string,
                       currentCategoryIds: [record.category.id],
                     });
@@ -352,9 +358,9 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
                     record.category.name === 'None' ? 'primary' : 'dashed'
                   }
                 >
-                  {categories.get().map(({ id, name, isSub }) => (
+                  {categories.map(({ id, name }) => (
                     <Option value={id} key={id} label={name}>
-                      {isSub ? name : <Parent>{name}</Parent>}
+                      {name}
                     </Option>
                   ))}
                 </ButtonSelect>

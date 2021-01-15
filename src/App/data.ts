@@ -1,36 +1,14 @@
-import { gql, useQuery } from '@apollo/client';
+import { ApolloError } from '@apollo/client';
 
-import { Account, BaseData, Category } from '../types';
+import { useGetBaseDataQuery } from '../generated/graphql';
+import { BaseData } from '../types';
 
-export const GET_BASE_DATA = gql`
-  query GetBaseData {
-    accounts: view_accounts(order_by: { name: asc }) {
-      id
-      key: id
-      name
-      initialAmount: initial_amount
-      sum
-      minimum
-      colour
-      mostRecentTransactionDate: most_recent_transaction_date
-      status
-    }
-    categories: view_categories_with_parents(order_by: { full_name: asc }) {
-      id
-      key: id
-      name
-      type
-    }
-  }
-`;
-
-export interface GetBaseData {
-  accounts: Account[];
-  categories: Category[];
-}
-
-export const useBaseData = () => {
-  const { loading, error, data } = useQuery<GetBaseData>(GET_BASE_DATA);
+export const useBaseData = (): {
+  loading: boolean;
+  error?: ApolloError;
+  data: BaseData;
+} => {
+  const { loading, error, data } = useGetBaseDataQuery();
   if (loading || error || data === undefined) {
     return {
       loading,
@@ -43,26 +21,18 @@ export const useBaseData = () => {
     };
   }
 
-  const baseData: {
-    loading: boolean;
-    error: boolean;
-    data: BaseData;
-  } = {
+  const baseData = {
     loading: false,
-    error: false,
     data: {
       accounts: data.accounts,
       categories: data.categories,
-      references: {},
+      references: {
+        internalTransferCategory: data.categories.find(
+          (x) => x.name === 'Internal Transfer'
+        ),
+      },
     },
   };
-
-  const internalTransferCategory = data.categories.find(
-    (x) => x.name === 'Internal Transfer'
-  );
-  if (internalTransferCategory) {
-    baseData.data.references.internalTransferCategory = internalTransferCategory;
-  }
 
   return baseData;
 };

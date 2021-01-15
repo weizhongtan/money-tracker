@@ -153,7 +153,7 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
         optionFilterProp="label"
       >
         {accounts.map(({ id, name }) => (
-          <Option value={id} key={id} label={name}>
+          <Option value={id as string} key={id as string} label={name}>
             {name}
           </Option>
         ))}

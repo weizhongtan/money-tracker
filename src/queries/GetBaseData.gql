@@ -1,0 +1,17 @@
+query GetBaseData {
+  accounts: view_accounts(order_by: { name: asc }) {
+    id
+    name
+    initialAmount: initial_amount
+    sum
+    minimum
+    colour
+    mostRecentTransactionDate: most_recent_transaction_date
+    status
+  }
+  categories(order_by: { name: asc }) {
+    id
+    name
+    type
+  }
+}

@@ -3,7 +3,7 @@ import { useApolloClient } from '@apollo/client';
 import moment from 'moment';
 
 const query = gql`
-  query MyQuery(
+  query CheckTransaction(
     $accountId: uuid!
     $amount: numeric!
     $startDate: timestamptz!
@@ -30,7 +30,7 @@ const query = gql`
 `;
 
 const mutation = gql`
-  mutation MyMutation(
+  mutation InsertTransaction(
     $accountId: uuid
     $amount: numeric
     $date: timestamptz

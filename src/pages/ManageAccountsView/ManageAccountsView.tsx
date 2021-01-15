@@ -6,8 +6,8 @@ import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
 
 import { AccountAvatar, Amount, DateDisplay } from '../../components';
+import { View_Accounts } from '../../generated/graphql';
 import { toMoney, useBaseData } from '../../lib';
-import { Account } from '../../types';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -63,7 +63,7 @@ function csvParser(data: string) {
   return raw as Transaction[];
 }
 
-function qifParser() {
+function qifParser(): Transaction[] {
   console.log('qif is not supported');
   return [];
 }
@@ -77,7 +77,7 @@ const parsers: { [index: string]: Parser } = {
   qif: qifParser,
 };
 
-const AccountsTable: React.FC<TableProps<Account>> = (props) => {
+const AccountsTable: React.FC<TableProps<View_Accounts>> = (props) => {
   const [createTransaction] = useCreateTransaction();
 
   return (

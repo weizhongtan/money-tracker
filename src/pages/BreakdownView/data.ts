@@ -1,62 +1,6 @@
-import { gql } from '@apollo/client';
-import { useQuery } from '@apollo/client';
-
+import { useGetCategoriesQuery } from '../../generated/graphql';
 import { useBaseData } from '../../lib';
 import { TimePeriod } from '../../types';
-
-const GET_CATEGORIES = gql`
-  query GetCategories(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $accountId: uuid
-    $categoryType: String
-    $groupByParent: Boolean
-  ) {
-    categories: func_category_by_date_type(
-      args: {
-        v_account_id: $accountId
-        v_category_type: $categoryType
-        v_end_date: $endDate
-        v_start_date: $startDate
-        v_parent: $groupByParent
-      }
-    ) {
-      id
-      name
-      sum
-    }
-    amount: func_category_by_date_type_aggregate(
-      args: {
-        v_account_id: $accountId
-        v_category_type: $categoryType
-        v_end_date: $endDate
-        v_start_date: $startDate
-        v_parent: $groupByParent
-      }
-    ) {
-      aggregate {
-        sum {
-          sum
-        }
-      }
-    }
-  }
-`;
-
-interface TData {
-  categories: {
-    id: string;
-    name: string;
-    sum: number;
-  }[];
-  amount: {
-    aggregate: {
-      sum: {
-        sum: number;
-      };
-    };
-  };
-}
 
 export const useCategories = ({
   startDate,
@@ -68,10 +12,10 @@ export const useCategories = ({
   grouping: string;
 }) => {
   const { accounts } = useBaseData();
-  const { loading, error, data } = useQuery<TData>(GET_CATEGORIES, {
+  const { loading, error, data } = useGetCategoriesQuery({
     variables: {
-      startDate,
-      endDate,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
       accountId: accountId === 'all' ? null : accountId,
       categoryType: 'expense',
       groupByParent: grouping === 'category',
@@ -100,6 +44,6 @@ export const useCategories = ({
         value: Math.abs(category.sum),
       }))
       .sort((a, b) => b.value - a.value),
-    total: data?.amount.aggregate.sum.sum,
+    total: data?.amount?.aggregate?.sum?.sum,
   };
 };

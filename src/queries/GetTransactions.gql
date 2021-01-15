@@ -1,0 +1,61 @@
+query GetTransactions(
+  $startDate: timestamptz
+  $endDate: timestamptz
+  $categoryIds: [uuid!]
+  $accountId: uuid
+  $searchText: String!
+  $searchAmount: numeric!
+  $searchAmountComplement: numeric!
+) {
+  transactions_aggregate(
+    where: {
+      date: { _gte: $startDate, _lte: $endDate }
+      _and: [
+        {
+          _and: [
+            {
+              _or: [
+                { category_id: { _in: $categoryIds } }
+                { category_id: { _is_null: true } }
+              ]
+            }
+            { account_id: { _eq: $accountId } }
+          ]
+        }
+        {
+          _or: [
+            { description: { _ilike: $searchText } }
+            { amount: { _eq: $searchAmount } }
+            { amount: { _eq: $searchAmountComplement } }
+          ]
+        }
+      ]
+    }
+    order_by: { date: desc }
+  ) {
+    aggregate {
+      count
+    }
+    nodes {
+      id
+      date
+      amount
+      description
+      account {
+        id
+        name
+        colour
+      }
+      linkedAccount {
+        id
+        name
+        colour
+      }
+      category {
+        id
+        name
+      }
+      pair_id
+    }
+  }
+}

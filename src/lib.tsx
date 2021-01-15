@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 import { v4 as uuid } from 'uuid';
 
-import { BaseData, Category } from './types';
+import { BaseData } from './types';
 
 export const toMoney = (amount: number | string | Date, compact = true) =>
   new Intl.NumberFormat('en-EN', {
@@ -15,24 +15,6 @@ export const toMoney = (amount: number | string | Date, compact = true) =>
 
 export const toPercent = (amount: number) =>
   `${(Math.abs(amount) * 100).toFixed(2)}%`;
-
-interface SuperCategory extends Category {
-  isSub: boolean;
-}
-
-export class CategoriesList {
-  categories: SuperCategory[];
-
-  constructor(categories: Category[]) {
-    this.categories = categories.map((cat) => ({
-      ...cat,
-      isSub: cat.name.includes(':'),
-    }));
-  }
-  get() {
-    return this.categories;
-  }
-}
 
 export const BaseDataContext = React.createContext<BaseData>({
   accounts: [],

@@ -1,44 +1,22 @@
 import moment from 'moment';
 
-export interface Account {
-  id: string;
-  key: string;
-  name: string;
-  initialAmount: number;
-  sum: number;
-  minimum: number;
-  colour: string;
-  status: 'active' | 'inactive';
-}
+import { GetBaseDataQuery, GetTransactionsQuery } from '../generated/graphql';
 
-export interface Category {
-  id: string;
-  key: string;
-  name: string;
-  type?: string;
-}
+type GetElementType<T extends Array<any>> = T extends (infer U)[] ? U : never;
 
-export interface Transaction {
-  key: string;
-  date: Date;
-  amount: {
-    value: number;
-    isOut: boolean;
-  };
-  account: Account;
-  linkedAccount?: Account;
-  description: string;
-  category: Category;
-  pairId?: string;
-}
+export type Account = GetElementType<GetBaseDataQuery['accounts']>;
+
+export type Category = GetElementType<GetBaseDataQuery['categories']>;
+
+export type Transaction = GetElementType<
+  GetTransactionsQuery['transactions_aggregate']['nodes']
+>;
 
 export interface TimePeriod {
   startDate: moment.Moment;
   endDate: moment.Moment;
 }
 
-export interface BaseData {
-  accounts: Account[];
-  categories: Category[];
-  references: Record<string, Category>;
-}
+export type BaseData = GetBaseDataQuery & {
+  references: Record<string, any>;
+};

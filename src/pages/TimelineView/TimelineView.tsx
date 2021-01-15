@@ -5,7 +5,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { PageDrawer, Radio, Select, Wrapper } from '../../components';
-import { CategoriesList, toMoney, useBaseData, useTheme } from '../../lib';
+import { Categories } from '../../generated/graphql';
+import { toMoney, useBaseData, useTheme } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 
@@ -188,14 +189,13 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     income,
   }));
 
-  const categories = new CategoriesList([
+  const categories = [
     {
       id: 'all',
-      key: 'all',
       name: 'All Categories',
-    },
+    } as Categories,
     ...baseData.categories,
-  ]);
+  ];
 
   const meanValues = Object.entries(data.aggregate.aggregate.avg)
     .filter(([key, val]) => amountType.includes(key))
@@ -240,9 +240,9 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
         showSearch
         optionFilterProp="label"
       >
-        {categories.get().map(({ id, name, isSub }) => (
+        {categories.map(({ id, name }) => (
           <Option key={id} value={id} label={name}>
-            {isSub ? name : <Parent>{name}</Parent>}
+            {name}
           </Option>
         ))}
       </Select>

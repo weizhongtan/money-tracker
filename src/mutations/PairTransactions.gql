@@ -1,0 +1,16 @@
+mutation PairTransactions(
+  $transactionIds: [uuid!]!
+  $setLinkedAccountId: uuid
+  $setPairId: uuid
+) {
+  update_transactions(
+    where: { id: { _in: $transactionIds } }
+    _set: {
+      updated_at: "now"
+      linked_account_id: $setLinkedAccountId
+      pair_id: $setPairId
+    }
+  ) {
+    affected_rows
+  }
+}

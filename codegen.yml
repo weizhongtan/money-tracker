@@ -2,8 +2,7 @@
 schema:
   - http://localhost:3000/v1/graphql
 documents:
-  - './src/**/*.tsx'
-  - './src/**/*.ts'
+  - './src/**/*.gql'
 overwrite: true
 generates:
   './src/generated/graphql.tsx':
@@ -16,6 +15,10 @@ generates:
       withHooks: true
       withHOC: false
       withComponent: false
+      scalars:
+        timestamptz: string
+        uuid: string
+        numeric: number
   './graphql.schema.json':
     plugins:
       - introspection

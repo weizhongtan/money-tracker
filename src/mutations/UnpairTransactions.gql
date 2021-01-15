@@ -1,0 +1,8 @@
+mutation UnpairTransactions($pairIds: [uuid!]!) {
+  update_transactions(
+    where: { pair_id: { _in: $pairIds } }
+    _set: { linked_account_id: null, updated_at: "now", pair_id: null }
+  ) {
+    affected_rows
+  }
+}

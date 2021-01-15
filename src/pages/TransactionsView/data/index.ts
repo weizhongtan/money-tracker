@@ -1,91 +1,14 @@
-import { gql } from '@apollo/client';
-import { useMutation, useQuery } from '@apollo/client';
 import { v4 as uuid } from 'uuid';
 
+import {
+  useDeleteTransactionsMutation,
+  useGetTransactionsQuery,
+  usePairTransactionsMutation,
+  useUnpairTransactionsMutation,
+  useUpdateTransactionsCategoryMutation,
+} from '../../../generated/graphql';
 import { reversible, useBaseData } from '../../../lib';
-import { Account, Category, TimePeriod } from '../../../types';
-
-const GET_TRANSACTIONS = gql`
-  query GetTransactions(
-    $startDate: timestamptz
-    $endDate: timestamptz
-    $categoryIds: [uuid!]
-    $accountId: uuid
-    $searchText: String!
-    $searchAmount: numeric!
-    $searchAmountComplement: numeric!
-  ) {
-    transactions_aggregate(
-      where: {
-        date: { _gte: $startDate, _lte: $endDate }
-        _and: [
-          {
-            _and: [
-              {
-                _or: [
-                  { category_id: { _in: $categoryIds } }
-                  { category_id: { _is_null: true } }
-                ]
-              }
-              { account_id: { _eq: $accountId } }
-            ]
-          }
-          {
-            _or: [
-              { description: { _ilike: $searchText } }
-              { amount: { _eq: $searchAmount } }
-              { amount: { _eq: $searchAmountComplement } }
-            ]
-          }
-        ]
-      }
-      order_by: { date: desc }
-    ) {
-      aggregate {
-        count
-      }
-      nodes {
-        id
-        date
-        amount
-        description
-        account {
-          id
-          name
-          colour
-        }
-        linkedAccount {
-          id
-          name
-          colour
-        }
-        category {
-          id
-          name
-        }
-        pair_id
-      }
-    }
-  }
-`;
-
-interface TData {
-  transactions_aggregate: {
-    aggregate: {
-      count: number;
-    };
-    nodes: {
-      id: string;
-      date: string;
-      amount: string;
-      account: Account;
-      linkedAccount?: Account;
-      description: string;
-      category: Category;
-      pair_id?: string;
-    }[];
-  };
-}
+import { TimePeriod } from '../../../types';
 
 export const useTransactions = ({
   startDate,
@@ -119,105 +42,23 @@ export const useTransactions = ({
     searchAmount,
     searchAmountComplement,
   };
-  const { loading, error, data } = useQuery<TData>(GET_TRANSACTIONS, {
+  const { loading, error, data } = useGetTransactionsQuery({
     variables,
   });
 
   return {
     loading,
     error,
-    transactions: data?.transactions_aggregate.nodes.map(
-      ({
-        id,
-        date,
-        amount,
-        account,
-        linkedAccount,
-        description,
-        category,
-        pair_id,
-      }) => {
-        return {
-          key: id,
-          date: new Date(date),
-          amount: {
-            value: Number(amount),
-            isOut: Number(amount) < 0,
-          },
-          account,
-          linkedAccount,
-          description,
-          category,
-          pairId: pair_id,
-        };
-      }
-    ),
-    count: data?.transactions_aggregate.aggregate.count,
+    transactions: data?.transactions_aggregate.nodes,
+    count: data?.transactions_aggregate?.aggregate?.count,
   };
 };
 
-const UPDATE_TRANSACTIONS_CATEGORY = gql`
-  mutation UpdateTransactionsCategory(
-    $transactionIds: [uuid!]!
-    $categoryId: uuid
-  ) {
-    update_transactions(
-      where: { id: { _in: $transactionIds } }
-      _set: { category_id: $categoryId, updated_at: "now" }
-    ) {
-      affected_rows
-      returning {
-        category {
-          name
-        }
-      }
-    }
-  }
-`;
-
-const DELETE_TRANSACTIONS = gql`
-  mutation DeleteTransactions($transactionIds: [uuid!]!) {
-    delete_transactions(where: { id: { _in: $transactionIds } }) {
-      affected_rows
-    }
-  }
-`;
-
-const UNPAIR_TRANSACTIONS = gql`
-  mutation UnpairTransactions($pairIds: [uuid!]!) {
-    update_transactions(
-      where: { pair_id: { _in: $pairIds } }
-      _set: { linked_account_id: null, updated_at: "now", pair_id: null }
-    ) {
-      affected_rows
-    }
-  }
-`;
-
-const PAIR_TRANSACTIONS = gql`
-  mutation PairTransactions(
-    $transactionIds: [uuid!]!
-    $setLinkedAccountId: uuid
-    $setPairId: uuid
-  ) {
-    update_transactions(
-      where: { id: { _in: $transactionIds } }
-      _set: {
-        updated_at: "now"
-        linked_account_id: $setLinkedAccountId
-        pair_id: $setPairId
-      }
-    ) {
-      affected_rows
-    }
-  }
-`;
-
 export const useUpdateTransactions = () => {
-  const [updateTransaction] = useMutation(UPDATE_TRANSACTIONS_CATEGORY);
-  const [_deleteTransactions] = useMutation(DELETE_TRANSACTIONS);
-  const [_pairTransactions] = useMutation(PAIR_TRANSACTIONS);
-  const [_unpairTransactions] = useMutation(UNPAIR_TRANSACTIONS);
+  const [updateTransaction] = useUpdateTransactionsCategoryMutation();
+  const [_deleteTransactions] = useDeleteTransactionsMutation();
+  const [_pairTransactions] = usePairTransactionsMutation();
+  const [_unpairTransactions] = useUnpairTransactionsMutation();
   const { references } = useBaseData();
 
   const updateTransactionsCategory = reversible<{
@@ -233,10 +74,11 @@ export const useUpdateTransactions = () => {
         },
         refetchQueries: ['GetTransactions'],
       });
-      const categoryName = data.update_transactions.returning[0].category.name;
-      const { affected_rows } = data.update_transactions;
+      const categoryName =
+        data?.update_transactions?.returning[0].category.name;
+      const affectedRows = data?.update_transactions?.affected_rows;
       return {
-        message: `Updated: ${categoryName} (${affected_rows} records)`,
+        message: `Updated: ${categoryName} (${affectedRows} records)`,
       };
     },
     async undo(_, { transactionIds, currentCategoryIds }) {
@@ -249,7 +91,7 @@ export const useUpdateTransactions = () => {
             },
             refetchQueries: ['GetTransactions'],
           });
-          return data.update_transactions.affected_rows;
+          return data?.update_transactions?.affected_rows as number;
         })
       );
       const recordsUpdated = results.reduce((acc, val) => acc + val, 0);
@@ -268,7 +110,7 @@ export const useUpdateTransactions = () => {
         refetchQueries: ['GetTransactions'],
       });
       return {
-        message: `Deleted ${data.delete_transactions.affected_rows} rows`,
+        message: `Deleted ${data?.delete_transactions?.affected_rows} rows`,
       };
     },
     undo() {},
@@ -349,7 +191,7 @@ export const useUpdateTransactions = () => {
     },
   });
 
-  const unpairTransactions = reversible<{ pairIds: (string | undefined)[] }>({
+  const unpairTransactions = reversible<{ pairIds: string[] }>({
     async action({ pairIds }) {
       await _unpairTransactions({
         variables: {
