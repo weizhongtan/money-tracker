@@ -20,3 +20,5 @@ export interface TimePeriod {
 export type BaseData = GetBaseDataQuery & {
   references: Record<string, any>;
 };
+
+export type Nullable<T> = T | null | undefined;

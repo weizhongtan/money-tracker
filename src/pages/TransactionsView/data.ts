@@ -8,7 +8,7 @@ import {
   useUpdateTransactionsCategoryMutation,
 } from '../../generated/graphql';
 import { reversible, useBaseData } from '../../lib';
-import { TimePeriod } from '../../types';
+import { Nullable, TimePeriod } from '../../types';
 
 export const useTransactions = ({
   startDate,
@@ -121,7 +121,7 @@ export const useUpdateTransactions = () => {
       transactionIds: string[];
       accountIds: string[];
       amounts: number[];
-      pairIds: (string | undefined)[];
+      pairIds: Nullable<string>[];
     },
     {
       setPairId?: string;

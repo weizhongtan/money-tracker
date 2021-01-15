@@ -25,7 +25,7 @@ import {
   Select,
 } from '../../components';
 import { useBaseData, useTheme } from '../../lib';
-import { Account, TimePeriod, Transaction } from '../../types';
+import { Account, Nullable, TimePeriod, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactions } from './data';
 
 const { Option } = Select;
@@ -39,7 +39,7 @@ type AccountIndicatorProps = {
   to: Pick<Account, 'name' | 'colour'>;
   isOut: boolean;
   onClick?: () => void;
-  linked?: Pick<Account, 'name' | 'colour'>;
+  linked: Nullable<Pick<Account, 'name' | 'colour'>>;
 };
 
 const AccountIndicator: React.FC<AccountIndicatorProps> = ({
@@ -271,8 +271,8 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           key="account"
           filteredValue={filters.accounts}
           filters={baseData.accounts.map(({ name }) => ({
-            text: name,
-            value: name,
+            text: String(name),
+            value: String(name),
           }))}
           onFilter={(value, record) => record.account.name === value}
           render={(_, record) => {

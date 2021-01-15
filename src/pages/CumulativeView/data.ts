@@ -1,4 +1,4 @@
-import { useGetBalanceQuery } from '../../generated/graphql';
+import { useGetBalancesQuery } from '../../generated/graphql';
 import { useBaseData } from '../../lib';
 import { TimePeriod } from '../../types';
 
@@ -12,7 +12,7 @@ export const useData = ({
   precision: string;
 }) => {
   const { accounts } = useBaseData();
-  const { loading, error, data } = useGetBalanceQuery({
+  const { loading, error, data } = useGetBalancesQuery({
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),

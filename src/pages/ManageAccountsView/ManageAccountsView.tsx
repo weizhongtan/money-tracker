@@ -104,14 +104,16 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
         title="Initial Amount"
         dataIndex="initialAmount"
         key="initialAmount"
-        render={(_, { initialAmount }) => <Amount value={initialAmount} />}
+        render={(_, { initialAmount }) => (
+          <Amount value={Number(initialAmount)} />
+        )}
         align="right"
       />
       <Column<Account>
         title="Sum"
         dataIndex="sum"
         key="sum"
-        render={(_, record) => <Amount value={record.sum} />}
+        render={(_, record) => <Amount value={Number(record.sum)} />}
         align="right"
       />
       <Column<Account>

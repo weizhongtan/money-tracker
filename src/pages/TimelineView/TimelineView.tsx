@@ -126,7 +126,9 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     ...baseData.categories,
   ];
 
-  const meanValues = Object.entries(data.aggregate.aggregate.avg)
+  const meanValues = Object.entries(
+    data?.aggregate.aggregate?.avg as Record<string, number>
+  )
     .filter(([key, val]) => amountType.includes(key))
     .map(([key, value]) => {
       if (amountType === 'balance') {
@@ -137,13 +139,13 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     });
 
   // sets the graph bounds based on the data
-  let maxValue;
+  let maxValue: number;
   if (amountType === 'balance') {
-    maxValue = data.aggregate.aggregate.max.balance;
+    maxValue = data?.aggregate.aggregate?.max?.balance ?? 0;
   } else {
     maxValue = Math.max(
-      Math.abs(data.aggregate.aggregate.min.expense),
-      Math.abs(data.aggregate.aggregate.max.income)
+      Math.abs(data?.aggregate.aggregate?.min?.expense ?? 0),
+      Math.abs(data?.aggregate.aggregate?.max?.income ?? 0)
     );
   }
 

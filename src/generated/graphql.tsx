@@ -901,10 +901,6 @@ export type Query_Root = {
   view_accounts: Array<View_Accounts>;
   /** fetch aggregated fields from the table: "view_accounts" */
   view_accounts_aggregate: View_Accounts_Aggregate;
-  /** fetch data from the table: "view_categories_with_parents" */
-  view_categories_with_parents: Array<View_Categories_With_Parents>;
-  /** fetch aggregated fields from the table: "view_categories_with_parents" */
-  view_categories_with_parents_aggregate: View_Categories_With_Parents_Aggregate;
 };
 
 
@@ -1137,26 +1133,6 @@ export type Query_RootView_Accounts_AggregateArgs = {
   where?: Maybe<View_Accounts_Bool_Exp>;
 };
 
-
-/** query root */
-export type Query_RootView_Categories_With_ParentsArgs = {
-  distinct_on?: Maybe<Array<View_Categories_With_Parents_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<View_Categories_With_Parents_Order_By>>;
-  where?: Maybe<View_Categories_With_Parents_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootView_Categories_With_Parents_AggregateArgs = {
-  distinct_on?: Maybe<Array<View_Categories_With_Parents_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<View_Categories_With_Parents_Order_By>>;
-  where?: Maybe<View_Categories_With_Parents_Bool_Exp>;
-};
-
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
   _eq?: Maybe<Scalars['String']>;
@@ -1232,10 +1208,6 @@ export type Subscription_Root = {
   view_accounts: Array<View_Accounts>;
   /** fetch aggregated fields from the table: "view_accounts" */
   view_accounts_aggregate: View_Accounts_Aggregate;
-  /** fetch data from the table: "view_categories_with_parents" */
-  view_categories_with_parents: Array<View_Categories_With_Parents>;
-  /** fetch aggregated fields from the table: "view_categories_with_parents" */
-  view_categories_with_parents_aggregate: View_Categories_With_Parents_Aggregate;
 };
 
 
@@ -1466,26 +1438,6 @@ export type Subscription_RootView_Accounts_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<View_Accounts_Order_By>>;
   where?: Maybe<View_Accounts_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootView_Categories_With_ParentsArgs = {
-  distinct_on?: Maybe<Array<View_Categories_With_Parents_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<View_Categories_With_Parents_Order_By>>;
-  where?: Maybe<View_Categories_With_Parents_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootView_Categories_With_Parents_AggregateArgs = {
-  distinct_on?: Maybe<Array<View_Categories_With_Parents_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<View_Categories_With_Parents_Order_By>>;
-  where?: Maybe<View_Categories_With_Parents_Bool_Exp>;
 };
 
 /** columns and relationships of "table_category_by_date_type" */
@@ -2889,117 +2841,6 @@ export type View_Accounts_Variance_Order_By = {
   sum?: Maybe<Order_By>;
 };
 
-/** columns and relationships of "view_categories_with_parents" */
-export type View_Categories_With_Parents = {
-  full_name?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  parent_category_id?: Maybe<Scalars['uuid']>;
-  parent_category_name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-};
-
-/** aggregated selection of "view_categories_with_parents" */
-export type View_Categories_With_Parents_Aggregate = {
-  aggregate?: Maybe<View_Categories_With_Parents_Aggregate_Fields>;
-  nodes: Array<View_Categories_With_Parents>;
-};
-
-/** aggregate fields of "view_categories_with_parents" */
-export type View_Categories_With_Parents_Aggregate_Fields = {
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<View_Categories_With_Parents_Max_Fields>;
-  min?: Maybe<View_Categories_With_Parents_Min_Fields>;
-};
-
-
-/** aggregate fields of "view_categories_with_parents" */
-export type View_Categories_With_Parents_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<View_Categories_With_Parents_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "view_categories_with_parents" */
-export type View_Categories_With_Parents_Aggregate_Order_By = {
-  count?: Maybe<Order_By>;
-  max?: Maybe<View_Categories_With_Parents_Max_Order_By>;
-  min?: Maybe<View_Categories_With_Parents_Min_Order_By>;
-};
-
-/**
- * Boolean expression to filter rows from the table "view_categories_with_parents".
- * All fields are combined with a logical 'AND'.
- */
-export type View_Categories_With_Parents_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<View_Categories_With_Parents_Bool_Exp>>>;
-  _not?: Maybe<View_Categories_With_Parents_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<View_Categories_With_Parents_Bool_Exp>>>;
-  full_name?: Maybe<String_Comparison_Exp>;
-  id?: Maybe<Uuid_Comparison_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  parent_category_id?: Maybe<Uuid_Comparison_Exp>;
-  parent_category_name?: Maybe<String_Comparison_Exp>;
-  type?: Maybe<String_Comparison_Exp>;
-};
-
-/** aggregate max on columns */
-export type View_Categories_With_Parents_Max_Fields = {
-  full_name?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  parent_category_name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-};
-
-/** order by max() on columns of table "view_categories_with_parents" */
-export type View_Categories_With_Parents_Max_Order_By = {
-  full_name?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  parent_category_name?: Maybe<Order_By>;
-  type?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type View_Categories_With_Parents_Min_Fields = {
-  full_name?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  parent_category_name?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
-};
-
-/** order by min() on columns of table "view_categories_with_parents" */
-export type View_Categories_With_Parents_Min_Order_By = {
-  full_name?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  parent_category_name?: Maybe<Order_By>;
-  type?: Maybe<Order_By>;
-};
-
-/** ordering options when selecting data from "view_categories_with_parents" */
-export type View_Categories_With_Parents_Order_By = {
-  full_name?: Maybe<Order_By>;
-  id?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  parent_category_id?: Maybe<Order_By>;
-  parent_category_name?: Maybe<Order_By>;
-  type?: Maybe<Order_By>;
-};
-
-/** select columns of table "view_categories_with_parents" */
-export enum View_Categories_With_Parents_Select_Column {
-  /** column name */
-  FullName = 'full_name',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  ParentCategoryId = 'parent_category_id',
-  /** column name */
-  ParentCategoryName = 'parent_category_name',
-  /** column name */
-  Type = 'type'
-}
-
 export type CreateCategoryMutationVariables = Exact<{
   name: Scalars['String'];
   type?: Maybe<Scalars['String']>;
@@ -3071,7 +2912,7 @@ export type GetAmountGroupsQueryVariables = Exact<{
 
 export type GetAmountGroupsQuery = { groups: Array<Pick<Table_Transactions_By_Category_Grouped, 'date' | 'balance' | 'expense' | 'income'>>, aggregate: { aggregate?: Maybe<{ avg?: Maybe<Pick<Table_Transactions_By_Category_Grouped_Avg_Fields, 'balance' | 'expense' | 'income'>>, max?: Maybe<Pick<Table_Transactions_By_Category_Grouped_Max_Fields, 'balance' | 'income'>>, min?: Maybe<Pick<Table_Transactions_By_Category_Grouped_Min_Fields, 'expense'>> }> } };
 
-export type GetBalanceQueryVariables = Exact<{
+export type GetBalancesQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
   endDate?: Maybe<Scalars['timestamptz']>;
   accountId?: Maybe<Scalars['uuid']>;
@@ -3079,7 +2920,7 @@ export type GetBalanceQueryVariables = Exact<{
 }>;
 
 
-export type GetBalanceQuery = { balances: Array<Pick<Table_Transactions_Group_By, 'date' | 'sum'>> };
+export type GetBalancesQuery = { balances: Array<Pick<Table_Transactions_Group_By, 'date' | 'sum'>> };
 
 export type GetBaseDataQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3389,8 +3230,8 @@ export function useGetAmountGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAmountGroupsQueryHookResult = ReturnType<typeof useGetAmountGroupsQuery>;
 export type GetAmountGroupsLazyQueryHookResult = ReturnType<typeof useGetAmountGroupsLazyQuery>;
 export type GetAmountGroupsQueryResult = Apollo.QueryResult<GetAmountGroupsQuery, GetAmountGroupsQueryVariables>;
-export const GetBalanceDocument = gql`
-    query GetBalance($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $groupBy: String) {
+export const GetBalancesDocument = gql`
+    query GetBalances($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $groupBy: String) {
   balances: func_transactions_by_account_grouped_cumulative(args: {v_account_id: $accountId, v_group_by: $groupBy, v_start_date: $startDate}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
     date
     sum
@@ -3399,16 +3240,16 @@ export const GetBalanceDocument = gql`
     `;
 
 /**
- * __useGetBalanceQuery__
+ * __useGetBalancesQuery__
  *
- * To run a query within a React component, call `useGetBalanceQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBalanceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBalancesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBalancesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetBalanceQuery({
+ * const { data, loading, error } = useGetBalancesQuery({
  *   variables: {
  *      startDate: // value for 'startDate'
  *      endDate: // value for 'endDate'
@@ -3417,15 +3258,15 @@ export const GetBalanceDocument = gql`
  *   },
  * });
  */
-export function useGetBalanceQuery(baseOptions?: Apollo.QueryHookOptions<GetBalanceQuery, GetBalanceQueryVariables>) {
-        return Apollo.useQuery<GetBalanceQuery, GetBalanceQueryVariables>(GetBalanceDocument, baseOptions);
+export function useGetBalancesQuery(baseOptions?: Apollo.QueryHookOptions<GetBalancesQuery, GetBalancesQueryVariables>) {
+        return Apollo.useQuery<GetBalancesQuery, GetBalancesQueryVariables>(GetBalancesDocument, baseOptions);
       }
-export function useGetBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBalanceQuery, GetBalanceQueryVariables>) {
-          return Apollo.useLazyQuery<GetBalanceQuery, GetBalanceQueryVariables>(GetBalanceDocument, baseOptions);
+export function useGetBalancesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBalancesQuery, GetBalancesQueryVariables>) {
+          return Apollo.useLazyQuery<GetBalancesQuery, GetBalancesQueryVariables>(GetBalancesDocument, baseOptions);
         }
-export type GetBalanceQueryHookResult = ReturnType<typeof useGetBalanceQuery>;
-export type GetBalanceLazyQueryHookResult = ReturnType<typeof useGetBalanceLazyQuery>;
-export type GetBalanceQueryResult = Apollo.QueryResult<GetBalanceQuery, GetBalanceQueryVariables>;
+export type GetBalancesQueryHookResult = ReturnType<typeof useGetBalancesQuery>;
+export type GetBalancesLazyQueryHookResult = ReturnType<typeof useGetBalancesLazyQuery>;
+export type GetBalancesQueryResult = Apollo.QueryResult<GetBalancesQuery, GetBalancesQueryVariables>;
 export const GetBaseDataDocument = gql`
     query GetBaseData {
   accounts: view_accounts(order_by: {name: asc}) {

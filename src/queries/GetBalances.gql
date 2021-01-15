@@ -1,4 +1,4 @@
-query GetBalance(
+query GetBalances(
   $startDate: timestamptz
   $endDate: timestamptz
   $accountId: uuid
