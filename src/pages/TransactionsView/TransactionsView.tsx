@@ -270,13 +270,10 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           dataIndex="account"
           key="account"
           filteredValue={filters.accounts}
-          filters={baseData.accounts
-            .map((a) => a.name)
-            .filter((name): name is string => typeof name === 'string')
-            .map((name) => ({
-              text: name,
-              value: name,
-            }))}
+          filters={baseData.accounts.map(({ name }) => ({
+            text: name,
+            value: name,
+          }))}
           onFilter={(value, record) => record.account.name === value}
           render={(_, record) => {
             return (
@@ -294,7 +291,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
                 <AccountIndicator
                   to={record.account}
                   linked={record.linkedAccount}
-                  isOut={false}
+                  isOut={record.amount < 0}
                 />
               </Space>
             );

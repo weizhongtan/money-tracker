@@ -6,9 +6,9 @@ import {
   usePairTransactionsMutation,
   useUnpairTransactionsMutation,
   useUpdateTransactionsCategoryMutation,
-} from '../../../generated/graphql';
-import { reversible, useBaseData } from '../../../lib';
-import { TimePeriod } from '../../../types';
+} from '../../generated/graphql';
+import { reversible, useBaseData } from '../../lib';
+import { TimePeriod } from '../../types';
 
 export const useTransactions = ({
   startDate,
