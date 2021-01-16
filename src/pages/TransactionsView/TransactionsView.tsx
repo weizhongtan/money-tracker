@@ -24,6 +24,7 @@ import {
   DateDisplay,
   Select,
 } from '../../components';
+import { Scalars } from '../../generated/graphql';
 import { useBaseData, useTheme } from '../../lib';
 import { Account, Nullable, TimePeriod, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactions } from './data';
@@ -38,7 +39,7 @@ const Search = styled(Input.Search)`
 type AccountIndicatorProps = {
   to: Pick<Account, 'name' | 'colour'>;
   isOut: boolean;
-  onClick?: () => void;
+  onClick?(): void;
   linked: Nullable<Pick<Account, 'name' | 'colour'>>;
 };
 
@@ -184,23 +185,22 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
 
 type TransactionsViewProps = TimePeriod & {
   categoryId?: string;
-  accountId?: string;
+  setAccountIdFilter: (id: Scalars['uuid']) => void;
+  accountIdFilter?: Scalars['uuid'];
 };
 
 const TransactionsView: React.FC<TransactionsViewProps> = ({
   startDate,
   endDate,
   categoryId,
-  accountId,
+  setAccountIdFilter,
+  accountIdFilter,
 }) => {
   const baseData = useBaseData();
   const theme = useTheme();
 
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState<Transaction[]>([]);
-  const [filters, setFilters] = useState<Record<string, any[] | null>>({
-    accounts: null,
-  });
 
   const categories = baseData.categories;
 
@@ -209,7 +209,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
     startDate,
     endDate,
     categoryId,
-    accountId,
+    accountId: accountIdFilter,
     searchText,
   });
   if (error) return <>error</>;
@@ -252,12 +252,6 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
         }}
         size="small"
         loading={loading}
-        onChange={(pagination, filters, sorter) => {
-          setFilters({
-            accounts: filters.accounts,
-            categories: filters.categories,
-          });
-        }}
       >
         <Column<Transaction>
           title="Date"
@@ -269,22 +263,13 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           title="Account"
           dataIndex="account"
           key="account"
-          filteredValue={filters.accounts}
-          filters={baseData.accounts.map(({ name }) => ({
-            text: String(name),
-            value: String(name),
-          }))}
-          onFilter={(value, record) => record.account.name === value}
           render={(_, record) => {
             return (
               <Space>
                 <Tooltip title={`Filter to ${record.account.name}`}>
                   <FilterOutlined
                     onClick={() => {
-                      setFilters({
-                        ...filters,
-                        accounts: [record.account.name],
-                      });
+                      setAccountIdFilter(record.account.id);
                     }}
                   />
                 </Tooltip>
@@ -310,25 +295,9 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           title="Category"
           dataIndex="category"
           key="category"
-          filteredValue={filters.categories}
-          filters={categories.map(({ name }) => ({
-            text: name,
-            value: name,
-          }))}
-          onFilter={(value, record) => record.category.name === value}
           render={(_, record) => {
             return (
               <Space>
-                <Tooltip title={`Filter to ${record.category.name}`}>
-                  <FilterOutlined
-                    onClick={() => {
-                      setFilters({
-                        ...filters,
-                        categories: [record.category.name],
-                      });
-                    }}
-                  />
-                </Tooltip>
                 <ButtonSelect
                   value={record.category.id}
                   onChange={(newCategoryId) => {

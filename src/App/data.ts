@@ -24,7 +24,16 @@ export const useBaseData = (): {
   const baseData = {
     loading: false,
     data: {
-      accounts: data.accounts,
+      accounts: [
+        {
+          id: 'all',
+          key: 'all',
+          name: 'All accounts',
+          initialAmount: 0,
+          mostRecentTransactionDate: null,
+        },
+        ...data.accounts,
+      ],
       categories: data.categories,
       references: {
         internalTransferCategory: data.categories.find(

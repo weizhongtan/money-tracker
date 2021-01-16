@@ -1,4 +1,3 @@
-import { Menu } from 'antd';
 import React from 'react';
 
 import { DatePicker } from '../components';
@@ -48,38 +47,32 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
 
   return (
     <div>
-      <Menu theme="dark">
-        <Menu.Item>
-          <MonthPicker
-            onChange={(date) => {
-              if (date) {
-                setDates({
-                  startDate: time(date).startOf('month'),
-                  endDate: time(date).endOf('month'),
-                });
-              }
-            }}
-            placeholder="Select month"
-            value={startDate}
-            format="MMM YYYY"
-          />
-        </Menu.Item>
-        <Menu.Item>
-          <RangePicker
-            picker="month"
-            onChange={([start, end]) => {
-              if (start && end) {
-                setDates({
-                  startDate: time(start).startOf('day'),
-                  endDate: time(end).endOf('day'),
-                });
-              }
-            }}
-            value={[startDate, endDate]}
-            ranges={ranges}
-          />
-        </Menu.Item>
-      </Menu>
+      <MonthPicker
+        onChange={(date) => {
+          if (date) {
+            setDates({
+              startDate: time(date).startOf('month'),
+              endDate: time(date).endOf('month'),
+            });
+          }
+        }}
+        placeholder="Select month"
+        value={startDate}
+        format="MMM YYYY"
+      />
+      <RangePicker
+        picker="month"
+        onChange={([start, end]) => {
+          if (start && end) {
+            setDates({
+              startDate: time(start).startOf('day'),
+              endDate: time(end).endOf('day'),
+            });
+          }
+        }}
+        value={[startDate, endDate]}
+        ranges={ranges}
+      />
     </div>
   );
 };

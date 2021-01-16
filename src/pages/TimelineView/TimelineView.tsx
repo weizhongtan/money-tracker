@@ -1,7 +1,14 @@
-import { BarSvgProps, ResponsiveBar } from '@nivo/bar';
+import { Bar, BarSvgProps } from '@nivo/bar';
+import { Dimensions } from '@nivo/core';
 import React, { useState } from 'react';
 
-import { PageDrawer, Radio, Select, Wrapper } from '../../components';
+import {
+  PageDrawer,
+  Radio,
+  Select,
+  Visualisation,
+  VisualisationControls,
+} from '../../components';
 import { useGetAmountGroupsQuery } from '../../generated/graphql';
 import { time, toMoney, useBaseData, useTheme } from '../../lib';
 import { TimePeriod } from '../../types';
@@ -18,7 +25,8 @@ type GraphProps = {
   maxValue: number;
   precision: time.OpUnitType;
   amountType: string;
-} & BarSvgProps;
+} & BarSvgProps &
+  Dimensions;
 
 const Graph: React.FC<GraphProps> = ({
   data,
@@ -31,7 +39,7 @@ const Graph: React.FC<GraphProps> = ({
   const theme = useTheme();
 
   return (
-    <ResponsiveBar
+    <Bar
       data={data}
       groupMode="grouped"
       keys={amountType.split(',')}
@@ -147,64 +155,75 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
   }
 
   return (
-    <Wrapper>
-      <PageDrawer
-        visible={
-          isVisible &&
-          !!transactionViewDates.startDate &&
-          !!transactionViewDates.endDate
-        }
-        onClose={() => setVisible(false)}
-      >
-        <TransactionsView
-          startDate={transactionViewDates.startDate}
-          endDate={transactionViewDates.endDate}
-          categoryId={categoryId}
-        />
-      </PageDrawer>
-      <Select
-        value={categoryId}
-        onSelect={(val) => setCategoryId(val as string)}
-        showSearch
-        optionFilterProp="label"
-      >
-        {categories.map(({ id, name }) => (
-          <Option key={id} value={id} label={name}>
-            {name}
-          </Option>
-        ))}
-      </Select>
-      <Radio.Group
-        buttonStyle="solid"
-        defaultValue={precision}
-        onChange={(event) => setPrecision(event.target.value)}
-      >
-        <Radio.Button value="day">Day</Radio.Button>
-        <Radio.Button value="month">Month</Radio.Button>
-        <Radio.Button value="year">Year</Radio.Button>
-      </Radio.Group>
-      <Radio.Group
-        buttonStyle="solid"
-        defaultValue={amountType}
-        onChange={(event) => setAmountType(event.target.value)}
-      >
-        <Radio.Button value="balance">Balance</Radio.Button>
-        <Radio.Button value="expense,income">{'Expense & Income'}</Radio.Button>
-      </Radio.Group>
-      <Graph
-        data={groups}
-        meanValues={meanValues}
-        maxValue={maxValue}
-        precision={precision}
-        amountType={amountType}
-        onClick={({ data: { date } }) => {
-          const startDate = time(date);
-          const endDate = time(startDate).endOf(precision);
-          setTransactionViewDates({ startDate, endDate });
-          setVisible(true);
-        }}
-      />
-    </Wrapper>
+    <>
+      <VisualisationControls>
+        <PageDrawer
+          visible={
+            isVisible &&
+            !!transactionViewDates.startDate &&
+            !!transactionViewDates.endDate
+          }
+          onClose={() => setVisible(false)}
+        >
+          <TransactionsView
+            startDate={transactionViewDates.startDate}
+            endDate={transactionViewDates.endDate}
+            categoryId={categoryId}
+            setAccountIdFilter={() => {}}
+          />
+        </PageDrawer>
+        <Select
+          value={categoryId}
+          onSelect={(val) => setCategoryId(val as string)}
+          showSearch
+          optionFilterProp="label"
+        >
+          {categories.map(({ id, name }) => (
+            <Option key={id} value={id} label={name}>
+              {name}
+            </Option>
+          ))}
+        </Select>
+        <Radio.Group
+          buttonStyle="solid"
+          defaultValue={precision}
+          onChange={(event) => setPrecision(event.target.value)}
+        >
+          <Radio.Button value="day">Day</Radio.Button>
+          <Radio.Button value="month">Month</Radio.Button>
+          <Radio.Button value="year">Year</Radio.Button>
+        </Radio.Group>
+        <Radio.Group
+          buttonStyle="solid"
+          defaultValue={amountType}
+          onChange={(event) => setAmountType(event.target.value)}
+        >
+          <Radio.Button value="balance">Balance</Radio.Button>
+          <Radio.Button value="expense,income">
+            {'Expense & Income'}
+          </Radio.Button>
+        </Radio.Group>
+      </VisualisationControls>
+      <Visualisation>
+        {({ width, height }) => (
+          <Graph
+            width={width}
+            height={height}
+            data={groups}
+            meanValues={meanValues}
+            maxValue={maxValue}
+            precision={precision}
+            amountType={amountType}
+            onClick={({ data: { date } }) => {
+              const startDate = time(date);
+              const endDate = time(startDate).endOf(precision);
+              setTransactionViewDates({ startDate, endDate });
+              setVisible(true);
+            }}
+          />
+        )}
+      </Visualisation>
+    </>
   );
 };
 

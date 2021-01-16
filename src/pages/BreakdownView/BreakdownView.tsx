@@ -1,25 +1,32 @@
-import { ResponsiveBar } from '@nivo/bar';
-import { PieDatum, ResponsivePie } from '@nivo/pie';
+import { Bar, BarSvgProps } from '@nivo/bar';
+import { Dimensions } from '@nivo/core';
+import { Pie, PieSvgProps } from '@nivo/pie';
 import React, { useState } from 'react';
 
-import { PageDrawer, Radio, Select, Wrapper } from '../../components';
+import {
+  PageDrawer,
+  Radio,
+  Select,
+  Visualisation,
+  VisualisationControls,
+} from '../../components';
 import { toMoney, toPercent } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 import { useCategories } from './data';
 
-const { Option } = Select;
+type PieBreakdownProps = PieSvgProps &
+  Dimensions & {
+    total: number;
+  };
 
-type GraphProps = {
-  data: PieDatum[];
-  total: number;
-  onClick: (categoryId: string) => void;
-};
-
-const Pie: React.FC<GraphProps> = ({ data, total, onClick, ...props }) => (
-  <ResponsivePie
+const PieBreakdown: React.FC<PieBreakdownProps> = ({
+  data,
+  total,
+  ...props
+}) => (
+  <Pie
     data={data}
-    onClick={(data) => onClick(data._id as string)}
     margin={{ top: 40, right: 200, bottom: 40, left: 80 }}
     innerRadius={0.5}
     padAngle={0.7}
@@ -77,10 +84,13 @@ const Pie: React.FC<GraphProps> = ({ data, total, onClick, ...props }) => (
   />
 );
 
-const Bar: React.FC<GraphProps> = ({ data, total, onClick, ...props }) => (
-  <ResponsiveBar
-    data={data}
-    onClick={({ data }) => onClick(data._id as string)}
+type BarBreakdownProps = BarSvgProps &
+  Dimensions & {
+    total: number;
+  };
+
+const BarBreakdown: React.FC<BarBreakdownProps> = ({ total, ...props }) => (
+  <Bar
     indexBy="name"
     margin={{ top: 50, right: 60, bottom: 50, left: 200 }}
     minValue="auto"
@@ -122,9 +132,10 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
   const [isVisible, setVisible] = useState(false);
-  const [transactionViewCategoryId, setTransactionViewCategoryId] = useState<
-    string
-  >();
+  const [
+    transactionViewCategoryId,
+    setTransactionViewCategoryId,
+  ] = useState<string>();
   const { loading, error, accounts, categories, total } = useCategories({
     startDate,
     endDate,
@@ -134,56 +145,67 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   if (loading || typeof categories === 'undefined') return null;
   if (error) return <>error</>;
 
-  const Graph = graph === 'pie' ? Pie : Bar;
+  const Graph = graph === 'pie' ? PieBreakdown : BarBreakdown;
 
   return (
-    <Wrapper>
-      <PageDrawer visible={isVisible} onClose={() => setVisible(false)}>
-        <TransactionsView
-          startDate={startDate}
-          endDate={endDate}
-          categoryId={transactionViewCategoryId}
-          accountId={accountId === 'all' ? undefined : accountId}
-        />
-      </PageDrawer>
-      <Select
-        value={accountId}
-        onSelect={(val) => typeof val === 'string' && setAccountId(val)}
-        showSearch
-        optionFilterProp="label"
-      >
-        {accounts.map(({ id, name }) => (
-          <Option value={id as string} key={id as string} label={name}>
-            {name}
-          </Option>
-        ))}
-      </Select>
-      <Radio.Group
-        buttonStyle="solid"
-        defaultValue={graph}
-        onChange={(event) => setGraph(event.target.value)}
-      >
-        <Radio.Button value="pie">Pie</Radio.Button>
-        <Radio.Button value="bar">Bar</Radio.Button>
-      </Radio.Group>
-      <Radio.Group
-        buttonStyle="solid"
-        defaultValue={grouping}
-        onChange={(event) => setGrouping(event.target.value)}
-      >
-        <Radio.Button value="subcategory">Subcategory</Radio.Button>
-        <Radio.Button value="category">Category</Radio.Button>
-      </Radio.Group>
-      {total && <span>Total: {toMoney(total)}</span>}
-      <Graph
-        data={categories}
-        total={total ?? 0}
-        onClick={(id) => {
-          setTransactionViewCategoryId(id);
-          setVisible(true);
+    <>
+      <VisualisationControls>
+        <PageDrawer visible={isVisible} onClose={() => setVisible(false)}>
+          <TransactionsView
+            startDate={startDate}
+            endDate={endDate}
+            categoryId={transactionViewCategoryId}
+            accountIdFilter={accountId === 'all' ? undefined : accountId}
+            setAccountIdFilter={() => {}}
+          />
+        </PageDrawer>
+        <Select
+          value={accountId}
+          onSelect={(val) => typeof val === 'string' && setAccountId(val)}
+          showSearch
+          optionFilterProp="label"
+        >
+          {accounts.map(({ id, name }) => (
+            <Select.Option value={id as string} key={id as string} label={name}>
+              {name}
+            </Select.Option>
+          ))}
+        </Select>
+        <Radio.Group
+          buttonStyle="solid"
+          defaultValue={graph}
+          onChange={(event) => setGraph(event.target.value)}
+        >
+          <Radio.Button value="pie">Pie</Radio.Button>
+          <Radio.Button value="bar">Bar</Radio.Button>
+        </Radio.Group>
+        <Radio.Group
+          buttonStyle="solid"
+          defaultValue={grouping}
+          onChange={(event) => setGrouping(event.target.value)}
+        >
+          <Radio.Button value="subcategory">Subcategory</Radio.Button>
+          <Radio.Button value="category">Category</Radio.Button>
+        </Radio.Group>
+        {total && <span>Total: {toMoney(total)}</span>}
+      </VisualisationControls>
+      <Visualisation>
+        {({ height, width }) => {
+          return (
+            <Graph
+              height={height}
+              width={width}
+              data={categories}
+              total={total ?? 0}
+              onClick={(data: any) => {
+                setTransactionViewCategoryId(String(data._id));
+                setVisible(true);
+              }}
+            />
+          );
         }}
-      />
-    </Wrapper>
+      </Visualisation>
+    </>
   );
 };
 

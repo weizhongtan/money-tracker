@@ -1,10 +1,7 @@
 import Avatar, { AvatarProps } from 'antd/lib/avatar';
 import React from 'react';
-import styled from 'styled-components';
 
 import { useTheme } from '../lib';
-
-const Wrapper = styled.span``;
 
 type Props = AvatarProps & {
   name: string;
@@ -14,7 +11,7 @@ type Props = AvatarProps & {
 const AccountAvatar: React.FC<Props> = ({ name, colour, ...props }) => {
   const theme = useTheme();
   return (
-    <Wrapper>
+    <span>
       <Avatar
         style={{
           background:
@@ -26,7 +23,7 @@ const AccountAvatar: React.FC<Props> = ({ name, colour, ...props }) => {
       >
         {name[0]}
       </Avatar>
-    </Wrapper>
+    </span>
   );
 };
 

@@ -8,7 +8,7 @@ import {
   SettingOutlined,
 } from '@ant-design/icons';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { Layout, Menu, Spin } from 'antd';
+import { Layout, Menu, Space, Spin } from 'antd';
 import React, { useState } from 'react';
 import {
   Redirect,
@@ -21,6 +21,8 @@ import {
 import styled, { ThemeProvider } from 'styled-components';
 import { useUrlState } from 'with-url-state';
 
+import { Select } from '../components';
+import { Scalars } from '../generated/graphql';
 import { BaseDataContext, time } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
 import CumulativeView from '../pages/CumulativeView';
@@ -34,8 +36,12 @@ import { TimePeriod } from '../types';
 import { useBaseData } from './data';
 
 const Content = styled(Layout.Content)`
-  width: 100%;
   background: #fff;
+`;
+
+const ViewWrapper = styled(Content)`
+  display: flex;
+  flex-direction: column;
 `;
 
 const Spinner = styled(Spin)`
@@ -50,7 +56,12 @@ interface IRoute {
   path: string;
   title: string;
   icon: React.ReactElement;
-  Component?: React.FC<TimePeriod>;
+  Component?: React.FC<
+    TimePeriod & {
+      accountIdFilter?: Scalars['uuid'];
+      setAccountIdFilter: (id: Scalars['uuid']) => void;
+    }
+  >;
   children?: {
     path: string;
     title: string;
@@ -135,6 +146,8 @@ function App() {
   const [openKeys, setOpenKeys] = useState<any[]>(defaultOpenKeys);
   const { loading, error, data } = useBaseData();
 
+  const [accountIdFilter, setAccountIdFilter] = useState<Scalars['uuid']>();
+
   if (error) return <>error</>;
 
   return loading ? (
@@ -193,16 +206,40 @@ function App() {
               );
             })}
           </Menu>
-          <DateRangeSelect
-            {...{
-              startDate,
-              endDate,
-              setDates,
-            }}
-          />
         </Layout.Sider>
         <Layout>
-          <Content>
+          <Layout.Header>
+            <Space>
+              <DateRangeSelect
+                {...{
+                  startDate,
+                  endDate,
+                  setDates,
+                }}
+              />
+              <Select
+                value={accountIdFilter ?? 'all'}
+                onSelect={(val) =>
+                  setAccountIdFilter(
+                    val === 'all' ? undefined : (val as string)
+                  )
+                }
+                showSearch
+                optionFilterProp="label"
+              >
+                {data.accounts.map(({ id, name }) => (
+                  <Select.Option
+                    value={id as string}
+                    key={id as string}
+                    label={name}
+                  >
+                    {name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Space>
+          </Layout.Header>
+          <ViewWrapper>
             <Switch>
               {routes.map(({ path, Component, children }) => (
                 <Route
@@ -211,7 +248,16 @@ function App() {
                   render={({ match }) => {
                     if (!children) {
                       if (Component) {
-                        return <Component {...{ startDate, endDate }} />;
+                        return (
+                          <Component
+                            {...{
+                              startDate,
+                              endDate,
+                              accountIdFilter,
+                              setAccountIdFilter,
+                            }}
+                          />
+                        );
                       } else {
                         throw Error('children or component not defined.');
                       }
@@ -224,7 +270,12 @@ function App() {
                               key={match.url + path}
                               path={match.url + path}
                               render={() => (
-                                <Component {...{ startDate, endDate }} />
+                                <Component
+                                  {...{
+                                    startDate,
+                                    endDate,
+                                  }}
+                                />
                               )}
                             />
                           );
@@ -239,7 +290,7 @@ function App() {
                 to={{ pathname: routes[0].path, search: location.search }}
               />
             </Switch>
-          </Content>
+          </ViewWrapper>
         </Layout>
       </Layout>
     </BaseDataContext.Provider>
