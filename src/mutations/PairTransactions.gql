@@ -12,5 +12,14 @@ mutation PairTransactions(
     }
   ) {
     affected_rows
+    returning {
+      id
+      linkedAccount {
+        id
+        name
+        colour
+      }
+      pair_id
+    }
   }
 }

@@ -4,5 +4,8 @@ mutation UnpairTransactions($pairIds: [uuid!]!) {
     _set: { linked_account_id: null, updated_at: "now", pair_id: null }
   ) {
     affected_rows
+    returning {
+      id
+    }
   }
 }

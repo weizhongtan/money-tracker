@@ -1,6 +1,6 @@
 mutation UpdateTransactionsCategory(
   $transactionIds: [uuid!]!
-  $categoryId: uuid
+  $categoryId: uuid!
 ) {
   update_transactions(
     where: { id: { _in: $transactionIds } }
@@ -8,7 +8,9 @@ mutation UpdateTransactionsCategory(
   ) {
     affected_rows
     returning {
+      id
       category {
+        id
         name
       }
     }

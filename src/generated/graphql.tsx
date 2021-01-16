@@ -2882,24 +2882,36 @@ export type PairTransactionsMutationVariables = Exact<{
 }>;
 
 
-export type PairTransactionsMutation = { update_transactions?: Maybe<Pick<Transactions_Mutation_Response, 'affected_rows'>> };
+export type PairTransactionsMutation = { update_transactions?: Maybe<(
+    Pick<Transactions_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      Pick<Transactions, 'id' | 'pair_id'>
+      & { linkedAccount?: Maybe<Pick<Accounts, 'id' | 'name' | 'colour'>> }
+    )> }
+  )> };
 
 export type UnpairTransactionsMutationVariables = Exact<{
   pairIds: Array<Scalars['uuid']> | Scalars['uuid'];
 }>;
 
 
-export type UnpairTransactionsMutation = { update_transactions?: Maybe<Pick<Transactions_Mutation_Response, 'affected_rows'>> };
+export type UnpairTransactionsMutation = { update_transactions?: Maybe<(
+    Pick<Transactions_Mutation_Response, 'affected_rows'>
+    & { returning: Array<Pick<Transactions, 'id'>> }
+  )> };
 
 export type UpdateTransactionsCategoryMutationVariables = Exact<{
   transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
-  categoryId?: Maybe<Scalars['uuid']>;
+  categoryId: Scalars['uuid'];
 }>;
 
 
 export type UpdateTransactionsCategoryMutation = { update_transactions?: Maybe<(
     Pick<Transactions_Mutation_Response, 'affected_rows'>
-    & { returning: Array<{ category: Pick<Categories, 'name'> }> }
+    & { returning: Array<(
+      Pick<Transactions, 'id'>
+      & { category: Pick<Categories, 'id' | 'name'> }
+    )> }
   )> };
 
 export type GetAmountGroupsQueryVariables = Exact<{
@@ -3075,6 +3087,15 @@ export const PairTransactionsDocument = gql`
     mutation PairTransactions($transactionIds: [uuid!]!, $setLinkedAccountId: uuid, $setPairId: uuid) {
   update_transactions(where: {id: {_in: $transactionIds}}, _set: {updated_at: "now", linked_account_id: $setLinkedAccountId, pair_id: $setPairId}) {
     affected_rows
+    returning {
+      id
+      linkedAccount {
+        id
+        name
+        colour
+      }
+      pair_id
+    }
   }
 }
     `;
@@ -3109,6 +3130,9 @@ export const UnpairTransactionsDocument = gql`
     mutation UnpairTransactions($pairIds: [uuid!]!) {
   update_transactions(where: {pair_id: {_in: $pairIds}}, _set: {linked_account_id: null, updated_at: "now", pair_id: null}) {
     affected_rows
+    returning {
+      id
+    }
   }
 }
     `;
@@ -3138,11 +3162,13 @@ export type UnpairTransactionsMutationHookResult = ReturnType<typeof useUnpairTr
 export type UnpairTransactionsMutationResult = Apollo.MutationResult<UnpairTransactionsMutation>;
 export type UnpairTransactionsMutationOptions = Apollo.BaseMutationOptions<UnpairTransactionsMutation, UnpairTransactionsMutationVariables>;
 export const UpdateTransactionsCategoryDocument = gql`
-    mutation UpdateTransactionsCategory($transactionIds: [uuid!]!, $categoryId: uuid) {
+    mutation UpdateTransactionsCategory($transactionIds: [uuid!]!, $categoryId: uuid!) {
   update_transactions(where: {id: {_in: $transactionIds}}, _set: {category_id: $categoryId, updated_at: "now"}) {
     affected_rows
     returning {
+      id
       category {
+        id
         name
       }
     }

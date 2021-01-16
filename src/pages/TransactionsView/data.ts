@@ -8,7 +8,7 @@ import {
   useUpdateTransactionsCategoryMutation,
 } from '../../generated/graphql';
 import { reversible, useBaseData } from '../../lib';
-import { Nullable, TimePeriod } from '../../types';
+import { Account, Nullable, TimePeriod } from '../../types';
 
 export const useTransactions = ({
   startDate,
@@ -55,24 +55,90 @@ export const useTransactions = ({
 };
 
 export const useUpdateTransactions = () => {
-  const [updateTransaction] = useUpdateTransactionsCategoryMutation();
+  const [updateTransactions] = useUpdateTransactionsCategoryMutation({
+    update(cache, { data }) {
+      const updatedTransactions = data?.update_transactions?.returning;
+
+      if (updatedTransactions) {
+        updatedTransactions.forEach((transaction) => {
+          const transactionId = cache.identify(transaction);
+          const categoryId = cache.identify(transaction.category);
+          cache.modify({
+            id: transactionId,
+            fields: {
+              category() {
+                return { __ref: categoryId };
+              },
+            },
+            optimistic: true,
+          });
+        });
+      }
+    },
+  });
   const [_deleteTransactions] = useDeleteTransactionsMutation();
-  const [_pairTransactions] = usePairTransactionsMutation();
-  const [_unpairTransactions] = useUnpairTransactionsMutation();
+  const [_pairTransactions] = usePairTransactionsMutation({
+    update(cache, { data }) {
+      const updatedTransactions = data?.update_transactions?.returning;
+
+      if (updatedTransactions) {
+        updatedTransactions.forEach((transaction) => {
+          const transactionId = cache.identify(transaction);
+          let linkedAccountId = cache.identify(
+            transaction.linkedAccount as Account
+          );
+          cache.modify({
+            id: transactionId,
+            fields: {
+              linkedAccount() {
+                return { __ref: linkedAccountId };
+              },
+              pair_id() {
+                return transaction.pair_id;
+              },
+            },
+            optimistic: true,
+          });
+        });
+      }
+    },
+  });
+  const [_unpairTransactions] = useUnpairTransactionsMutation({
+    update(cache, { data }) {
+      const updatedTransactions = data?.update_transactions?.returning;
+
+      if (updatedTransactions) {
+        updatedTransactions.forEach((transaction) => {
+          const transactionId = cache.identify(transaction);
+          cache.modify({
+            id: transactionId,
+            fields: {
+              linkedAccount() {
+                return null;
+              },
+              pair_id() {
+                return null;
+              },
+            },
+            optimistic: true,
+          });
+        });
+      }
+    },
+  });
   const { references } = useBaseData();
 
   const updateTransactionsCategory = reversible<{
     transactionIds: string[];
-    newCategoryId?: string;
-    currentCategoryIds: (string | undefined)[];
+    newCategoryId: string;
+    currentCategoryIds: string[];
   }>({
     async action({ transactionIds, newCategoryId }) {
-      const { data } = await updateTransaction({
+      const { data } = await updateTransactions({
         variables: {
           transactionIds,
           categoryId: newCategoryId,
         },
-        refetchQueries: ['GetTransactions'],
       });
       const categoryName =
         data?.update_transactions?.returning[0].category.name;
@@ -84,12 +150,11 @@ export const useUpdateTransactions = () => {
     async undo(_, { transactionIds, currentCategoryIds }) {
       const results = await Promise.all(
         currentCategoryIds.map(async (categoryId, index) => {
-          const { data } = await updateTransaction({
+          const { data } = await updateTransactions({
             variables: {
               transactionIds: [transactionIds[index]],
               categoryId,
             },
-            refetchQueries: ['GetTransactions'],
           });
           return data?.update_transactions?.affected_rows as number;
         })
@@ -165,12 +230,11 @@ export const useUpdateTransactions = () => {
           setPairId,
         },
       });
-      await updateTransaction({
+      await updateTransactions({
         variables: {
           transactionIds: transactionIds,
           categoryId: references.internalTransferCategory.id,
         },
-        refetchQueries: ['GetTransactions'],
       });
       return {
         message: 'Paired transactions',
@@ -185,7 +249,6 @@ export const useUpdateTransactions = () => {
         variables: {
           pairIds: [setPairId],
         },
-        refetchQueries: ['GetTransactions'],
       });
       return 'Undid: pair';
     },
@@ -197,7 +260,6 @@ export const useUpdateTransactions = () => {
         variables: {
           pairIds,
         },
-        refetchQueries: ['GetTransactions'],
       });
       return {
         message: 'Unpaired transactions',

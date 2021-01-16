@@ -6,23 +6,7 @@ import {
 } from '../../generated/graphql';
 
 export const useCreateCategory = () => {
-  const [_createCategory] = useCreateCategoryMutation({
-    update(cache, { data }) {
-      const newCategory = data?.insert_categories?.returning[0];
-      const existingData = cache.readQuery<GetBaseDataQuery>({
-        query: GetBaseDataDocument,
-      });
-      if (existingData && newCategory) {
-        cache.writeQuery({
-          query: GetBaseDataDocument,
-          data: {
-            ...existingData,
-            categories: [newCategory, ...existingData.categories],
-          },
-        });
-      }
-    },
-  });
+  const [_createCategory] = useCreateCategoryMutation();
 
   const createCategory = async (name: string, type?: string) => {
     await _createCategory({
