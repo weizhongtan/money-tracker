@@ -9,7 +9,6 @@ import {
 } from '@ant-design/icons';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { Layout, Menu, Spin } from 'antd';
-import moment from 'moment';
 import React, { useState } from 'react';
 import {
   Redirect,
@@ -22,7 +21,7 @@ import {
 import styled, { ThemeProvider } from 'styled-components';
 import { useUrlState } from 'with-url-state';
 
-import { BaseDataContext } from '../lib';
+import { BaseDataContext, time } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
 import CumulativeView from '../pages/CumulativeView';
 import DateRangeSelect from '../pages/DateRangeSelect';
@@ -109,13 +108,13 @@ function App() {
 
   const [urlState, setUrlState] = useUrlState(
     {
-      startDate: moment().subtract(1, 'year').startOf('year').toISOString(),
-      endDate: moment().toISOString(),
+      startDate: time().subtract(1, 'year').startOf('year').toISOString(),
+      endDate: time().toISOString(),
     },
     { history }
   );
-  const startDate = moment(urlState.startDate);
-  const endDate = moment(urlState.endDate);
+  const startDate = time(urlState.startDate);
+  const endDate = time(urlState.endDate);
   const setDates = ({ startDate, endDate }: TimePeriod) => {
     setUrlState({
       startDate: startDate.toISOString(),

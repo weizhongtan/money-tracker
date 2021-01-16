@@ -1,10 +1,9 @@
 import { BarSvgProps, ResponsiveBar } from '@nivo/bar';
-import moment from 'moment';
 import React, { useState } from 'react';
 
 import { PageDrawer, Radio, Select, Wrapper } from '../../components';
 import { useGetAmountGroupsQuery } from '../../generated/graphql';
-import { toMoney, useBaseData, useTheme } from '../../lib';
+import { time, toMoney, useBaseData, useTheme } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 
@@ -17,7 +16,7 @@ type GraphProps = {
     value: number;
   }[];
   maxValue: number;
-  precision: moment.unitOfTime.StartOf;
+  precision: time.OpUnitType;
   amountType: string;
 } & BarSvgProps;
 
@@ -45,14 +44,14 @@ const Graph: React.FC<GraphProps> = ({
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        format: (x) => moment(x).format('MMM YY'),
+        format: (x) => time(x).format('MMM YY'),
       }}
       axisLeft={null}
       axisBottom={{
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        format: (x) => moment(x).format('MMM YY'),
+        format: (x) => time(x).format('MMM YY'),
       }}
       enableGridY
       labelFormat={(x) => toMoney(Number(x))}
@@ -63,7 +62,7 @@ const Graph: React.FC<GraphProps> = ({
       tooltip={({ indexValue, value }) => {
         return (
           <span>
-            {moment(indexValue).format('MMM YY')} - {toMoney(value, false)}
+            {time(indexValue).format('MMM YY')} - {toMoney(value, false)}
           </span>
         );
       }}
@@ -88,9 +87,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
   const baseData = useBaseData();
 
   const [categoryId, setCategoryId] = useState('all');
-  const [precision, setPrecision] = useState<moment.unitOfTime.StartOf>(
-    'month'
-  );
+  const [precision, setPrecision] = useState<time.OpUnitType>('month');
   const [amountType, setAmountType] = useState<'balance' | 'expense,income'>(
     'balance'
   );
@@ -112,7 +109,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
   if (error) return <>error</>;
 
   const groups = data.groups.map(({ date, balance, expense, income }) => ({
-    date: moment(date).format('YYYY-MM-DD'),
+    date: time(date).format('YYYY-MM-DD'),
     balance,
     expense: Math.abs(expense),
     income,
@@ -201,8 +198,8 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
         precision={precision}
         amountType={amountType}
         onClick={({ data: { date } }) => {
-          const startDate = moment(date);
-          const endDate = moment(startDate).endOf(precision);
+          const startDate = time(date);
+          const endDate = time(startDate).endOf(precision);
           setTransactionViewDates({ startDate, endDate });
           setVisible(true);
         }}

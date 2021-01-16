@@ -1,5 +1,6 @@
 import { UndoOutlined } from '@ant-design/icons';
 import { Button, notification } from 'antd';
+import dayjs from 'dayjs';
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components';
 import { v4 as uuid } from 'uuid';
@@ -72,3 +73,5 @@ export function reversible<ArgType, ResultType = BaseResult>({
     });
   };
 }
+
+export { dayjs as time };

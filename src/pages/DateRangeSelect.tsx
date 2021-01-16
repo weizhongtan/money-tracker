@@ -1,7 +1,8 @@
-import { DatePicker, Menu } from 'antd';
-import moment from 'moment';
+import { Menu } from 'antd';
 import React from 'react';
 
+import { DatePicker } from '../components';
+import { time } from '../lib';
 import { TimePeriod } from '../types';
 
 const { MonthPicker, RangePicker } = DatePicker;
@@ -12,37 +13,37 @@ type Props = TimePeriod & {
 
 const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
   const ranges: {
-    [index: string]: [moment.Moment, moment.Moment];
+    [index: string]: [time.Dayjs, time.Dayjs];
   } = {
-    'This Month': [moment().startOf('month'), moment().endOf('month')],
-    'This Year': [moment().startOf('year'), moment().endOf('year')],
+    'This Month': [time().startOf('month'), time().endOf('month')],
+    'This Year': [time().startOf('year'), time().endOf('year')],
     'Last Month': [
-      moment().subtract(1, 'month').startOf('month'),
-      moment().subtract(1, 'month').endOf('month'),
+      time().subtract(1, 'month').startOf('month'),
+      time().subtract(1, 'month').endOf('month'),
     ],
     'Last 3 Months': [
-      moment().subtract(3, 'month').startOf('month'),
-      moment().endOf('month'),
+      time().subtract(3, 'month').startOf('month'),
+      time().endOf('month'),
     ],
     'Last 6 Months': [
-      moment().subtract(6, 'month').startOf('month'),
-      moment().endOf('month'),
+      time().subtract(6, 'month').startOf('month'),
+      time().endOf('month'),
     ],
     'Last 12 Months': [
-      moment().subtract(12, 'month').startOf('month'),
-      moment().endOf('month'),
+      time().subtract(12, 'month').startOf('month'),
+      time().endOf('month'),
     ],
     'Last Year': [
-      moment().subtract(1, 'year').startOf('year'),
-      moment().subtract(1, 'year').endOf('year'),
+      time().subtract(1, 'year').startOf('year'),
+      time().subtract(1, 'year').endOf('year'),
     ],
-    'Entire Range': [moment('2017-01-01').startOf('year'), moment()],
+    'Entire Range': [time('2017-01-01').startOf('year'), time()],
   };
 
   // add the past 3 years
   for (let i = 0; i < 3; i += 1) {
-    const year = String(moment().subtract(i, 'year').year());
-    ranges[year] = [moment(year).startOf('year'), moment(year).endOf('year')];
+    const year = String(time().subtract(i, 'year').year());
+    ranges[year] = [time(year).startOf('year'), time(year).endOf('year')];
   }
 
   return (
@@ -53,8 +54,8 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
             onChange={(date) => {
               if (date) {
                 setDates({
-                  startDate: moment(date).startOf('month'),
-                  endDate: moment(date).endOf('month'),
+                  startDate: time(date).startOf('month'),
+                  endDate: time(date).endOf('month'),
                 });
               }
             }}
@@ -69,8 +70,8 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
             onChange={([start, end]) => {
               if (start && end) {
                 setDates({
-                  startDate: moment(start).startOf('day'),
-                  endDate: moment(end).endOf('day'),
+                  startDate: time(start).startOf('day'),
+                  endDate: time(end).endOf('day'),
                 });
               }
             }}

@@ -6,3 +6,4 @@ export { default as Amount } from './Amount';
 export { default as AccountAvatar } from './AccountAvatar';
 export { default as DateDisplay } from './DateDisplay';
 export { default as PageDrawer } from './PageDrawer';
+export { default as DatePicker } from './DatePicker';

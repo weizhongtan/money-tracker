@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client';
-import moment from 'moment';
+
+import { time } from '../../lib';
 
 const query = gql`
   query CheckTransaction(
@@ -72,7 +73,7 @@ export const useCreateTransaction = () => {
     startDate.setMinutes(0);
     startDate.setSeconds(0);
     startDate.setMilliseconds(0);
-    const endDate = moment(startDate).add(1, 'day').toDate();
+    const endDate = time(startDate).add(1, 'day').toDate();
     const res = await client.query({
       query,
       variables: {

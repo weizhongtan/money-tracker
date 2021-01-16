@@ -1,6 +1,5 @@
-import moment from 'moment';
-
 import { GetBaseDataQuery, GetTransactionsQuery } from '../generated/graphql';
+import { time } from '../lib';
 
 type GetElementType<T extends Array<any>> = T extends (infer U)[] ? U : never;
 
@@ -13,8 +12,8 @@ export type Transaction = GetElementType<
 >;
 
 export interface TimePeriod {
-  startDate: moment.Moment;
-  endDate: moment.Moment;
+  startDate: time.Dayjs;
+  endDate: time.Dayjs;
 }
 
 export type BaseData = GetBaseDataQuery & {
