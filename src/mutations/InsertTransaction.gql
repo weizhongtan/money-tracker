@@ -1,0 +1,17 @@
+mutation InsertTransaction(
+  $accountId: uuid
+  $amount: numeric
+  $date: timestamptz
+  $description: String
+) {
+  insert_transactions(
+    objects: {
+      account_id: $accountId
+      amount: $amount
+      date: $date
+      description: $description
+    }
+  ) {
+    affected_rows
+  }
+}

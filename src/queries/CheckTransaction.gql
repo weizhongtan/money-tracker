@@ -1,0 +1,24 @@
+query CheckTransaction(
+  $accountId: uuid!
+  $amount: numeric!
+  $startDate: timestamptz!
+  $endDate: timestamptz!
+  $description: String!
+) {
+  transactions(
+    where: {
+      _and: [
+        { account_id: { _eq: $accountId } }
+        { amount: { _eq: $amount } }
+        { date: { _gte: $startDate, _lt: $endDate } }
+        { description: { _eq: $description } }
+      ]
+    }
+  ) {
+    id
+    account_id
+    amount
+    date
+    description
+  }
+}

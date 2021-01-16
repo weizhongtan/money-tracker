@@ -1,54 +1,14 @@
-import { gql } from '@apollo/client';
 import { useApolloClient } from '@apollo/client';
 
+import {
+  CheckTransactionDocument,
+  CheckTransactionQuery,
+  CheckTransactionQueryVariables,
+  InsertTransactionDocument,
+  InsertTransactionMutation,
+  InsertTransactionMutationVariables,
+} from '../../generated/graphql';
 import { time } from '../../lib';
-
-const query = gql`
-  query CheckTransaction(
-    $accountId: uuid!
-    $amount: numeric!
-    $startDate: timestamptz!
-    $endDate: timestamptz!
-    $description: String!
-  ) {
-    transactions(
-      where: {
-        _and: [
-          { account_id: { _eq: $accountId } }
-          { amount: { _eq: $amount } }
-          { date: { _gte: $startDate, _lt: $endDate } }
-          { description: { _eq: $description } }
-        ]
-      }
-    ) {
-      id
-      account_id
-      amount
-      date
-      description
-    }
-  }
-`;
-
-const mutation = gql`
-  mutation InsertTransaction(
-    $accountId: uuid
-    $amount: numeric
-    $date: timestamptz
-    $description: String
-  ) {
-    insert_transactions(
-      objects: {
-        account_id: $accountId
-        amount: $amount
-        date: $date
-        description: $description
-      }
-    ) {
-      affected_rows
-    }
-  }
-`;
 
 interface Transaction {
   accountId: string;
@@ -74,25 +34,31 @@ export const useCreateTransaction = () => {
     startDate.setSeconds(0);
     startDate.setMilliseconds(0);
     const endDate = time(startDate).add(1, 'day').toDate();
-    const res = await client.query({
-      query,
+    const res = await client.query<
+      CheckTransactionQuery,
+      CheckTransactionQueryVariables
+    >({
+      query: CheckTransactionDocument,
       variables: {
         accountId,
         amount,
-        startDate,
-        endDate,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
         description,
       },
       fetchPolicy: 'no-cache',
     });
 
-    if (res.data.transactions.length) {
+    if (res?.data?.transactions.length) {
       console.log(res.data.transactions.length);
       console.error(`Transaction already exists`, res.data.transactions[0]);
       return false;
     }
-    await client.mutate({
-      mutation,
+    await client.mutate<
+      InsertTransactionMutation,
+      InsertTransactionMutationVariables
+    >({
+      mutation: InsertTransactionDocument,
       variables: {
         accountId,
         amount,

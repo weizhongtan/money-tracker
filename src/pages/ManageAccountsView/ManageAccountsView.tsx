@@ -64,13 +64,13 @@ function csvParser(data: string) {
 }
 
 function qifParser(): Transaction[] {
-  console.log('qif is not supported');
+  console.error('qif is not supported');
   return [];
 }
 
 type Parser = (data: string) => Transaction[] | Promise<Transaction[]>;
 
-const parsers: { [index: string]: Parser } = {
+const parsers: { [name: string]: Parser } = {
   ofx: ofxParser,
   qfx: ofxParser,
   csv: csvParser,
