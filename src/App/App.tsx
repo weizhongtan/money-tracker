@@ -49,12 +49,12 @@ const Spinner = styled(Spin)`
 interface IRoute {
   path: string;
   title: string;
-  Icon: React.ReactElement;
-  component?: React.FC<TimePeriod>;
+  icon: React.ReactElement;
+  Component?: React.FC<TimePeriod>;
   children?: {
     path: string;
     title: string;
-    component: React.FC<TimePeriod>;
+    Component: React.FC<TimePeriod>;
   }[];
 }
 
@@ -62,41 +62,41 @@ const routes: IRoute[] = [
   {
     path: '/transactions',
     title: 'Transactions',
-    Icon: <BarsOutlined />,
-    component: TransactionsView,
+    icon: <BarsOutlined />,
+    Component: TransactionsView,
   },
   {
     path: '/cumulative',
     title: 'Cumulative',
-    Icon: <FundOutlined />,
-    component: CumulativeView,
+    icon: <FundOutlined />,
+    Component: CumulativeView,
   },
   {
     path: '/breakdown',
     title: 'Breakdown',
-    Icon: <PieChartOutlined />,
-    component: BreakdownView,
+    icon: <PieChartOutlined />,
+    Component: BreakdownView,
   },
   {
     path: '/timeline',
     title: 'Timeline',
-    Icon: <ClockCircleOutlined />,
-    component: TimelineView,
+    icon: <ClockCircleOutlined />,
+    Component: TimelineView,
   },
   {
     path: '/manage',
     title: 'Manage',
-    Icon: <SettingOutlined />,
+    icon: <SettingOutlined />,
     children: [
       {
         path: '/categories',
         title: 'Categories',
-        component: ManageCategoriesView,
+        Component: ManageCategoriesView,
       },
       {
         path: '/accounts',
         title: 'Accounts',
-        component: ManageAccountsView,
+        Component: ManageAccountsView,
       },
     ],
   },
@@ -165,11 +165,11 @@ function App() {
             onOpenChange={setOpenKeys}
             mode="inline"
           >
-            {routes.map(({ path, title, Icon, children }) => {
+            {routes.map(({ path, title, icon, children }) => {
               if (!children) {
                 return (
                   <Menu.Item key={path}>
-                    {Icon}
+                    {icon}
                     <span>{title}</span>
                   </Menu.Item>
                 );
@@ -179,7 +179,7 @@ function App() {
                   key={path}
                   title={
                     <span>
-                      {Icon}
+                      {icon}
                       <span>{title}</span>
                     </span>
                   }
@@ -204,7 +204,7 @@ function App() {
         <Layout>
           <Content>
             <Switch>
-              {routes.map(({ path, component: Component, children }) => (
+              {routes.map(({ path, Component, children }) => (
                 <Route
                   key={path}
                   path={path}
@@ -218,12 +218,11 @@ function App() {
                     }
                     return (
                       <>
-                        {children.map((child) => {
-                          const Component = child.component;
+                        {children.map(({ Component, path }) => {
                           return (
                             <Route
-                              key={match.url + child.path}
-                              path={match.url + child.path}
+                              key={match.url + path}
+                              path={match.url + path}
                               render={() => (
                                 <Component {...{ startDate, endDate }} />
                               )}
