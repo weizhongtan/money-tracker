@@ -44,12 +44,12 @@ export const useCategories = ({
     total: data?.incomeSum.aggregate?.sum?.amount,
   };
 
-  // add "unspent pseudo category"
+  // add "Unspent/Uncategorised pseudo category"
   expense.categories?.push({
     _id: 'none',
-    id: 'Unspent',
-    name: 'Unspent',
-    label: 'Unspent',
+    id: 'Unspent/Uncategorised',
+    name: 'Unspent/Uncategorised',
+    label: 'Unspent/Uncategorised',
     value: Math.abs(income.total ?? 0) - Math.abs(expense.total ?? 0),
   });
   expense.categories?.sort((a, b) => b.value - a.value);
