@@ -1,6 +1,6 @@
 - table:
     schema: public
-    name: accounts
+    name: account
   array_relationships:
   - name: transactions
     using:

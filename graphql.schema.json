@@ -16,8 +16,8 @@
         "description": "query root",
         "fields": [
           {
-            "name": "accounts",
-            "description": "fetch data from the table: \"accounts\"",
+            "name": "account",
+            "description": "fetch data from the table: \"account\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -30,7 +30,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "accounts_select_column",
+                      "name": "account_select_column",
                       "ofType": null
                     }
                   }
@@ -68,7 +68,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "accounts_order_by",
+                      "name": "account_order_by",
                       "ofType": null
                     }
                   }
@@ -80,7 +80,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "accounts_bool_exp",
+                  "name": "account_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -97,7 +97,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "accounts",
+                    "name": "account",
                     "ofType": null
                   }
                 }
@@ -107,8 +107,8 @@
             "deprecationReason": null
           },
           {
-            "name": "accounts_aggregate",
-            "description": "fetch aggregated fields from the table: \"accounts\"",
+            "name": "account_aggregate",
+            "description": "fetch aggregated fields from the table: \"account\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -121,7 +121,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "accounts_select_column",
+                      "name": "account_select_column",
                       "ofType": null
                     }
                   }
@@ -159,7 +159,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "accounts_order_by",
+                      "name": "account_order_by",
                       "ofType": null
                     }
                   }
@@ -171,7 +171,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "accounts_bool_exp",
+                  "name": "account_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -182,7 +182,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "accounts_aggregate",
+                "name": "account_aggregate",
                 "ofType": null
               }
             },
@@ -190,8 +190,8 @@
             "deprecationReason": null
           },
           {
-            "name": "accounts_by_pk",
-            "description": "fetch data from the table: \"accounts\" using primary key columns",
+            "name": "account_by_pk",
+            "description": "fetch data from the table: \"account\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -210,7 +210,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts",
+              "name": "account",
               "ofType": null
             },
             "isDeprecated": false,
@@ -1552,8 +1552,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "accounts_select_column",
-        "description": "select columns of table \"accounts\"",
+        "name": "account_select_column",
+        "description": "select columns of table \"account\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -1621,8 +1621,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_order_by",
-        "description": "ordering options when selecting data from \"accounts\"",
+        "name": "account_order_by",
+        "description": "ordering options when selecting data from \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -2190,8 +2190,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"accounts\". All fields are combined with a logical 'AND'.",
+        "name": "account_bool_exp",
+        "description": "Boolean expression to filter rows from the table \"account\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -2202,7 +2202,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "accounts_bool_exp",
+                "name": "account_bool_exp",
                 "ofType": null
               }
             },
@@ -2213,7 +2213,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_bool_exp",
+              "name": "account_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2226,7 +2226,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "accounts_bool_exp",
+                "name": "account_bool_exp",
                 "ofType": null
               }
             },
@@ -2964,7 +2964,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_bool_exp",
+              "name": "account_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3054,7 +3054,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_bool_exp",
+              "name": "account_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3275,8 +3275,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts",
-        "description": "columns and relationships of \"accounts\"",
+        "name": "account",
+        "description": "columns and relationships of \"account\"",
         "fields": [
           {
             "name": "colour",
@@ -3840,7 +3840,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_order_by",
+              "name": "account_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -3930,7 +3930,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_order_by",
+              "name": "account_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -4288,7 +4288,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "accounts",
+                "name": "account",
                 "ofType": null
               }
             },
@@ -4429,7 +4429,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts",
+              "name": "account",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6025,8 +6025,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_aggregate",
-        "description": "aggregated selection of \"accounts\"",
+        "name": "account_aggregate",
+        "description": "aggregated selection of \"account\"",
         "fields": [
           {
             "name": "aggregate",
@@ -6034,7 +6034,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_aggregate_fields",
+              "name": "account_aggregate_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6055,7 +6055,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "accounts",
+                    "name": "account",
                     "ofType": null
                   }
                 }
@@ -6072,8 +6072,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_aggregate_fields",
-        "description": "aggregate fields of \"accounts\"",
+        "name": "account_aggregate_fields",
+        "description": "aggregate fields of \"account\"",
         "fields": [
           {
             "name": "avg",
@@ -6081,7 +6081,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_avg_fields",
+              "name": "account_avg_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6102,7 +6102,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "accounts_select_column",
+                      "name": "account_select_column",
                       "ofType": null
                     }
                   }
@@ -6134,7 +6134,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_max_fields",
+              "name": "account_max_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6146,7 +6146,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_min_fields",
+              "name": "account_min_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6158,7 +6158,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_stddev_fields",
+              "name": "account_stddev_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6170,7 +6170,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_stddev_pop_fields",
+              "name": "account_stddev_pop_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6182,7 +6182,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_stddev_samp_fields",
+              "name": "account_stddev_samp_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6194,7 +6194,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_sum_fields",
+              "name": "account_sum_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6206,7 +6206,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_var_pop_fields",
+              "name": "account_var_pop_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6218,7 +6218,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_var_samp_fields",
+              "name": "account_var_samp_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6230,7 +6230,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_variance_fields",
+              "name": "account_variance_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6244,7 +6244,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_avg_fields",
+        "name": "account_avg_fields",
         "description": "aggregate avg on columns",
         "fields": [
           {
@@ -6279,7 +6279,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_max_fields",
+        "name": "account_max_fields",
         "description": "aggregate max on columns",
         "fields": [
           {
@@ -6374,7 +6374,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_min_fields",
+        "name": "account_min_fields",
         "description": "aggregate min on columns",
         "fields": [
           {
@@ -6469,7 +6469,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_stddev_fields",
+        "name": "account_stddev_fields",
         "description": "aggregate stddev on columns",
         "fields": [
           {
@@ -6504,7 +6504,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_stddev_pop_fields",
+        "name": "account_stddev_pop_fields",
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
@@ -6539,7 +6539,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_stddev_samp_fields",
+        "name": "account_stddev_samp_fields",
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
@@ -6574,7 +6574,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_sum_fields",
+        "name": "account_sum_fields",
         "description": "aggregate sum on columns",
         "fields": [
           {
@@ -6609,7 +6609,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_var_pop_fields",
+        "name": "account_var_pop_fields",
         "description": "aggregate var_pop on columns",
         "fields": [
           {
@@ -6644,7 +6644,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_var_samp_fields",
+        "name": "account_var_samp_fields",
         "description": "aggregate var_samp on columns",
         "fields": [
           {
@@ -6679,7 +6679,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_variance_fields",
+        "name": "account_variance_fields",
         "description": "aggregate variance on columns",
         "fields": [
           {
@@ -9787,8 +9787,8 @@
         "description": "mutation root",
         "fields": [
           {
-            "name": "delete_accounts",
-            "description": "delete data from the table: \"accounts\"",
+            "name": "delete_account",
+            "description": "delete data from the table: \"account\"",
             "args": [
               {
                 "name": "where",
@@ -9798,7 +9798,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "accounts_bool_exp",
+                    "name": "account_bool_exp",
                     "ofType": null
                   }
                 },
@@ -9807,7 +9807,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_mutation_response",
+              "name": "account_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9922,8 +9922,8 @@
             "deprecationReason": null
           },
           {
-            "name": "insert_accounts",
-            "description": "insert data into the table: \"accounts\"",
+            "name": "insert_account",
+            "description": "insert data into the table: \"account\"",
             "args": [
               {
                 "name": "objects",
@@ -9939,7 +9939,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "accounts_insert_input",
+                        "name": "account_insert_input",
                         "ofType": null
                       }
                     }
@@ -9952,7 +9952,7 @@
                 "description": "on conflict condition",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "accounts_on_conflict",
+                  "name": "account_on_conflict",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -9960,7 +9960,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_mutation_response",
+              "name": "account_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10127,15 +10127,15 @@
             "deprecationReason": null
           },
           {
-            "name": "update_accounts",
-            "description": "update data of the table: \"accounts\"",
+            "name": "update_account",
+            "description": "update data of the table: \"account\"",
             "args": [
               {
                 "name": "_set",
                 "description": "sets the columns of the filtered rows to the given values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "accounts_set_input",
+                  "name": "account_set_input",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -10148,7 +10148,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "accounts_bool_exp",
+                    "name": "account_bool_exp",
                     "ofType": null
                   }
                 },
@@ -10157,7 +10157,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts_mutation_response",
+              "name": "account_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10319,8 +10319,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "accounts_mutation_response",
-        "description": "response of any mutation on the table \"accounts\"",
+        "name": "account_mutation_response",
+        "description": "response of any mutation on the table \"account\"",
         "fields": [
           {
             "name": "affected_rows",
@@ -10353,7 +10353,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "accounts",
+                    "name": "account",
                     "ofType": null
                   }
                 }
@@ -10574,8 +10574,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_insert_input",
-        "description": "input type for inserting data into table \"accounts\"",
+        "name": "account_insert_input",
+        "description": "input type for inserting data into table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -10737,7 +10737,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_obj_rel_insert_input",
+              "name": "account_obj_rel_insert_input",
               "ofType": null
             },
             "defaultValue": null
@@ -10827,7 +10827,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_obj_rel_insert_input",
+              "name": "account_obj_rel_insert_input",
               "ofType": null
             },
             "defaultValue": null
@@ -10899,8 +10899,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_obj_rel_insert_input",
-        "description": "input type for inserting object relation for remote table \"accounts\"",
+        "name": "account_obj_rel_insert_input",
+        "description": "input type for inserting object relation for remote table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -10911,7 +10911,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "accounts_insert_input",
+                "name": "account_insert_input",
                 "ofType": null
               }
             },
@@ -10922,7 +10922,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_on_conflict",
+              "name": "account_on_conflict",
               "ofType": null
             },
             "defaultValue": null
@@ -10934,8 +10934,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_on_conflict",
-        "description": "on conflict condition type for table \"accounts\"",
+        "name": "account_on_conflict",
+        "description": "on conflict condition type for table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -10946,7 +10946,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "accounts_constraint",
+                "name": "account_constraint",
                 "ofType": null
               }
             },
@@ -10966,7 +10966,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "ENUM",
-                    "name": "accounts_update_column",
+                    "name": "account_update_column",
                     "ofType": null
                   }
                 }
@@ -10979,7 +10979,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_bool_exp",
+              "name": "account_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -10991,8 +10991,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "accounts_constraint",
-        "description": "unique or primary key constraints on table \"accounts\"",
+        "name": "account_constraint",
+        "description": "unique or primary key constraints on table \"account\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -11008,8 +11008,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "accounts_update_column",
-        "description": "update columns of table \"accounts\"",
+        "name": "account_update_column",
+        "description": "update columns of table \"account\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -11651,8 +11651,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_set_input",
-        "description": "input type for updating data in table \"accounts\"",
+        "name": "account_set_input",
+        "description": "input type for updating data in table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -12030,8 +12030,8 @@
         "description": "subscription root",
         "fields": [
           {
-            "name": "accounts",
-            "description": "fetch data from the table: \"accounts\"",
+            "name": "account",
+            "description": "fetch data from the table: \"account\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -12044,7 +12044,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "accounts_select_column",
+                      "name": "account_select_column",
                       "ofType": null
                     }
                   }
@@ -12082,7 +12082,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "accounts_order_by",
+                      "name": "account_order_by",
                       "ofType": null
                     }
                   }
@@ -12094,7 +12094,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "accounts_bool_exp",
+                  "name": "account_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -12111,7 +12111,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "accounts",
+                    "name": "account",
                     "ofType": null
                   }
                 }
@@ -12121,8 +12121,8 @@
             "deprecationReason": null
           },
           {
-            "name": "accounts_aggregate",
-            "description": "fetch aggregated fields from the table: \"accounts\"",
+            "name": "account_aggregate",
+            "description": "fetch aggregated fields from the table: \"account\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -12135,7 +12135,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "accounts_select_column",
+                      "name": "account_select_column",
                       "ofType": null
                     }
                   }
@@ -12173,7 +12173,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "accounts_order_by",
+                      "name": "account_order_by",
                       "ofType": null
                     }
                   }
@@ -12185,7 +12185,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "accounts_bool_exp",
+                  "name": "account_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -12196,7 +12196,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "accounts_aggregate",
+                "name": "account_aggregate",
                 "ofType": null
               }
             },
@@ -12204,8 +12204,8 @@
             "deprecationReason": null
           },
           {
-            "name": "accounts_by_pk",
-            "description": "fetch data from the table: \"accounts\" using primary key columns",
+            "name": "account_by_pk",
+            "description": "fetch data from the table: \"account\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -12224,7 +12224,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "accounts",
+              "name": "account",
               "ofType": null
             },
             "isDeprecated": false,
@@ -14362,8 +14362,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_aggregate_order_by",
-        "description": "order by aggregate values of table \"accounts\"",
+        "name": "account_aggregate_order_by",
+        "description": "order by aggregate values of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14371,7 +14371,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_avg_order_by",
+              "name": "account_avg_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14391,7 +14391,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_max_order_by",
+              "name": "account_max_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14401,7 +14401,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_min_order_by",
+              "name": "account_min_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14411,7 +14411,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_stddev_order_by",
+              "name": "account_stddev_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14421,7 +14421,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_stddev_pop_order_by",
+              "name": "account_stddev_pop_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14431,7 +14431,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_stddev_samp_order_by",
+              "name": "account_stddev_samp_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14441,7 +14441,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_sum_order_by",
+              "name": "account_sum_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14451,7 +14451,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_var_pop_order_by",
+              "name": "account_var_pop_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14461,7 +14461,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_var_samp_order_by",
+              "name": "account_var_samp_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14471,7 +14471,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_variance_order_by",
+              "name": "account_variance_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -14483,8 +14483,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_avg_order_by",
-        "description": "order by avg() on columns of table \"accounts\"",
+        "name": "account_avg_order_by",
+        "description": "order by avg() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14514,89 +14514,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_max_order_by",
-        "description": "order by max() on columns of table \"accounts\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "colour",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "created_at",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "initial_amount",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "legacy_key",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "minimum",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "name",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "updated_at",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "accounts_min_order_by",
-        "description": "order by min() on columns of table \"accounts\"",
+        "name": "account_max_order_by",
+        "description": "order by max() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14676,8 +14595,89 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_stddev_order_by",
-        "description": "order by stddev() on columns of table \"accounts\"",
+        "name": "account_min_order_by",
+        "description": "order by min() on columns of table \"account\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "colour",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "created_at",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "initial_amount",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "legacy_key",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "minimum",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "updated_at",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "account_stddev_order_by",
+        "description": "order by stddev() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14707,8 +14707,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_stddev_pop_order_by",
-        "description": "order by stddev_pop() on columns of table \"accounts\"",
+        "name": "account_stddev_pop_order_by",
+        "description": "order by stddev_pop() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14738,8 +14738,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_stddev_samp_order_by",
-        "description": "order by stddev_samp() on columns of table \"accounts\"",
+        "name": "account_stddev_samp_order_by",
+        "description": "order by stddev_samp() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14769,8 +14769,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_sum_order_by",
-        "description": "order by sum() on columns of table \"accounts\"",
+        "name": "account_sum_order_by",
+        "description": "order by sum() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14800,8 +14800,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_var_pop_order_by",
-        "description": "order by var_pop() on columns of table \"accounts\"",
+        "name": "account_var_pop_order_by",
+        "description": "order by var_pop() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14831,8 +14831,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_var_samp_order_by",
-        "description": "order by var_samp() on columns of table \"accounts\"",
+        "name": "account_var_samp_order_by",
+        "description": "order by var_samp() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14862,8 +14862,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_variance_order_by",
-        "description": "order by variance() on columns of table \"accounts\"",
+        "name": "account_variance_order_by",
+        "description": "order by variance() on columns of table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14893,8 +14893,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "accounts_arr_rel_insert_input",
-        "description": "input type for inserting array relation for remote table \"accounts\"",
+        "name": "account_arr_rel_insert_input",
+        "description": "input type for inserting array relation for remote table \"account\"",
         "fields": null,
         "inputFields": [
           {
@@ -14911,7 +14911,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "accounts_insert_input",
+                    "name": "account_insert_input",
                     "ofType": null
                   }
                 }
@@ -14924,7 +14924,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "accounts_on_conflict",
+              "name": "account_on_conflict",
               "ofType": null
             },
             "defaultValue": null

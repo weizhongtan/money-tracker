@@ -16,8 +16,8 @@ export type Scalars = {
   numeric: number;
 };
 
-/** columns and relationships of "accounts" */
-export type Accounts = {
+/** columns and relationships of "account" */
+export type Account = {
   colour?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
@@ -37,8 +37,8 @@ export type Accounts = {
 };
 
 
-/** columns and relationships of "accounts" */
-export type AccountsTransactionsArgs = {
+/** columns and relationships of "account" */
+export type AccountTransactionsArgs = {
   distinct_on?: Maybe<Array<Transactions_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -47,8 +47,8 @@ export type AccountsTransactionsArgs = {
 };
 
 
-/** columns and relationships of "accounts" */
-export type AccountsTransactionsByToAccountIdArgs = {
+/** columns and relationships of "account" */
+export type AccountTransactionsByToAccountIdArgs = {
   distinct_on?: Maybe<Array<Transactions_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -57,8 +57,8 @@ export type AccountsTransactionsByToAccountIdArgs = {
 };
 
 
-/** columns and relationships of "accounts" */
-export type AccountsTransactionsByToAccountId_AggregateArgs = {
+/** columns and relationships of "account" */
+export type AccountTransactionsByToAccountId_AggregateArgs = {
   distinct_on?: Maybe<Array<Transactions_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -67,8 +67,8 @@ export type AccountsTransactionsByToAccountId_AggregateArgs = {
 };
 
 
-/** columns and relationships of "accounts" */
-export type AccountsTransactions_AggregateArgs = {
+/** columns and relationships of "account" */
+export type AccountTransactions_AggregateArgs = {
   distinct_on?: Maybe<Array<Transactions_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -76,72 +76,72 @@ export type AccountsTransactions_AggregateArgs = {
   where?: Maybe<Transactions_Bool_Exp>;
 };
 
-/** aggregated selection of "accounts" */
-export type Accounts_Aggregate = {
-  aggregate?: Maybe<Accounts_Aggregate_Fields>;
-  nodes: Array<Accounts>;
+/** aggregated selection of "account" */
+export type Account_Aggregate = {
+  aggregate?: Maybe<Account_Aggregate_Fields>;
+  nodes: Array<Account>;
 };
 
-/** aggregate fields of "accounts" */
-export type Accounts_Aggregate_Fields = {
-  avg?: Maybe<Accounts_Avg_Fields>;
+/** aggregate fields of "account" */
+export type Account_Aggregate_Fields = {
+  avg?: Maybe<Account_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Accounts_Max_Fields>;
-  min?: Maybe<Accounts_Min_Fields>;
-  stddev?: Maybe<Accounts_Stddev_Fields>;
-  stddev_pop?: Maybe<Accounts_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Accounts_Stddev_Samp_Fields>;
-  sum?: Maybe<Accounts_Sum_Fields>;
-  var_pop?: Maybe<Accounts_Var_Pop_Fields>;
-  var_samp?: Maybe<Accounts_Var_Samp_Fields>;
-  variance?: Maybe<Accounts_Variance_Fields>;
+  max?: Maybe<Account_Max_Fields>;
+  min?: Maybe<Account_Min_Fields>;
+  stddev?: Maybe<Account_Stddev_Fields>;
+  stddev_pop?: Maybe<Account_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Account_Stddev_Samp_Fields>;
+  sum?: Maybe<Account_Sum_Fields>;
+  var_pop?: Maybe<Account_Var_Pop_Fields>;
+  var_samp?: Maybe<Account_Var_Samp_Fields>;
+  variance?: Maybe<Account_Variance_Fields>;
 };
 
 
-/** aggregate fields of "accounts" */
-export type Accounts_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Accounts_Select_Column>>;
+/** aggregate fields of "account" */
+export type Account_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Account_Select_Column>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "accounts" */
-export type Accounts_Aggregate_Order_By = {
-  avg?: Maybe<Accounts_Avg_Order_By>;
+/** order by aggregate values of table "account" */
+export type Account_Aggregate_Order_By = {
+  avg?: Maybe<Account_Avg_Order_By>;
   count?: Maybe<Order_By>;
-  max?: Maybe<Accounts_Max_Order_By>;
-  min?: Maybe<Accounts_Min_Order_By>;
-  stddev?: Maybe<Accounts_Stddev_Order_By>;
-  stddev_pop?: Maybe<Accounts_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Accounts_Stddev_Samp_Order_By>;
-  sum?: Maybe<Accounts_Sum_Order_By>;
-  var_pop?: Maybe<Accounts_Var_Pop_Order_By>;
-  var_samp?: Maybe<Accounts_Var_Samp_Order_By>;
-  variance?: Maybe<Accounts_Variance_Order_By>;
+  max?: Maybe<Account_Max_Order_By>;
+  min?: Maybe<Account_Min_Order_By>;
+  stddev?: Maybe<Account_Stddev_Order_By>;
+  stddev_pop?: Maybe<Account_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Account_Stddev_Samp_Order_By>;
+  sum?: Maybe<Account_Sum_Order_By>;
+  var_pop?: Maybe<Account_Var_Pop_Order_By>;
+  var_samp?: Maybe<Account_Var_Samp_Order_By>;
+  variance?: Maybe<Account_Variance_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "accounts" */
-export type Accounts_Arr_Rel_Insert_Input = {
-  data: Array<Accounts_Insert_Input>;
-  on_conflict?: Maybe<Accounts_On_Conflict>;
+/** input type for inserting array relation for remote table "account" */
+export type Account_Arr_Rel_Insert_Input = {
+  data: Array<Account_Insert_Input>;
+  on_conflict?: Maybe<Account_On_Conflict>;
 };
 
 /** aggregate avg on columns */
-export type Accounts_Avg_Fields = {
+export type Account_Avg_Fields = {
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
 
-/** order by avg() on columns of table "accounts" */
-export type Accounts_Avg_Order_By = {
+/** order by avg() on columns of table "account" */
+export type Account_Avg_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
 
-/** Boolean expression to filter rows from the table "accounts". All fields are combined with a logical 'AND'. */
-export type Accounts_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Accounts_Bool_Exp>>>;
-  _not?: Maybe<Accounts_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Accounts_Bool_Exp>>>;
+/** Boolean expression to filter rows from the table "account". All fields are combined with a logical 'AND'. */
+export type Account_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Account_Bool_Exp>>>;
+  _not?: Maybe<Account_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Account_Bool_Exp>>>;
   colour?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
@@ -154,14 +154,14 @@ export type Accounts_Bool_Exp = {
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "accounts" */
-export enum Accounts_Constraint {
+/** unique or primary key constraints on table "account" */
+export enum Account_Constraint {
   /** unique or primary key constraint */
   AccountsPkey = 'accounts_pkey'
 }
 
-/** input type for inserting data into table "accounts" */
-export type Accounts_Insert_Input = {
+/** input type for inserting data into table "account" */
+export type Account_Insert_Input = {
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
@@ -175,7 +175,7 @@ export type Accounts_Insert_Input = {
 };
 
 /** aggregate max on columns */
-export type Accounts_Max_Fields = {
+export type Account_Max_Fields = {
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   initial_amount?: Maybe<Scalars['numeric']>;
@@ -185,8 +185,8 @@ export type Accounts_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by max() on columns of table "accounts" */
-export type Accounts_Max_Order_By = {
+/** order by max() on columns of table "account" */
+export type Account_Max_Order_By = {
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   initial_amount?: Maybe<Order_By>;
@@ -197,7 +197,7 @@ export type Accounts_Max_Order_By = {
 };
 
 /** aggregate min on columns */
-export type Accounts_Min_Fields = {
+export type Account_Min_Fields = {
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   initial_amount?: Maybe<Scalars['numeric']>;
@@ -207,8 +207,8 @@ export type Accounts_Min_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by min() on columns of table "accounts" */
-export type Accounts_Min_Order_By = {
+/** order by min() on columns of table "account" */
+export type Account_Min_Order_By = {
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   initial_amount?: Maybe<Order_By>;
@@ -218,29 +218,29 @@ export type Accounts_Min_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** response of any mutation on the table "accounts" */
-export type Accounts_Mutation_Response = {
+/** response of any mutation on the table "account" */
+export type Account_Mutation_Response = {
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
-  returning: Array<Accounts>;
+  returning: Array<Account>;
 };
 
-/** input type for inserting object relation for remote table "accounts" */
-export type Accounts_Obj_Rel_Insert_Input = {
-  data: Accounts_Insert_Input;
-  on_conflict?: Maybe<Accounts_On_Conflict>;
+/** input type for inserting object relation for remote table "account" */
+export type Account_Obj_Rel_Insert_Input = {
+  data: Account_Insert_Input;
+  on_conflict?: Maybe<Account_On_Conflict>;
 };
 
-/** on conflict condition type for table "accounts" */
-export type Accounts_On_Conflict = {
-  constraint: Accounts_Constraint;
-  update_columns: Array<Accounts_Update_Column>;
-  where?: Maybe<Accounts_Bool_Exp>;
+/** on conflict condition type for table "account" */
+export type Account_On_Conflict = {
+  constraint: Account_Constraint;
+  update_columns: Array<Account_Update_Column>;
+  where?: Maybe<Account_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "accounts" */
-export type Accounts_Order_By = {
+/** ordering options when selecting data from "account" */
+export type Account_Order_By = {
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -253,8 +253,8 @@ export type Accounts_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** select columns of table "accounts" */
-export enum Accounts_Select_Column {
+/** select columns of table "account" */
+export enum Account_Select_Column {
   /** column name */
   Colour = 'colour',
   /** column name */
@@ -273,8 +273,8 @@ export enum Accounts_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
-/** input type for updating data in table "accounts" */
-export type Accounts_Set_Input = {
+/** input type for updating data in table "account" */
+export type Account_Set_Input = {
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
@@ -286,55 +286,55 @@ export type Accounts_Set_Input = {
 };
 
 /** aggregate stddev on columns */
-export type Accounts_Stddev_Fields = {
+export type Account_Stddev_Fields = {
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "accounts" */
-export type Accounts_Stddev_Order_By = {
+/** order by stddev() on columns of table "account" */
+export type Account_Stddev_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
-export type Accounts_Stddev_Pop_Fields = {
+export type Account_Stddev_Pop_Fields = {
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_pop() on columns of table "accounts" */
-export type Accounts_Stddev_Pop_Order_By = {
+/** order by stddev_pop() on columns of table "account" */
+export type Account_Stddev_Pop_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
-export type Accounts_Stddev_Samp_Fields = {
+export type Account_Stddev_Samp_Fields = {
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "accounts" */
-export type Accounts_Stddev_Samp_Order_By = {
+/** order by stddev_samp() on columns of table "account" */
+export type Account_Stddev_Samp_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
-export type Accounts_Sum_Fields = {
+export type Account_Sum_Fields = {
   initial_amount?: Maybe<Scalars['numeric']>;
   minimum?: Maybe<Scalars['numeric']>;
 };
 
-/** order by sum() on columns of table "accounts" */
-export type Accounts_Sum_Order_By = {
+/** order by sum() on columns of table "account" */
+export type Account_Sum_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
 
-/** update columns of table "accounts" */
-export enum Accounts_Update_Column {
+/** update columns of table "account" */
+export enum Account_Update_Column {
   /** column name */
   Colour = 'colour',
   /** column name */
@@ -354,37 +354,37 @@ export enum Accounts_Update_Column {
 }
 
 /** aggregate var_pop on columns */
-export type Accounts_Var_Pop_Fields = {
+export type Account_Var_Pop_Fields = {
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "accounts" */
-export type Accounts_Var_Pop_Order_By = {
+/** order by var_pop() on columns of table "account" */
+export type Account_Var_Pop_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
-export type Accounts_Var_Samp_Fields = {
+export type Account_Var_Samp_Fields = {
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "accounts" */
-export type Accounts_Var_Samp_Order_By = {
+/** order by var_samp() on columns of table "account" */
+export type Account_Var_Samp_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
-export type Accounts_Variance_Fields = {
+export type Account_Variance_Fields = {
   initial_amount?: Maybe<Scalars['Float']>;
   minimum?: Maybe<Scalars['Float']>;
 };
 
-/** order by variance() on columns of table "accounts" */
-export type Accounts_Variance_Order_By = {
+/** order by variance() on columns of table "account" */
+export type Account_Variance_Order_By = {
   initial_amount?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
 };
@@ -651,8 +651,8 @@ export type Func_Transactions_By_Category_Grouped_Args = {
 
 /** mutation root */
 export type Mutation_Root = {
-  /** delete data from the table: "accounts" */
-  delete_accounts?: Maybe<Accounts_Mutation_Response>;
+  /** delete data from the table: "account" */
+  delete_account?: Maybe<Account_Mutation_Response>;
   /** delete data from the table: "categories" */
   delete_categories?: Maybe<Categories_Mutation_Response>;
   /** delete data from the table: "table_transactions_by_category_grouped" */
@@ -661,8 +661,8 @@ export type Mutation_Root = {
   delete_table_transactions_group_by?: Maybe<Table_Transactions_Group_By_Mutation_Response>;
   /** delete data from the table: "transactions" */
   delete_transactions?: Maybe<Transactions_Mutation_Response>;
-  /** insert data into the table: "accounts" */
-  insert_accounts?: Maybe<Accounts_Mutation_Response>;
+  /** insert data into the table: "account" */
+  insert_account?: Maybe<Account_Mutation_Response>;
   /** insert data into the table: "categories" */
   insert_categories?: Maybe<Categories_Mutation_Response>;
   /** insert data into the table: "table_transactions_by_category_grouped" */
@@ -671,8 +671,8 @@ export type Mutation_Root = {
   insert_table_transactions_group_by?: Maybe<Table_Transactions_Group_By_Mutation_Response>;
   /** insert data into the table: "transactions" */
   insert_transactions?: Maybe<Transactions_Mutation_Response>;
-  /** update data of the table: "accounts" */
-  update_accounts?: Maybe<Accounts_Mutation_Response>;
+  /** update data of the table: "account" */
+  update_account?: Maybe<Account_Mutation_Response>;
   /** update data of the table: "categories" */
   update_categories?: Maybe<Categories_Mutation_Response>;
   /** update data of the table: "table_transactions_by_category_grouped" */
@@ -685,8 +685,8 @@ export type Mutation_Root = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_AccountsArgs = {
-  where: Accounts_Bool_Exp;
+export type Mutation_RootDelete_AccountArgs = {
+  where: Account_Bool_Exp;
 };
 
 
@@ -715,9 +715,9 @@ export type Mutation_RootDelete_TransactionsArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_AccountsArgs = {
-  objects: Array<Accounts_Insert_Input>;
-  on_conflict?: Maybe<Accounts_On_Conflict>;
+export type Mutation_RootInsert_AccountArgs = {
+  objects: Array<Account_Insert_Input>;
+  on_conflict?: Maybe<Account_On_Conflict>;
 };
 
 
@@ -748,9 +748,9 @@ export type Mutation_RootInsert_TransactionsArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_AccountsArgs = {
-  _set?: Maybe<Accounts_Set_Input>;
-  where: Accounts_Bool_Exp;
+export type Mutation_RootUpdate_AccountArgs = {
+  _set?: Maybe<Account_Set_Input>;
+  where: Account_Bool_Exp;
 };
 
 
@@ -813,12 +813,12 @@ export enum Order_By {
 
 /** query root */
 export type Query_Root = {
-  /** fetch data from the table: "accounts" */
-  accounts: Array<Accounts>;
-  /** fetch aggregated fields from the table: "accounts" */
-  accounts_aggregate: Accounts_Aggregate;
-  /** fetch data from the table: "accounts" using primary key columns */
-  accounts_by_pk?: Maybe<Accounts>;
+  /** fetch data from the table: "account" */
+  account: Array<Account>;
+  /** fetch aggregated fields from the table: "account" */
+  account_aggregate: Account_Aggregate;
+  /** fetch data from the table: "account" using primary key columns */
+  account_by_pk?: Maybe<Account>;
   /** fetch data from the table: "categories" */
   categories: Array<Categories>;
   /** fetch aggregated fields from the table: "categories" */
@@ -861,27 +861,27 @@ export type Query_Root = {
 
 
 /** query root */
-export type Query_RootAccountsArgs = {
-  distinct_on?: Maybe<Array<Accounts_Select_Column>>;
+export type Query_RootAccountArgs = {
+  distinct_on?: Maybe<Array<Account_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Accounts_Order_By>>;
-  where?: Maybe<Accounts_Bool_Exp>;
+  order_by?: Maybe<Array<Account_Order_By>>;
+  where?: Maybe<Account_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootAccounts_AggregateArgs = {
-  distinct_on?: Maybe<Array<Accounts_Select_Column>>;
+export type Query_RootAccount_AggregateArgs = {
+  distinct_on?: Maybe<Array<Account_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Accounts_Order_By>>;
-  where?: Maybe<Accounts_Bool_Exp>;
+  order_by?: Maybe<Array<Account_Order_By>>;
+  where?: Maybe<Account_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootAccounts_By_PkArgs = {
+export type Query_RootAccount_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1062,12 +1062,12 @@ export type String_Comparison_Exp = {
 
 /** subscription root */
 export type Subscription_Root = {
-  /** fetch data from the table: "accounts" */
-  accounts: Array<Accounts>;
-  /** fetch aggregated fields from the table: "accounts" */
-  accounts_aggregate: Accounts_Aggregate;
-  /** fetch data from the table: "accounts" using primary key columns */
-  accounts_by_pk?: Maybe<Accounts>;
+  /** fetch data from the table: "account" */
+  account: Array<Account>;
+  /** fetch aggregated fields from the table: "account" */
+  account_aggregate: Account_Aggregate;
+  /** fetch data from the table: "account" using primary key columns */
+  account_by_pk?: Maybe<Account>;
   /** fetch data from the table: "categories" */
   categories: Array<Categories>;
   /** fetch aggregated fields from the table: "categories" */
@@ -1110,27 +1110,27 @@ export type Subscription_Root = {
 
 
 /** subscription root */
-export type Subscription_RootAccountsArgs = {
-  distinct_on?: Maybe<Array<Accounts_Select_Column>>;
+export type Subscription_RootAccountArgs = {
+  distinct_on?: Maybe<Array<Account_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Accounts_Order_By>>;
-  where?: Maybe<Accounts_Bool_Exp>;
+  order_by?: Maybe<Array<Account_Order_By>>;
+  where?: Maybe<Account_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootAccounts_AggregateArgs = {
-  distinct_on?: Maybe<Array<Accounts_Select_Column>>;
+export type Subscription_RootAccount_AggregateArgs = {
+  distinct_on?: Maybe<Array<Account_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Accounts_Order_By>>;
-  where?: Maybe<Accounts_Bool_Exp>;
+  order_by?: Maybe<Array<Account_Order_By>>;
+  where?: Maybe<Account_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootAccounts_By_PkArgs = {
+export type Subscription_RootAccount_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1779,7 +1779,7 @@ export type Timestamptz_Comparison_Exp = {
 /** columns and relationships of "transactions" */
 export type Transactions = {
   /** An object relationship */
-  account: Accounts;
+  account: Account;
   account_id: Scalars['uuid'];
   amount: Scalars['numeric'];
   /** An object relationship */
@@ -1791,7 +1791,7 @@ export type Transactions = {
   description: Scalars['String'];
   id: Scalars['uuid'];
   /** An object relationship */
-  linkedAccount?: Maybe<Accounts>;
+  linkedAccount?: Maybe<Account>;
   linked_account_id?: Maybe<Scalars['uuid']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
@@ -1888,7 +1888,7 @@ export type Transactions_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Transactions_Bool_Exp>>>;
   _not?: Maybe<Transactions_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Transactions_Bool_Exp>>>;
-  account?: Maybe<Accounts_Bool_Exp>;
+  account?: Maybe<Account_Bool_Exp>;
   account_id?: Maybe<Uuid_Comparison_Exp>;
   amount?: Maybe<Numeric_Comparison_Exp>;
   category?: Maybe<Categories_Bool_Exp>;
@@ -1897,7 +1897,7 @@ export type Transactions_Bool_Exp = {
   date?: Maybe<Timestamptz_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
-  linkedAccount?: Maybe<Accounts_Bool_Exp>;
+  linkedAccount?: Maybe<Account_Bool_Exp>;
   linked_account_id?: Maybe<Uuid_Comparison_Exp>;
   pair_id?: Maybe<Uuid_Comparison_Exp>;
   paired_with_id?: Maybe<Uuid_Comparison_Exp>;
@@ -1914,7 +1914,7 @@ export enum Transactions_Constraint {
 
 /** input type for inserting data into table "transactions" */
 export type Transactions_Insert_Input = {
-  account?: Maybe<Accounts_Obj_Rel_Insert_Input>;
+  account?: Maybe<Account_Obj_Rel_Insert_Input>;
   account_id?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
   category?: Maybe<Categories_Obj_Rel_Insert_Input>;
@@ -1923,7 +1923,7 @@ export type Transactions_Insert_Input = {
   date?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
-  linkedAccount?: Maybe<Accounts_Obj_Rel_Insert_Input>;
+  linkedAccount?: Maybe<Account_Obj_Rel_Insert_Input>;
   linked_account_id?: Maybe<Scalars['uuid']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
@@ -1991,7 +1991,7 @@ export type Transactions_On_Conflict = {
 
 /** ordering options when selecting data from "transactions" */
 export type Transactions_Order_By = {
-  account?: Maybe<Accounts_Order_By>;
+  account?: Maybe<Account_Order_By>;
   account_id?: Maybe<Order_By>;
   amount?: Maybe<Order_By>;
   category?: Maybe<Categories_Order_By>;
@@ -2000,7 +2000,7 @@ export type Transactions_Order_By = {
   date?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
-  linkedAccount?: Maybe<Accounts_Order_By>;
+  linkedAccount?: Maybe<Account_Order_By>;
   linked_account_id?: Maybe<Order_By>;
   pair_id?: Maybe<Order_By>;
   paired_with_id?: Maybe<Order_By>;
@@ -2505,7 +2505,7 @@ export type PairTransactionsMutation = { update_transactions?: Maybe<(
     Pick<Transactions_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
       Pick<Transactions, 'id' | 'pair_id'>
-      & { linkedAccount?: Maybe<Pick<Accounts, 'id' | 'name' | 'colour'>> }
+      & { linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>> }
     )> }
   )> };
 
@@ -2603,7 +2603,7 @@ export type GetTransactionsQueryVariables = Exact<{
 export type GetTransactionsQuery = { transactions_aggregate: { aggregate?: Maybe<Pick<Transactions_Aggregate_Fields, 'count'>>, nodes: Array<(
       Pick<Transactions, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
       & { key: Transactions['id'] }
-      & { account: Pick<Accounts, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Accounts, 'id' | 'name' | 'colour'>>, category: Pick<Categories, 'id' | 'name'> }
+      & { account: Pick<Account, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>>, category: Pick<Categories, 'id' | 'name'> }
     )> } };
 
 
