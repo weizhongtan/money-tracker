@@ -34,7 +34,14 @@ export const useBaseData = (): {
         },
         ...data.accounts,
       ],
-      categories: data.categories,
+      categories: [
+        {
+          id: 'all',
+          key: 'all',
+          name: 'All Categories',
+        },
+        ...data.categories,
+      ],
       references: {
         internalTransferCategory: data.categories.find(
           (x) => x.name === 'Internal Transfer'

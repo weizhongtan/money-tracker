@@ -55,6 +55,8 @@ const Spinner = styled(Spin)`
 export type Filters = {
   accountIdFilter?: Scalars['uuid'];
   setAccountIdFilter: (id: Scalars['uuid']) => void;
+  categoryIdFilter?: Scalars['uuid'];
+  setCategoryIdFilter: (id: Scalars['uuid']) => void;
 };
 
 interface IRoute {
@@ -147,6 +149,7 @@ function App() {
   const { loading, error, data } = useBaseData();
 
   const [accountIdFilter, setAccountIdFilter] = useState<Scalars['uuid']>();
+  const [categoryIdFilter, setCategoryIdFilter] = useState<Scalars['uuid']>();
 
   if (error) return <>error</>;
 
@@ -237,6 +240,26 @@ function App() {
                   </Select.Option>
                 ))}
               </Select>
+              <Select
+                value={categoryIdFilter ?? 'all'}
+                onSelect={(val) =>
+                  setCategoryIdFilter(
+                    val === 'all' ? undefined : (val as string)
+                  )
+                }
+                showSearch
+                optionFilterProp="label"
+              >
+                {data.categories.map(({ id, name }) => (
+                  <Select.Option
+                    value={id as string}
+                    key={id as string}
+                    label={name}
+                  >
+                    {name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Space>
           </Layout.Header>
           <ViewWrapper>
@@ -255,6 +278,8 @@ function App() {
                               endDate,
                               accountIdFilter,
                               setAccountIdFilter,
+                              categoryIdFilter,
+                              setCategoryIdFilter,
                             }}
                           />
                         );

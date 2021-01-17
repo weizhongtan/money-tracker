@@ -21,22 +21,13 @@ export const useTransactions = ({
   accountId?: string;
   searchText: string;
 }) => {
-  const baseData = useBaseData();
-
   const searchAmount = Number(searchText) || 0;
   const searchAmountComplement = -searchAmount;
-  let categoryIds;
-  if (categoryId) {
-    categoryIds = baseData.categories
-      .filter((cat) => cat.id === categoryId)
-      .map((x) => x.id);
-  } else {
-    categoryIds = baseData.categories.map((x) => x.id);
-  }
+
   const variables = {
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
-    categoryIds,
+    categoryIds: categoryId ? [categoryId] : undefined,
     accountId,
     searchText: `%${searchText}%`,
     searchAmount,

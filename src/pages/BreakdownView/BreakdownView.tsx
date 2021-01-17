@@ -155,9 +155,10 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
           <TransactionsView
             startDate={startDate}
             endDate={endDate}
-            categoryId={transactionViewCategoryId}
             accountIdFilter={accountIdFilter}
             setAccountIdFilter={() => {}}
+            categoryIdFilter={transactionViewCategoryId}
+            setCategoryIdFilter={() => {}}
           />
         </PageDrawer>
         <Radio.Group

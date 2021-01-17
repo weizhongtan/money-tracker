@@ -183,16 +183,28 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
   );
 };
 
-type TransactionsViewProps = TimePeriod & {
-  categoryId?: string;
-} & Filters;
+type FilterByButtonProps = {
+  title: string;
+  onClick(): void;
+};
+
+const FilterByButton: React.FC<FilterByButtonProps> = ({ title, onClick }) => {
+  return (
+    <Tooltip title={title}>
+      <FilterOutlined onClick={onClick} />
+    </Tooltip>
+  );
+};
+
+type TransactionsViewProps = TimePeriod & Filters;
 
 const TransactionsView: React.FC<TransactionsViewProps> = ({
   startDate,
   endDate,
-  categoryId,
-  setAccountIdFilter,
   accountIdFilter,
+  setAccountIdFilter,
+  categoryIdFilter,
+  setCategoryIdFilter,
 }) => {
   const baseData = useBaseData();
   const theme = useTheme();
@@ -206,7 +218,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
   const { loading, error, transactions, count } = useTransactions({
     startDate,
     endDate,
-    categoryId,
+    categoryId: categoryIdFilter,
     accountId: accountIdFilter,
     searchText,
   });
@@ -264,13 +276,12 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={(_, record) => {
             return (
               <Space>
-                <Tooltip title={`Filter to ${record.account.name}`}>
-                  <FilterOutlined
-                    onClick={() => {
-                      setAccountIdFilter(record.account.id);
-                    }}
-                  />
-                </Tooltip>
+                <FilterByButton
+                  title={`Filter to ${record.account.name}`}
+                  onClick={() => {
+                    setAccountIdFilter(record.account.id);
+                  }}
+                />
                 <AccountIndicator
                   to={record.account}
                   linked={record.linkedAccount}
@@ -296,6 +307,12 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={(_, record) => {
             return (
               <Space>
+                <FilterByButton
+                  title={`Filter to ${record.category.name}`}
+                  onClick={() => {
+                    setCategoryIdFilter(record.category.id);
+                  }}
+                />
                 <ButtonSelect
                   value={record.category.id}
                   onChange={(newCategoryId) => {

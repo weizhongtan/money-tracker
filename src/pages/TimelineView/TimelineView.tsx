@@ -2,19 +2,17 @@ import { Bar, BarSvgProps } from '@nivo/bar';
 import { Dimensions } from '@nivo/core';
 import React, { useState } from 'react';
 
+import { Filters } from '../../App';
 import {
   PageDrawer,
   Radio,
-  Select,
   Visualisation,
   VisualisationControls,
 } from '../../components';
 import { useGetAmountGroupsQuery } from '../../generated/graphql';
-import { time, toMoney, useBaseData, useTheme } from '../../lib';
+import { time, toMoney, useTheme } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
-
-const { Option } = Select;
 
 type GraphProps = {
   data: any;
@@ -89,12 +87,13 @@ const Graph: React.FC<GraphProps> = ({
   );
 };
 
-type TimeLineViewProps = TimePeriod;
+type TimeLineViewProps = TimePeriod & Filters;
 
-const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
-  const baseData = useBaseData();
-
-  const [categoryId, setCategoryId] = useState('all');
+const TimelineView: React.FC<TimeLineViewProps> = ({
+  startDate,
+  endDate,
+  categoryIdFilter,
+}) => {
   const [precision, setPrecision] = useState<time.OpUnitType>('month');
   const [amountType, setAmountType] = useState<'balance' | 'expense,income'>(
     'balance'
@@ -109,7 +108,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     variables: {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      categoryId: categoryId === 'all' ? null : categoryId,
+      categoryId: categoryIdFilter,
       groupBy: precision,
     },
   });
@@ -122,14 +121,6 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
     expense: Math.abs(expense),
     income,
   }));
-
-  const categories = [
-    {
-      id: 'all',
-      name: 'All Categories',
-    },
-    ...baseData.categories,
-  ];
 
   const meanValues = Object.entries(
     data?.aggregate.aggregate?.avg as Record<string, number>
@@ -168,22 +159,11 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
           <TransactionsView
             startDate={transactionViewDates.startDate}
             endDate={transactionViewDates.endDate}
-            categoryId={categoryId === 'all' ? undefined : categoryId}
             setAccountIdFilter={() => {}}
+            categoryIdFilter={categoryIdFilter}
+            setCategoryIdFilter={() => {}}
           />
         </PageDrawer>
-        <Select
-          value={categoryId}
-          onSelect={(val) => setCategoryId(val as string)}
-          showSearch
-          optionFilterProp="label"
-        >
-          {categories.map(({ id, name }) => (
-            <Option key={id} value={id} label={name}>
-              {name}
-            </Option>
-          ))}
-        </Select>
         <Radio.Group
           buttonStyle="solid"
           defaultValue={precision}
