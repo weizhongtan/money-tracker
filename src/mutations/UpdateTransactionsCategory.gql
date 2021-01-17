@@ -2,7 +2,7 @@ mutation UpdateTransactionsCategory(
   $transactionIds: [uuid!]!
   $categoryId: uuid!
 ) {
-  update_transactions(
+  update_transaction(
     where: { id: { _in: $transactionIds } }
     _set: { category_id: $categoryId, updated_at: "now" }
   ) {

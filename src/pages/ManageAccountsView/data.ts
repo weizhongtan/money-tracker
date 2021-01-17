@@ -49,9 +49,9 @@ export const useCreateTransaction = () => {
       fetchPolicy: 'no-cache',
     });
 
-    if (res?.data?.transactions.length) {
-      console.log(res.data.transactions.length);
-      console.error(`Transaction already exists`, res.data.transactions[0]);
+    if (res?.data?.transaction.length) {
+      console.log(res.data.transaction.length);
+      console.error(`Transaction already exists`, res.data.transaction[0]);
       return false;
     }
     await client.mutate<

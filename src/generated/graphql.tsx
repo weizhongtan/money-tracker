@@ -26,54 +26,54 @@ export type Account = {
   minimum: Scalars['numeric'];
   name: Scalars['String'];
   /** An array relationship */
-  transactions: Array<Transactions>;
+  transactions: Array<Transaction>;
   /** An array relationship */
-  transactionsByToAccountId: Array<Transactions>;
+  transactionsByToAccountId: Array<Transaction>;
   /** An aggregated array relationship */
-  transactionsByToAccountId_aggregate: Transactions_Aggregate;
+  transactionsByToAccountId_aggregate: Transaction_Aggregate;
   /** An aggregated array relationship */
-  transactions_aggregate: Transactions_Aggregate;
+  transactions_aggregate: Transaction_Aggregate;
   updated_at: Scalars['timestamptz'];
 };
 
 
 /** columns and relationships of "account" */
 export type AccountTransactionsArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** columns and relationships of "account" */
 export type AccountTransactionsByToAccountIdArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** columns and relationships of "account" */
 export type AccountTransactionsByToAccountId_AggregateArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** columns and relationships of "account" */
 export type AccountTransactions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 /** aggregated selection of "account" */
@@ -149,8 +149,8 @@ export type Account_Bool_Exp = {
   legacy_key?: Maybe<String_Comparison_Exp>;
   minimum?: Maybe<Numeric_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
-  transactions?: Maybe<Transactions_Bool_Exp>;
-  transactionsByToAccountId?: Maybe<Transactions_Bool_Exp>;
+  transactions?: Maybe<Transaction_Bool_Exp>;
+  transactionsByToAccountId?: Maybe<Transaction_Bool_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -169,8 +169,8 @@ export type Account_Insert_Input = {
   legacy_key?: Maybe<Scalars['String']>;
   minimum?: Maybe<Scalars['numeric']>;
   name?: Maybe<Scalars['String']>;
-  transactions?: Maybe<Transactions_Arr_Rel_Insert_Input>;
-  transactionsByToAccountId?: Maybe<Transactions_Arr_Rel_Insert_Input>;
+  transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
+  transactionsByToAccountId?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -248,8 +248,8 @@ export type Account_Order_By = {
   legacy_key?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
-  transactionsByToAccountId_aggregate?: Maybe<Transactions_Aggregate_Order_By>;
-  transactions_aggregate?: Maybe<Transactions_Aggregate_Order_By>;
+  transactionsByToAccountId_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
+  transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -403,9 +403,9 @@ export type Category = {
   name: Scalars['String'];
   parent_category_id?: Maybe<Scalars['uuid']>;
   /** An array relationship */
-  transactions: Array<Transactions>;
+  transactions: Array<Transaction>;
   /** An aggregated array relationship */
-  transactions_aggregate: Transactions_Aggregate;
+  transactions_aggregate: Transaction_Aggregate;
   type?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
 };
@@ -433,21 +433,21 @@ export type CategoryCategories_AggregateArgs = {
 
 /** columns and relationships of "category" */
 export type CategoryTransactionsArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** columns and relationships of "category" */
 export type CategoryTransactions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 /** aggregated selection of "category" */
@@ -495,7 +495,7 @@ export type Category_Bool_Exp = {
   legacy_key?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   parent_category_id?: Maybe<Uuid_Comparison_Exp>;
-  transactions?: Maybe<Transactions_Bool_Exp>;
+  transactions?: Maybe<Transaction_Bool_Exp>;
   type?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
@@ -515,7 +515,7 @@ export type Category_Insert_Input = {
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   parent_category_id?: Maybe<Scalars['uuid']>;
-  transactions?: Maybe<Transactions_Arr_Rel_Insert_Input>;
+  transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   type?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -586,7 +586,7 @@ export type Category_Order_By = {
   legacy_key?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   parent_category_id?: Maybe<Order_By>;
-  transactions_aggregate?: Maybe<Transactions_Aggregate_Order_By>;
+  transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   type?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -659,8 +659,8 @@ export type Mutation_Root = {
   delete_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** delete data from the table: "table_transactions_group_by" */
   delete_table_transactions_group_by?: Maybe<Table_Transactions_Group_By_Mutation_Response>;
-  /** delete data from the table: "transactions" */
-  delete_transactions?: Maybe<Transactions_Mutation_Response>;
+  /** delete data from the table: "transaction" */
+  delete_transaction?: Maybe<Transaction_Mutation_Response>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert data into the table: "category" */
@@ -669,8 +669,8 @@ export type Mutation_Root = {
   insert_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** insert data into the table: "table_transactions_group_by" */
   insert_table_transactions_group_by?: Maybe<Table_Transactions_Group_By_Mutation_Response>;
-  /** insert data into the table: "transactions" */
-  insert_transactions?: Maybe<Transactions_Mutation_Response>;
+  /** insert data into the table: "transaction" */
+  insert_transaction?: Maybe<Transaction_Mutation_Response>;
   /** update data of the table: "account" */
   update_account?: Maybe<Account_Mutation_Response>;
   /** update data of the table: "category" */
@@ -679,8 +679,8 @@ export type Mutation_Root = {
   update_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** update data of the table: "table_transactions_group_by" */
   update_table_transactions_group_by?: Maybe<Table_Transactions_Group_By_Mutation_Response>;
-  /** update data of the table: "transactions" */
-  update_transactions?: Maybe<Transactions_Mutation_Response>;
+  /** update data of the table: "transaction" */
+  update_transaction?: Maybe<Transaction_Mutation_Response>;
 };
 
 
@@ -709,8 +709,8 @@ export type Mutation_RootDelete_Table_Transactions_Group_ByArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_TransactionsArgs = {
-  where: Transactions_Bool_Exp;
+export type Mutation_RootDelete_TransactionArgs = {
+  where: Transaction_Bool_Exp;
 };
 
 
@@ -741,9 +741,9 @@ export type Mutation_RootInsert_Table_Transactions_Group_ByArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_TransactionsArgs = {
-  objects: Array<Transactions_Insert_Input>;
-  on_conflict?: Maybe<Transactions_On_Conflict>;
+export type Mutation_RootInsert_TransactionArgs = {
+  objects: Array<Transaction_Insert_Input>;
+  on_conflict?: Maybe<Transaction_On_Conflict>;
 };
 
 
@@ -776,9 +776,9 @@ export type Mutation_RootUpdate_Table_Transactions_Group_ByArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_TransactionsArgs = {
-  _set?: Maybe<Transactions_Set_Input>;
-  where: Transactions_Bool_Exp;
+export type Mutation_RootUpdate_TransactionArgs = {
+  _set?: Maybe<Transaction_Set_Input>;
+  where: Transaction_Bool_Exp;
 };
 
 
@@ -847,12 +847,12 @@ export type Query_Root = {
   table_transactions_group_by: Array<Table_Transactions_Group_By>;
   /** fetch aggregated fields from the table: "table_transactions_group_by" */
   table_transactions_group_by_aggregate: Table_Transactions_Group_By_Aggregate;
-  /** fetch data from the table: "transactions" */
-  transactions: Array<Transactions>;
-  /** fetch aggregated fields from the table: "transactions" */
-  transactions_aggregate: Transactions_Aggregate;
-  /** fetch data from the table: "transactions" using primary key columns */
-  transactions_by_pk?: Maybe<Transactions>;
+  /** fetch data from the table: "transaction" */
+  transaction: Array<Transaction>;
+  /** fetch aggregated fields from the table: "transaction" */
+  transaction_aggregate: Transaction_Aggregate;
+  /** fetch data from the table: "transaction" using primary key columns */
+  transaction_by_pk?: Maybe<Transaction>;
   /** fetch data from the table: "view_accounts" */
   view_accounts: Array<View_Accounts>;
   /** fetch aggregated fields from the table: "view_accounts" */
@@ -997,27 +997,27 @@ export type Query_RootTable_Transactions_Group_By_AggregateArgs = {
 
 
 /** query root */
-export type Query_RootTransactionsArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+export type Query_RootTransactionArgs = {
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootTransactions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+export type Query_RootTransaction_AggregateArgs = {
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootTransactions_By_PkArgs = {
+export type Query_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1096,12 +1096,12 @@ export type Subscription_Root = {
   table_transactions_group_by: Array<Table_Transactions_Group_By>;
   /** fetch aggregated fields from the table: "table_transactions_group_by" */
   table_transactions_group_by_aggregate: Table_Transactions_Group_By_Aggregate;
-  /** fetch data from the table: "transactions" */
-  transactions: Array<Transactions>;
-  /** fetch aggregated fields from the table: "transactions" */
-  transactions_aggregate: Transactions_Aggregate;
-  /** fetch data from the table: "transactions" using primary key columns */
-  transactions_by_pk?: Maybe<Transactions>;
+  /** fetch data from the table: "transaction" */
+  transaction: Array<Transaction>;
+  /** fetch aggregated fields from the table: "transaction" */
+  transaction_aggregate: Transaction_Aggregate;
+  /** fetch data from the table: "transaction" using primary key columns */
+  transaction_by_pk?: Maybe<Transaction>;
   /** fetch data from the table: "view_accounts" */
   view_accounts: Array<View_Accounts>;
   /** fetch aggregated fields from the table: "view_accounts" */
@@ -1246,27 +1246,27 @@ export type Subscription_RootTable_Transactions_Group_By_AggregateArgs = {
 
 
 /** subscription root */
-export type Subscription_RootTransactionsArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+export type Subscription_RootTransactionArgs = {
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootTransactions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+export type Subscription_RootTransaction_AggregateArgs = {
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootTransactions_By_PkArgs = {
+export type Subscription_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1776,8 +1776,8 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['timestamptz']>>;
 };
 
-/** columns and relationships of "transactions" */
-export type Transactions = {
+/** columns and relationships of "transaction" */
+export type Transaction = {
   /** An object relationship */
   account: Account;
   account_id: Scalars['uuid'];
@@ -1796,98 +1796,98 @@ export type Transactions = {
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
   /** An object relationship */
-  transaction?: Maybe<Transactions>;
+  transaction?: Maybe<Transaction>;
   /** An array relationship */
-  transactions: Array<Transactions>;
+  transactions: Array<Transaction>;
   /** An aggregated array relationship */
-  transactions_aggregate: Transactions_Aggregate;
+  transactions_aggregate: Transaction_Aggregate;
   updated_at: Scalars['timestamptz'];
 };
 
 
-/** columns and relationships of "transactions" */
-export type TransactionsTransactionsArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+/** columns and relationships of "transaction" */
+export type TransactionTransactionsArgs = {
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
 
-/** columns and relationships of "transactions" */
-export type TransactionsTransactions_AggregateArgs = {
-  distinct_on?: Maybe<Array<Transactions_Select_Column>>;
+/** columns and relationships of "transaction" */
+export type TransactionTransactions_AggregateArgs = {
+  distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Transactions_Order_By>>;
-  where?: Maybe<Transactions_Bool_Exp>;
+  order_by?: Maybe<Array<Transaction_Order_By>>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
-/** aggregated selection of "transactions" */
-export type Transactions_Aggregate = {
-  aggregate?: Maybe<Transactions_Aggregate_Fields>;
-  nodes: Array<Transactions>;
+/** aggregated selection of "transaction" */
+export type Transaction_Aggregate = {
+  aggregate?: Maybe<Transaction_Aggregate_Fields>;
+  nodes: Array<Transaction>;
 };
 
-/** aggregate fields of "transactions" */
-export type Transactions_Aggregate_Fields = {
-  avg?: Maybe<Transactions_Avg_Fields>;
+/** aggregate fields of "transaction" */
+export type Transaction_Aggregate_Fields = {
+  avg?: Maybe<Transaction_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Transactions_Max_Fields>;
-  min?: Maybe<Transactions_Min_Fields>;
-  stddev?: Maybe<Transactions_Stddev_Fields>;
-  stddev_pop?: Maybe<Transactions_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Transactions_Stddev_Samp_Fields>;
-  sum?: Maybe<Transactions_Sum_Fields>;
-  var_pop?: Maybe<Transactions_Var_Pop_Fields>;
-  var_samp?: Maybe<Transactions_Var_Samp_Fields>;
-  variance?: Maybe<Transactions_Variance_Fields>;
+  max?: Maybe<Transaction_Max_Fields>;
+  min?: Maybe<Transaction_Min_Fields>;
+  stddev?: Maybe<Transaction_Stddev_Fields>;
+  stddev_pop?: Maybe<Transaction_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Transaction_Stddev_Samp_Fields>;
+  sum?: Maybe<Transaction_Sum_Fields>;
+  var_pop?: Maybe<Transaction_Var_Pop_Fields>;
+  var_samp?: Maybe<Transaction_Var_Samp_Fields>;
+  variance?: Maybe<Transaction_Variance_Fields>;
 };
 
 
-/** aggregate fields of "transactions" */
-export type Transactions_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Transactions_Select_Column>>;
+/** aggregate fields of "transaction" */
+export type Transaction_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Transaction_Select_Column>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "transactions" */
-export type Transactions_Aggregate_Order_By = {
-  avg?: Maybe<Transactions_Avg_Order_By>;
+/** order by aggregate values of table "transaction" */
+export type Transaction_Aggregate_Order_By = {
+  avg?: Maybe<Transaction_Avg_Order_By>;
   count?: Maybe<Order_By>;
-  max?: Maybe<Transactions_Max_Order_By>;
-  min?: Maybe<Transactions_Min_Order_By>;
-  stddev?: Maybe<Transactions_Stddev_Order_By>;
-  stddev_pop?: Maybe<Transactions_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Transactions_Stddev_Samp_Order_By>;
-  sum?: Maybe<Transactions_Sum_Order_By>;
-  var_pop?: Maybe<Transactions_Var_Pop_Order_By>;
-  var_samp?: Maybe<Transactions_Var_Samp_Order_By>;
-  variance?: Maybe<Transactions_Variance_Order_By>;
+  max?: Maybe<Transaction_Max_Order_By>;
+  min?: Maybe<Transaction_Min_Order_By>;
+  stddev?: Maybe<Transaction_Stddev_Order_By>;
+  stddev_pop?: Maybe<Transaction_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Transaction_Stddev_Samp_Order_By>;
+  sum?: Maybe<Transaction_Sum_Order_By>;
+  var_pop?: Maybe<Transaction_Var_Pop_Order_By>;
+  var_samp?: Maybe<Transaction_Var_Samp_Order_By>;
+  variance?: Maybe<Transaction_Variance_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "transactions" */
-export type Transactions_Arr_Rel_Insert_Input = {
-  data: Array<Transactions_Insert_Input>;
-  on_conflict?: Maybe<Transactions_On_Conflict>;
+/** input type for inserting array relation for remote table "transaction" */
+export type Transaction_Arr_Rel_Insert_Input = {
+  data: Array<Transaction_Insert_Input>;
+  on_conflict?: Maybe<Transaction_On_Conflict>;
 };
 
 /** aggregate avg on columns */
-export type Transactions_Avg_Fields = {
+export type Transaction_Avg_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by avg() on columns of table "transactions" */
-export type Transactions_Avg_Order_By = {
+/** order by avg() on columns of table "transaction" */
+export type Transaction_Avg_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
-/** Boolean expression to filter rows from the table "transactions". All fields are combined with a logical 'AND'. */
-export type Transactions_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Transactions_Bool_Exp>>>;
-  _not?: Maybe<Transactions_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Transactions_Bool_Exp>>>;
+/** Boolean expression to filter rows from the table "transaction". All fields are combined with a logical 'AND'. */
+export type Transaction_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Transaction_Bool_Exp>>>;
+  _not?: Maybe<Transaction_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Transaction_Bool_Exp>>>;
   account?: Maybe<Account_Bool_Exp>;
   account_id?: Maybe<Uuid_Comparison_Exp>;
   amount?: Maybe<Numeric_Comparison_Exp>;
@@ -1901,19 +1901,19 @@ export type Transactions_Bool_Exp = {
   linked_account_id?: Maybe<Uuid_Comparison_Exp>;
   pair_id?: Maybe<Uuid_Comparison_Exp>;
   paired_with_id?: Maybe<Uuid_Comparison_Exp>;
-  transaction?: Maybe<Transactions_Bool_Exp>;
-  transactions?: Maybe<Transactions_Bool_Exp>;
+  transaction?: Maybe<Transaction_Bool_Exp>;
+  transactions?: Maybe<Transaction_Bool_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "transactions" */
-export enum Transactions_Constraint {
+/** unique or primary key constraints on table "transaction" */
+export enum Transaction_Constraint {
   /** unique or primary key constraint */
   TransactionsPkey = 'transactions_pkey'
 }
 
-/** input type for inserting data into table "transactions" */
-export type Transactions_Insert_Input = {
+/** input type for inserting data into table "transaction" */
+export type Transaction_Insert_Input = {
   account?: Maybe<Account_Obj_Rel_Insert_Input>;
   account_id?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
@@ -1927,13 +1927,13 @@ export type Transactions_Insert_Input = {
   linked_account_id?: Maybe<Scalars['uuid']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
-  transaction?: Maybe<Transactions_Obj_Rel_Insert_Input>;
-  transactions?: Maybe<Transactions_Arr_Rel_Insert_Input>;
+  transaction?: Maybe<Transaction_Obj_Rel_Insert_Input>;
+  transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate max on columns */
-export type Transactions_Max_Fields = {
+export type Transaction_Max_Fields = {
   amount?: Maybe<Scalars['numeric']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   date?: Maybe<Scalars['timestamptz']>;
@@ -1941,8 +1941,8 @@ export type Transactions_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by max() on columns of table "transactions" */
-export type Transactions_Max_Order_By = {
+/** order by max() on columns of table "transaction" */
+export type Transaction_Max_Order_By = {
   amount?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
@@ -1951,7 +1951,7 @@ export type Transactions_Max_Order_By = {
 };
 
 /** aggregate min on columns */
-export type Transactions_Min_Fields = {
+export type Transaction_Min_Fields = {
   amount?: Maybe<Scalars['numeric']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   date?: Maybe<Scalars['timestamptz']>;
@@ -1959,8 +1959,8 @@ export type Transactions_Min_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by min() on columns of table "transactions" */
-export type Transactions_Min_Order_By = {
+/** order by min() on columns of table "transaction" */
+export type Transaction_Min_Order_By = {
   amount?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
@@ -1968,29 +1968,29 @@ export type Transactions_Min_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** response of any mutation on the table "transactions" */
-export type Transactions_Mutation_Response = {
+/** response of any mutation on the table "transaction" */
+export type Transaction_Mutation_Response = {
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
-  returning: Array<Transactions>;
+  returning: Array<Transaction>;
 };
 
-/** input type for inserting object relation for remote table "transactions" */
-export type Transactions_Obj_Rel_Insert_Input = {
-  data: Transactions_Insert_Input;
-  on_conflict?: Maybe<Transactions_On_Conflict>;
+/** input type for inserting object relation for remote table "transaction" */
+export type Transaction_Obj_Rel_Insert_Input = {
+  data: Transaction_Insert_Input;
+  on_conflict?: Maybe<Transaction_On_Conflict>;
 };
 
-/** on conflict condition type for table "transactions" */
-export type Transactions_On_Conflict = {
-  constraint: Transactions_Constraint;
-  update_columns: Array<Transactions_Update_Column>;
-  where?: Maybe<Transactions_Bool_Exp>;
+/** on conflict condition type for table "transaction" */
+export type Transaction_On_Conflict = {
+  constraint: Transaction_Constraint;
+  update_columns: Array<Transaction_Update_Column>;
+  where?: Maybe<Transaction_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "transactions" */
-export type Transactions_Order_By = {
+/** ordering options when selecting data from "transaction" */
+export type Transaction_Order_By = {
   account?: Maybe<Account_Order_By>;
   account_id?: Maybe<Order_By>;
   amount?: Maybe<Order_By>;
@@ -2004,13 +2004,13 @@ export type Transactions_Order_By = {
   linked_account_id?: Maybe<Order_By>;
   pair_id?: Maybe<Order_By>;
   paired_with_id?: Maybe<Order_By>;
-  transaction?: Maybe<Transactions_Order_By>;
-  transactions_aggregate?: Maybe<Transactions_Aggregate_Order_By>;
+  transaction?: Maybe<Transaction_Order_By>;
+  transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
-/** select columns of table "transactions" */
-export enum Transactions_Select_Column {
+/** select columns of table "transaction" */
+export enum Transaction_Select_Column {
   /** column name */
   AccountId = 'account_id',
   /** column name */
@@ -2035,8 +2035,8 @@ export enum Transactions_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
-/** input type for updating data in table "transactions" */
-export type Transactions_Set_Input = {
+/** input type for updating data in table "transaction" */
+export type Transaction_Set_Input = {
   account_id?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
   category_id?: Maybe<Scalars['uuid']>;
@@ -2051,47 +2051,47 @@ export type Transactions_Set_Input = {
 };
 
 /** aggregate stddev on columns */
-export type Transactions_Stddev_Fields = {
+export type Transaction_Stddev_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "transactions" */
-export type Transactions_Stddev_Order_By = {
+/** order by stddev() on columns of table "transaction" */
+export type Transaction_Stddev_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
-export type Transactions_Stddev_Pop_Fields = {
+export type Transaction_Stddev_Pop_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_pop() on columns of table "transactions" */
-export type Transactions_Stddev_Pop_Order_By = {
+/** order by stddev_pop() on columns of table "transaction" */
+export type Transaction_Stddev_Pop_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
-export type Transactions_Stddev_Samp_Fields = {
+export type Transaction_Stddev_Samp_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "transactions" */
-export type Transactions_Stddev_Samp_Order_By = {
+/** order by stddev_samp() on columns of table "transaction" */
+export type Transaction_Stddev_Samp_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
-export type Transactions_Sum_Fields = {
+export type Transaction_Sum_Fields = {
   amount?: Maybe<Scalars['numeric']>;
 };
 
-/** order by sum() on columns of table "transactions" */
-export type Transactions_Sum_Order_By = {
+/** order by sum() on columns of table "transaction" */
+export type Transaction_Sum_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
-/** update columns of table "transactions" */
-export enum Transactions_Update_Column {
+/** update columns of table "transaction" */
+export enum Transaction_Update_Column {
   /** column name */
   AccountId = 'account_id',
   /** column name */
@@ -2117,32 +2117,32 @@ export enum Transactions_Update_Column {
 }
 
 /** aggregate var_pop on columns */
-export type Transactions_Var_Pop_Fields = {
+export type Transaction_Var_Pop_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "transactions" */
-export type Transactions_Var_Pop_Order_By = {
+/** order by var_pop() on columns of table "transaction" */
+export type Transaction_Var_Pop_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
-export type Transactions_Var_Samp_Fields = {
+export type Transaction_Var_Samp_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "transactions" */
-export type Transactions_Var_Samp_Order_By = {
+/** order by var_samp() on columns of table "transaction" */
+export type Transaction_Var_Samp_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
-export type Transactions_Variance_Fields = {
+export type Transaction_Variance_Fields = {
   amount?: Maybe<Scalars['Float']>;
 };
 
-/** order by variance() on columns of table "transactions" */
-export type Transactions_Variance_Order_By = {
+/** order by variance() on columns of table "transaction" */
+export type Transaction_Variance_Order_By = {
   amount?: Maybe<Order_By>;
 };
 
@@ -2482,7 +2482,7 @@ export type DeleteTransactionsMutationVariables = Exact<{
 }>;
 
 
-export type DeleteTransactionsMutation = { delete_transactions?: Maybe<Pick<Transactions_Mutation_Response, 'affected_rows'>> };
+export type DeleteTransactionsMutation = { delete_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
 
 export type InsertTransactionMutationVariables = Exact<{
   accountId?: Maybe<Scalars['uuid']>;
@@ -2492,7 +2492,7 @@ export type InsertTransactionMutationVariables = Exact<{
 }>;
 
 
-export type InsertTransactionMutation = { insert_transactions?: Maybe<Pick<Transactions_Mutation_Response, 'affected_rows'>> };
+export type InsertTransactionMutation = { insert_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
 
 export type PairTransactionsMutationVariables = Exact<{
   transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
@@ -2501,10 +2501,10 @@ export type PairTransactionsMutationVariables = Exact<{
 }>;
 
 
-export type PairTransactionsMutation = { update_transactions?: Maybe<(
-    Pick<Transactions_Mutation_Response, 'affected_rows'>
+export type PairTransactionsMutation = { update_transaction?: Maybe<(
+    Pick<Transaction_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
-      Pick<Transactions, 'id' | 'pair_id'>
+      Pick<Transaction, 'id' | 'pair_id'>
       & { linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>> }
     )> }
   )> };
@@ -2514,9 +2514,9 @@ export type UnpairTransactionsMutationVariables = Exact<{
 }>;
 
 
-export type UnpairTransactionsMutation = { update_transactions?: Maybe<(
-    Pick<Transactions_Mutation_Response, 'affected_rows'>
-    & { returning: Array<Pick<Transactions, 'id'>> }
+export type UnpairTransactionsMutation = { update_transaction?: Maybe<(
+    Pick<Transaction_Mutation_Response, 'affected_rows'>
+    & { returning: Array<Pick<Transaction, 'id'>> }
   )> };
 
 export type UpdateTransactionsCategoryMutationVariables = Exact<{
@@ -2525,10 +2525,10 @@ export type UpdateTransactionsCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTransactionsCategoryMutation = { update_transactions?: Maybe<(
-    Pick<Transactions_Mutation_Response, 'affected_rows'>
+export type UpdateTransactionsCategoryMutation = { update_transaction?: Maybe<(
+    Pick<Transaction_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
-      Pick<Transactions, 'id'>
+      Pick<Transaction, 'id'>
       & { category: Pick<Category, 'id' | 'name'> }
     )> }
   )> };
@@ -2542,7 +2542,7 @@ export type CheckTransactionQueryVariables = Exact<{
 }>;
 
 
-export type CheckTransactionQuery = { transactions: Array<Pick<Transactions, 'id' | 'account_id' | 'amount' | 'date' | 'description'>> };
+export type CheckTransactionQuery = { transaction: Array<Pick<Transaction, 'id' | 'account_id' | 'amount' | 'date' | 'description'>> };
 
 export type GetAmountGroupsQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -2583,11 +2583,11 @@ export type GetCategoriesAggregateQueryVariables = Exact<{
 
 export type GetCategoriesAggregateQuery = { expenseCategories: Array<(
     Pick<Category, 'name' | 'id'>
-    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } }
-  )>, expenseSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> }, incomeCategories: Array<(
+    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } }
+  )>, expenseSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> }, incomeCategories: Array<(
     Pick<Category, 'name' | 'id'>
-    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } }
-  )>, incomeSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } };
+    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } }
+  )>, incomeSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } };
 
 export type GetTransactionsQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -2600,9 +2600,9 @@ export type GetTransactionsQueryVariables = Exact<{
 }>;
 
 
-export type GetTransactionsQuery = { transactions_aggregate: { aggregate?: Maybe<Pick<Transactions_Aggregate_Fields, 'count'>>, nodes: Array<(
-      Pick<Transactions, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
-      & { key: Transactions['id'] }
+export type GetTransactionsQuery = { transactions: { aggregate?: Maybe<Pick<Transaction_Aggregate_Fields, 'count'>>, nodes: Array<(
+      Pick<Transaction, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
+      & { key: Transaction['id'] }
       & { account: Pick<Account, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>>, category: Pick<Category, 'id' | 'name'> }
     )> } };
 
@@ -2686,7 +2686,7 @@ export type DeleteCategoryMutationResult = Apollo.MutationResult<DeleteCategoryM
 export type DeleteCategoryMutationOptions = Apollo.BaseMutationOptions<DeleteCategoryMutation, DeleteCategoryMutationVariables>;
 export const DeleteTransactionsDocument = gql`
     mutation DeleteTransactions($transactionIds: [uuid!]!) {
-  delete_transactions(where: {id: {_in: $transactionIds}}) {
+  delete_transaction(where: {id: {_in: $transactionIds}}) {
     affected_rows
   }
 }
@@ -2718,7 +2718,7 @@ export type DeleteTransactionsMutationResult = Apollo.MutationResult<DeleteTrans
 export type DeleteTransactionsMutationOptions = Apollo.BaseMutationOptions<DeleteTransactionsMutation, DeleteTransactionsMutationVariables>;
 export const InsertTransactionDocument = gql`
     mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String) {
-  insert_transactions(objects: {account_id: $accountId, amount: $amount, date: $date, description: $description}) {
+  insert_transaction(objects: {account_id: $accountId, amount: $amount, date: $date, description: $description}) {
     affected_rows
   }
 }
@@ -2753,7 +2753,7 @@ export type InsertTransactionMutationResult = Apollo.MutationResult<InsertTransa
 export type InsertTransactionMutationOptions = Apollo.BaseMutationOptions<InsertTransactionMutation, InsertTransactionMutationVariables>;
 export const PairTransactionsDocument = gql`
     mutation PairTransactions($transactionIds: [uuid!]!, $setLinkedAccountId: uuid, $setPairId: uuid) {
-  update_transactions(where: {id: {_in: $transactionIds}}, _set: {updated_at: "now", linked_account_id: $setLinkedAccountId, pair_id: $setPairId}) {
+  update_transaction(where: {id: {_in: $transactionIds}}, _set: {updated_at: "now", linked_account_id: $setLinkedAccountId, pair_id: $setPairId}) {
     affected_rows
     returning {
       id
@@ -2796,7 +2796,7 @@ export type PairTransactionsMutationResult = Apollo.MutationResult<PairTransacti
 export type PairTransactionsMutationOptions = Apollo.BaseMutationOptions<PairTransactionsMutation, PairTransactionsMutationVariables>;
 export const UnpairTransactionsDocument = gql`
     mutation UnpairTransactions($pairIds: [uuid!]!) {
-  update_transactions(where: {pair_id: {_in: $pairIds}}, _set: {linked_account_id: null, updated_at: "now", pair_id: null}) {
+  update_transaction(where: {pair_id: {_in: $pairIds}}, _set: {linked_account_id: null, updated_at: "now", pair_id: null}) {
     affected_rows
     returning {
       id
@@ -2831,7 +2831,7 @@ export type UnpairTransactionsMutationResult = Apollo.MutationResult<UnpairTrans
 export type UnpairTransactionsMutationOptions = Apollo.BaseMutationOptions<UnpairTransactionsMutation, UnpairTransactionsMutationVariables>;
 export const UpdateTransactionsCategoryDocument = gql`
     mutation UpdateTransactionsCategory($transactionIds: [uuid!]!, $categoryId: uuid!) {
-  update_transactions(where: {id: {_in: $transactionIds}}, _set: {category_id: $categoryId, updated_at: "now"}) {
+  update_transaction(where: {id: {_in: $transactionIds}}, _set: {category_id: $categoryId, updated_at: "now"}) {
     affected_rows
     returning {
       id
@@ -2871,7 +2871,7 @@ export type UpdateTransactionsCategoryMutationResult = Apollo.MutationResult<Upd
 export type UpdateTransactionsCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateTransactionsCategoryMutation, UpdateTransactionsCategoryMutationVariables>;
 export const CheckTransactionDocument = gql`
     query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!) {
-  transactions(where: {_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}) {
+  transaction(where: {_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}) {
     id
     account_id
     amount
@@ -3061,7 +3061,7 @@ export const GetCategoriesAggregateDocument = gql`
     name
     id
   }
-  expenseSum: transactions_aggregate(where: {category: {type: {_eq: "expense"}}, date: {_gte: $startDate, _lte: $endDate}}) {
+  expenseSum: transaction_aggregate(where: {category: {type: {_eq: "expense"}}, date: {_gte: $startDate, _lte: $endDate}}) {
     aggregate {
       sum {
         amount
@@ -3079,7 +3079,7 @@ export const GetCategoriesAggregateDocument = gql`
     name
     id
   }
-  incomeSum: transactions_aggregate(where: {category: {type: {_eq: "income"}}, date: {_gte: $startDate, _lte: $endDate}}) {
+  incomeSum: transaction_aggregate(where: {category: {type: {_eq: "income"}}, date: {_gte: $startDate, _lte: $endDate}}) {
     aggregate {
       sum {
         amount
@@ -3117,7 +3117,7 @@ export type GetCategoriesAggregateLazyQueryHookResult = ReturnType<typeof useGet
 export type GetCategoriesAggregateQueryResult = Apollo.QueryResult<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>;
 export const GetTransactionsDocument = gql`
     query GetTransactions($startDate: timestamptz, $endDate: timestamptz, $categoryIds: [uuid!], $accountId: uuid, $searchText: String!, $searchAmount: numeric!, $searchAmountComplement: numeric!) {
-  transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}, _and: [{_and: [{_or: [{category_id: {_in: $categoryIds}}, {category_id: {_is_null: true}}]}, {account_id: {_eq: $accountId}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}, order_by: {date: desc}) {
+  transactions: transaction_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}, _and: [{_and: [{_or: [{category_id: {_in: $categoryIds}}, {category_id: {_is_null: true}}]}, {account_id: {_eq: $accountId}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}, order_by: {date: desc}) {
     aggregate {
       count
     }

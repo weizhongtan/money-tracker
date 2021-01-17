@@ -4,7 +4,7 @@ mutation InsertTransaction(
   $date: timestamptz
   $description: String
 ) {
-  insert_transactions(
+  insert_transaction(
     objects: {
       account_id: $accountId
       amount: $amount

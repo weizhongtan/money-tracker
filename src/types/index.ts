@@ -10,7 +10,7 @@ export type Account = GetElementType<GetBaseDataQuery['accounts']>;
 export type Category = GetElementType<GetBaseDataQuery['categories']>;
 
 export type Transaction = GetElementType<
-  GetTransactionsQuery['transactions_aggregate']['nodes']
+  GetTransactionsQuery['transactions']['nodes']
 >;
 
 export interface TimePeriod {

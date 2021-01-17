@@ -5,7 +5,7 @@ query CheckTransaction(
   $endDate: timestamptz!
   $description: String!
 ) {
-  transactions(
+  transaction(
     where: {
       _and: [
         { account_id: { _eq: $accountId } }

@@ -40,15 +40,15 @@ export const useTransactions = ({
   return {
     loading,
     error,
-    transactions: data?.transactions_aggregate.nodes,
-    count: data?.transactions_aggregate?.aggregate?.count,
+    transactions: data?.transactions.nodes,
+    count: data?.transactions?.aggregate?.count,
   };
 };
 
 export const useUpdateTransactions = () => {
   const [updateTransactions] = useUpdateTransactionsCategoryMutation({
     update(cache, { data }) {
-      const updatedTransactions = data?.update_transactions?.returning;
+      const updatedTransactions = data?.update_transaction?.returning;
 
       if (updatedTransactions) {
         updatedTransactions.forEach((transaction) => {
@@ -70,7 +70,7 @@ export const useUpdateTransactions = () => {
   const [_deleteTransactions] = useDeleteTransactionsMutation();
   const [_pairTransactions] = usePairTransactionsMutation({
     update(cache, { data }) {
-      const updatedTransactions = data?.update_transactions?.returning;
+      const updatedTransactions = data?.update_transaction?.returning;
 
       if (updatedTransactions) {
         updatedTransactions.forEach((transaction) => {
@@ -96,7 +96,7 @@ export const useUpdateTransactions = () => {
   });
   const [_unpairTransactions] = useUnpairTransactionsMutation({
     update(cache, { data }) {
-      const updatedTransactions = data?.update_transactions?.returning;
+      const updatedTransactions = data?.update_transaction?.returning;
 
       if (updatedTransactions) {
         updatedTransactions.forEach((transaction) => {
@@ -131,9 +131,8 @@ export const useUpdateTransactions = () => {
           categoryId: newCategoryId,
         },
       });
-      const categoryName =
-        data?.update_transactions?.returning[0].category.name;
-      const affectedRows = data?.update_transactions?.affected_rows;
+      const categoryName = data?.update_transaction?.returning[0].category.name;
+      const affectedRows = data?.update_transaction?.affected_rows;
       return {
         message: `Updated: ${categoryName} (${affectedRows} records)`,
       };
@@ -147,7 +146,7 @@ export const useUpdateTransactions = () => {
               categoryId,
             },
           });
-          return data?.update_transactions?.affected_rows as number;
+          return data?.update_transaction?.affected_rows as number;
         })
       );
       const recordsUpdated = results.reduce((acc, val) => acc + val, 0);
@@ -166,7 +165,7 @@ export const useUpdateTransactions = () => {
         refetchQueries: ['GetTransactions'],
       });
       return {
-        message: `Deleted ${data?.delete_transactions?.affected_rows} rows`,
+        message: `Deleted ${data?.delete_transaction?.affected_rows} rows`,
       };
     },
     undo() {},

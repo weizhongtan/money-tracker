@@ -12,7 +12,7 @@ query GetCategoriesAggregate($startDate: timestamptz, $endDate: timestamptz) {
     name
     id
   }
-  expenseSum: transactions_aggregate(
+  expenseSum: transaction_aggregate(
     where: {
       category: { type: { _eq: "expense" } }
       date: { _gte: $startDate, _lte: $endDate }
@@ -37,7 +37,7 @@ query GetCategoriesAggregate($startDate: timestamptz, $endDate: timestamptz) {
     name
     id
   }
-  incomeSum: transactions_aggregate(
+  incomeSum: transaction_aggregate(
     where: {
       category: { type: { _eq: "income" } }
       date: { _gte: $startDate, _lte: $endDate }

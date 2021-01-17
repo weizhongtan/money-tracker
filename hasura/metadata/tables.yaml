@@ -8,14 +8,14 @@
         column: linked_account_id
         table:
           schema: public
-          name: transactions
+          name: transaction
   - name: transactionsByToAccountId
     using:
       foreign_key_constraint_on:
         column: account_id
         table:
           schema: public
-          name: transactions
+          name: transaction
 - table:
     schema: public
     name: category
@@ -37,7 +37,7 @@
         column: category_id
         table:
           schema: public
-          name: transactions
+          name: transaction
 - table:
     schema: public
     name: table_transactions_by_category_grouped
@@ -46,7 +46,7 @@
     name: table_transactions_group_by
 - table:
     schema: public
-    name: transactions
+    name: transaction
   object_relationships:
   - name: account
     using:
@@ -67,7 +67,7 @@
         column: paired_with_id
         table:
           schema: public
-          name: transactions
+          name: transaction
 - table:
     schema: public
     name: view_accounts

@@ -7,7 +7,7 @@ query GetTransactions(
   $searchAmount: numeric!
   $searchAmountComplement: numeric!
 ) {
-  transactions_aggregate(
+  transactions: transaction_aggregate(
     where: {
       date: { _gte: $startDate, _lte: $endDate }
       _and: [

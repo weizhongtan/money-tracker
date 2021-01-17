@@ -3,7 +3,7 @@ mutation PairTransactions(
   $setLinkedAccountId: uuid
   $setPairId: uuid
 ) {
-  update_transactions(
+  update_transaction(
     where: { id: { _in: $transactionIds } }
     _set: {
       updated_at: "now"

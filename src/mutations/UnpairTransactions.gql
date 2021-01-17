@@ -1,5 +1,5 @@
 mutation UnpairTransactions($pairIds: [uuid!]!) {
-  update_transactions(
+  update_transaction(
     where: { pair_id: { _in: $pairIds } }
     _set: { linked_account_id: null, updated_at: "now", pair_id: null }
   ) {
