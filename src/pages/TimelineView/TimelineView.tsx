@@ -168,7 +168,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({ startDate, endDate }) => {
           <TransactionsView
             startDate={transactionViewDates.startDate}
             endDate={transactionViewDates.endDate}
-            categoryId={categoryId}
+            categoryId={categoryId === 'all' ? undefined : categoryId}
             setAccountIdFilter={() => {}}
           />
         </PageDrawer>
