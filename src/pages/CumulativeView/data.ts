@@ -1,5 +1,4 @@
 import { useGetBalancesQuery } from '../../generated/graphql';
-import { useBaseData } from '../../lib';
 import { TimePeriod } from '../../types';
 
 export const useData = ({
@@ -8,15 +7,14 @@ export const useData = ({
   accountId,
   precision,
 }: TimePeriod & {
-  accountId: string;
+  accountId?: string;
   precision: string;
 }) => {
-  const { accounts } = useBaseData();
   const { loading, error, data } = useGetBalancesQuery({
     variables: {
       startDate: startDate?.toISOString(),
       endDate: endDate?.toISOString(),
-      accountId: accountId === 'all' ? null : accountId,
+      accountId,
       groupBy: precision,
     },
   });
@@ -25,12 +23,5 @@ export const useData = ({
     loading,
     error,
     balances: data?.balances,
-    accounts: [
-      {
-        id: 'all',
-        name: 'All accounts',
-      },
-      ...accounts,
-    ],
   };
 };

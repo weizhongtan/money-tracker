@@ -2,17 +2,11 @@ import { Line } from '@nivo/line';
 import { Space } from 'antd';
 import React, { useState } from 'react';
 
-import {
-  Radio,
-  Select,
-  Visualisation,
-  VisualisationControls,
-} from '../../components';
+import { Filters } from '../../App';
+import { Radio, Visualisation, VisualisationControls } from '../../components';
 import { time, toMoney } from '../../lib';
 import { TimePeriod } from '../../types';
 import { useData } from './data';
-
-const { Option } = Select;
 
 const getBottomAxisProp = ({ startDate, endDate }: TimePeriod) => {
   const duration = endDate.diff(startDate, 'days');
@@ -46,20 +40,20 @@ const getBottomAxisProp = ({ startDate, endDate }: TimePeriod) => {
   };
 };
 
-type CumulativeViewProps = TimePeriod;
+type CumulativeViewProps = TimePeriod & Filters;
 
 const CumulativeView: React.FC<CumulativeViewProps> = ({
   startDate,
   endDate,
+  accountIdFilter,
 }) => {
-  const [accountId, setAccountId] = useState('all');
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
   const [precision, setPrecision] = useState(defaultPrecision);
-  const { loading, error, balances, accounts } = useData({
+  const { loading, error, balances } = useData({
     startDate,
     endDate,
-    accountId,
+    accountId: accountIdFilter,
     precision,
   });
   if (loading || balances === undefined) return null;
@@ -96,18 +90,6 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
     <>
       <VisualisationControls>
         <Space>
-          <Select
-            value={accountId}
-            onSelect={(val) => setAccountId(val as string)}
-            showSearch
-            optionFilterProp="label"
-          >
-            {accounts.map(({ id, name }) => (
-              <Option value={id as string} key={id as string} label={name}>
-                {name}
-              </Option>
-            ))}
-          </Select>
           <Radio.Group
             buttonStyle="solid"
             defaultValue={precision}
