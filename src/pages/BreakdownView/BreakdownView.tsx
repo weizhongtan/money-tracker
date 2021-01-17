@@ -137,13 +137,19 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
     transactionViewCategoryId,
     setTransactionViewCategoryId,
   ] = useState<string>();
-  const { loading, error, categories, total } = useCategories({
+  const { loading, error, expense, income } = useCategories({
     startDate,
     endDate,
     accountId: accountIdFilter,
     grouping,
   });
-  if (loading || typeof categories === 'undefined') return null;
+  if (
+    loading ||
+    typeof expense.categories === 'undefined' ||
+    typeof income.categories === 'undefined'
+  ) {
+    return null;
+  }
   if (error) return <>error</>;
 
   const Graph = graph === 'pie' ? PieBreakdown : BarBreakdown;
@@ -177,21 +183,33 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
           <Radio.Button value="subcategory">Subcategory</Radio.Button>
           <Radio.Button value="category">Category</Radio.Button>
         </Radio.Group>
-        {total && <span>Total: {toMoney(total)}</span>}
+        {income.total && (
+          <span>Total income: {toMoney(income.total, false)}</span>
+        )}
+        {expense.total && (
+          <span>Total expense: {toMoney(expense.total, false)}</span>
+        )}
+        <h2>Of total income:</h2>
       </VisualisationControls>
       <Visualisation>
         {({ height, width }) => {
           return (
-            <Graph
-              height={height}
-              width={width}
-              data={categories}
-              total={total ?? 0}
-              onClick={(data: any) => {
-                setTransactionViewCategoryId(String(data._id));
-                setVisible(true);
-              }}
-            />
+            <>
+              {expense.categories && (
+                <>
+                  <Graph
+                    height={height}
+                    width={width}
+                    data={expense.categories}
+                    total={income.total ?? 0}
+                    onClick={(data: any) => {
+                      setTransactionViewCategoryId(String(data._id));
+                      setVisible(true);
+                    }}
+                  />
+                </>
+              )}
+            </>
           );
         }}
       </Visualisation>

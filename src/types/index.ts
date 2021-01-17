@@ -1,7 +1,9 @@
 import { GetBaseDataQuery, GetTransactionsQuery } from '../generated/graphql';
 import { time } from '../lib';
 
-type GetElementType<T extends Array<any>> = T extends (infer U)[] ? U : never;
+export type GetElementType<T extends Array<any>> = T extends (infer U)[]
+  ? U
+  : never;
 
 export type Account = GetElementType<GetBaseDataQuery['accounts']>;
 

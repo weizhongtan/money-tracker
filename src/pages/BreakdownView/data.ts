@@ -1,5 +1,8 @@
-import { useGetCategoriesQuery } from '../../generated/graphql';
-import { TimePeriod } from '../../types';
+import {
+  GetCategoriesAggregateQuery,
+  useGetCategoriesAggregateQuery,
+} from '../../generated/graphql';
+import { GetElementType, TimePeriod } from '../../types';
 
 export const useCategories = ({
   startDate,
@@ -10,31 +13,51 @@ export const useCategories = ({
   accountId?: string;
   grouping: string;
 }) => {
-  const { loading, error, data } = useGetCategoriesQuery({
+  const { loading, error, data } = useGetCategoriesAggregateQuery({
     variables: {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      accountId,
-      categoryType: 'expense',
-      groupByParent: grouping === 'category',
     },
     fetchPolicy: 'no-cache',
   });
 
+  const mapToDatum = (
+    category: GetElementType<GetCategoriesAggregateQuery['expenseCategories']>
+  ) => ({
+    // _id will be used for transaction view
+    _id: category.id,
+    // id is used by pie chart for labels, so must be readable name
+    id: category.name,
+    name: category.name,
+    label: category.name,
+    value: Math.abs(
+      category.transactions_aggregate?.aggregate?.sum?.amount as number
+    ),
+  });
+
+  const expense = {
+    categories: data?.expenseCategories.map(mapToDatum),
+    total: data?.expenseSum.aggregate?.sum?.amount,
+  };
+  const income = {
+    categories: data?.incomeCategories.map(mapToDatum),
+    total: data?.incomeSum.aggregate?.sum?.amount,
+  };
+
+  // add "unspent pseudo category"
+  expense.categories?.push({
+    _id: 'none',
+    id: 'Unspent',
+    name: 'Unspent',
+    label: 'Unspent',
+    value: Math.abs(income.total ?? 0) - Math.abs(expense.total ?? 0),
+  });
+  expense.categories?.sort((a, b) => b.value - a.value);
+
   return {
     loading,
     error,
-    categories: data?.categories
-      .map((category) => ({
-        // _id will be used for transaction view
-        _id: category.id,
-        // id is used by pie chart for labels, so must be readable name
-        id: category.name,
-        name: category.name,
-        label: category.name,
-        value: Math.abs(category.sum),
-      }))
-      .sort((a, b) => b.value - a.value),
-    total: data?.amount?.aggregate?.sum?.sum,
+    expense,
+    income,
   };
 };

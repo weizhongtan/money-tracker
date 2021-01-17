@@ -2977,6 +2977,20 @@ export type GetCategoriesQueryVariables = Exact<{
 
 export type GetCategoriesQuery = { categories: Array<Pick<Table_Category_By_Date_Type, 'id' | 'name' | 'sum'>>, amount: { aggregate?: Maybe<{ sum?: Maybe<Pick<Table_Category_By_Date_Type_Sum_Fields, 'sum'>> }> } };
 
+export type GetCategoriesAggregateQueryVariables = Exact<{
+  startDate?: Maybe<Scalars['timestamptz']>;
+  endDate?: Maybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetCategoriesAggregateQuery = { expenseCategories: Array<(
+    Pick<Categories, 'name' | 'id'>
+    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } }
+  )>, expenseSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> }, incomeCategories: Array<(
+    Pick<Categories, 'name' | 'id'>
+    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } }
+  )>, incomeSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } };
+
 export type GetTransactionsQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
   endDate?: Maybe<Scalars['timestamptz']>;
@@ -3482,6 +3496,73 @@ export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
 export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetCategoriesAggregateDocument = gql`
+    query GetCategoriesAggregate($startDate: timestamptz, $endDate: timestamptz) {
+  expenseCategories: categories(where: {type: {_eq: "expense"}}) {
+    transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}}) {
+      aggregate {
+        sum {
+          amount
+        }
+      }
+    }
+    name
+    id
+  }
+  expenseSum: transactions_aggregate(where: {category: {type: {_eq: "expense"}}, date: {_gte: $startDate, _lte: $endDate}}) {
+    aggregate {
+      sum {
+        amount
+      }
+    }
+  }
+  incomeCategories: categories(where: {type: {_eq: "income"}}) {
+    transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}}) {
+      aggregate {
+        sum {
+          amount
+        }
+      }
+    }
+    name
+    id
+  }
+  incomeSum: transactions_aggregate(where: {category: {type: {_eq: "income"}}, date: {_gte: $startDate, _lte: $endDate}}) {
+    aggregate {
+      sum {
+        amount
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCategoriesAggregateQuery__
+ *
+ * To run a query within a React component, call `useGetCategoriesAggregateQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoriesAggregateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoriesAggregateQuery({
+ *   variables: {
+ *      startDate: // value for 'startDate'
+ *      endDate: // value for 'endDate'
+ *   },
+ * });
+ */
+export function useGetCategoriesAggregateQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>) {
+        return Apollo.useQuery<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>(GetCategoriesAggregateDocument, baseOptions);
+      }
+export function useGetCategoriesAggregateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>) {
+          return Apollo.useLazyQuery<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>(GetCategoriesAggregateDocument, baseOptions);
+        }
+export type GetCategoriesAggregateQueryHookResult = ReturnType<typeof useGetCategoriesAggregateQuery>;
+export type GetCategoriesAggregateLazyQueryHookResult = ReturnType<typeof useGetCategoriesAggregateLazyQuery>;
+export type GetCategoriesAggregateQueryResult = Apollo.QueryResult<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>;
 export const GetTransactionsDocument = gql`
     query GetTransactions($startDate: timestamptz, $endDate: timestamptz, $categoryIds: [uuid!], $accountId: uuid, $searchText: String!, $searchAmount: numeric!, $searchAmountComplement: numeric!) {
   transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}, _and: [{_and: [{_or: [{category_id: {_in: $categoryIds}}, {category_id: {_is_null: true}}]}, {account_id: {_eq: $accountId}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}, order_by: {date: desc}) {
