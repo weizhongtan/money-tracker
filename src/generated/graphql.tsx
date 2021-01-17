@@ -638,14 +638,6 @@ export enum Categories_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
-export type Func_Category_By_Date_Type_Args = {
-  v_account_id?: Maybe<Scalars['uuid']>;
-  v_category_type?: Maybe<Scalars['String']>;
-  v_end_date?: Maybe<Scalars['timestamptz']>;
-  v_parent?: Maybe<Scalars['Boolean']>;
-  v_start_date?: Maybe<Scalars['timestamptz']>;
-};
-
 export type Func_Transactions_By_Account_Grouped_Cumulative_Args = {
   v_account_id?: Maybe<Scalars['uuid']>;
   v_group_by?: Maybe<Scalars['String']>;
@@ -663,8 +655,6 @@ export type Mutation_Root = {
   delete_accounts?: Maybe<Accounts_Mutation_Response>;
   /** delete data from the table: "categories" */
   delete_categories?: Maybe<Categories_Mutation_Response>;
-  /** delete data from the table: "table_category_by_date_type" */
-  delete_table_category_by_date_type?: Maybe<Table_Category_By_Date_Type_Mutation_Response>;
   /** delete data from the table: "table_transactions_by_category_grouped" */
   delete_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** delete data from the table: "table_transactions_group_by" */
@@ -675,8 +665,6 @@ export type Mutation_Root = {
   insert_accounts?: Maybe<Accounts_Mutation_Response>;
   /** insert data into the table: "categories" */
   insert_categories?: Maybe<Categories_Mutation_Response>;
-  /** insert data into the table: "table_category_by_date_type" */
-  insert_table_category_by_date_type?: Maybe<Table_Category_By_Date_Type_Mutation_Response>;
   /** insert data into the table: "table_transactions_by_category_grouped" */
   insert_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** insert data into the table: "table_transactions_group_by" */
@@ -687,8 +675,6 @@ export type Mutation_Root = {
   update_accounts?: Maybe<Accounts_Mutation_Response>;
   /** update data of the table: "categories" */
   update_categories?: Maybe<Categories_Mutation_Response>;
-  /** update data of the table: "table_category_by_date_type" */
-  update_table_category_by_date_type?: Maybe<Table_Category_By_Date_Type_Mutation_Response>;
   /** update data of the table: "table_transactions_by_category_grouped" */
   update_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** update data of the table: "table_transactions_group_by" */
@@ -707,12 +693,6 @@ export type Mutation_RootDelete_AccountsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_CategoriesArgs = {
   where: Categories_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Table_Category_By_Date_TypeArgs = {
-  where: Table_Category_By_Date_Type_Bool_Exp;
 };
 
 
@@ -749,13 +729,6 @@ export type Mutation_RootInsert_CategoriesArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_Table_Category_By_Date_TypeArgs = {
-  objects: Array<Table_Category_By_Date_Type_Insert_Input>;
-  on_conflict?: Maybe<Table_Category_By_Date_Type_On_Conflict>;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsert_Table_Transactions_By_Category_GroupedArgs = {
   objects: Array<Table_Transactions_By_Category_Grouped_Insert_Input>;
 };
@@ -785,13 +758,6 @@ export type Mutation_RootUpdate_AccountsArgs = {
 export type Mutation_RootUpdate_CategoriesArgs = {
   _set?: Maybe<Categories_Set_Input>;
   where: Categories_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Table_Category_By_Date_TypeArgs = {
-  _set?: Maybe<Table_Category_By_Date_Type_Set_Input>;
-  where: Table_Category_By_Date_Type_Bool_Exp;
 };
 
 
@@ -859,10 +825,6 @@ export type Query_Root = {
   categories_aggregate: Categories_Aggregate;
   /** fetch data from the table: "categories" using primary key columns */
   categories_by_pk?: Maybe<Categories>;
-  /** execute function "func_category_by_date_type" which returns "table_category_by_date_type" */
-  func_category_by_date_type: Array<Table_Category_By_Date_Type>;
-  /** execute function "func_category_by_date_type" and query aggregates on result of table type "table_category_by_date_type" */
-  func_category_by_date_type_aggregate: Table_Category_By_Date_Type_Aggregate;
   /** execute function "func_transactions_by_account_grouped_cumulative" which returns "table_transactions_group_by" */
   func_transactions_by_account_grouped_cumulative: Array<Table_Transactions_Group_By>;
   /**
@@ -877,12 +839,6 @@ export type Query_Root = {
    * on result of table type "table_transactions_by_category_grouped"
    */
   func_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
-  /** fetch data from the table: "table_category_by_date_type" */
-  table_category_by_date_type: Array<Table_Category_By_Date_Type>;
-  /** fetch aggregated fields from the table: "table_category_by_date_type" */
-  table_category_by_date_type_aggregate: Table_Category_By_Date_Type_Aggregate;
-  /** fetch data from the table: "table_category_by_date_type" using primary key columns */
-  table_category_by_date_type_by_pk?: Maybe<Table_Category_By_Date_Type>;
   /** fetch data from the table: "table_transactions_by_category_grouped" */
   table_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
   /** fetch aggregated fields from the table: "table_transactions_by_category_grouped" */
@@ -957,28 +913,6 @@ export type Query_RootCategories_By_PkArgs = {
 
 
 /** query root */
-export type Query_RootFunc_Category_By_Date_TypeArgs = {
-  args: Func_Category_By_Date_Type_Args;
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootFunc_Category_By_Date_Type_AggregateArgs = {
-  args: Func_Category_By_Date_Type_Args;
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** query root */
 export type Query_RootFunc_Transactions_By_Account_Grouped_CumulativeArgs = {
   args: Func_Transactions_By_Account_Grouped_Cumulative_Args;
   distinct_on?: Maybe<Array<Table_Transactions_Group_By_Select_Column>>;
@@ -1019,32 +953,6 @@ export type Query_RootFunc_Transactions_By_Category_Grouped_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
   where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootTable_Category_By_Date_TypeArgs = {
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootTable_Category_By_Date_Type_AggregateArgs = {
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootTable_Category_By_Date_Type_By_PkArgs = {
-  id: Scalars['uuid'];
 };
 
 
@@ -1166,10 +1074,6 @@ export type Subscription_Root = {
   categories_aggregate: Categories_Aggregate;
   /** fetch data from the table: "categories" using primary key columns */
   categories_by_pk?: Maybe<Categories>;
-  /** execute function "func_category_by_date_type" which returns "table_category_by_date_type" */
-  func_category_by_date_type: Array<Table_Category_By_Date_Type>;
-  /** execute function "func_category_by_date_type" and query aggregates on result of table type "table_category_by_date_type" */
-  func_category_by_date_type_aggregate: Table_Category_By_Date_Type_Aggregate;
   /** execute function "func_transactions_by_account_grouped_cumulative" which returns "table_transactions_group_by" */
   func_transactions_by_account_grouped_cumulative: Array<Table_Transactions_Group_By>;
   /**
@@ -1184,12 +1088,6 @@ export type Subscription_Root = {
    * on result of table type "table_transactions_by_category_grouped"
    */
   func_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
-  /** fetch data from the table: "table_category_by_date_type" */
-  table_category_by_date_type: Array<Table_Category_By_Date_Type>;
-  /** fetch aggregated fields from the table: "table_category_by_date_type" */
-  table_category_by_date_type_aggregate: Table_Category_By_Date_Type_Aggregate;
-  /** fetch data from the table: "table_category_by_date_type" using primary key columns */
-  table_category_by_date_type_by_pk?: Maybe<Table_Category_By_Date_Type>;
   /** fetch data from the table: "table_transactions_by_category_grouped" */
   table_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
   /** fetch aggregated fields from the table: "table_transactions_by_category_grouped" */
@@ -1264,28 +1162,6 @@ export type Subscription_RootCategories_By_PkArgs = {
 
 
 /** subscription root */
-export type Subscription_RootFunc_Category_By_Date_TypeArgs = {
-  args: Func_Category_By_Date_Type_Args;
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootFunc_Category_By_Date_Type_AggregateArgs = {
-  args: Func_Category_By_Date_Type_Args;
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** subscription root */
 export type Subscription_RootFunc_Transactions_By_Account_Grouped_CumulativeArgs = {
   args: Func_Transactions_By_Account_Grouped_Cumulative_Args;
   distinct_on?: Maybe<Array<Table_Transactions_Group_By_Select_Column>>;
@@ -1326,32 +1202,6 @@ export type Subscription_RootFunc_Transactions_By_Category_Grouped_AggregateArgs
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
   where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootTable_Category_By_Date_TypeArgs = {
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootTable_Category_By_Date_Type_AggregateArgs = {
-  distinct_on?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Category_By_Date_Type_Order_By>>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootTable_Category_By_Date_Type_By_PkArgs = {
-  id: Scalars['uuid'];
 };
 
 
@@ -1438,247 +1288,6 @@ export type Subscription_RootView_Accounts_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<View_Accounts_Order_By>>;
   where?: Maybe<View_Accounts_Bool_Exp>;
-};
-
-/** columns and relationships of "table_category_by_date_type" */
-export type Table_Category_By_Date_Type = {
-  id: Scalars['uuid'];
-  name: Scalars['String'];
-  sum: Scalars['numeric'];
-};
-
-/** aggregated selection of "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Aggregate = {
-  aggregate?: Maybe<Table_Category_By_Date_Type_Aggregate_Fields>;
-  nodes: Array<Table_Category_By_Date_Type>;
-};
-
-/** aggregate fields of "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Aggregate_Fields = {
-  avg?: Maybe<Table_Category_By_Date_Type_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Table_Category_By_Date_Type_Max_Fields>;
-  min?: Maybe<Table_Category_By_Date_Type_Min_Fields>;
-  stddev?: Maybe<Table_Category_By_Date_Type_Stddev_Fields>;
-  stddev_pop?: Maybe<Table_Category_By_Date_Type_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Table_Category_By_Date_Type_Stddev_Samp_Fields>;
-  sum?: Maybe<Table_Category_By_Date_Type_Sum_Fields>;
-  var_pop?: Maybe<Table_Category_By_Date_Type_Var_Pop_Fields>;
-  var_samp?: Maybe<Table_Category_By_Date_Type_Var_Samp_Fields>;
-  variance?: Maybe<Table_Category_By_Date_Type_Variance_Fields>;
-};
-
-
-/** aggregate fields of "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Table_Category_By_Date_Type_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Aggregate_Order_By = {
-  avg?: Maybe<Table_Category_By_Date_Type_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Table_Category_By_Date_Type_Max_Order_By>;
-  min?: Maybe<Table_Category_By_Date_Type_Min_Order_By>;
-  stddev?: Maybe<Table_Category_By_Date_Type_Stddev_Order_By>;
-  stddev_pop?: Maybe<Table_Category_By_Date_Type_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Table_Category_By_Date_Type_Stddev_Samp_Order_By>;
-  sum?: Maybe<Table_Category_By_Date_Type_Sum_Order_By>;
-  var_pop?: Maybe<Table_Category_By_Date_Type_Var_Pop_Order_By>;
-  var_samp?: Maybe<Table_Category_By_Date_Type_Var_Samp_Order_By>;
-  variance?: Maybe<Table_Category_By_Date_Type_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Arr_Rel_Insert_Input = {
-  data: Array<Table_Category_By_Date_Type_Insert_Input>;
-  on_conflict?: Maybe<Table_Category_By_Date_Type_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Table_Category_By_Date_Type_Avg_Fields = {
-  sum?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Avg_Order_By = {
-  sum?: Maybe<Order_By>;
-};
-
-/**
- * Boolean expression to filter rows from the table "table_category_by_date_type".
- * All fields are combined with a logical 'AND'.
- */
-export type Table_Category_By_Date_Type_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Table_Category_By_Date_Type_Bool_Exp>>>;
-  _not?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Table_Category_By_Date_Type_Bool_Exp>>>;
-  id?: Maybe<Uuid_Comparison_Exp>;
-  name?: Maybe<String_Comparison_Exp>;
-  sum?: Maybe<Numeric_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "table_category_by_date_type" */
-export enum Table_Category_By_Date_Type_Constraint {
-  /** unique or primary key constraint */
-  TableCategoryByDateTypePkey = 'table_category_by_date_type_pkey'
-}
-
-/** input type for inserting data into table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Insert_Input = {
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  sum?: Maybe<Scalars['numeric']>;
-};
-
-/** aggregate max on columns */
-export type Table_Category_By_Date_Type_Max_Fields = {
-  name?: Maybe<Scalars['String']>;
-  sum?: Maybe<Scalars['numeric']>;
-};
-
-/** order by max() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Max_Order_By = {
-  name?: Maybe<Order_By>;
-  sum?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Table_Category_By_Date_Type_Min_Fields = {
-  name?: Maybe<Scalars['String']>;
-  sum?: Maybe<Scalars['numeric']>;
-};
-
-/** order by min() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Min_Order_By = {
-  name?: Maybe<Order_By>;
-  sum?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Mutation_Response = {
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Table_Category_By_Date_Type>;
-};
-
-/** input type for inserting object relation for remote table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Obj_Rel_Insert_Input = {
-  data: Table_Category_By_Date_Type_Insert_Input;
-  on_conflict?: Maybe<Table_Category_By_Date_Type_On_Conflict>;
-};
-
-/** on conflict condition type for table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_On_Conflict = {
-  constraint: Table_Category_By_Date_Type_Constraint;
-  update_columns: Array<Table_Category_By_Date_Type_Update_Column>;
-  where?: Maybe<Table_Category_By_Date_Type_Bool_Exp>;
-};
-
-/** ordering options when selecting data from "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Order_By = {
-  id?: Maybe<Order_By>;
-  name?: Maybe<Order_By>;
-  sum?: Maybe<Order_By>;
-};
-
-/** select columns of table "table_category_by_date_type" */
-export enum Table_Category_By_Date_Type_Select_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Sum = 'sum'
-}
-
-/** input type for updating data in table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Set_Input = {
-  id?: Maybe<Scalars['uuid']>;
-  name?: Maybe<Scalars['String']>;
-  sum?: Maybe<Scalars['numeric']>;
-};
-
-/** aggregate stddev on columns */
-export type Table_Category_By_Date_Type_Stddev_Fields = {
-  sum?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Stddev_Order_By = {
-  sum?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Table_Category_By_Date_Type_Stddev_Pop_Fields = {
-  sum?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Stddev_Pop_Order_By = {
-  sum?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Table_Category_By_Date_Type_Stddev_Samp_Fields = {
-  sum?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Stddev_Samp_Order_By = {
-  sum?: Maybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type Table_Category_By_Date_Type_Sum_Fields = {
-  sum?: Maybe<Scalars['numeric']>;
-};
-
-/** order by sum() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Sum_Order_By = {
-  sum?: Maybe<Order_By>;
-};
-
-/** update columns of table "table_category_by_date_type" */
-export enum Table_Category_By_Date_Type_Update_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  Name = 'name',
-  /** column name */
-  Sum = 'sum'
-}
-
-/** aggregate var_pop on columns */
-export type Table_Category_By_Date_Type_Var_Pop_Fields = {
-  sum?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Var_Pop_Order_By = {
-  sum?: Maybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Table_Category_By_Date_Type_Var_Samp_Fields = {
-  sum?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Var_Samp_Order_By = {
-  sum?: Maybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Table_Category_By_Date_Type_Variance_Fields = {
-  sum?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "table_category_by_date_type" */
-export type Table_Category_By_Date_Type_Variance_Order_By = {
-  sum?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "table_transactions_by_category_grouped" */
@@ -2966,17 +2575,6 @@ export type GetBaseDataQuery = { accounts: Array<(
     & { key: Categories['id'] }
   )> };
 
-export type GetCategoriesQueryVariables = Exact<{
-  startDate?: Maybe<Scalars['timestamptz']>;
-  endDate?: Maybe<Scalars['timestamptz']>;
-  accountId?: Maybe<Scalars['uuid']>;
-  categoryType?: Maybe<Scalars['String']>;
-  groupByParent?: Maybe<Scalars['Boolean']>;
-}>;
-
-
-export type GetCategoriesQuery = { categories: Array<Pick<Table_Category_By_Date_Type, 'id' | 'name' | 'sum'>>, amount: { aggregate?: Maybe<{ sum?: Maybe<Pick<Table_Category_By_Date_Type_Sum_Fields, 'sum'>> }> } };
-
 export type GetCategoriesAggregateQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
   endDate?: Maybe<Scalars['timestamptz']>;
@@ -3450,52 +3048,6 @@ export function useGetBaseDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetBaseDataQueryHookResult = ReturnType<typeof useGetBaseDataQuery>;
 export type GetBaseDataLazyQueryHookResult = ReturnType<typeof useGetBaseDataLazyQuery>;
 export type GetBaseDataQueryResult = Apollo.QueryResult<GetBaseDataQuery, GetBaseDataQueryVariables>;
-export const GetCategoriesDocument = gql`
-    query GetCategories($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $categoryType: String, $groupByParent: Boolean) {
-  categories: func_category_by_date_type(args: {v_account_id: $accountId, v_category_type: $categoryType, v_end_date: $endDate, v_start_date: $startDate, v_parent: $groupByParent}) {
-    id
-    name
-    sum
-  }
-  amount: func_category_by_date_type_aggregate(args: {v_account_id: $accountId, v_category_type: $categoryType, v_end_date: $endDate, v_start_date: $startDate, v_parent: $groupByParent}) {
-    aggregate {
-      sum {
-        sum
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetCategoriesQuery__
- *
- * To run a query within a React component, call `useGetCategoriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetCategoriesQuery({
- *   variables: {
- *      startDate: // value for 'startDate'
- *      endDate: // value for 'endDate'
- *      accountId: // value for 'accountId'
- *      categoryType: // value for 'categoryType'
- *      groupByParent: // value for 'groupByParent'
- *   },
- * });
- */
-export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-        return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, baseOptions);
-      }
-export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
-          return Apollo.useLazyQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, baseOptions);
-        }
-export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
-export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
-export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetCategoriesAggregateDocument = gql`
     query GetCategoriesAggregate($startDate: timestamptz, $endDate: timestamptz) {
   expenseCategories: categories(where: {type: {_eq: "expense"}}) {

@@ -1,8 +1,5 @@
 - function:
     schema: public
-    name: func_category_by_date_type
-- function:
-    schema: public
     name: func_transactions_by_account_grouped_cumulative
 - function:
     schema: public

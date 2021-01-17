@@ -40,9 +40,6 @@
           name: transactions
 - table:
     schema: public
-    name: table_category_by_date_type
-- table:
-    schema: public
     name: table_transactions_by_category_grouped
 - table:
     schema: public
