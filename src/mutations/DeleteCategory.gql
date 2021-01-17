@@ -1,5 +1,5 @@
 mutation DeleteCategory($id: uuid) {
-  delete_categories(where: { id: { _eq: $id } }) {
+  delete_category(where: { id: { _eq: $id } }) {
     affected_rows
     returning {
       id

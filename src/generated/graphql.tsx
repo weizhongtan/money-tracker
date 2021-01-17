@@ -389,14 +389,14 @@ export type Account_Variance_Order_By = {
   minimum?: Maybe<Order_By>;
 };
 
-/** columns and relationships of "categories" */
-export type Categories = {
+/** columns and relationships of "category" */
+export type Category = {
   /** An array relationship */
-  categories: Array<Categories>;
+  categories: Array<Category>;
   /** An aggregated array relationship */
-  categories_aggregate: Categories_Aggregate;
+  categories_aggregate: Category_Aggregate;
   /** An object relationship */
-  category?: Maybe<Categories>;
+  category?: Maybe<Category>;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
   legacy_key?: Maybe<Scalars['String']>;
@@ -411,28 +411,28 @@ export type Categories = {
 };
 
 
-/** columns and relationships of "categories" */
-export type CategoriesCategoriesArgs = {
-  distinct_on?: Maybe<Array<Categories_Select_Column>>;
+/** columns and relationships of "category" */
+export type CategoryCategoriesArgs = {
+  distinct_on?: Maybe<Array<Category_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Categories_Order_By>>;
-  where?: Maybe<Categories_Bool_Exp>;
+  order_by?: Maybe<Array<Category_Order_By>>;
+  where?: Maybe<Category_Bool_Exp>;
 };
 
 
-/** columns and relationships of "categories" */
-export type CategoriesCategories_AggregateArgs = {
-  distinct_on?: Maybe<Array<Categories_Select_Column>>;
+/** columns and relationships of "category" */
+export type CategoryCategories_AggregateArgs = {
+  distinct_on?: Maybe<Array<Category_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Categories_Order_By>>;
-  where?: Maybe<Categories_Bool_Exp>;
+  order_by?: Maybe<Array<Category_Order_By>>;
+  where?: Maybe<Category_Bool_Exp>;
 };
 
 
-/** columns and relationships of "categories" */
-export type CategoriesTransactionsArgs = {
+/** columns and relationships of "category" */
+export type CategoryTransactionsArgs = {
   distinct_on?: Maybe<Array<Transactions_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -441,8 +441,8 @@ export type CategoriesTransactionsArgs = {
 };
 
 
-/** columns and relationships of "categories" */
-export type CategoriesTransactions_AggregateArgs = {
+/** columns and relationships of "category" */
+export type CategoryTransactions_AggregateArgs = {
   distinct_on?: Maybe<Array<Transactions_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
@@ -450,46 +450,46 @@ export type CategoriesTransactions_AggregateArgs = {
   where?: Maybe<Transactions_Bool_Exp>;
 };
 
-/** aggregated selection of "categories" */
-export type Categories_Aggregate = {
-  aggregate?: Maybe<Categories_Aggregate_Fields>;
-  nodes: Array<Categories>;
+/** aggregated selection of "category" */
+export type Category_Aggregate = {
+  aggregate?: Maybe<Category_Aggregate_Fields>;
+  nodes: Array<Category>;
 };
 
-/** aggregate fields of "categories" */
-export type Categories_Aggregate_Fields = {
+/** aggregate fields of "category" */
+export type Category_Aggregate_Fields = {
   count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Categories_Max_Fields>;
-  min?: Maybe<Categories_Min_Fields>;
+  max?: Maybe<Category_Max_Fields>;
+  min?: Maybe<Category_Min_Fields>;
 };
 
 
-/** aggregate fields of "categories" */
-export type Categories_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Categories_Select_Column>>;
+/** aggregate fields of "category" */
+export type Category_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Category_Select_Column>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "categories" */
-export type Categories_Aggregate_Order_By = {
+/** order by aggregate values of table "category" */
+export type Category_Aggregate_Order_By = {
   count?: Maybe<Order_By>;
-  max?: Maybe<Categories_Max_Order_By>;
-  min?: Maybe<Categories_Min_Order_By>;
+  max?: Maybe<Category_Max_Order_By>;
+  min?: Maybe<Category_Min_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "categories" */
-export type Categories_Arr_Rel_Insert_Input = {
-  data: Array<Categories_Insert_Input>;
-  on_conflict?: Maybe<Categories_On_Conflict>;
+/** input type for inserting array relation for remote table "category" */
+export type Category_Arr_Rel_Insert_Input = {
+  data: Array<Category_Insert_Input>;
+  on_conflict?: Maybe<Category_On_Conflict>;
 };
 
-/** Boolean expression to filter rows from the table "categories". All fields are combined with a logical 'AND'. */
-export type Categories_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Categories_Bool_Exp>>>;
-  _not?: Maybe<Categories_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Categories_Bool_Exp>>>;
-  categories?: Maybe<Categories_Bool_Exp>;
-  category?: Maybe<Categories_Bool_Exp>;
+/** Boolean expression to filter rows from the table "category". All fields are combined with a logical 'AND'. */
+export type Category_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Category_Bool_Exp>>>;
+  _not?: Maybe<Category_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Category_Bool_Exp>>>;
+  categories?: Maybe<Category_Bool_Exp>;
+  category?: Maybe<Category_Bool_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   legacy_key?: Maybe<String_Comparison_Exp>;
@@ -500,16 +500,16 @@ export type Categories_Bool_Exp = {
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "categories" */
-export enum Categories_Constraint {
+/** unique or primary key constraints on table "category" */
+export enum Category_Constraint {
   /** unique or primary key constraint */
   CategoriesPkey = 'categories_pkey'
 }
 
-/** input type for inserting data into table "categories" */
-export type Categories_Insert_Input = {
-  categories?: Maybe<Categories_Arr_Rel_Insert_Input>;
-  category?: Maybe<Categories_Obj_Rel_Insert_Input>;
+/** input type for inserting data into table "category" */
+export type Category_Insert_Input = {
+  categories?: Maybe<Category_Arr_Rel_Insert_Input>;
+  category?: Maybe<Category_Obj_Rel_Insert_Input>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   legacy_key?: Maybe<Scalars['String']>;
@@ -521,7 +521,7 @@ export type Categories_Insert_Input = {
 };
 
 /** aggregate max on columns */
-export type Categories_Max_Fields = {
+export type Category_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -529,8 +529,8 @@ export type Categories_Max_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by max() on columns of table "categories" */
-export type Categories_Max_Order_By = {
+/** order by max() on columns of table "category" */
+export type Category_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -539,7 +539,7 @@ export type Categories_Max_Order_By = {
 };
 
 /** aggregate min on columns */
-export type Categories_Min_Fields = {
+export type Category_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -547,8 +547,8 @@ export type Categories_Min_Fields = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** order by min() on columns of table "categories" */
-export type Categories_Min_Order_By = {
+/** order by min() on columns of table "category" */
+export type Category_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -556,31 +556,31 @@ export type Categories_Min_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** response of any mutation on the table "categories" */
-export type Categories_Mutation_Response = {
+/** response of any mutation on the table "category" */
+export type Category_Mutation_Response = {
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
-  returning: Array<Categories>;
+  returning: Array<Category>;
 };
 
-/** input type for inserting object relation for remote table "categories" */
-export type Categories_Obj_Rel_Insert_Input = {
-  data: Categories_Insert_Input;
-  on_conflict?: Maybe<Categories_On_Conflict>;
+/** input type for inserting object relation for remote table "category" */
+export type Category_Obj_Rel_Insert_Input = {
+  data: Category_Insert_Input;
+  on_conflict?: Maybe<Category_On_Conflict>;
 };
 
-/** on conflict condition type for table "categories" */
-export type Categories_On_Conflict = {
-  constraint: Categories_Constraint;
-  update_columns: Array<Categories_Update_Column>;
-  where?: Maybe<Categories_Bool_Exp>;
+/** on conflict condition type for table "category" */
+export type Category_On_Conflict = {
+  constraint: Category_Constraint;
+  update_columns: Array<Category_Update_Column>;
+  where?: Maybe<Category_Bool_Exp>;
 };
 
-/** ordering options when selecting data from "categories" */
-export type Categories_Order_By = {
-  categories_aggregate?: Maybe<Categories_Aggregate_Order_By>;
-  category?: Maybe<Categories_Order_By>;
+/** ordering options when selecting data from "category" */
+export type Category_Order_By = {
+  categories_aggregate?: Maybe<Category_Aggregate_Order_By>;
+  category?: Maybe<Category_Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
@@ -591,8 +591,8 @@ export type Categories_Order_By = {
   updated_at?: Maybe<Order_By>;
 };
 
-/** select columns of table "categories" */
-export enum Categories_Select_Column {
+/** select columns of table "category" */
+export enum Category_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -609,8 +609,8 @@ export enum Categories_Select_Column {
   UpdatedAt = 'updated_at'
 }
 
-/** input type for updating data in table "categories" */
-export type Categories_Set_Input = {
+/** input type for updating data in table "category" */
+export type Category_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
   legacy_key?: Maybe<Scalars['String']>;
@@ -620,8 +620,8 @@ export type Categories_Set_Input = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
-/** update columns of table "categories" */
-export enum Categories_Update_Column {
+/** update columns of table "category" */
+export enum Category_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -653,8 +653,8 @@ export type Func_Transactions_By_Category_Grouped_Args = {
 export type Mutation_Root = {
   /** delete data from the table: "account" */
   delete_account?: Maybe<Account_Mutation_Response>;
-  /** delete data from the table: "categories" */
-  delete_categories?: Maybe<Categories_Mutation_Response>;
+  /** delete data from the table: "category" */
+  delete_category?: Maybe<Category_Mutation_Response>;
   /** delete data from the table: "table_transactions_by_category_grouped" */
   delete_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** delete data from the table: "table_transactions_group_by" */
@@ -663,8 +663,8 @@ export type Mutation_Root = {
   delete_transactions?: Maybe<Transactions_Mutation_Response>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
-  /** insert data into the table: "categories" */
-  insert_categories?: Maybe<Categories_Mutation_Response>;
+  /** insert data into the table: "category" */
+  insert_category?: Maybe<Category_Mutation_Response>;
   /** insert data into the table: "table_transactions_by_category_grouped" */
   insert_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** insert data into the table: "table_transactions_group_by" */
@@ -673,8 +673,8 @@ export type Mutation_Root = {
   insert_transactions?: Maybe<Transactions_Mutation_Response>;
   /** update data of the table: "account" */
   update_account?: Maybe<Account_Mutation_Response>;
-  /** update data of the table: "categories" */
-  update_categories?: Maybe<Categories_Mutation_Response>;
+  /** update data of the table: "category" */
+  update_category?: Maybe<Category_Mutation_Response>;
   /** update data of the table: "table_transactions_by_category_grouped" */
   update_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** update data of the table: "table_transactions_group_by" */
@@ -691,8 +691,8 @@ export type Mutation_RootDelete_AccountArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_CategoriesArgs = {
-  where: Categories_Bool_Exp;
+export type Mutation_RootDelete_CategoryArgs = {
+  where: Category_Bool_Exp;
 };
 
 
@@ -722,9 +722,9 @@ export type Mutation_RootInsert_AccountArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_CategoriesArgs = {
-  objects: Array<Categories_Insert_Input>;
-  on_conflict?: Maybe<Categories_On_Conflict>;
+export type Mutation_RootInsert_CategoryArgs = {
+  objects: Array<Category_Insert_Input>;
+  on_conflict?: Maybe<Category_On_Conflict>;
 };
 
 
@@ -755,9 +755,9 @@ export type Mutation_RootUpdate_AccountArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_CategoriesArgs = {
-  _set?: Maybe<Categories_Set_Input>;
-  where: Categories_Bool_Exp;
+export type Mutation_RootUpdate_CategoryArgs = {
+  _set?: Maybe<Category_Set_Input>;
+  where: Category_Bool_Exp;
 };
 
 
@@ -819,12 +819,12 @@ export type Query_Root = {
   account_aggregate: Account_Aggregate;
   /** fetch data from the table: "account" using primary key columns */
   account_by_pk?: Maybe<Account>;
-  /** fetch data from the table: "categories" */
-  categories: Array<Categories>;
-  /** fetch aggregated fields from the table: "categories" */
-  categories_aggregate: Categories_Aggregate;
-  /** fetch data from the table: "categories" using primary key columns */
-  categories_by_pk?: Maybe<Categories>;
+  /** fetch data from the table: "category" */
+  category: Array<Category>;
+  /** fetch aggregated fields from the table: "category" */
+  category_aggregate: Category_Aggregate;
+  /** fetch data from the table: "category" using primary key columns */
+  category_by_pk?: Maybe<Category>;
   /** execute function "func_transactions_by_account_grouped_cumulative" which returns "table_transactions_group_by" */
   func_transactions_by_account_grouped_cumulative: Array<Table_Transactions_Group_By>;
   /**
@@ -887,27 +887,27 @@ export type Query_RootAccount_By_PkArgs = {
 
 
 /** query root */
-export type Query_RootCategoriesArgs = {
-  distinct_on?: Maybe<Array<Categories_Select_Column>>;
+export type Query_RootCategoryArgs = {
+  distinct_on?: Maybe<Array<Category_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Categories_Order_By>>;
-  where?: Maybe<Categories_Bool_Exp>;
+  order_by?: Maybe<Array<Category_Order_By>>;
+  where?: Maybe<Category_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootCategories_AggregateArgs = {
-  distinct_on?: Maybe<Array<Categories_Select_Column>>;
+export type Query_RootCategory_AggregateArgs = {
+  distinct_on?: Maybe<Array<Category_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Categories_Order_By>>;
-  where?: Maybe<Categories_Bool_Exp>;
+  order_by?: Maybe<Array<Category_Order_By>>;
+  where?: Maybe<Category_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootCategories_By_PkArgs = {
+export type Query_RootCategory_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1068,12 +1068,12 @@ export type Subscription_Root = {
   account_aggregate: Account_Aggregate;
   /** fetch data from the table: "account" using primary key columns */
   account_by_pk?: Maybe<Account>;
-  /** fetch data from the table: "categories" */
-  categories: Array<Categories>;
-  /** fetch aggregated fields from the table: "categories" */
-  categories_aggregate: Categories_Aggregate;
-  /** fetch data from the table: "categories" using primary key columns */
-  categories_by_pk?: Maybe<Categories>;
+  /** fetch data from the table: "category" */
+  category: Array<Category>;
+  /** fetch aggregated fields from the table: "category" */
+  category_aggregate: Category_Aggregate;
+  /** fetch data from the table: "category" using primary key columns */
+  category_by_pk?: Maybe<Category>;
   /** execute function "func_transactions_by_account_grouped_cumulative" which returns "table_transactions_group_by" */
   func_transactions_by_account_grouped_cumulative: Array<Table_Transactions_Group_By>;
   /**
@@ -1136,27 +1136,27 @@ export type Subscription_RootAccount_By_PkArgs = {
 
 
 /** subscription root */
-export type Subscription_RootCategoriesArgs = {
-  distinct_on?: Maybe<Array<Categories_Select_Column>>;
+export type Subscription_RootCategoryArgs = {
+  distinct_on?: Maybe<Array<Category_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Categories_Order_By>>;
-  where?: Maybe<Categories_Bool_Exp>;
+  order_by?: Maybe<Array<Category_Order_By>>;
+  where?: Maybe<Category_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootCategories_AggregateArgs = {
-  distinct_on?: Maybe<Array<Categories_Select_Column>>;
+export type Subscription_RootCategory_AggregateArgs = {
+  distinct_on?: Maybe<Array<Category_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Categories_Order_By>>;
-  where?: Maybe<Categories_Bool_Exp>;
+  order_by?: Maybe<Array<Category_Order_By>>;
+  where?: Maybe<Category_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootCategories_By_PkArgs = {
+export type Subscription_RootCategory_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -1783,7 +1783,7 @@ export type Transactions = {
   account_id: Scalars['uuid'];
   amount: Scalars['numeric'];
   /** An object relationship */
-  category: Categories;
+  category: Category;
   /** Defaults to the None category */
   category_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
@@ -1891,7 +1891,7 @@ export type Transactions_Bool_Exp = {
   account?: Maybe<Account_Bool_Exp>;
   account_id?: Maybe<Uuid_Comparison_Exp>;
   amount?: Maybe<Numeric_Comparison_Exp>;
-  category?: Maybe<Categories_Bool_Exp>;
+  category?: Maybe<Category_Bool_Exp>;
   category_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   date?: Maybe<Timestamptz_Comparison_Exp>;
@@ -1917,7 +1917,7 @@ export type Transactions_Insert_Input = {
   account?: Maybe<Account_Obj_Rel_Insert_Input>;
   account_id?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
-  category?: Maybe<Categories_Obj_Rel_Insert_Input>;
+  category?: Maybe<Category_Obj_Rel_Insert_Input>;
   category_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   date?: Maybe<Scalars['timestamptz']>;
@@ -1994,7 +1994,7 @@ export type Transactions_Order_By = {
   account?: Maybe<Account_Order_By>;
   account_id?: Maybe<Order_By>;
   amount?: Maybe<Order_By>;
-  category?: Maybe<Categories_Order_By>;
+  category?: Maybe<Category_Order_By>;
   category_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
@@ -2456,11 +2456,11 @@ export type CreateCategoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateCategoryMutation = { insert_categories?: Maybe<(
-    Pick<Categories_Mutation_Response, 'affected_rows'>
+export type CreateCategoryMutation = { insert_category?: Maybe<(
+    Pick<Category_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
-      Pick<Categories, 'id' | 'name' | 'type'>
-      & { key: Categories['id'] }
+      Pick<Category, 'id' | 'name' | 'type'>
+      & { key: Category['id'] }
     )> }
   )> };
 
@@ -2469,11 +2469,11 @@ export type DeleteCategoryMutationVariables = Exact<{
 }>;
 
 
-export type DeleteCategoryMutation = { delete_categories?: Maybe<(
-    Pick<Categories_Mutation_Response, 'affected_rows'>
+export type DeleteCategoryMutation = { delete_category?: Maybe<(
+    Pick<Category_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
-      Pick<Categories, 'id' | 'name' | 'type'>
-      & { key: Categories['id'] }
+      Pick<Category, 'id' | 'name' | 'type'>
+      & { key: Category['id'] }
     )> }
   )> };
 
@@ -2529,7 +2529,7 @@ export type UpdateTransactionsCategoryMutation = { update_transactions?: Maybe<(
     Pick<Transactions_Mutation_Response, 'affected_rows'>
     & { returning: Array<(
       Pick<Transactions, 'id'>
-      & { category: Pick<Categories, 'id' | 'name'> }
+      & { category: Pick<Category, 'id' | 'name'> }
     )> }
   )> };
 
@@ -2571,8 +2571,8 @@ export type GetBaseDataQuery = { accounts: Array<(
     Pick<View_Accounts, 'id' | 'name' | 'sum' | 'minimum' | 'colour' | 'status'>
     & { key: View_Accounts['id'], initialAmount: View_Accounts['initial_amount'], mostRecentTransactionDate: View_Accounts['most_recent_transaction_date'] }
   )>, categories: Array<(
-    Pick<Categories, 'id' | 'name' | 'type'>
-    & { key: Categories['id'] }
+    Pick<Category, 'id' | 'name' | 'type'>
+    & { key: Category['id'] }
   )> };
 
 export type GetCategoriesAggregateQueryVariables = Exact<{
@@ -2582,10 +2582,10 @@ export type GetCategoriesAggregateQueryVariables = Exact<{
 
 
 export type GetCategoriesAggregateQuery = { expenseCategories: Array<(
-    Pick<Categories, 'name' | 'id'>
+    Pick<Category, 'name' | 'id'>
     & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } }
   )>, expenseSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> }, incomeCategories: Array<(
-    Pick<Categories, 'name' | 'id'>
+    Pick<Category, 'name' | 'id'>
     & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } }
   )>, incomeSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transactions_Sum_Fields, 'amount'>> }> } };
 
@@ -2603,13 +2603,13 @@ export type GetTransactionsQueryVariables = Exact<{
 export type GetTransactionsQuery = { transactions_aggregate: { aggregate?: Maybe<Pick<Transactions_Aggregate_Fields, 'count'>>, nodes: Array<(
       Pick<Transactions, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
       & { key: Transactions['id'] }
-      & { account: Pick<Account, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>>, category: Pick<Categories, 'id' | 'name'> }
+      & { account: Pick<Account, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>>, category: Pick<Category, 'id' | 'name'> }
     )> } };
 
 
 export const CreateCategoryDocument = gql`
     mutation CreateCategory($name: String!, $type: String) {
-  insert_categories(objects: {name: $name, type: $type}) {
+  insert_category(objects: {name: $name, type: $type}) {
     affected_rows
     returning {
       id
@@ -2648,7 +2648,7 @@ export type CreateCategoryMutationResult = Apollo.MutationResult<CreateCategoryM
 export type CreateCategoryMutationOptions = Apollo.BaseMutationOptions<CreateCategoryMutation, CreateCategoryMutationVariables>;
 export const DeleteCategoryDocument = gql`
     mutation DeleteCategory($id: uuid) {
-  delete_categories(where: {id: {_eq: $id}}) {
+  delete_category(where: {id: {_eq: $id}}) {
     affected_rows
     returning {
       id
@@ -3015,7 +3015,7 @@ export const GetBaseDataDocument = gql`
     mostRecentTransactionDate: most_recent_transaction_date
     status
   }
-  categories(order_by: {name: asc}) {
+  categories: category(order_by: {name: asc}) {
     id
     key: id
     name
@@ -3050,7 +3050,7 @@ export type GetBaseDataLazyQueryHookResult = ReturnType<typeof useGetBaseDataLaz
 export type GetBaseDataQueryResult = Apollo.QueryResult<GetBaseDataQuery, GetBaseDataQueryVariables>;
 export const GetCategoriesAggregateDocument = gql`
     query GetCategoriesAggregate($startDate: timestamptz, $endDate: timestamptz) {
-  expenseCategories: categories(where: {type: {_eq: "expense"}}) {
+  expenseCategories: category(where: {type: {_eq: "expense"}}) {
     transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}}) {
       aggregate {
         sum {
@@ -3068,7 +3068,7 @@ export const GetCategoriesAggregateDocument = gql`
       }
     }
   }
-  incomeCategories: categories(where: {type: {_eq: "income"}}) {
+  incomeCategories: category(where: {type: {_eq: "income"}}) {
     transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}}) {
       aggregate {
         sum {

@@ -10,7 +10,7 @@ query GetBaseData {
     mostRecentTransactionDate: most_recent_transaction_date
     status
   }
-  categories(order_by: { name: asc }) {
+  categories: category(order_by: { name: asc }) {
     id
     key: id
     name

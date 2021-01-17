@@ -217,8 +217,8 @@
             "deprecationReason": null
           },
           {
-            "name": "categories",
-            "description": "fetch data from the table: \"categories\"",
+            "name": "category",
+            "description": "fetch data from the table: \"category\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -231,7 +231,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "categories_select_column",
+                      "name": "category_select_column",
                       "ofType": null
                     }
                   }
@@ -269,7 +269,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "categories_order_by",
+                      "name": "category_order_by",
                       "ofType": null
                     }
                   }
@@ -281,7 +281,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_bool_exp",
+                  "name": "category_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -298,7 +298,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "categories",
+                    "name": "category",
                     "ofType": null
                   }
                 }
@@ -308,8 +308,8 @@
             "deprecationReason": null
           },
           {
-            "name": "categories_aggregate",
-            "description": "fetch aggregated fields from the table: \"categories\"",
+            "name": "category_aggregate",
+            "description": "fetch aggregated fields from the table: \"category\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -322,7 +322,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "categories_select_column",
+                      "name": "category_select_column",
                       "ofType": null
                     }
                   }
@@ -360,7 +360,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "categories_order_by",
+                      "name": "category_order_by",
                       "ofType": null
                     }
                   }
@@ -372,7 +372,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_bool_exp",
+                  "name": "category_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -383,7 +383,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "categories_aggregate",
+                "name": "category_aggregate",
                 "ofType": null
               }
             },
@@ -391,8 +391,8 @@
             "deprecationReason": null
           },
           {
-            "name": "categories_by_pk",
-            "description": "fetch data from the table: \"categories\" using primary key columns",
+            "name": "category_by_pk",
+            "description": "fetch data from the table: \"category\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -411,7 +411,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "categories",
+              "name": "category",
               "ofType": null
             },
             "isDeprecated": false,
@@ -2994,7 +2994,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_bool_exp",
+              "name": "category_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3126,8 +3126,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"categories\". All fields are combined with a logical 'AND'.",
+        "name": "category_bool_exp",
+        "description": "Boolean expression to filter rows from the table \"category\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -3138,7 +3138,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "categories_bool_exp",
+                "name": "category_bool_exp",
                 "ofType": null
               }
             },
@@ -3149,7 +3149,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_bool_exp",
+              "name": "category_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3162,7 +3162,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "categories_bool_exp",
+                "name": "category_bool_exp",
                 "ofType": null
               }
             },
@@ -3173,7 +3173,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_bool_exp",
+              "name": "category_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3183,7 +3183,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_bool_exp",
+              "name": "category_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3870,7 +3870,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_order_by",
+              "name": "category_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -4002,8 +4002,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_order_by",
-        "description": "ordering options when selecting data from \"categories\"",
+        "name": "category_order_by",
+        "description": "ordering options when selecting data from \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -4011,7 +4011,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_aggregate_order_by",
+              "name": "category_aggregate_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -4021,7 +4021,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_order_by",
+              "name": "category_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -4113,8 +4113,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_aggregate_order_by",
-        "description": "order by aggregate values of table \"categories\"",
+        "name": "category_aggregate_order_by",
+        "description": "order by aggregate values of table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -4132,7 +4132,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_max_order_by",
+              "name": "category_max_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -4142,7 +4142,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_min_order_by",
+              "name": "category_min_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -4154,8 +4154,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_max_order_by",
-        "description": "order by max() on columns of table \"categories\"",
+        "name": "category_max_order_by",
+        "description": "order by max() on columns of table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -4215,8 +4215,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_min_order_by",
-        "description": "order by min() on columns of table \"categories\"",
+        "name": "category_min_order_by",
+        "description": "order by min() on columns of table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -4336,7 +4336,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "categories",
+                "name": "category",
                 "ofType": null
               }
             },
@@ -4681,8 +4681,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "categories",
-        "description": "columns and relationships of \"categories\"",
+        "name": "category",
+        "description": "columns and relationships of \"category\"",
         "fields": [
           {
             "name": "categories",
@@ -4699,7 +4699,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "categories_select_column",
+                      "name": "category_select_column",
                       "ofType": null
                     }
                   }
@@ -4737,7 +4737,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "categories_order_by",
+                      "name": "category_order_by",
                       "ofType": null
                     }
                   }
@@ -4749,7 +4749,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_bool_exp",
+                  "name": "category_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -4766,7 +4766,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "categories",
+                    "name": "category",
                     "ofType": null
                   }
                 }
@@ -4790,7 +4790,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "categories_select_column",
+                      "name": "category_select_column",
                       "ofType": null
                     }
                   }
@@ -4828,7 +4828,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "categories_order_by",
+                      "name": "category_order_by",
                       "ofType": null
                     }
                   }
@@ -4840,7 +4840,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_bool_exp",
+                  "name": "category_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -4851,7 +4851,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "categories_aggregate",
+                "name": "category_aggregate",
                 "ofType": null
               }
             },
@@ -4864,7 +4864,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "categories",
+              "name": "category",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5152,8 +5152,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "categories_select_column",
-        "description": "select columns of table \"categories\"",
+        "name": "category_select_column",
+        "description": "select columns of table \"category\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -5205,8 +5205,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "categories_aggregate",
-        "description": "aggregated selection of \"categories\"",
+        "name": "category_aggregate",
+        "description": "aggregated selection of \"category\"",
         "fields": [
           {
             "name": "aggregate",
@@ -5214,7 +5214,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "categories_aggregate_fields",
+              "name": "category_aggregate_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5235,7 +5235,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "categories",
+                    "name": "category",
                     "ofType": null
                   }
                 }
@@ -5252,8 +5252,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "categories_aggregate_fields",
-        "description": "aggregate fields of \"categories\"",
+        "name": "category_aggregate_fields",
+        "description": "aggregate fields of \"category\"",
         "fields": [
           {
             "name": "count",
@@ -5270,7 +5270,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "categories_select_column",
+                      "name": "category_select_column",
                       "ofType": null
                     }
                   }
@@ -5302,7 +5302,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "categories_max_fields",
+              "name": "category_max_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5314,7 +5314,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "categories_min_fields",
+              "name": "category_min_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5328,7 +5328,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "categories_max_fields",
+        "name": "category_max_fields",
         "description": "aggregate max on columns",
         "fields": [
           {
@@ -5399,7 +5399,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "categories_min_fields",
+        "name": "category_min_fields",
         "description": "aggregate min on columns",
         "fields": [
           {
@@ -9814,8 +9814,8 @@
             "deprecationReason": null
           },
           {
-            "name": "delete_categories",
-            "description": "delete data from the table: \"categories\"",
+            "name": "delete_category",
+            "description": "delete data from the table: \"category\"",
             "args": [
               {
                 "name": "where",
@@ -9825,7 +9825,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "categories_bool_exp",
+                    "name": "category_bool_exp",
                     "ofType": null
                   }
                 },
@@ -9834,7 +9834,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "categories_mutation_response",
+              "name": "category_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9967,8 +9967,8 @@
             "deprecationReason": null
           },
           {
-            "name": "insert_categories",
-            "description": "insert data into the table: \"categories\"",
+            "name": "insert_category",
+            "description": "insert data into the table: \"category\"",
             "args": [
               {
                 "name": "objects",
@@ -9984,7 +9984,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "categories_insert_input",
+                        "name": "category_insert_input",
                         "ofType": null
                       }
                     }
@@ -9997,7 +9997,7 @@
                 "description": "on conflict condition",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_on_conflict",
+                  "name": "category_on_conflict",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -10005,7 +10005,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "categories_mutation_response",
+              "name": "category_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10164,15 +10164,15 @@
             "deprecationReason": null
           },
           {
-            "name": "update_categories",
-            "description": "update data of the table: \"categories\"",
+            "name": "update_category",
+            "description": "update data of the table: \"category\"",
             "args": [
               {
                 "name": "_set",
                 "description": "sets the columns of the filtered rows to the given values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_set_input",
+                  "name": "category_set_input",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -10185,7 +10185,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "categories_bool_exp",
+                    "name": "category_bool_exp",
                     "ofType": null
                   }
                 },
@@ -10194,7 +10194,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "categories_mutation_response",
+              "name": "category_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10370,8 +10370,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "categories_mutation_response",
-        "description": "response of any mutation on the table \"categories\"",
+        "name": "category_mutation_response",
+        "description": "response of any mutation on the table \"category\"",
         "fields": [
           {
             "name": "affected_rows",
@@ -10404,7 +10404,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "categories",
+                    "name": "category",
                     "ofType": null
                   }
                 }
@@ -10767,7 +10767,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_obj_rel_insert_input",
+              "name": "category_obj_rel_insert_input",
               "ofType": null
             },
             "defaultValue": null
@@ -11067,8 +11067,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_obj_rel_insert_input",
-        "description": "input type for inserting object relation for remote table \"categories\"",
+        "name": "category_obj_rel_insert_input",
+        "description": "input type for inserting object relation for remote table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -11079,7 +11079,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "categories_insert_input",
+                "name": "category_insert_input",
                 "ofType": null
               }
             },
@@ -11090,7 +11090,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_on_conflict",
+              "name": "category_on_conflict",
               "ofType": null
             },
             "defaultValue": null
@@ -11102,8 +11102,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_insert_input",
-        "description": "input type for inserting data into table \"categories\"",
+        "name": "category_insert_input",
+        "description": "input type for inserting data into table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -11111,7 +11111,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_arr_rel_insert_input",
+              "name": "category_arr_rel_insert_input",
               "ofType": null
             },
             "defaultValue": null
@@ -11121,7 +11121,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_obj_rel_insert_input",
+              "name": "category_obj_rel_insert_input",
               "ofType": null
             },
             "defaultValue": null
@@ -11213,8 +11213,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_arr_rel_insert_input",
-        "description": "input type for inserting array relation for remote table \"categories\"",
+        "name": "category_arr_rel_insert_input",
+        "description": "input type for inserting array relation for remote table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -11231,7 +11231,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "categories_insert_input",
+                    "name": "category_insert_input",
                     "ofType": null
                   }
                 }
@@ -11244,7 +11244,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_on_conflict",
+              "name": "category_on_conflict",
               "ofType": null
             },
             "defaultValue": null
@@ -11256,8 +11256,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_on_conflict",
-        "description": "on conflict condition type for table \"categories\"",
+        "name": "category_on_conflict",
+        "description": "on conflict condition type for table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -11268,7 +11268,7 @@
               "name": null,
               "ofType": {
                 "kind": "ENUM",
-                "name": "categories_constraint",
+                "name": "category_constraint",
                 "ofType": null
               }
             },
@@ -11288,7 +11288,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "ENUM",
-                    "name": "categories_update_column",
+                    "name": "category_update_column",
                     "ofType": null
                   }
                 }
@@ -11301,7 +11301,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "categories_bool_exp",
+              "name": "category_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -11313,8 +11313,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "categories_constraint",
-        "description": "unique or primary key constraints on table \"categories\"",
+        "name": "category_constraint",
+        "description": "unique or primary key constraints on table \"category\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -11330,8 +11330,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "categories_update_column",
-        "description": "update columns of table \"categories\"",
+        "name": "category_update_column",
+        "description": "update columns of table \"category\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -11742,8 +11742,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "categories_set_input",
-        "description": "input type for updating data in table \"categories\"",
+        "name": "category_set_input",
+        "description": "input type for updating data in table \"category\"",
         "fields": null,
         "inputFields": [
           {
@@ -12231,8 +12231,8 @@
             "deprecationReason": null
           },
           {
-            "name": "categories",
-            "description": "fetch data from the table: \"categories\"",
+            "name": "category",
+            "description": "fetch data from the table: \"category\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -12245,7 +12245,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "categories_select_column",
+                      "name": "category_select_column",
                       "ofType": null
                     }
                   }
@@ -12283,7 +12283,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "categories_order_by",
+                      "name": "category_order_by",
                       "ofType": null
                     }
                   }
@@ -12295,7 +12295,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_bool_exp",
+                  "name": "category_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -12312,7 +12312,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "categories",
+                    "name": "category",
                     "ofType": null
                   }
                 }
@@ -12322,8 +12322,8 @@
             "deprecationReason": null
           },
           {
-            "name": "categories_aggregate",
-            "description": "fetch aggregated fields from the table: \"categories\"",
+            "name": "category_aggregate",
+            "description": "fetch aggregated fields from the table: \"category\"",
             "args": [
               {
                 "name": "distinct_on",
@@ -12336,7 +12336,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "categories_select_column",
+                      "name": "category_select_column",
                       "ofType": null
                     }
                   }
@@ -12374,7 +12374,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "categories_order_by",
+                      "name": "category_order_by",
                       "ofType": null
                     }
                   }
@@ -12386,7 +12386,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "categories_bool_exp",
+                  "name": "category_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -12397,7 +12397,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "categories_aggregate",
+                "name": "category_aggregate",
                 "ofType": null
               }
             },
@@ -12405,8 +12405,8 @@
             "deprecationReason": null
           },
           {
-            "name": "categories_by_pk",
-            "description": "fetch data from the table: \"categories\" using primary key columns",
+            "name": "category_by_pk",
+            "description": "fetch data from the table: \"category\" using primary key columns",
             "args": [
               {
                 "name": "id",
@@ -12425,7 +12425,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "categories",
+              "name": "category",
               "ofType": null
             },
             "isDeprecated": false,

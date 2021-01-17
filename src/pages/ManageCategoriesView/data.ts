@@ -23,7 +23,7 @@ export const useCreateCategory = () => {
 export const useDeleteCategory = () => {
   const [_deleteCategory] = useDeleteCategoryMutation({
     update(cache, { data }) {
-      const deletedCategory = data?.delete_categories?.returning[0];
+      const deletedCategory = data?.delete_category?.returning[0];
       const existingData = cache.readQuery<GetBaseDataQuery>({
         query: GetBaseDataDocument,
       });
