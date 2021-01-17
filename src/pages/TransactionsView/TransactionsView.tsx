@@ -17,6 +17,7 @@ import React, { useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import styled from 'styled-components';
 
+import { Filters } from '../../App';
 import {
   AccountAvatar,
   Amount,
@@ -24,7 +25,6 @@ import {
   DateDisplay,
   Select,
 } from '../../components';
-import { Scalars } from '../../generated/graphql';
 import { useBaseData, useTheme } from '../../lib';
 import { Account, Nullable, TimePeriod, Transaction } from '../../types';
 import { useTransactions, useUpdateTransactions } from './data';
@@ -185,9 +185,7 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
 
 type TransactionsViewProps = TimePeriod & {
   categoryId?: string;
-  setAccountIdFilter: (id: Scalars['uuid']) => void;
-  accountIdFilter?: Scalars['uuid'];
-};
+} & Filters;
 
 const TransactionsView: React.FC<TransactionsViewProps> = ({
   startDate,

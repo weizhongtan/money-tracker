@@ -1,5 +1,4 @@
 import { useGetCategoriesQuery } from '../../generated/graphql';
-import { useBaseData } from '../../lib';
 import { TimePeriod } from '../../types';
 
 export const useCategories = ({
@@ -8,15 +7,14 @@ export const useCategories = ({
   accountId,
   grouping,
 }: TimePeriod & {
-  accountId: string;
+  accountId?: string;
   grouping: string;
 }) => {
-  const { accounts } = useBaseData();
   const { loading, error, data } = useGetCategoriesQuery({
     variables: {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
-      accountId: accountId === 'all' ? null : accountId,
+      accountId,
       categoryType: 'expense',
       groupByParent: grouping === 'category',
     },
@@ -26,13 +24,6 @@ export const useCategories = ({
   return {
     loading,
     error,
-    accounts: [
-      {
-        id: 'all',
-        name: 'All accounts',
-      },
-      ...accounts,
-    ],
     categories: data?.categories
       .map((category) => ({
         // _id will be used for transaction view

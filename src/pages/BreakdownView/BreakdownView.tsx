@@ -3,10 +3,10 @@ import { Dimensions } from '@nivo/core';
 import { Pie, PieSvgProps } from '@nivo/pie';
 import React, { useState } from 'react';
 
+import { Filters } from '../../App';
 import {
   PageDrawer,
   Radio,
-  Select,
   Visualisation,
   VisualisationControls,
 } from '../../components';
@@ -122,13 +122,14 @@ const BarBreakdown: React.FC<BarBreakdownProps> = ({ total, ...props }) => (
   />
 );
 
-type BreakdownViewProps = TimePeriod;
+type BreakdownViewProps = TimePeriod & Filters;
 
 const BreakdownView: React.FC<BreakdownViewProps> = ({
   startDate,
   endDate,
+  accountIdFilter,
+  setAccountIdFilter,
 }) => {
-  const [accountId, setAccountId] = useState('all');
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
   const [isVisible, setVisible] = useState(false);
@@ -136,10 +137,10 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
     transactionViewCategoryId,
     setTransactionViewCategoryId,
   ] = useState<string>();
-  const { loading, error, accounts, categories, total } = useCategories({
+  const { loading, error, categories, total } = useCategories({
     startDate,
     endDate,
-    accountId,
+    accountId: accountIdFilter,
     grouping,
   });
   if (loading || typeof categories === 'undefined') return null;
@@ -155,22 +156,10 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
             startDate={startDate}
             endDate={endDate}
             categoryId={transactionViewCategoryId}
-            accountIdFilter={accountId === 'all' ? undefined : accountId}
+            accountIdFilter={accountIdFilter}
             setAccountIdFilter={() => {}}
           />
         </PageDrawer>
-        <Select
-          value={accountId}
-          onSelect={(val) => typeof val === 'string' && setAccountId(val)}
-          showSearch
-          optionFilterProp="label"
-        >
-          {accounts.map(({ id, name }) => (
-            <Select.Option value={id as string} key={id as string} label={name}>
-              {name}
-            </Select.Option>
-          ))}
-        </Select>
         <Radio.Group
           buttonStyle="solid"
           defaultValue={graph}

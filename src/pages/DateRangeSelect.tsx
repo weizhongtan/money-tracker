@@ -1,3 +1,4 @@
+import { Space } from 'antd';
 import React from 'react';
 
 import { DatePicker } from '../components';
@@ -46,7 +47,7 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
   }
 
   return (
-    <div>
+    <Space>
       <MonthPicker
         onChange={(date) => {
           if (date) {
@@ -73,7 +74,7 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
         value={[startDate, endDate]}
         ranges={ranges}
       />
-    </div>
+    </Space>
   );
 };
 

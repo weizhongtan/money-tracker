@@ -52,16 +52,16 @@ const Spinner = styled(Spin)`
   transform: translate(-50%, -50%);
 `;
 
+export type Filters = {
+  accountIdFilter?: Scalars['uuid'];
+  setAccountIdFilter: (id: Scalars['uuid']) => void;
+};
+
 interface IRoute {
   path: string;
   title: string;
   icon: React.ReactElement;
-  Component?: React.FC<
-    TimePeriod & {
-      accountIdFilter?: Scalars['uuid'];
-      setAccountIdFilter: (id: Scalars['uuid']) => void;
-    }
-  >;
+  Component?: React.FC<TimePeriod & Filters>;
   children?: {
     path: string;
     title: string;
