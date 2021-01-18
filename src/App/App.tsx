@@ -22,7 +22,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { useUrlState } from 'with-url-state';
 
 import { Select } from '../components';
-import { Scalars } from '../generated/graphql';
+import { Account } from '../generated/graphql';
 import { BaseDataContext, time } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
 import CumulativeView from '../pages/CumulativeView';
@@ -32,7 +32,7 @@ import ManageCategoriesView from '../pages/ManageCategoriesView';
 import TimelineView from '../pages/TimelineView';
 import TransactionsView from '../pages/TransactionsView';
 import theme from '../theme';
-import { TimePeriod } from '../types';
+import { Category, TimePeriod } from '../types';
 import { useBaseData } from './data';
 
 const Content = styled(Layout.Content)`
@@ -46,10 +46,10 @@ const ViewWrapper = styled(Content)`
 `;
 
 export type Filters = {
-  accountIdFilter?: Scalars['uuid'];
-  setAccountIdFilter: (id: Scalars['uuid']) => void;
-  categoryIdFilter?: Scalars['uuid'];
-  setCategoryIdFilter: (id: Scalars['uuid']) => void;
+  accountIdFilter?: Account['id'];
+  setAccountIdFilter: (id: Account['id']) => void;
+  categoryIdFilter?: Category['id'];
+  setCategoryIdFilter: (id: Category['id']) => void;
 };
 
 interface IRoute {
@@ -114,8 +114,8 @@ function App() {
 
   const [urlState, setUrlState] = useUrlState<
     TimePeriod & {
-      accountIdFilter?: Scalars['uuid'];
-      categoryIdFilter?: Scalars['uuid'];
+      accountIdFilter?: Account['id'];
+      categoryIdFilter?: Category['id'];
     }
   >(
     {
@@ -136,14 +136,14 @@ function App() {
     });
   };
   const { accountIdFilter } = urlState;
-  const setAccountIdFilter = (id?: Scalars['uuid']) => {
+  const setAccountIdFilter = (id?: Account['id']) => {
     setUrlState({
       ...urlState,
       accountIdFilter: id,
     });
   };
   const { categoryIdFilter } = urlState;
-  const setCategoryIdFilter = (id?: Scalars['uuid']) => {
+  const setCategoryIdFilter = (id?: Category['id']) => {
     setUrlState({
       ...urlState,
       categoryIdFilter: id,

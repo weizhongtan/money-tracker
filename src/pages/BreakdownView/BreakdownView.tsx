@@ -10,9 +10,8 @@ import {
   Visualisation,
   VisualisationControls,
 } from '../../components';
-import { Scalars } from '../../generated/graphql';
-import { toMoney, toPercent, useIsMount } from '../../lib';
-import { TimePeriod } from '../../types';
+import { toMoney, toPercent } from '../../lib';
+import { Category, TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 import { useCategories } from './data';
 
@@ -34,7 +33,7 @@ const PieBreakdown: React.FC<PieBreakdownProps> = ({
     cornerRadius={3}
     colors={{ scheme: 'paired' }}
     borderColor={{ from: 'color', modifiers: [['darker', 0.6]] }}
-    radialLabelsSkipAngle={5}
+    radialLabelsSkipAngle={4}
     radialLabelsTextXOffset={6}
     radialLabelsTextColor="#333333"
     radialLabelsLinkOffset={0}
@@ -143,11 +142,11 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   endDate,
   accountIdFilter,
 }) => {
-  const [graph, setGraph] = useState('pie');
+  const [graph, setGraph] = useState<'pie' | 'bar'>('pie');
   const [grouping, setGrouping] = useState('category');
   const [drawerState, setDrawerState] = useState<{
     isVisible: boolean;
-    categoryId?: Scalars['uuid'];
+    categoryId?: Category['id'];
   }>({
     isVisible: false,
   });
