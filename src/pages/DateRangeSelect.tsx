@@ -60,6 +60,7 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
         placeholder="Select month"
         value={startDate}
         format="MMM YYYY"
+        allowClear={false}
       />
       <RangePicker
         picker="month"
@@ -73,6 +74,7 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
         }}
         value={[startDate, endDate]}
         ranges={ranges}
+        allowClear={false}
       />
     </Space>
   );

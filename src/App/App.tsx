@@ -229,6 +229,10 @@ function App() {
                 }
                 showSearch
                 optionFilterProp="label"
+                allowClear
+                onClear={() => {
+                  setAccountIdFilter(undefined);
+                }}
               >
                 {data.accounts.map(({ id, name }) => (
                   <Select.Option
@@ -249,6 +253,10 @@ function App() {
                 }
                 showSearch
                 optionFilterProp="label"
+                allowClear
+                onClear={() => {
+                  setCategoryIdFilter(undefined);
+                }}
               >
                 {data.categories.map(({ id, name }) => (
                   <Select.Option
