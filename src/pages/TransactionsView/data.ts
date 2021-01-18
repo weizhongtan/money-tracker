@@ -41,7 +41,7 @@ export const useTransactions = ({
     loading,
     error,
     transactions: data?.transactions.nodes,
-    count: data?.transactions?.aggregate?.count,
+    count: data?.transactions?.aggregate?.count ?? 0,
   };
 };
 

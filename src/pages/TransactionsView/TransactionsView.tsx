@@ -245,6 +245,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           addonAfter={
             <Badge
               count={count}
+              showZero
               overflowCount={Number.MAX_SAFE_INTEGER}
               style={{ backgroundColor: theme.positive }}
             />
