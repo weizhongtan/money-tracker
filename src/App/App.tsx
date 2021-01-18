@@ -112,10 +112,17 @@ function App() {
   const location = useLocation();
   const history = useHistory();
 
-  const [urlState, setUrlState] = useUrlState(
+  const [urlState, setUrlState] = useUrlState<
+    TimePeriod & {
+      accountIdFilter?: Scalars['uuid'];
+      categoryIdFilter?: Scalars['uuid'];
+    }
+  >(
     {
       startDate: time().subtract(1, 'year').startOf('year').toISOString(),
       endDate: time().toISOString(),
+      accountIdFilter: undefined,
+      categoryIdFilter: undefined,
     },
     { history }
   );
@@ -123,8 +130,23 @@ function App() {
   const endDate = time(urlState.endDate);
   const setDates = ({ startDate, endDate }: TimePeriod) => {
     setUrlState({
+      ...urlState,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
+    });
+  };
+  const { accountIdFilter } = urlState;
+  const setAccountIdFilter = (id?: Scalars['uuid']) => {
+    setUrlState({
+      ...urlState,
+      accountIdFilter: id,
+    });
+  };
+  const { categoryIdFilter } = urlState;
+  const setCategoryIdFilter = (id?: Scalars['uuid']) => {
+    setUrlState({
+      ...urlState,
+      categoryIdFilter: id,
     });
   };
 
@@ -140,9 +162,6 @@ function App() {
 
   const [openKeys, setOpenKeys] = useState<any[]>(defaultOpenKeys);
   const { loading, error, data } = useBaseData();
-
-  const [accountIdFilter, setAccountIdFilter] = useState<Scalars['uuid']>();
-  const [categoryIdFilter, setCategoryIdFilter] = useState<Scalars['uuid']>();
 
   if (error) return <>error</>;
 
@@ -173,15 +192,21 @@ function App() {
                   setAccountIdFilter(undefined);
                 }}
               >
-                {data.accounts.map(({ id, name }) => (
-                  <Select.Option
-                    value={id as string}
-                    key={id as string}
-                    label={name}
-                  >
-                    {name}
+                {data.accounts.length ? (
+                  data.accounts.map(({ id, name }) => (
+                    <Select.Option
+                      value={id as string}
+                      key={id as string}
+                      label={name}
+                    >
+                      {name}
+                    </Select.Option>
+                  ))
+                ) : (
+                  <Select.Option value={accountIdFilter ?? 'All'}>
+                    -
                   </Select.Option>
-                ))}
+                )}
               </Select>
               <Select
                 value={categoryIdFilter ?? 'all'}
@@ -197,15 +222,21 @@ function App() {
                   setCategoryIdFilter(undefined);
                 }}
               >
-                {data.categories.map(({ id, name }) => (
-                  <Select.Option
-                    value={id as string}
-                    key={id as string}
-                    label={name}
-                  >
-                    {name}
+                {data.categories.length ? (
+                  data.categories.map(({ id, name }) => (
+                    <Select.Option
+                      value={id as string}
+                      key={id as string}
+                      label={name}
+                    >
+                      {name}
+                    </Select.Option>
+                  ))
+                ) : (
+                  <Select.Option value={categoryIdFilter ?? 'All'}>
+                    -
                   </Select.Option>
-                ))}
+                )}
               </Select>
             </Space>
           </Layout.Header>
