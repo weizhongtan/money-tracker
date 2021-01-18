@@ -10,7 +10,7 @@ import {
   Visualisation,
   VisualisationControls,
 } from '../../components';
-import { toMoney, toPercent } from '../../lib';
+import { toMoney, toPercent, useIsMount } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 import { useCategories } from './data';
@@ -141,7 +141,6 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   startDate,
   endDate,
   accountIdFilter,
-  setAccountIdFilter,
 }) => {
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
@@ -150,6 +149,16 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
     transactionViewCategoryId,
     setTransactionViewCategoryId,
   ] = useState<string>();
+
+  // workaround to prevent the drawer showing on first render
+  const isMount = useIsMount();
+  React.useEffect(() => {
+    if (!isMount) {
+      setVisible(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transactionViewCategoryId]);
+
   const { error, expense, income } = useCategories({
     startDate,
     endDate,
@@ -210,7 +219,6 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
                     total={income.total ?? 0}
                     onClick={(data: any) => {
                       setTransactionViewCategoryId(String(data._id));
-                      setVisible(true);
                     }}
                   />
                 </>
