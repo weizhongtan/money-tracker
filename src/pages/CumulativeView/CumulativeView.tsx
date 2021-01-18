@@ -1,5 +1,5 @@
 import { Line } from '@nivo/line';
-import { Space } from 'antd';
+import { Space, Tag } from 'antd';
 import React, { useState } from 'react';
 
 import { Filters } from '../../App';
@@ -69,23 +69,6 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
     },
   ];
 
-  // if no data is returned for the first or last time periods, create dummy data points
-  // at either end to stretch the y axis across the selected time period
-  const firstDataPoint = series[0].data[0];
-  if (firstDataPoint && startDate.isBefore(time(firstDataPoint.x))) {
-    series[0].data.unshift({
-      x: startDate.format('YYYY-MM-DD'),
-      y: firstDataPoint.y,
-    });
-  }
-  const lastDataPoint = series[0].data[series[0].data.length - 1];
-  if (lastDataPoint && endDate.isAfter(time(lastDataPoint.x))) {
-    series[0].data.push({
-      x: endDate.format('YYYY-MM-DD'),
-      y: lastDataPoint.y,
-    });
-  }
-
   return (
     <>
       <VisualisationControls>
@@ -134,9 +117,9 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
             sliceTooltip={({ slice }) => {
               const { data } = slice.points[0];
               return (
-                <span>
+                <Tag>
                   {time(data.x).format('DD MMM YY')} - {toMoney(data.y, false)}
-                </span>
+                </Tag>
               );
             }}
           />

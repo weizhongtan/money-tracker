@@ -1,6 +1,6 @@
 - function:
     schema: public
-    name: func_transactions_by_account_grouped_cumulative
+    name: func_cumulative_amount
 - function:
     schema: public
     name: func_transactions_by_category_grouped

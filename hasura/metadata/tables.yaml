@@ -40,10 +40,10 @@
           name: transaction
 - table:
     schema: public
-    name: table_transactions_by_category_grouped
+    name: table_cumulative_amount
 - table:
     schema: public
-    name: table_transactions_group_by
+    name: table_transactions_by_category_grouped
 - table:
     schema: public
     name: transaction
