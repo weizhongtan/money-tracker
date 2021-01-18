@@ -230,7 +230,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
       />
-      <Affix offsetTop={0.01}>
+      <Affix offsetTop={64.01}>
         <DebounceInput
           minLength={2}
           debounceTimeout={500}
