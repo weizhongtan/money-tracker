@@ -1,3 +1,4 @@
+# Explicitly gets categories with a `type`, therefore excludes `None` category
 query GetCategoriesAggregate($startDate: timestamptz, $endDate: timestamptz) {
   expenseCategories: category(where: { type: { _eq: "expense" } }) {
     transactions_aggregate(

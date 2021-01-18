@@ -10,6 +10,7 @@ import {
   Visualisation,
   VisualisationControls,
 } from '../../components';
+import { Scalars } from '../../generated/graphql';
 import { toMoney, toPercent, useIsMount } from '../../lib';
 import { TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
@@ -144,20 +145,12 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
 }) => {
   const [graph, setGraph] = useState('pie');
   const [grouping, setGrouping] = useState('category');
-  const [isVisible, setVisible] = useState(false);
-  const [
-    transactionViewCategoryId,
-    setTransactionViewCategoryId,
-  ] = useState<string>();
-
-  // workaround to prevent the drawer showing on first render
-  const isMount = useIsMount();
-  React.useEffect(() => {
-    if (!isMount) {
-      setVisible(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transactionViewCategoryId]);
+  const [drawerState, setDrawerState] = useState<{
+    isVisible: boolean;
+    categoryId?: Scalars['uuid'];
+  }>({
+    isVisible: false,
+  });
 
   const { error, expense, income } = useCategories({
     startDate,
@@ -172,13 +165,21 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   return (
     <>
       <VisualisationControls>
-        <PageDrawer visible={isVisible} onClose={() => setVisible(false)}>
+        <PageDrawer
+          visible={drawerState.isVisible}
+          onClose={() =>
+            setDrawerState({
+              ...drawerState,
+              isVisible: false,
+            })
+          }
+        >
           <TransactionsView
             startDate={startDate}
             endDate={endDate}
             accountIdFilter={accountIdFilter}
             setAccountIdFilter={() => {}}
-            categoryIdFilter={transactionViewCategoryId}
+            categoryIdFilter={drawerState.categoryId}
             setCategoryIdFilter={() => {}}
           />
         </PageDrawer>
@@ -218,7 +219,10 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
                     data={expense.categories}
                     total={income.total ?? 0}
                     onClick={(data: any) => {
-                      setTransactionViewCategoryId(String(data._id));
+                      setDrawerState({
+                        isVisible: true,
+                        categoryId: data._id,
+                      });
                     }}
                   />
                 </>
