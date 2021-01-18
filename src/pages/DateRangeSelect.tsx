@@ -8,7 +8,7 @@ import { TimePeriod } from '../types';
 const { MonthPicker, RangePicker } = DatePicker;
 
 type Props = TimePeriod & {
-  setDates: ({ startDate, endDate }: TimePeriod) => void;
+  setDates({ startDate, endDate }: TimePeriod): void;
 };
 
 const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
@@ -40,9 +40,13 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
     'Entire Range': [time('2017-01-01').startOf('year'), time()],
   };
 
-  // add the past 3 years
+  // add the past 3 years before last year
   for (let i = 0; i < 3; i += 1) {
-    const year = String(time().subtract(i, 'year').year());
+    const year = String(
+      time()
+        .subtract(i + 2, 'year')
+        .year()
+    );
     ranges[year] = [time(year).startOf('year'), time(year).endOf('year')];
   }
 
