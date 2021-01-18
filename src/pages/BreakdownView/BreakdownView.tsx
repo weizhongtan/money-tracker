@@ -46,6 +46,13 @@ const PieBreakdown: React.FC<PieBreakdownProps> = ({
     }
     slicesLabelsSkipAngle={10}
     slicesLabelsTextColor={{ from: 'color' }}
+    tooltip={({ label, value }) => {
+      return (
+        <span>
+          {label} - {toMoney(value, false)}
+        </span>
+      );
+    }}
     animate={true}
     motionStiffness={90}
     motionDamping={15}
@@ -97,7 +104,6 @@ const BarBreakdown: React.FC<BarBreakdownProps> = ({ total, ...props }) => (
     maxValue="auto"
     layout="horizontal"
     colors={{ scheme: 'paired' }}
-    // colorBy="index"
     axisTop={{
       tickSize: 5,
       tickPadding: 5,
@@ -117,6 +123,13 @@ const BarBreakdown: React.FC<BarBreakdownProps> = ({ total, ...props }) => (
     labelSkipWidth={12}
     labelSkipHeight={12}
     labelTextColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
+    tooltip={({ indexValue, value }) => {
+      return (
+        <span>
+          {indexValue} - {toMoney(value, false)}
+        </span>
+      );
+    }}
     isInteractive={true}
     {...props}
   />
