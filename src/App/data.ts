@@ -30,6 +30,7 @@ export const useBaseData = (): {
           key: 'all',
           name: 'All accounts',
           initialAmount: 0,
+          minimum: 0,
           mostRecentTransactionDate: null,
         },
         ...data.accounts,

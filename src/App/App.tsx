@@ -22,7 +22,6 @@ import styled, { ThemeProvider } from 'styled-components';
 import { useUrlState } from 'with-url-state';
 
 import { Select } from '../components';
-import { Account } from '../generated/graphql';
 import { BaseDataContext, time } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
 import CumulativeView from '../pages/CumulativeView';
@@ -32,7 +31,7 @@ import ManageCategoriesView from '../pages/ManageCategoriesView';
 import TimelineView from '../pages/TimelineView';
 import TransactionsView from '../pages/TransactionsView';
 import theme from '../theme';
-import { Category, TimePeriod } from '../types';
+import { Account, Category, TimePeriod } from '../types';
 import { useBaseData } from './data';
 
 const Content = styled(Layout.Content)`

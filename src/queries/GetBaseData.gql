@@ -1,5 +1,5 @@
 query GetBaseData {
-  accounts: view_accounts(order_by: { name: asc }) {
+  accounts: func_account(order_by: { name: asc }) {
     id
     key: id
     name
