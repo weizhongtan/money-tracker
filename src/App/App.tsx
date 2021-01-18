@@ -32,7 +32,11 @@ import TimelineView from '../pages/TimelineView';
 import TransactionsView from '../pages/TransactionsView';
 import theme from '../theme';
 import { Account, Category, TimePeriod } from '../types';
-import { useBaseData } from './data';
+import {
+  createCatchAllAccount,
+  createCatchAllCategory,
+  useBaseData,
+} from './data';
 
 const Content = styled(Layout.Content)`
   background: #fff;
@@ -164,6 +168,13 @@ function App() {
 
   if (error) return <>error</>;
 
+  const accounts = data.accounts.length
+    ? data.accounts
+    : [createCatchAllAccount(accountIdFilter)];
+  const categories = data.categories.length
+    ? data.categories
+    : [createCatchAllCategory(categoryIdFilter)];
+
   return (
     <BaseDataContext.Provider value={data}>
       <Spin spinning={loading} size="large" wrapperClassName="full-height">
@@ -178,10 +189,12 @@ function App() {
                 }}
               />
               <Select
-                value={accountIdFilter ?? 'all'}
+                value={accountIdFilter ?? createCatchAllAccount().id}
                 onSelect={(val) =>
                   setAccountIdFilter(
-                    val === 'all' ? undefined : (val as string)
+                    val === createCatchAllAccount().id
+                      ? undefined
+                      : (val as string)
                   )
                 }
                 showSearch
@@ -191,27 +204,19 @@ function App() {
                   setAccountIdFilter(undefined);
                 }}
               >
-                {data.accounts.length ? (
-                  data.accounts.map(({ id, name }) => (
-                    <Select.Option
-                      value={id as string}
-                      key={id as string}
-                      label={name}
-                    >
-                      {name}
-                    </Select.Option>
-                  ))
-                ) : (
-                  <Select.Option value={accountIdFilter ?? 'All'}>
-                    -
+                {accounts.map(({ id, name }) => (
+                  <Select.Option value={id} key={id} label={name}>
+                    {name}
                   </Select.Option>
-                )}
+                ))}
               </Select>
               <Select
-                value={categoryIdFilter ?? 'all'}
+                value={categoryIdFilter ?? createCatchAllCategory().id}
                 onSelect={(val) =>
                   setCategoryIdFilter(
-                    val === 'all' ? undefined : (val as string)
+                    val === createCatchAllCategory().id
+                      ? undefined
+                      : (val as string)
                   )
                 }
                 showSearch
@@ -221,21 +226,11 @@ function App() {
                   setCategoryIdFilter(undefined);
                 }}
               >
-                {data.categories.length ? (
-                  data.categories.map(({ id, name }) => (
-                    <Select.Option
-                      value={id as string}
-                      key={id as string}
-                      label={name}
-                    >
-                      {name}
-                    </Select.Option>
-                  ))
-                ) : (
-                  <Select.Option value={categoryIdFilter ?? 'All'}>
-                    -
+                {categories.map(({ id, name }) => (
+                  <Select.Option value={id} key={id} label={name}>
+                    {name}
                   </Select.Option>
-                )}
+                ))}
               </Select>
             </Space>
           </Layout.Header>
