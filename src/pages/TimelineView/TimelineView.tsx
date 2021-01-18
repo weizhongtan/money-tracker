@@ -11,16 +11,16 @@ import {
 } from '../../components';
 import { useGetAmountGroupsQuery } from '../../generated/graphql';
 import { time, toMoney, useTheme } from '../../lib';
-import { TimePeriod } from '../../types';
+import { Nullable, TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 
 type GraphProps = {
   data: any;
-  meanValues: {
+  meanValues?: {
     key: string;
     value: number;
   }[];
-  maxValue: number;
+  maxValue?: number;
   precision: time.OpUnitType;
   amountType: string;
 } & BarSvgProps &
@@ -44,7 +44,7 @@ const Graph: React.FC<GraphProps> = ({
       indexBy="date"
       margin={{ top: 50, right: 0, bottom: 50, left: 0 }}
       minValue="auto"
-      maxValue={Math.max(maxValue, 0)}
+      maxValue={maxValue && Math.max(maxValue, 0)}
       colors={({ id }) => theme.amountType[id]}
       axisTop={{
         tickSize: 0,
@@ -72,16 +72,19 @@ const Graph: React.FC<GraphProps> = ({
           </span>
         );
       }}
-      markers={meanValues.map(({ key, value }) => ({
-        axis: 'y',
-        value: value,
-        lineStyle: {
-          stroke: theme.amountType[key],
-          strokeWidth: 2,
-          strokeDasharray: 5,
-        },
-        legend: `${toMoney(value)}/${precision}`,
-      }))}
+      markers={
+        meanValues &&
+        meanValues.map(({ key, value }) => ({
+          axis: 'y',
+          value: value,
+          lineStyle: {
+            stroke: theme.amountType[key],
+            strokeWidth: 2,
+            strokeDasharray: 5,
+          },
+          legend: `${toMoney(value)}/${precision}`,
+        }))
+      }
       {...props}
     />
   );
@@ -104,7 +107,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
     endDate,
   });
 
-  const { loading, error, data } = useGetAmountGroupsQuery({
+  const { error, data } = useGetAmountGroupsQuery({
     variables: {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
@@ -112,26 +115,26 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
       groupBy: precision,
     },
   });
-  if (loading || typeof data === 'undefined') return null;
   if (error) return <>error</>;
 
-  const groups = data.groups.map(({ date, balance, expense, income }) => ({
-    date: time(date).format('YYYY-MM-DD'),
-    balance,
-    expense: Math.abs(expense),
-    income,
-  }));
+  const groups =
+    data?.groups.map(({ date, balance, expense, income }) => ({
+      date: time(date).format('YYYY-MM-DD'),
+      balance,
+      expense: Math.abs(expense),
+      income,
+    })) ?? [];
 
-  const meanValues = Object.entries(
-    data?.aggregate.aggregate?.avg as Record<string, number>
+  const meanValues = Object.entries<Nullable<number>>(
+    data?.aggregate.aggregate?.avg ?? {}
   )
     .filter(([key, val]) => amountType.includes(key))
     .map(([key, value]) => {
       if (amountType === 'balance') {
-        return { key, value };
+        return { key, value: value ?? 0 };
       }
       // make expense and income mean absolute for comparison purposes
-      return { key, value: Math.abs(value) };
+      return { key, value: Math.abs(value ?? 0) };
     });
 
   // sets the graph bounds based on the data

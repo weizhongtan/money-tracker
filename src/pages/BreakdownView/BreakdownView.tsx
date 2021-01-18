@@ -137,19 +137,12 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
     transactionViewCategoryId,
     setTransactionViewCategoryId,
   ] = useState<string>();
-  const { loading, error, expense, income } = useCategories({
+  const { error, expense, income } = useCategories({
     startDate,
     endDate,
     accountId: accountIdFilter,
     grouping,
   });
-  if (
-    loading ||
-    typeof expense.categories === 'undefined' ||
-    typeof income.categories === 'undefined'
-  ) {
-    return null;
-  }
   if (error) return <>error</>;
 
   const Graph = graph === 'pie' ? PieBreakdown : BarBreakdown;

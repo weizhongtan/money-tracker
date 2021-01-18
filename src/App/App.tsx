@@ -45,14 +45,6 @@ const ViewWrapper = styled(Content)`
   overflow-y: scroll;
 `;
 
-const Spinner = styled(Spin)`
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
 export type Filters = {
   accountIdFilter?: Scalars['uuid'];
   setAccountIdFilter: (id: Scalars['uuid']) => void;
@@ -154,175 +146,179 @@ function App() {
 
   if (error) return <>error</>;
 
-  return loading ? (
-    <Spinner />
-  ) : (
+  return (
     <BaseDataContext.Provider value={data}>
-      <Layout style={{ height: '100%' }}>
-        <Layout.Header>
-          <Space>
-            <DateRangeSelect
-              {...{
-                startDate,
-                endDate,
-                setDates,
-              }}
-            />
-            <Select
-              value={accountIdFilter ?? 'all'}
-              onSelect={(val) =>
-                setAccountIdFilter(val === 'all' ? undefined : (val as string))
-              }
-              showSearch
-              optionFilterProp="label"
-              allowClear
-              onClear={() => {
-                setAccountIdFilter(undefined);
-              }}
-            >
-              {data.accounts.map(({ id, name }) => (
-                <Select.Option
-                  value={id as string}
-                  key={id as string}
-                  label={name}
-                >
-                  {name}
-                </Select.Option>
-              ))}
-            </Select>
-            <Select
-              value={categoryIdFilter ?? 'all'}
-              onSelect={(val) =>
-                setCategoryIdFilter(val === 'all' ? undefined : (val as string))
-              }
-              showSearch
-              optionFilterProp="label"
-              allowClear
-              onClear={() => {
-                setCategoryIdFilter(undefined);
-              }}
-            >
-              {data.categories.map(({ id, name }) => (
-                <Select.Option
-                  value={id as string}
-                  key={id as string}
-                  label={name}
-                >
-                  {name}
-                </Select.Option>
-              ))}
-            </Select>
-          </Space>
-        </Layout.Header>
-        <Layout>
-          <Layout.Sider
-            collapsible
-            style={{
-              overflow: 'auto',
-              height: '100%',
-              position: 'sticky',
-              top: 64,
-              left: 0,
-            }}
-          >
-            <Menu
-              theme="dark"
-              selectedKeys={[location.pathname]}
-              onSelect={({ key }) => {
-                history.push({
-                  pathname: key as string,
-                  search: location.search,
-                });
-              }}
-              openKeys={openKeys.map((x) => String(x))}
-              onOpenChange={setOpenKeys}
-              mode="inline"
-            >
-              {routes.map(({ path, title, icon, children }) => {
-                if (!children) {
-                  return (
-                    <Menu.Item key={path}>
-                      {icon}
-                      <span>{title}</span>
-                    </Menu.Item>
-                  );
+      <Spin spinning={loading} size="large" wrapperClassName="full-height">
+        <Layout style={{ height: '100%' }}>
+          <Layout.Header>
+            <Space>
+              <DateRangeSelect
+                {...{
+                  startDate,
+                  endDate,
+                  setDates,
+                }}
+              />
+              <Select
+                value={accountIdFilter ?? 'all'}
+                onSelect={(val) =>
+                  setAccountIdFilter(
+                    val === 'all' ? undefined : (val as string)
+                  )
                 }
-                return (
-                  <Menu.SubMenu
-                    key={path}
-                    title={
-                      <span>
+                showSearch
+                optionFilterProp="label"
+                allowClear
+                onClear={() => {
+                  setAccountIdFilter(undefined);
+                }}
+              >
+                {data.accounts.map(({ id, name }) => (
+                  <Select.Option
+                    value={id as string}
+                    key={id as string}
+                    label={name}
+                  >
+                    {name}
+                  </Select.Option>
+                ))}
+              </Select>
+              <Select
+                value={categoryIdFilter ?? 'all'}
+                onSelect={(val) =>
+                  setCategoryIdFilter(
+                    val === 'all' ? undefined : (val as string)
+                  )
+                }
+                showSearch
+                optionFilterProp="label"
+                allowClear
+                onClear={() => {
+                  setCategoryIdFilter(undefined);
+                }}
+              >
+                {data.categories.map(({ id, name }) => (
+                  <Select.Option
+                    value={id as string}
+                    key={id as string}
+                    label={name}
+                  >
+                    {name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Space>
+          </Layout.Header>
+          <Layout>
+            <Layout.Sider
+              collapsible
+              style={{
+                overflow: 'auto',
+                height: '100%',
+                position: 'sticky',
+                top: 64,
+                left: 0,
+              }}
+            >
+              <Menu
+                theme="dark"
+                selectedKeys={[location.pathname]}
+                onSelect={({ key }) => {
+                  history.push({
+                    pathname: key as string,
+                    search: location.search,
+                  });
+                }}
+                openKeys={openKeys.map((x) => String(x))}
+                onOpenChange={setOpenKeys}
+                mode="inline"
+              >
+                {routes.map(({ path, title, icon, children }) => {
+                  if (!children) {
+                    return (
+                      <Menu.Item key={path}>
                         {icon}
                         <span>{title}</span>
-                      </span>
-                    }
-                  >
-                    {children.map((child) => (
-                      <Menu.Item key={path + child.path}>
-                        <span>{child.title}</span>
                       </Menu.Item>
-                    ))}
-                  </Menu.SubMenu>
-                );
-              })}
-            </Menu>
-          </Layout.Sider>
-          <ViewWrapper>
-            <Switch>
-              {routes.map(({ path, Component, children }) => (
-                <Route
-                  key={path}
-                  path={path}
-                  render={({ match }) => {
-                    if (!children) {
-                      if (Component) {
-                        return (
-                          <Component
-                            {...{
-                              startDate,
-                              endDate,
-                              accountIdFilter,
-                              setAccountIdFilter,
-                              categoryIdFilter,
-                              setCategoryIdFilter,
-                            }}
-                          />
-                        );
-                      } else {
-                        throw Error('children or component not defined.');
+                    );
+                  }
+                  return (
+                    <Menu.SubMenu
+                      key={path}
+                      title={
+                        <span>
+                          {icon}
+                          <span>{title}</span>
+                        </span>
                       }
-                    }
-                    return (
-                      <>
-                        {children.map(({ Component, path }) => {
+                    >
+                      {children.map((child) => (
+                        <Menu.Item key={path + child.path}>
+                          <span>{child.title}</span>
+                        </Menu.Item>
+                      ))}
+                    </Menu.SubMenu>
+                  );
+                })}
+              </Menu>
+            </Layout.Sider>
+            <ViewWrapper>
+              <Switch>
+                {routes.map(({ path, Component, children }) => (
+                  <Route
+                    key={path}
+                    path={path}
+                    render={({ match }) => {
+                      if (!children) {
+                        if (Component) {
                           return (
-                            <Route
-                              key={match.url + path}
-                              path={match.url + path}
-                              render={() => (
-                                <Component
-                                  {...{
-                                    startDate,
-                                    endDate,
-                                  }}
-                                />
-                              )}
+                            <Component
+                              {...{
+                                startDate,
+                                endDate,
+                                accountIdFilter,
+                                setAccountIdFilter,
+                                categoryIdFilter,
+                                setCategoryIdFilter,
+                              }}
                             />
                           );
-                        })}
-                        {/* <Redirect to={match.url + children[0].path} /> */}
-                      </>
-                    );
-                  }}
+                        } else {
+                          throw Error('children or component not defined.');
+                        }
+                      }
+                      return (
+                        <>
+                          {children.map(({ Component, path }) => {
+                            return (
+                              <Route
+                                key={match.url + path}
+                                path={match.url + path}
+                                render={() => (
+                                  <Component
+                                    {...{
+                                      startDate,
+                                      endDate,
+                                    }}
+                                  />
+                                )}
+                              />
+                            );
+                          })}
+                          {/* <Redirect to={match.url + children[0].path} /> */}
+                        </>
+                      );
+                    }}
+                  />
+                ))}
+                <Redirect
+                  to={{ pathname: routes[0].path, search: location.search }}
                 />
-              ))}
-              <Redirect
-                to={{ pathname: routes[0].path, search: location.search }}
-              />
-            </Switch>
-          </ViewWrapper>
+              </Switch>
+            </ViewWrapper>
+          </Layout>
         </Layout>
-      </Layout>
+      </Spin>
     </BaseDataContext.Provider>
   );
 }

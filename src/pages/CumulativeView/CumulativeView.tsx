@@ -50,13 +50,12 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
   const [precision, setPrecision] = useState(defaultPrecision);
-  const { loading, error, balances } = useData({
+  const { error, balances } = useData({
     startDate,
     endDate,
     accountId: accountIdFilter,
     precision,
   });
-  if (loading || balances === undefined) return null;
   if (error) return <>'error'</>;
 
   const series = [

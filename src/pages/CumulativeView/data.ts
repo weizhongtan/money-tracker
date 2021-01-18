@@ -22,6 +22,6 @@ export const useData = ({
   return {
     loading,
     error,
-    balances: data?.balances,
+    balances: data?.balances ?? [],
   };
 };
