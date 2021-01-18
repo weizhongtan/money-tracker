@@ -37,9 +37,13 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
   };
 
   return (
-    <Button danger onClick={handleDelete} loading={loading}>
-      <DeleteOutlined />
-    </Button>
+    <Button
+      type="primary"
+      danger
+      onClick={handleDelete}
+      loading={loading}
+      icon={<DeleteOutlined />}
+    />
   );
 };
 
