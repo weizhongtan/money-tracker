@@ -40,6 +40,12 @@
           name: transaction
 - table:
     schema: public
+    name: table_amount_groups
+- table:
+    schema: public
+    name: table_breakdown
+- table:
+    schema: public
     name: table_cumulative_amount
 - table:
     schema: public

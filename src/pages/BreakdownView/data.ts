@@ -1,28 +1,29 @@
 import {
-  GetCategoriesAggregateQuery,
-  useGetCategoriesAggregateQuery,
+  GetBreakdownQuery,
+  useGetBreakdownQuery,
 } from '../../generated/graphql';
 import { GetElementType, TimePeriod } from '../../types';
 
 export const useCategories = ({
   startDate,
   endDate,
+  groupCategories,
   accountId,
-  grouping,
 }: TimePeriod & {
+  groupCategories: boolean;
   accountId?: string;
-  grouping: string;
 }) => {
-  const { loading, error, data } = useGetCategoriesAggregateQuery({
+  const { loading, error, data } = useGetBreakdownQuery({
     variables: {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
+      groupCategories,
     },
     fetchPolicy: 'no-cache',
   });
 
   const mapToDatum = (
-    category: GetElementType<GetCategoriesAggregateQuery['expenseCategories']>
+    category: GetElementType<GetBreakdownQuery['expenseCategories']>
   ) => ({
     // _id will be used for transaction view
     _id: category.id,
@@ -30,9 +31,7 @@ export const useCategories = ({
     id: category.name,
     name: category.name,
     label: category.name,
-    value: Math.abs(
-      category.transactions_aggregate?.aggregate?.sum?.amount as number
-    ),
+    value: Math.abs(category.sum),
   });
 
   const expense = {

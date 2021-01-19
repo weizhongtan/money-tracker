@@ -1,0 +1,55 @@
+# Explicitly gets categories with a `type`, therefore excludes `None` category
+query GetBreakdown(
+  $startDate: timestamptz
+  $endDate: timestamptz
+  $groupCategories: Boolean!
+) {
+  expenseCategories: func_breakdown(
+    args: {
+      v_start_date: $startDate
+      v_end_date: $endDate
+      v_group_categories: $groupCategories
+      v_category_type: "expense"
+    }
+  ) {
+    id
+    name
+    sum
+  }
+  expenseSum: transaction_aggregate(
+    where: {
+      category: { type: { _eq: "expense" } }
+      date: { _gte: $startDate, _lte: $endDate }
+    }
+  ) {
+    aggregate {
+      sum {
+        amount
+      }
+    }
+  }
+  incomeCategories: func_breakdown(
+    args: {
+      v_start_date: $startDate
+      v_end_date: $endDate
+      v_group_categories: $groupCategories
+      v_category_type: "income"
+    }
+  ) {
+    id
+    name
+    sum
+  }
+  incomeSum: transaction_aggregate(
+    where: {
+      category: { type: { _eq: "income" } }
+      date: { _gte: $startDate, _lte: $endDate }
+    }
+  ) {
+    aggregate {
+      sum {
+        amount
+      }
+    }
+  }
+}

@@ -154,8 +154,8 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   const { error, expense, income } = useCategories({
     startDate,
     endDate,
+    groupCategories: grouping === 'category',
     accountId: accountIdFilter,
-    grouping,
   });
   if (error) return <>error</>;
 

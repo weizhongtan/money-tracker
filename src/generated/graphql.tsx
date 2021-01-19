@@ -693,6 +693,13 @@ export enum Category_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+export type Func_Breakdown_Args = {
+  v_category_type?: Maybe<Scalars['String']>;
+  v_end_date?: Maybe<Scalars['timestamptz']>;
+  v_group_categories?: Maybe<Scalars['Boolean']>;
+  v_start_date?: Maybe<Scalars['timestamptz']>;
+};
+
 export type Func_Cumulative_Amount_Args = {
   v_account_id?: Maybe<Scalars['uuid']>;
   v_end_date?: Maybe<Scalars['timestamptz']>;
@@ -711,6 +718,10 @@ export type Mutation_Root = {
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete data from the table: "category" */
   delete_category?: Maybe<Category_Mutation_Response>;
+  /** delete data from the table: "table_amount_groups" */
+  delete_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
+  /** delete data from the table: "table_breakdown" */
+  delete_table_breakdown?: Maybe<Table_Breakdown_Mutation_Response>;
   /** delete data from the table: "table_cumulative_amount" */
   delete_table_cumulative_amount?: Maybe<Table_Cumulative_Amount_Mutation_Response>;
   /** delete data from the table: "table_transactions_by_category_grouped" */
@@ -721,6 +732,10 @@ export type Mutation_Root = {
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert data into the table: "category" */
   insert_category?: Maybe<Category_Mutation_Response>;
+  /** insert data into the table: "table_amount_groups" */
+  insert_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
+  /** insert data into the table: "table_breakdown" */
+  insert_table_breakdown?: Maybe<Table_Breakdown_Mutation_Response>;
   /** insert data into the table: "table_cumulative_amount" */
   insert_table_cumulative_amount?: Maybe<Table_Cumulative_Amount_Mutation_Response>;
   /** insert data into the table: "table_transactions_by_category_grouped" */
@@ -731,6 +746,10 @@ export type Mutation_Root = {
   update_account?: Maybe<Account_Mutation_Response>;
   /** update data of the table: "category" */
   update_category?: Maybe<Category_Mutation_Response>;
+  /** update data of the table: "table_amount_groups" */
+  update_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
+  /** update data of the table: "table_breakdown" */
+  update_table_breakdown?: Maybe<Table_Breakdown_Mutation_Response>;
   /** update data of the table: "table_cumulative_amount" */
   update_table_cumulative_amount?: Maybe<Table_Cumulative_Amount_Mutation_Response>;
   /** update data of the table: "table_transactions_by_category_grouped" */
@@ -749,6 +768,18 @@ export type Mutation_RootDelete_AccountArgs = {
 /** mutation root */
 export type Mutation_RootDelete_CategoryArgs = {
   where: Category_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Table_Amount_GroupsArgs = {
+  where: Table_Amount_Groups_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Table_BreakdownArgs = {
+  where: Table_Breakdown_Bool_Exp;
 };
 
 
@@ -785,6 +816,18 @@ export type Mutation_RootInsert_CategoryArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Table_Amount_GroupsArgs = {
+  objects: Array<Table_Amount_Groups_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Table_BreakdownArgs = {
+  objects: Array<Table_Breakdown_Insert_Input>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Table_Cumulative_AmountArgs = {
   objects: Array<Table_Cumulative_Amount_Insert_Input>;
 };
@@ -814,6 +857,20 @@ export type Mutation_RootUpdate_AccountArgs = {
 export type Mutation_RootUpdate_CategoryArgs = {
   _set?: Maybe<Category_Set_Input>;
   where: Category_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Table_Amount_GroupsArgs = {
+  _set?: Maybe<Table_Amount_Groups_Set_Input>;
+  where: Table_Amount_Groups_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Table_BreakdownArgs = {
+  _set?: Maybe<Table_Breakdown_Set_Input>;
+  where: Table_Breakdown_Bool_Exp;
 };
 
 
@@ -885,6 +942,10 @@ export type Query_Root = {
   func_account: Array<Account>;
   /** execute function "func_account" and query aggregates on result of table type "account" */
   func_account_aggregate: Account_Aggregate;
+  /** execute function "func_breakdown" which returns "table_breakdown" */
+  func_breakdown: Array<Table_Breakdown>;
+  /** execute function "func_breakdown" and query aggregates on result of table type "table_breakdown" */
+  func_breakdown_aggregate: Table_Breakdown_Aggregate;
   /** execute function "func_cumulative_amount" which returns "table_cumulative_amount" */
   func_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** execute function "func_cumulative_amount" and query aggregates on result of table type "table_cumulative_amount" */
@@ -896,6 +957,14 @@ export type Query_Root = {
    * on result of table type "table_transactions_by_category_grouped"
    */
   func_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
+  /** fetch data from the table: "table_amount_groups" */
+  table_amount_groups: Array<Table_Amount_Groups>;
+  /** fetch aggregated fields from the table: "table_amount_groups" */
+  table_amount_groups_aggregate: Table_Amount_Groups_Aggregate;
+  /** fetch data from the table: "table_breakdown" */
+  table_breakdown: Array<Table_Breakdown>;
+  /** fetch aggregated fields from the table: "table_breakdown" */
+  table_breakdown_aggregate: Table_Breakdown_Aggregate;
   /** fetch data from the table: "table_cumulative_amount" */
   table_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** fetch aggregated fields from the table: "table_cumulative_amount" */
@@ -986,6 +1055,28 @@ export type Query_RootFunc_Account_AggregateArgs = {
 
 
 /** query root */
+export type Query_RootFunc_BreakdownArgs = {
+  args: Func_Breakdown_Args;
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootFunc_Breakdown_AggregateArgs = {
+  args: Func_Breakdown_Args;
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
+};
+
+
+/** query root */
 export type Query_RootFunc_Cumulative_AmountArgs = {
   args: Func_Cumulative_Amount_Args;
   distinct_on?: Maybe<Array<Table_Cumulative_Amount_Select_Column>>;
@@ -1026,6 +1117,46 @@ export type Query_RootFunc_Transactions_By_Category_Grouped_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
   where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootTable_Amount_GroupsArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
+  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootTable_Amount_Groups_AggregateArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
+  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootTable_BreakdownArgs = {
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootTable_Breakdown_AggregateArgs = {
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
 };
 
 
@@ -1131,6 +1262,10 @@ export type Subscription_Root = {
   func_account: Array<Account>;
   /** execute function "func_account" and query aggregates on result of table type "account" */
   func_account_aggregate: Account_Aggregate;
+  /** execute function "func_breakdown" which returns "table_breakdown" */
+  func_breakdown: Array<Table_Breakdown>;
+  /** execute function "func_breakdown" and query aggregates on result of table type "table_breakdown" */
+  func_breakdown_aggregate: Table_Breakdown_Aggregate;
   /** execute function "func_cumulative_amount" which returns "table_cumulative_amount" */
   func_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** execute function "func_cumulative_amount" and query aggregates on result of table type "table_cumulative_amount" */
@@ -1142,6 +1277,14 @@ export type Subscription_Root = {
    * on result of table type "table_transactions_by_category_grouped"
    */
   func_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
+  /** fetch data from the table: "table_amount_groups" */
+  table_amount_groups: Array<Table_Amount_Groups>;
+  /** fetch aggregated fields from the table: "table_amount_groups" */
+  table_amount_groups_aggregate: Table_Amount_Groups_Aggregate;
+  /** fetch data from the table: "table_breakdown" */
+  table_breakdown: Array<Table_Breakdown>;
+  /** fetch aggregated fields from the table: "table_breakdown" */
+  table_breakdown_aggregate: Table_Breakdown_Aggregate;
   /** fetch data from the table: "table_cumulative_amount" */
   table_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** fetch aggregated fields from the table: "table_cumulative_amount" */
@@ -1232,6 +1375,28 @@ export type Subscription_RootFunc_Account_AggregateArgs = {
 
 
 /** subscription root */
+export type Subscription_RootFunc_BreakdownArgs = {
+  args: Func_Breakdown_Args;
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFunc_Breakdown_AggregateArgs = {
+  args: Func_Breakdown_Args;
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
+};
+
+
+/** subscription root */
 export type Subscription_RootFunc_Cumulative_AmountArgs = {
   args: Func_Cumulative_Amount_Args;
   distinct_on?: Maybe<Array<Table_Cumulative_Amount_Select_Column>>;
@@ -1272,6 +1437,46 @@ export type Subscription_RootFunc_Transactions_By_Category_Grouped_AggregateArgs
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
   where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootTable_Amount_GroupsArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
+  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootTable_Amount_Groups_AggregateArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
+  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootTable_BreakdownArgs = {
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootTable_Breakdown_AggregateArgs = {
+  distinct_on?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Breakdown_Order_By>>;
+  where?: Maybe<Table_Breakdown_Bool_Exp>;
 };
 
 
@@ -1338,6 +1543,479 @@ export type Subscription_RootTransaction_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+/** columns and relationships of "table_amount_groups" */
+export type Table_Amount_Groups = {
+  balance: Scalars['numeric'];
+  date: Scalars['timestamptz'];
+  expense: Scalars['numeric'];
+  income: Scalars['numeric'];
+};
+
+/** aggregated selection of "table_amount_groups" */
+export type Table_Amount_Groups_Aggregate = {
+  aggregate?: Maybe<Table_Amount_Groups_Aggregate_Fields>;
+  nodes: Array<Table_Amount_Groups>;
+};
+
+/** aggregate fields of "table_amount_groups" */
+export type Table_Amount_Groups_Aggregate_Fields = {
+  avg?: Maybe<Table_Amount_Groups_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Table_Amount_Groups_Max_Fields>;
+  min?: Maybe<Table_Amount_Groups_Min_Fields>;
+  stddev?: Maybe<Table_Amount_Groups_Stddev_Fields>;
+  stddev_pop?: Maybe<Table_Amount_Groups_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Table_Amount_Groups_Stddev_Samp_Fields>;
+  sum?: Maybe<Table_Amount_Groups_Sum_Fields>;
+  var_pop?: Maybe<Table_Amount_Groups_Var_Pop_Fields>;
+  var_samp?: Maybe<Table_Amount_Groups_Var_Samp_Fields>;
+  variance?: Maybe<Table_Amount_Groups_Variance_Fields>;
+};
+
+
+/** aggregate fields of "table_amount_groups" */
+export type Table_Amount_Groups_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "table_amount_groups" */
+export type Table_Amount_Groups_Aggregate_Order_By = {
+  avg?: Maybe<Table_Amount_Groups_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Table_Amount_Groups_Max_Order_By>;
+  min?: Maybe<Table_Amount_Groups_Min_Order_By>;
+  stddev?: Maybe<Table_Amount_Groups_Stddev_Order_By>;
+  stddev_pop?: Maybe<Table_Amount_Groups_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Table_Amount_Groups_Stddev_Samp_Order_By>;
+  sum?: Maybe<Table_Amount_Groups_Sum_Order_By>;
+  var_pop?: Maybe<Table_Amount_Groups_Var_Pop_Order_By>;
+  var_samp?: Maybe<Table_Amount_Groups_Var_Samp_Order_By>;
+  variance?: Maybe<Table_Amount_Groups_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "table_amount_groups" */
+export type Table_Amount_Groups_Arr_Rel_Insert_Input = {
+  data: Array<Table_Amount_Groups_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Table_Amount_Groups_Avg_Fields = {
+  balance?: Maybe<Scalars['Float']>;
+  expense?: Maybe<Scalars['Float']>;
+  income?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Avg_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "table_amount_groups". All fields are combined with a logical 'AND'. */
+export type Table_Amount_Groups_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Table_Amount_Groups_Bool_Exp>>>;
+  _not?: Maybe<Table_Amount_Groups_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Table_Amount_Groups_Bool_Exp>>>;
+  balance?: Maybe<Numeric_Comparison_Exp>;
+  date?: Maybe<Timestamptz_Comparison_Exp>;
+  expense?: Maybe<Numeric_Comparison_Exp>;
+  income?: Maybe<Numeric_Comparison_Exp>;
+};
+
+/** input type for inserting data into table "table_amount_groups" */
+export type Table_Amount_Groups_Insert_Input = {
+  balance?: Maybe<Scalars['numeric']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  expense?: Maybe<Scalars['numeric']>;
+  income?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate max on columns */
+export type Table_Amount_Groups_Max_Fields = {
+  balance?: Maybe<Scalars['numeric']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  expense?: Maybe<Scalars['numeric']>;
+  income?: Maybe<Scalars['numeric']>;
+};
+
+/** order by max() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Max_Order_By = {
+  balance?: Maybe<Order_By>;
+  date?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Table_Amount_Groups_Min_Fields = {
+  balance?: Maybe<Scalars['numeric']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  expense?: Maybe<Scalars['numeric']>;
+  income?: Maybe<Scalars['numeric']>;
+};
+
+/** order by min() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Min_Order_By = {
+  balance?: Maybe<Order_By>;
+  date?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "table_amount_groups" */
+export type Table_Amount_Groups_Mutation_Response = {
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Table_Amount_Groups>;
+};
+
+/** input type for inserting object relation for remote table "table_amount_groups" */
+export type Table_Amount_Groups_Obj_Rel_Insert_Input = {
+  data: Table_Amount_Groups_Insert_Input;
+};
+
+/** ordering options when selecting data from "table_amount_groups" */
+export type Table_Amount_Groups_Order_By = {
+  balance?: Maybe<Order_By>;
+  date?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** select columns of table "table_amount_groups" */
+export enum Table_Amount_Groups_Select_Column {
+  /** column name */
+  Balance = 'balance',
+  /** column name */
+  Date = 'date',
+  /** column name */
+  Expense = 'expense',
+  /** column name */
+  Income = 'income'
+}
+
+/** input type for updating data in table "table_amount_groups" */
+export type Table_Amount_Groups_Set_Input = {
+  balance?: Maybe<Scalars['numeric']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  expense?: Maybe<Scalars['numeric']>;
+  income?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate stddev on columns */
+export type Table_Amount_Groups_Stddev_Fields = {
+  balance?: Maybe<Scalars['Float']>;
+  expense?: Maybe<Scalars['Float']>;
+  income?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Stddev_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Table_Amount_Groups_Stddev_Pop_Fields = {
+  balance?: Maybe<Scalars['Float']>;
+  expense?: Maybe<Scalars['Float']>;
+  income?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Stddev_Pop_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Table_Amount_Groups_Stddev_Samp_Fields = {
+  balance?: Maybe<Scalars['Float']>;
+  expense?: Maybe<Scalars['Float']>;
+  income?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Stddev_Samp_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Table_Amount_Groups_Sum_Fields = {
+  balance?: Maybe<Scalars['numeric']>;
+  expense?: Maybe<Scalars['numeric']>;
+  income?: Maybe<Scalars['numeric']>;
+};
+
+/** order by sum() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Sum_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Table_Amount_Groups_Var_Pop_Fields = {
+  balance?: Maybe<Scalars['Float']>;
+  expense?: Maybe<Scalars['Float']>;
+  income?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Var_Pop_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Table_Amount_Groups_Var_Samp_Fields = {
+  balance?: Maybe<Scalars['Float']>;
+  expense?: Maybe<Scalars['Float']>;
+  income?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Var_Samp_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Table_Amount_Groups_Variance_Fields = {
+  balance?: Maybe<Scalars['Float']>;
+  expense?: Maybe<Scalars['Float']>;
+  income?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "table_amount_groups" */
+export type Table_Amount_Groups_Variance_Order_By = {
+  balance?: Maybe<Order_By>;
+  expense?: Maybe<Order_By>;
+  income?: Maybe<Order_By>;
+};
+
+/** columns and relationships of "table_breakdown" */
+export type Table_Breakdown = {
+  id: Scalars['uuid'];
+  name: Scalars['String'];
+  sum: Scalars['numeric'];
+};
+
+/** aggregated selection of "table_breakdown" */
+export type Table_Breakdown_Aggregate = {
+  aggregate?: Maybe<Table_Breakdown_Aggregate_Fields>;
+  nodes: Array<Table_Breakdown>;
+};
+
+/** aggregate fields of "table_breakdown" */
+export type Table_Breakdown_Aggregate_Fields = {
+  avg?: Maybe<Table_Breakdown_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Table_Breakdown_Max_Fields>;
+  min?: Maybe<Table_Breakdown_Min_Fields>;
+  stddev?: Maybe<Table_Breakdown_Stddev_Fields>;
+  stddev_pop?: Maybe<Table_Breakdown_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Table_Breakdown_Stddev_Samp_Fields>;
+  sum?: Maybe<Table_Breakdown_Sum_Fields>;
+  var_pop?: Maybe<Table_Breakdown_Var_Pop_Fields>;
+  var_samp?: Maybe<Table_Breakdown_Var_Samp_Fields>;
+  variance?: Maybe<Table_Breakdown_Variance_Fields>;
+};
+
+
+/** aggregate fields of "table_breakdown" */
+export type Table_Breakdown_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Table_Breakdown_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "table_breakdown" */
+export type Table_Breakdown_Aggregate_Order_By = {
+  avg?: Maybe<Table_Breakdown_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Table_Breakdown_Max_Order_By>;
+  min?: Maybe<Table_Breakdown_Min_Order_By>;
+  stddev?: Maybe<Table_Breakdown_Stddev_Order_By>;
+  stddev_pop?: Maybe<Table_Breakdown_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Table_Breakdown_Stddev_Samp_Order_By>;
+  sum?: Maybe<Table_Breakdown_Sum_Order_By>;
+  var_pop?: Maybe<Table_Breakdown_Var_Pop_Order_By>;
+  var_samp?: Maybe<Table_Breakdown_Var_Samp_Order_By>;
+  variance?: Maybe<Table_Breakdown_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "table_breakdown" */
+export type Table_Breakdown_Arr_Rel_Insert_Input = {
+  data: Array<Table_Breakdown_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Table_Breakdown_Avg_Fields = {
+  sum?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "table_breakdown" */
+export type Table_Breakdown_Avg_Order_By = {
+  sum?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "table_breakdown". All fields are combined with a logical 'AND'. */
+export type Table_Breakdown_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Table_Breakdown_Bool_Exp>>>;
+  _not?: Maybe<Table_Breakdown_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Table_Breakdown_Bool_Exp>>>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  sum?: Maybe<Numeric_Comparison_Exp>;
+};
+
+/** input type for inserting data into table "table_breakdown" */
+export type Table_Breakdown_Insert_Input = {
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  sum?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate max on columns */
+export type Table_Breakdown_Max_Fields = {
+  name?: Maybe<Scalars['String']>;
+  sum?: Maybe<Scalars['numeric']>;
+};
+
+/** order by max() on columns of table "table_breakdown" */
+export type Table_Breakdown_Max_Order_By = {
+  name?: Maybe<Order_By>;
+  sum?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Table_Breakdown_Min_Fields = {
+  name?: Maybe<Scalars['String']>;
+  sum?: Maybe<Scalars['numeric']>;
+};
+
+/** order by min() on columns of table "table_breakdown" */
+export type Table_Breakdown_Min_Order_By = {
+  name?: Maybe<Order_By>;
+  sum?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "table_breakdown" */
+export type Table_Breakdown_Mutation_Response = {
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Table_Breakdown>;
+};
+
+/** input type for inserting object relation for remote table "table_breakdown" */
+export type Table_Breakdown_Obj_Rel_Insert_Input = {
+  data: Table_Breakdown_Insert_Input;
+};
+
+/** ordering options when selecting data from "table_breakdown" */
+export type Table_Breakdown_Order_By = {
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  sum?: Maybe<Order_By>;
+};
+
+/** select columns of table "table_breakdown" */
+export enum Table_Breakdown_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Sum = 'sum'
+}
+
+/** input type for updating data in table "table_breakdown" */
+export type Table_Breakdown_Set_Input = {
+  id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
+  sum?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate stddev on columns */
+export type Table_Breakdown_Stddev_Fields = {
+  sum?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "table_breakdown" */
+export type Table_Breakdown_Stddev_Order_By = {
+  sum?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Table_Breakdown_Stddev_Pop_Fields = {
+  sum?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "table_breakdown" */
+export type Table_Breakdown_Stddev_Pop_Order_By = {
+  sum?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Table_Breakdown_Stddev_Samp_Fields = {
+  sum?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "table_breakdown" */
+export type Table_Breakdown_Stddev_Samp_Order_By = {
+  sum?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Table_Breakdown_Sum_Fields = {
+  sum?: Maybe<Scalars['numeric']>;
+};
+
+/** order by sum() on columns of table "table_breakdown" */
+export type Table_Breakdown_Sum_Order_By = {
+  sum?: Maybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Table_Breakdown_Var_Pop_Fields = {
+  sum?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "table_breakdown" */
+export type Table_Breakdown_Var_Pop_Order_By = {
+  sum?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Table_Breakdown_Var_Samp_Fields = {
+  sum?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "table_breakdown" */
+export type Table_Breakdown_Var_Samp_Order_By = {
+  sum?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Table_Breakdown_Variance_Fields = {
+  sum?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "table_breakdown" */
+export type Table_Breakdown_Variance_Order_By = {
+  sum?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "table_cumulative_amount" */
@@ -2332,19 +3010,14 @@ export type GetBaseDataQuery = { accounts: Array<(
     & { key: Category['id'] }
   )> };
 
-export type GetCategoriesAggregateQueryVariables = Exact<{
+export type GetBreakdownQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
   endDate?: Maybe<Scalars['timestamptz']>;
+  groupCategories: Scalars['Boolean'];
 }>;
 
 
-export type GetCategoriesAggregateQuery = { expenseCategories: Array<(
-    Pick<Category, 'name' | 'id'>
-    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } }
-  )>, expenseSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> }, incomeCategories: Array<(
-    Pick<Category, 'name' | 'id'>
-    & { transactions_aggregate: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } }
-  )>, incomeSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } };
+export type GetBreakdownQuery = { expenseCategories: Array<Pick<Table_Breakdown, 'id' | 'name' | 'sum'>>, expenseSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> }, incomeCategories: Array<Pick<Table_Breakdown, 'id' | 'name' | 'sum'>>, incomeSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } };
 
 export type GetTransactionsQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -2805,18 +3478,12 @@ export function useGetBaseDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type GetBaseDataQueryHookResult = ReturnType<typeof useGetBaseDataQuery>;
 export type GetBaseDataLazyQueryHookResult = ReturnType<typeof useGetBaseDataLazyQuery>;
 export type GetBaseDataQueryResult = Apollo.QueryResult<GetBaseDataQuery, GetBaseDataQueryVariables>;
-export const GetCategoriesAggregateDocument = gql`
-    query GetCategoriesAggregate($startDate: timestamptz, $endDate: timestamptz) {
-  expenseCategories: category(where: {type: {_eq: "expense"}}) {
-    transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}}) {
-      aggregate {
-        sum {
-          amount
-        }
-      }
-    }
-    name
+export const GetBreakdownDocument = gql`
+    query GetBreakdown($startDate: timestamptz, $endDate: timestamptz, $groupCategories: Boolean!) {
+  expenseCategories: func_breakdown(args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "expense"}) {
     id
+    name
+    sum
   }
   expenseSum: transaction_aggregate(where: {category: {type: {_eq: "expense"}}, date: {_gte: $startDate, _lte: $endDate}}) {
     aggregate {
@@ -2825,16 +3492,10 @@ export const GetCategoriesAggregateDocument = gql`
       }
     }
   }
-  incomeCategories: category(where: {type: {_eq: "income"}}) {
-    transactions_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}}) {
-      aggregate {
-        sum {
-          amount
-        }
-      }
-    }
-    name
+  incomeCategories: func_breakdown(args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "income"}) {
     id
+    name
+    sum
   }
   incomeSum: transaction_aggregate(where: {category: {type: {_eq: "income"}}, date: {_gte: $startDate, _lte: $endDate}}) {
     aggregate {
@@ -2847,31 +3508,32 @@ export const GetCategoriesAggregateDocument = gql`
     `;
 
 /**
- * __useGetCategoriesAggregateQuery__
+ * __useGetBreakdownQuery__
  *
- * To run a query within a React component, call `useGetCategoriesAggregateQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetCategoriesAggregateQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBreakdownQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBreakdownQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetCategoriesAggregateQuery({
+ * const { data, loading, error } = useGetBreakdownQuery({
  *   variables: {
  *      startDate: // value for 'startDate'
  *      endDate: // value for 'endDate'
+ *      groupCategories: // value for 'groupCategories'
  *   },
  * });
  */
-export function useGetCategoriesAggregateQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>) {
-        return Apollo.useQuery<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>(GetCategoriesAggregateDocument, baseOptions);
+export function useGetBreakdownQuery(baseOptions: Apollo.QueryHookOptions<GetBreakdownQuery, GetBreakdownQueryVariables>) {
+        return Apollo.useQuery<GetBreakdownQuery, GetBreakdownQueryVariables>(GetBreakdownDocument, baseOptions);
       }
-export function useGetCategoriesAggregateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>) {
-          return Apollo.useLazyQuery<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>(GetCategoriesAggregateDocument, baseOptions);
+export function useGetBreakdownLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBreakdownQuery, GetBreakdownQueryVariables>) {
+          return Apollo.useLazyQuery<GetBreakdownQuery, GetBreakdownQueryVariables>(GetBreakdownDocument, baseOptions);
         }
-export type GetCategoriesAggregateQueryHookResult = ReturnType<typeof useGetCategoriesAggregateQuery>;
-export type GetCategoriesAggregateLazyQueryHookResult = ReturnType<typeof useGetCategoriesAggregateLazyQuery>;
-export type GetCategoriesAggregateQueryResult = Apollo.QueryResult<GetCategoriesAggregateQuery, GetCategoriesAggregateQueryVariables>;
+export type GetBreakdownQueryHookResult = ReturnType<typeof useGetBreakdownQuery>;
+export type GetBreakdownLazyQueryHookResult = ReturnType<typeof useGetBreakdownLazyQuery>;
+export type GetBreakdownQueryResult = Apollo.QueryResult<GetBreakdownQuery, GetBreakdownQueryVariables>;
 export const GetTransactionsDocument = gql`
     query GetTransactions($startDate: timestamptz, $endDate: timestamptz, $categoryIds: [uuid!], $accountId: uuid, $searchText: String!, $searchAmount: numeric!, $searchAmountComplement: numeric!) {
   transactions: transaction_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}, _and: [{_and: [{_or: [{category_id: {_in: $categoryIds}}, {category_id: {_is_null: true}}]}, {account_id: {_eq: $accountId}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}, order_by: {date: desc}) {
