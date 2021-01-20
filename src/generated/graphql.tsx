@@ -444,6 +444,19 @@ export type Account_Variance_Order_By = {
   sum?: Maybe<Order_By>;
 };
 
+/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: Maybe<Scalars['Boolean']>;
+  _gt?: Maybe<Scalars['Boolean']>;
+  _gte?: Maybe<Scalars['Boolean']>;
+  _in?: Maybe<Array<Scalars['Boolean']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Boolean']>;
+  _lte?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<Scalars['Boolean']>;
+  _nin?: Maybe<Array<Scalars['Boolean']>>;
+};
+
 /** columns and relationships of "category" */
 export type Category = {
   /** An array relationship */
@@ -454,6 +467,7 @@ export type Category = {
   category?: Maybe<Category>;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
+  is_parent: Scalars['Boolean'];
   legacy_key?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   parent_category_id?: Maybe<Scalars['uuid']>;
@@ -574,6 +588,7 @@ export type Category_Bool_Exp = {
   category?: Maybe<Category_Bool_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  is_parent?: Maybe<Boolean_Comparison_Exp>;
   legacy_key?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   parent_category_id?: Maybe<Uuid_Comparison_Exp>;
@@ -595,6 +610,7 @@ export type Category_Insert_Input = {
   category?: Maybe<Category_Obj_Rel_Insert_Input>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  is_parent?: Maybe<Scalars['Boolean']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   parent_category_id?: Maybe<Scalars['uuid']>;
@@ -671,6 +687,7 @@ export type Category_Order_By = {
   category?: Maybe<Category_Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  is_parent?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   parent_category_id?: Maybe<Order_By>;
@@ -686,6 +703,8 @@ export enum Category_Select_Column {
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsParent = 'is_parent',
   /** column name */
   LegacyKey = 'legacy_key',
   /** column name */
@@ -704,6 +723,7 @@ export enum Category_Select_Column {
 export type Category_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
+  is_parent?: Maybe<Scalars['Boolean']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   parent_category_id?: Maybe<Scalars['uuid']>;
@@ -758,6 +778,8 @@ export enum Category_Update_Column {
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsParent = 'is_parent',
   /** column name */
   LegacyKey = 'legacy_key',
   /** column name */
@@ -2998,6 +3020,7 @@ export type Uuid_Comparison_Exp = {
 export type CreateCategoryMutationVariables = Exact<{
   name: Scalars['String'];
   type?: Maybe<Scalars['String']>;
+  isParent?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -3117,7 +3140,8 @@ export type GetBaseDataQuery = { accounts: Array<(
     & { key: Account['id'], initialAmount: Account['initial_amount'], mostRecentTransactionDate: Account['most_recent_transaction_date'] }
   )>, categories: Array<(
     Pick<Category, 'id' | 'name' | 'type'>
-    & { key: Category['id'] }
+    & { key: Category['id'], isParent: Category['is_parent'] }
+    & { parent?: Maybe<Pick<Category, 'id' | 'name'>> }
   )> };
 
 export type GetCategoryBreakdownQueryVariables = Exact<{
@@ -3149,8 +3173,8 @@ export type GetTransactionsQuery = { transactions: { aggregate?: Maybe<Pick<Tran
 
 
 export const CreateCategoryDocument = gql`
-    mutation CreateCategory($name: String!, $type: String) {
-  insert_category(objects: {name: $name, type: $type}) {
+    mutation CreateCategory($name: String!, $type: String, $isParent: Boolean) {
+  insert_category(objects: {name: $name, type: $type, is_parent: $isParent}) {
     affected_rows
     returning {
       id
@@ -3178,6 +3202,7 @@ export type CreateCategoryMutationFn = Apollo.MutationFunction<CreateCategoryMut
  *   variables: {
  *      name: // value for 'name'
  *      type: // value for 'type'
+ *      isParent: // value for 'isParent'
  *   },
  * });
  */
@@ -3561,6 +3586,11 @@ export const GetBaseDataDocument = gql`
     key: id
     name
     type
+    isParent: is_parent
+    parent: category {
+      id
+      name
+    }
   }
 }
     `;

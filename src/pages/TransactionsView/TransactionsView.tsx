@@ -26,7 +26,13 @@ import {
   Select,
 } from '../../components';
 import { useBaseData, useTheme } from '../../lib';
-import { Account, Nullable, TimePeriod, Transaction } from '../../types';
+import {
+  Account,
+  Category,
+  Nullable,
+  TimePeriod,
+  Transaction,
+} from '../../types';
 import { useTransactions, useUpdateTransactions } from './data';
 
 const { Option } = Select;
@@ -81,23 +87,22 @@ const AccountIndicator: React.FC<AccountIndicatorProps> = ({
 };
 
 type RowActionsDrawerProps = {
+  categories: Category[];
   selectedRows: Transaction[];
   setSelectedRows: (t: Transaction[]) => void;
 };
 
 const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
+  categories,
   selectedRows,
   setSelectedRows,
 }) => {
-  const baseData = useBaseData();
   const [
     updateTransactionsCategory,
     deleteTransactions,
     pairTransactions,
     unpairTransactions,
   ] = useUpdateTransactions();
-
-  const categories = baseData.categories;
 
   return (
     <Drawer
@@ -212,7 +217,8 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
   const [searchText, setSearchText] = useState('');
   const [selectedRows, setSelectedRows] = useState<Transaction[]>([]);
 
-  const categories = baseData.categories;
+  // don't allow parent categories to be assigned to a transaction
+  const categories = baseData.categories.filter((c) => !c.isParent);
 
   const [updateTransactionsCategory] = useUpdateTransactions();
   const { loading, error, transactions, count } = useTransactions({
@@ -227,6 +233,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
   return (
     <div>
       <RowActionsDrawer
+        categories={categories}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
       />

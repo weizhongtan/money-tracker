@@ -19,6 +19,7 @@ export function createCatchAllCategory(id = 'all'): Category {
     id,
     key: id,
     name: 'All Categories',
+    isParent: false,
   };
 }
 

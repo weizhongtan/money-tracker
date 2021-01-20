@@ -1,26 +1,51 @@
 import {
-  DeleteOutlined,
-  MinusCircleFilled,
-  PlusCircleFilled,
+  CloseSquareTwoTone,
+  DeleteTwoTone,
+  FolderAddTwoTone,
+  FolderTwoTone,
+  MinusSquareTwoTone,
+  PlusSquareTwoTone,
 } from '@ant-design/icons';
-import { Button, Form, Input, Table, Tooltip } from 'antd';
+import { Button, Checkbox, Form, Input, Space, Table, Tooltip } from 'antd';
 import * as React from 'react';
 import styled from 'styled-components';
 
 import { Radio } from '../../components';
 import { useBaseData } from '../../lib';
-import { Category, TimePeriod } from '../../types';
+import { Category, Nullable, TimePeriod } from '../../types';
 import { useCreateCategory, useDeleteCategory } from './data';
 
 const { Column } = Table;
 
-const IncomeIcon = styled(PlusCircleFilled)`
+const IncomeIcon = styled(PlusSquareTwoTone).attrs(({ theme }) => ({
+  twoToneColor: theme.positive,
+}))`
   color: ${({ theme: { positive } }) => positive};
 `;
 
-const ExpenseIcon = styled(MinusCircleFilled)`
+const ExpenseIcon = styled(MinusSquareTwoTone).attrs(({ theme }) => ({
+  twoToneColor: theme.negative,
+}))`
   color: ${({ theme: { negative } }) => negative};
 `;
+
+function getTypeIcon(type: Nullable<string>): React.FC {
+  switch (type) {
+    case 'expense': {
+      return ExpenseIcon;
+    }
+    case 'income': {
+      return IncomeIcon;
+    }
+    default: {
+      return CloseSquareTwoTone;
+    }
+  }
+}
+
+const DeleteIcon = styled(DeleteTwoTone).attrs(({ theme }) => ({
+  twoToneColor: theme.negative,
+}))``;
 
 type DeleteButtonProps = {
   id: string;
@@ -38,11 +63,10 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ id }) => {
 
   return (
     <Button
-      type="primary"
       danger
       onClick={handleDelete}
       loading={loading}
-      icon={<DeleteOutlined />}
+      icon={<DeleteIcon />}
     />
   );
 };
@@ -51,12 +75,16 @@ type Props = TimePeriod;
 
 const ManageCategoriesView: React.FC<Props> = () => {
   const baseData = useBaseData();
-  const [createCategory] = useCreateCategory();
+  const createCategory = useCreateCategory();
   const [creating, setCreating] = React.useState(false);
 
-  const onFinish = async (values: { name: string; type: string }) => {
+  const onFinish = async (values: {
+    name: string;
+    type: string;
+    isParent: any;
+  }) => {
     setCreating(true);
-    await createCategory(values.name, values.type);
+    await createCategory(values.name, values.type, values.isParent);
     setCreating(false);
   };
 
@@ -80,6 +108,9 @@ const ManageCategoriesView: React.FC<Props> = () => {
             <Radio.Button value="income">Income</Radio.Button>
           </Radio.Group>
         </Form.Item>
+        <Form.Item name="isParent" initialValue={false} valuePropName="checked">
+          <Checkbox>Parent?</Checkbox>
+        </Form.Item>
         <Form.Item>
           <Button type="primary" loading={creating} htmlType="submit">
             Create
@@ -95,14 +126,27 @@ const ManageCategoriesView: React.FC<Props> = () => {
       >
         <Column title="Name" dataIndex="name" key="name" />
         <Column<Category>
-          title="Type"
-          key="type"
-          render={(_, { type }) => {
-            const Icon = type === 'expense' ? ExpenseIcon : IncomeIcon;
+          title="Details"
+          render={(_, { type, isParent, parent }) => {
+            const TypeIcon = getTypeIcon(type);
             return (
-              <Tooltip title={type}>
-                <Icon />
-              </Tooltip>
+              <>
+                <Space>
+                  <Tooltip title={type}>
+                    <TypeIcon />
+                  </Tooltip>
+                  {isParent && (
+                    <Tooltip title="Parent category">
+                      <FolderAddTwoTone />
+                    </Tooltip>
+                  )}
+                  {parent && (
+                    <Tooltip title={`Child of ${parent.name}`}>
+                      <FolderTwoTone />
+                    </Tooltip>
+                  )}
+                </Space>
+              </>
             );
           }}
         />

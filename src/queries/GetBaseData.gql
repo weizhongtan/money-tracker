@@ -15,5 +15,10 @@ query GetBaseData {
     key: id
     name
     type
+    isParent: is_parent
+    parent: category {
+      id
+      name
+    }
   }
 }

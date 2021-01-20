@@ -25,16 +25,21 @@ export const useCreateCategory = () => {
     },
   });
 
-  const createCategory = async (name: string, type?: string) => {
+  const createCategory = async (
+    name: string,
+    type: string,
+    isParent: boolean
+  ) => {
     await _createCategory({
       variables: {
         name,
         type,
+        isParent,
       },
     });
   };
 
-  return [createCategory];
+  return createCategory;
 };
 
 export const useDeleteCategory = () => {

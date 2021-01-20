@@ -1,5 +1,5 @@
-mutation CreateCategory($name: String!, $type: String) {
-  insert_category(objects: { name: $name, type: $type }) {
+mutation CreateCategory($name: String!, $type: String, $isParent: Boolean) {
+  insert_category(objects: { name: $name, type: $type, is_parent: $isParent }) {
     affected_rows
     returning {
       id
