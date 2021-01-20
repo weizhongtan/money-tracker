@@ -1,6 +1,6 @@
 import {
-  GetBreakdownQuery,
-  useGetBreakdownQuery,
+  GetCategoryBreakdownQuery,
+  useGetCategoryBreakdownQuery,
 } from '../../generated/graphql';
 import { GetElementType, TimePeriod } from '../../types';
 
@@ -13,17 +13,18 @@ export const useCategories = ({
   groupCategories: boolean;
   accountId?: string;
 }) => {
-  const { loading, error, data } = useGetBreakdownQuery({
+  const { loading, error, data } = useGetCategoryBreakdownQuery({
     variables: {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       groupCategories,
+      accountId,
     },
     fetchPolicy: 'no-cache',
   });
 
   const mapToDatum = (
-    category: GetElementType<GetBreakdownQuery['expenseCategories']>
+    category: GetElementType<GetCategoryBreakdownQuery['expenseCategories']>
   ) => ({
     // _id will be used for transaction view
     _id: category.id,
@@ -44,14 +45,13 @@ export const useCategories = ({
   };
 
   // add "Unspent/Uncategorised pseudo category"
-  expense.categories?.push({
+  expense.categories?.unshift({
     _id: 'none',
     id: 'Unspent/Uncategorised',
     name: 'Unspent/Uncategorised',
     label: 'Unspent/Uncategorised',
     value: Math.abs(income.total ?? 0) - Math.abs(expense.total ?? 0),
   });
-  expense.categories?.sort((a, b) => b.value - a.value);
 
   return {
     loading,

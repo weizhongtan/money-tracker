@@ -3,7 +3,7 @@
     name: func_account
 - function:
     schema: public
-    name: func_breakdown
+    name: func_category_breakdown
 - function:
     schema: public
     name: func_cumulative_amount

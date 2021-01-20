@@ -1,15 +1,17 @@
 # Explicitly gets categories with a `type`, therefore excludes `None` category
-query GetBreakdown(
+query GetCategoryBreakdown(
   $startDate: timestamptz
   $endDate: timestamptz
   $groupCategories: Boolean!
+  $accountId: uuid
 ) {
-  expenseCategories: func_breakdown(
+  expenseCategories: func_category_breakdown(
     args: {
       v_start_date: $startDate
       v_end_date: $endDate
       v_group_categories: $groupCategories
       v_category_type: "expense"
+      v_account_id: $accountId
     }
   ) {
     id
@@ -28,12 +30,13 @@ query GetBreakdown(
       }
     }
   }
-  incomeCategories: func_breakdown(
+  incomeCategories: func_category_breakdown(
     args: {
       v_start_date: $startDate
       v_end_date: $endDate
       v_group_categories: $groupCategories
       v_category_type: "income"
+      v_account_id: $accountId
     }
   ) {
     id
