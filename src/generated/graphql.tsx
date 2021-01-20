@@ -3648,7 +3648,7 @@ export type GetCategoryBreakdownLazyQueryHookResult = ReturnType<typeof useGetCa
 export type GetCategoryBreakdownQueryResult = Apollo.QueryResult<GetCategoryBreakdownQuery, GetCategoryBreakdownQueryVariables>;
 export const GetTransactionsDocument = gql`
     query GetTransactions($startDate: timestamptz, $endDate: timestamptz, $categoryIds: [uuid!], $accountId: uuid, $searchText: String!, $searchAmount: numeric!, $searchAmountComplement: numeric!) {
-  transactions: transaction_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}, _and: [{_and: [{_or: [{category_id: {_in: $categoryIds}}, {category_id: {_is_null: true}}]}, {account_id: {_eq: $accountId}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}, order_by: {date: desc}) {
+  transactions: transaction_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}, account_id: {_eq: $accountId}, _and: [{_or: [{category_id: {_is_null: true}}, {category_id: {_in: $categoryIds}}, {category: {parent_category_id: {_in: $categoryIds}}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}, order_by: {date: desc}) {
     aggregate {
       count
     }
