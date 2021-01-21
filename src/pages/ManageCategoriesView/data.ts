@@ -1,9 +1,12 @@
 import {
   GetBaseDataDocument,
   GetBaseDataQuery,
+  UpdateCategoryMutationVariables,
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
+  useUpdateCategoryMutation,
 } from '../../generated/graphql';
+import { Category } from '../../types';
 
 export const useCreateCategory = () => {
   const [_createCategory] = useCreateCategoryMutation({
@@ -73,4 +76,37 @@ export const useDeleteCategory = () => {
   };
 
   return [deleteCategory];
+};
+
+export const useUpdateCategory = () => {
+  return useUpdateCategoryMutation({
+    update(cache, { data }) {
+      const updatedCategory = data?.update_category?.returning[0];
+      const existingData = cache.readQuery<GetBaseDataQuery>({
+        query: GetBaseDataDocument,
+      });
+
+      if (existingData && updatedCategory) {
+        const categoryId = cache.identify(updatedCategory);
+        cache.modify({
+          id: categoryId,
+          fields: {
+            name() {
+              return updatedCategory.name;
+            },
+            type() {
+              return updatedCategory.type;
+            },
+            isParent() {
+              return updatedCategory.isParent;
+            },
+            parent() {
+              return { __ref: updatedCategory.parent?.id };
+            },
+          },
+          optimistic: true,
+        });
+      }
+    },
+  });
 };

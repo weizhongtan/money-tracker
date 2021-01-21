@@ -3,9 +3,6 @@ mutation CreateCategory($name: String!, $type: String, $isParent: Boolean) {
     affected_rows
     returning {
       id
-      key: id
-      name
-      type
     }
   }
 }

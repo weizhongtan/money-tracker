@@ -3026,10 +3026,7 @@ export type CreateCategoryMutationVariables = Exact<{
 
 export type CreateCategoryMutation = { insert_category?: Maybe<(
     Pick<Category_Mutation_Response, 'affected_rows'>
-    & { returning: Array<(
-      Pick<Category, 'id' | 'name' | 'type'>
-      & { key: Category['id'] }
-    )> }
+    & { returning: Array<Pick<Category, 'id'>> }
   )> };
 
 export type DeleteCategoryMutationVariables = Exact<{
@@ -3085,6 +3082,24 @@ export type UnpairTransactionsMutationVariables = Exact<{
 export type UnpairTransactionsMutation = { update_transaction?: Maybe<(
     Pick<Transaction_Mutation_Response, 'affected_rows'>
     & { returning: Array<Pick<Transaction, 'id'>> }
+  )> };
+
+export type UpdateCategoryMutationVariables = Exact<{
+  ids: Array<Scalars['uuid']> | Scalars['uuid'];
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  isParent?: Maybe<Scalars['Boolean']>;
+  parentCategoryId?: Maybe<Scalars['uuid']>;
+}>;
+
+
+export type UpdateCategoryMutation = { update_category?: Maybe<(
+    Pick<Category_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      Pick<Category, 'id' | 'name' | 'type'>
+      & { isParent: Category['is_parent'] }
+      & { parent?: Maybe<Pick<Category, 'id'>> }
+    )> }
   )> };
 
 export type UpdateTransactionsCategoryMutationVariables = Exact<{
@@ -3178,9 +3193,6 @@ export const CreateCategoryDocument = gql`
     affected_rows
     returning {
       id
-      key: id
-      name
-      type
     }
   }
 }
@@ -3395,6 +3407,51 @@ export function useUnpairTransactionsMutation(baseOptions?: Apollo.MutationHookO
 export type UnpairTransactionsMutationHookResult = ReturnType<typeof useUnpairTransactionsMutation>;
 export type UnpairTransactionsMutationResult = Apollo.MutationResult<UnpairTransactionsMutation>;
 export type UnpairTransactionsMutationOptions = Apollo.BaseMutationOptions<UnpairTransactionsMutation, UnpairTransactionsMutationVariables>;
+export const UpdateCategoryDocument = gql`
+    mutation UpdateCategory($ids: [uuid!]!, $name: String, $type: String, $isParent: Boolean, $parentCategoryId: uuid) {
+  update_category(where: {id: {_in: $ids}}, _set: {name: $name, type: $type, is_parent: $isParent, parent_category_id: $parentCategoryId}) {
+    affected_rows
+    returning {
+      id
+      name
+      type
+      isParent: is_parent
+      parent: category {
+        id
+      }
+    }
+  }
+}
+    `;
+export type UpdateCategoryMutationFn = Apollo.MutationFunction<UpdateCategoryMutation, UpdateCategoryMutationVariables>;
+
+/**
+ * __useUpdateCategoryMutation__
+ *
+ * To run a mutation, you first call `useUpdateCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCategoryMutation, { data, loading, error }] = useUpdateCategoryMutation({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *      name: // value for 'name'
+ *      type: // value for 'type'
+ *      isParent: // value for 'isParent'
+ *      parentCategoryId: // value for 'parentCategoryId'
+ *   },
+ * });
+ */
+export function useUpdateCategoryMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCategoryMutation, UpdateCategoryMutationVariables>) {
+        return Apollo.useMutation<UpdateCategoryMutation, UpdateCategoryMutationVariables>(UpdateCategoryDocument, baseOptions);
+      }
+export type UpdateCategoryMutationHookResult = ReturnType<typeof useUpdateCategoryMutation>;
+export type UpdateCategoryMutationResult = Apollo.MutationResult<UpdateCategoryMutation>;
+export type UpdateCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateCategoryMutation, UpdateCategoryMutationVariables>;
 export const UpdateTransactionsCategoryDocument = gql`
     mutation UpdateTransactionsCategory($transactionIds: [uuid!]!, $categoryId: uuid!) {
   update_transaction(where: {id: {_in: $transactionIds}}, _set: {category_id: $categoryId, updated_at: "now"}) {

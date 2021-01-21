@@ -1,0 +1,28 @@
+mutation UpdateCategory(
+  $ids: [uuid!]!
+  $name: String
+  $type: String
+  $isParent: Boolean
+  $parentCategoryId: uuid
+) {
+  update_category(
+    where: { id: { _in: $ids } }
+    _set: {
+      name: $name
+      type: $type
+      is_parent: $isParent
+      parent_category_id: $parentCategoryId
+    }
+  ) {
+    affected_rows
+    returning {
+      id
+      name
+      type
+      isParent: is_parent
+      parent: category {
+        id
+      }
+    }
+  }
+}
