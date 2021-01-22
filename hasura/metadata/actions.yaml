@@ -1,6 +1,13 @@
-actions: []
+actions:
+- name: account_auth
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:9999
+    forward_client_headers: true
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+  - name: SampleInput
+  objects:
+  - name: SampleOutput
   scalars: []

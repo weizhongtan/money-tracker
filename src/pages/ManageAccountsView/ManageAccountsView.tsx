@@ -1,5 +1,5 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Table, Upload, notification } from 'antd';
+import { Button, Space, Table, Upload, notification } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
@@ -81,103 +81,105 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
   const [createTransaction] = useCreateTransaction();
 
   return (
-    <Table
-      size="small"
-      rowClassName={(record) => {
-        if (record.sum === 0) {
-          return 'inactive';
-        }
-        return '';
-      }}
-      {...props}
-    >
-      <Column<Account>
-        title="Name"
-        key="name"
-        render={({ name, colour }) => (
-          <>
-            <AccountAvatar name={name} colour={colour} /> {name}
-          </>
-        )}
-      />
-      <Column<Account>
-        title="Initial Amount"
-        dataIndex="initialAmount"
-        key="initialAmount"
-        render={(_, { initialAmount }) => (
-          <Amount value={Number(initialAmount)} />
-        )}
-        align="right"
-      />
-      <Column<Account>
-        title="Sum"
-        dataIndex="sum"
-        key="sum"
-        render={(_, record) => <Amount value={Number(record.sum)} />}
-        align="right"
-      />
-      <Column<Account>
-        title="Most Recent Transaction"
-        dataIndex="mostRecentTransactionDate"
-        key="mostRecentTransactionDate"
-        render={(date) => <DateDisplay date={date} asTimeAgo />}
-      />
-      <Column<Account> title="Colour" dataIndex="colour" key="colour" />
-      <Column<Account>
-        title="Actions"
-        dataIndex="id"
-        key="id"
-        render={(accountId) => (
-          <Upload
-            showUploadList={false}
-            customRequest={async ({ file }) => {
-              const rawData = await file.text();
+    <>
+      <Table
+        size="small"
+        rowClassName={(record) => {
+          if (record.sum === 0) {
+            return 'inactive';
+          }
+          return '';
+        }}
+        {...props}
+      >
+        <Column<Account>
+          title="Name"
+          key="name"
+          render={({ name, colour }) => (
+            <>
+              <AccountAvatar name={name} colour={colour} /> {name}
+            </>
+          )}
+        />
+        <Column<Account>
+          title="Initial Amount"
+          dataIndex="initialAmount"
+          key="initialAmount"
+          render={(_, { initialAmount }) => (
+            <Amount value={Number(initialAmount)} />
+          )}
+          align="right"
+        />
+        <Column<Account>
+          title="Sum"
+          dataIndex="sum"
+          key="sum"
+          render={(_, record) => <Amount value={Number(record.sum)} />}
+          align="right"
+        />
+        <Column<Account>
+          title="Most Recent Transaction"
+          dataIndex="mostRecentTransactionDate"
+          key="mostRecentTransactionDate"
+          render={(date) => <DateDisplay date={date} asTimeAgo />}
+        />
+        <Column<Account> title="Colour" dataIndex="colour" key="colour" />
+        <Column<Account>
+          title="Actions"
+          dataIndex="id"
+          key="id"
+          render={(accountId) => (
+            <Upload
+              showUploadList={false}
+              customRequest={async ({ file }) => {
+                const rawData = await file.text();
 
-              const sections = file.name.split('.');
-              const ext = sections[sections.length - 1];
+                const sections = file.name.split('.');
+                const ext = sections[sections.length - 1];
 
-              const parser = parsers[ext];
+                const parser = parsers[ext];
 
-              const data = await parser(rawData);
-              if (!data || !data.length) {
-                throw new Error('parser return nothing!');
-              }
+                const data = await parser(rawData);
+                if (!data || !data.length) {
+                  throw new Error('parser return nothing!');
+                }
 
-              const parsedJson = data.map((t) => ({
-                ...t,
-                accountId,
-              }));
+                const parsedJson = data.map((t) => ({
+                  ...t,
+                  accountId,
+                }));
 
-              console.log('parsedJson');
-              console.log(parsedJson);
+                console.log('parsedJson');
+                console.log(parsedJson);
 
-              const proms = parsedJson.map((t) => {
-                return createTransaction(t);
-              });
-              const results = await Promise.all(proms);
+                const proms = parsedJson.map((t) => {
+                  return createTransaction(t);
+                });
+                const results = await Promise.all(proms);
 
-              const created = results.filter((x) => x).length;
-              const skipped = results.length - created;
+                const created = results.filter((x) => x).length;
+                const skipped = results.length - created;
 
-              console.log(`Created ${created} records`);
-              console.log(`Skipped ${skipped} records`);
+                console.log(`Created ${created} records`);
+                console.log(`Skipped ${skipped} records`);
 
-              notification.success({
-                message: 'Import complete',
-                description: (
-                  <span>
-                    Created {created} records, skipped {skipped} records
-                  </span>
-                ),
-                placement: 'topLeft',
-              });
-            }}
-          >
-            <Button icon={<UploadOutlined />}>Upload Transactions</Button>
-          </Upload>
-        )}
-      />
-    </Table>
+                notification.success({
+                  message: 'Import complete',
+                  description: (
+                    <span>
+                      Created {created} records, skipped {skipped} records
+                    </span>
+                  ),
+                  placement: 'topLeft',
+                });
+              }}
+            >
+              <Button icon={<UploadOutlined />}>Upload Transactions</Button>
+            </Upload>
+          )}
+        />
+      </Table>
+    </>
   );
 };
 
@@ -189,6 +191,14 @@ const ManageAccountsView = () => {
 
   return (
     <>
+      <Space>
+        <Button
+          type="primary"
+          href="https://auth.truelayer.com/?response_type=code&client_id=moneytracker-41be3b&scope=info%20accounts%20balance%20transactions&redirect_uri=http://localhost:3000/callback&providers=uk-ob-all%20uk-oauth-all"
+        >
+          Authenticate account
+        </Button>
+      </Space>
       <AccountsTable dataSource={active} title={() => 'Active accounts'} />
       <AccountsTable dataSource={inactive} title={() => 'Inactive accounts'} />
     </>

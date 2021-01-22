@@ -14,6 +14,7 @@ export type Scalars = {
   timestamptz: string;
   uuid: string;
   numeric: number;
+  json: any;
 };
 
 /** columns and relationships of "account" */
@@ -878,8 +879,24 @@ export type Func_Transactions_By_Category_Grouped_Args = {
   v_group_by?: Maybe<Scalars['String']>;
 };
 
+
+/** expression to compare columns of type json. All fields are combined with logical 'AND'. */
+export type Json_Comparison_Exp = {
+  _eq?: Maybe<Scalars['json']>;
+  _gt?: Maybe<Scalars['json']>;
+  _gte?: Maybe<Scalars['json']>;
+  _in?: Maybe<Array<Scalars['json']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['json']>;
+  _lte?: Maybe<Scalars['json']>;
+  _neq?: Maybe<Scalars['json']>;
+  _nin?: Maybe<Array<Scalars['json']>>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
+  /** perform the action: "account_auth" */
+  account_auth?: Maybe<SampleOutput>;
   /** delete data from the table: "account" */
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete single row from the table: "account" */
@@ -948,6 +965,12 @@ export type Mutation_Root = {
   update_transaction?: Maybe<Transaction_Mutation_Response>;
   /** update single row of the table: "transaction" */
   update_transaction_by_pk?: Maybe<Transaction>;
+};
+
+
+/** mutation root */
+export type Mutation_RootAccount_AuthArgs = {
+  arg: SampleInput;
 };
 
 
@@ -1509,6 +1532,15 @@ export type Query_RootTransaction_AggregateArgs = {
 /** query root */
 export type Query_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+export type SampleInput = {
+  code: Scalars['String'];
+  scope: Scalars['String'];
+};
+
+export type SampleOutput = {
+  accessToken: Scalars['String'];
 };
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */

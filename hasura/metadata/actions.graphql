@@ -1,0 +1,18 @@
+type Mutation {
+  account_auth (
+    arg: SampleInput!
+  ): SampleOutput
+}
+
+
+
+
+input SampleInput {
+  code : String!
+  scope : String!
+}
+
+type SampleOutput {
+  accessToken : String!
+}
+
