@@ -168,6 +168,13 @@ export enum Account_Constraint {
   AccountsPkey = 'accounts_pkey'
 }
 
+/** input type for incrementing integer column in table "account" */
+export type Account_Inc_Input = {
+  initial_amount?: Maybe<Scalars['numeric']>;
+  minimum?: Maybe<Scalars['numeric']>;
+  sum?: Maybe<Scalars['numeric']>;
+};
+
 /** input type for inserting data into table "account" */
 export type Account_Insert_Input = {
   colour?: Maybe<Scalars['String']>;
@@ -189,6 +196,7 @@ export type Account_Insert_Input = {
 export type Account_Max_Fields = {
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   initial_amount?: Maybe<Scalars['numeric']>;
   legacy_key?: Maybe<Scalars['String']>;
   minimum?: Maybe<Scalars['numeric']>;
@@ -203,6 +211,7 @@ export type Account_Max_Fields = {
 export type Account_Max_Order_By = {
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   initial_amount?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
@@ -217,6 +226,7 @@ export type Account_Max_Order_By = {
 export type Account_Min_Fields = {
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   initial_amount?: Maybe<Scalars['numeric']>;
   legacy_key?: Maybe<Scalars['String']>;
   minimum?: Maybe<Scalars['numeric']>;
@@ -231,6 +241,7 @@ export type Account_Min_Fields = {
 export type Account_Min_Order_By = {
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   initial_amount?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
   minimum?: Maybe<Order_By>;
@@ -277,6 +288,11 @@ export type Account_Order_By = {
   transactionsByToAccountId_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "account" */
+export type Account_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 /** select columns of table "account" */
@@ -604,6 +620,11 @@ export enum Category_Constraint {
   CategoriesPkey = 'categories_pkey'
 }
 
+/** input type for incrementing integer column in table "category" */
+export type Category_Inc_Input = {
+  sum?: Maybe<Scalars['numeric']>;
+};
+
 /** input type for inserting data into table "category" */
 export type Category_Insert_Input = {
   categories?: Maybe<Category_Arr_Rel_Insert_Input>;
@@ -623,8 +644,10 @@ export type Category_Insert_Input = {
 /** aggregate max on columns */
 export type Category_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  parent_category_id?: Maybe<Scalars['uuid']>;
   sum?: Maybe<Scalars['numeric']>;
   type?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -633,8 +656,10 @@ export type Category_Max_Fields = {
 /** order by max() on columns of table "category" */
 export type Category_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  parent_category_id?: Maybe<Order_By>;
   sum?: Maybe<Order_By>;
   type?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -643,8 +668,10 @@ export type Category_Max_Order_By = {
 /** aggregate min on columns */
 export type Category_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
   legacy_key?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  parent_category_id?: Maybe<Scalars['uuid']>;
   sum?: Maybe<Scalars['numeric']>;
   type?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -653,8 +680,10 @@ export type Category_Min_Fields = {
 /** order by min() on columns of table "category" */
 export type Category_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
   legacy_key?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  parent_category_id?: Maybe<Order_By>;
   sum?: Maybe<Order_By>;
   type?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -695,6 +724,11 @@ export type Category_Order_By = {
   transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   type?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "category" */
+export type Category_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 /** select columns of table "category" */
@@ -848,8 +882,12 @@ export type Func_Transactions_By_Category_Grouped_Args = {
 export type Mutation_Root = {
   /** delete data from the table: "account" */
   delete_account?: Maybe<Account_Mutation_Response>;
+  /** delete single row from the table: "account" */
+  delete_account_by_pk?: Maybe<Account>;
   /** delete data from the table: "category" */
   delete_category?: Maybe<Category_Mutation_Response>;
+  /** delete single row from the table: "category" */
+  delete_category_by_pk?: Maybe<Category>;
   /** delete data from the table: "table_amount_groups" */
   delete_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
   /** delete data from the table: "table_breakdown" */
@@ -860,24 +898,44 @@ export type Mutation_Root = {
   delete_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** delete data from the table: "transaction" */
   delete_transaction?: Maybe<Transaction_Mutation_Response>;
+  /** delete single row from the table: "transaction" */
+  delete_transaction_by_pk?: Maybe<Transaction>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
+  /** insert a single row into the table: "account" */
+  insert_account_one?: Maybe<Account>;
   /** insert data into the table: "category" */
   insert_category?: Maybe<Category_Mutation_Response>;
+  /** insert a single row into the table: "category" */
+  insert_category_one?: Maybe<Category>;
   /** insert data into the table: "table_amount_groups" */
   insert_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
+  /** insert a single row into the table: "table_amount_groups" */
+  insert_table_amount_groups_one?: Maybe<Table_Amount_Groups>;
   /** insert data into the table: "table_breakdown" */
   insert_table_breakdown?: Maybe<Table_Breakdown_Mutation_Response>;
+  /** insert a single row into the table: "table_breakdown" */
+  insert_table_breakdown_one?: Maybe<Table_Breakdown>;
   /** insert data into the table: "table_cumulative_amount" */
   insert_table_cumulative_amount?: Maybe<Table_Cumulative_Amount_Mutation_Response>;
+  /** insert a single row into the table: "table_cumulative_amount" */
+  insert_table_cumulative_amount_one?: Maybe<Table_Cumulative_Amount>;
   /** insert data into the table: "table_transactions_by_category_grouped" */
   insert_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
+  /** insert a single row into the table: "table_transactions_by_category_grouped" */
+  insert_table_transactions_by_category_grouped_one?: Maybe<Table_Transactions_By_Category_Grouped>;
   /** insert data into the table: "transaction" */
   insert_transaction?: Maybe<Transaction_Mutation_Response>;
+  /** insert a single row into the table: "transaction" */
+  insert_transaction_one?: Maybe<Transaction>;
   /** update data of the table: "account" */
   update_account?: Maybe<Account_Mutation_Response>;
+  /** update single row of the table: "account" */
+  update_account_by_pk?: Maybe<Account>;
   /** update data of the table: "category" */
   update_category?: Maybe<Category_Mutation_Response>;
+  /** update single row of the table: "category" */
+  update_category_by_pk?: Maybe<Category>;
   /** update data of the table: "table_amount_groups" */
   update_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
   /** update data of the table: "table_breakdown" */
@@ -888,6 +946,8 @@ export type Mutation_Root = {
   update_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** update data of the table: "transaction" */
   update_transaction?: Maybe<Transaction_Mutation_Response>;
+  /** update single row of the table: "transaction" */
+  update_transaction_by_pk?: Maybe<Transaction>;
 };
 
 
@@ -898,8 +958,20 @@ export type Mutation_RootDelete_AccountArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Account_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_CategoryArgs = {
   where: Category_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Category_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -934,8 +1006,21 @@ export type Mutation_RootDelete_TransactionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Transaction_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_AccountArgs = {
   objects: Array<Account_Insert_Input>;
+  on_conflict?: Maybe<Account_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Account_OneArgs = {
+  object: Account_Insert_Input;
   on_conflict?: Maybe<Account_On_Conflict>;
 };
 
@@ -948,8 +1033,21 @@ export type Mutation_RootInsert_CategoryArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Category_OneArgs = {
+  object: Category_Insert_Input;
+  on_conflict?: Maybe<Category_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Table_Amount_GroupsArgs = {
   objects: Array<Table_Amount_Groups_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Table_Amount_Groups_OneArgs = {
+  object: Table_Amount_Groups_Insert_Input;
 };
 
 
@@ -960,14 +1058,32 @@ export type Mutation_RootInsert_Table_BreakdownArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Table_Breakdown_OneArgs = {
+  object: Table_Breakdown_Insert_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Table_Cumulative_AmountArgs = {
   objects: Array<Table_Cumulative_Amount_Insert_Input>;
 };
 
 
 /** mutation root */
+export type Mutation_RootInsert_Table_Cumulative_Amount_OneArgs = {
+  object: Table_Cumulative_Amount_Insert_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Table_Transactions_By_Category_GroupedArgs = {
   objects: Array<Table_Transactions_By_Category_Grouped_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Table_Transactions_By_Category_Grouped_OneArgs = {
+  object: Table_Transactions_By_Category_Grouped_Insert_Input;
 };
 
 
@@ -979,21 +1095,47 @@ export type Mutation_RootInsert_TransactionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Transaction_OneArgs = {
+  object: Transaction_Insert_Input;
+  on_conflict?: Maybe<Transaction_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_AccountArgs = {
+  _inc?: Maybe<Account_Inc_Input>;
   _set?: Maybe<Account_Set_Input>;
   where: Account_Bool_Exp;
 };
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Account_By_PkArgs = {
+  _inc?: Maybe<Account_Inc_Input>;
+  _set?: Maybe<Account_Set_Input>;
+  pk_columns: Account_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_CategoryArgs = {
+  _inc?: Maybe<Category_Inc_Input>;
   _set?: Maybe<Category_Set_Input>;
   where: Category_Bool_Exp;
 };
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Category_By_PkArgs = {
+  _inc?: Maybe<Category_Inc_Input>;
+  _set?: Maybe<Category_Set_Input>;
+  pk_columns: Category_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Table_Amount_GroupsArgs = {
+  _inc?: Maybe<Table_Amount_Groups_Inc_Input>;
   _set?: Maybe<Table_Amount_Groups_Set_Input>;
   where: Table_Amount_Groups_Bool_Exp;
 };
@@ -1001,6 +1143,7 @@ export type Mutation_RootUpdate_Table_Amount_GroupsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Table_BreakdownArgs = {
+  _inc?: Maybe<Table_Breakdown_Inc_Input>;
   _set?: Maybe<Table_Breakdown_Set_Input>;
   where: Table_Breakdown_Bool_Exp;
 };
@@ -1008,6 +1151,7 @@ export type Mutation_RootUpdate_Table_BreakdownArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Table_Cumulative_AmountArgs = {
+  _inc?: Maybe<Table_Cumulative_Amount_Inc_Input>;
   _set?: Maybe<Table_Cumulative_Amount_Set_Input>;
   where: Table_Cumulative_Amount_Bool_Exp;
 };
@@ -1015,6 +1159,7 @@ export type Mutation_RootUpdate_Table_Cumulative_AmountArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Table_Transactions_By_Category_GroupedArgs = {
+  _inc?: Maybe<Table_Transactions_By_Category_Grouped_Inc_Input>;
   _set?: Maybe<Table_Transactions_By_Category_Grouped_Set_Input>;
   where: Table_Transactions_By_Category_Grouped_Bool_Exp;
 };
@@ -1022,8 +1167,17 @@ export type Mutation_RootUpdate_Table_Transactions_By_Category_GroupedArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_TransactionArgs = {
+  _inc?: Maybe<Transaction_Inc_Input>;
   _set?: Maybe<Transaction_Set_Input>;
   where: Transaction_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Transaction_By_PkArgs = {
+  _inc?: Maybe<Transaction_Inc_Input>;
+  _set?: Maybe<Transaction_Set_Input>;
+  pk_columns: Transaction_Pk_Columns_Input;
 };
 
 
@@ -1758,6 +1912,13 @@ export type Table_Amount_Groups_Bool_Exp = {
   income?: Maybe<Numeric_Comparison_Exp>;
 };
 
+/** input type for incrementing integer column in table "table_amount_groups" */
+export type Table_Amount_Groups_Inc_Input = {
+  balance?: Maybe<Scalars['numeric']>;
+  expense?: Maybe<Scalars['numeric']>;
+  income?: Maybe<Scalars['numeric']>;
+};
+
 /** input type for inserting data into table "table_amount_groups" */
 export type Table_Amount_Groups_Insert_Input = {
   balance?: Maybe<Scalars['numeric']>;
@@ -2012,6 +2173,11 @@ export type Table_Breakdown_Bool_Exp = {
   sum?: Maybe<Numeric_Comparison_Exp>;
 };
 
+/** input type for incrementing integer column in table "table_breakdown" */
+export type Table_Breakdown_Inc_Input = {
+  sum?: Maybe<Scalars['numeric']>;
+};
+
 /** input type for inserting data into table "table_breakdown" */
 export type Table_Breakdown_Insert_Input = {
   id?: Maybe<Scalars['uuid']>;
@@ -2021,24 +2187,28 @@ export type Table_Breakdown_Insert_Input = {
 
 /** aggregate max on columns */
 export type Table_Breakdown_Max_Fields = {
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
 };
 
 /** order by max() on columns of table "table_breakdown" */
 export type Table_Breakdown_Max_Order_By = {
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   sum?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Table_Breakdown_Min_Fields = {
+  id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
 };
 
 /** order by min() on columns of table "table_breakdown" */
 export type Table_Breakdown_Min_Order_By = {
+  id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   sum?: Maybe<Order_By>;
 };
@@ -2221,6 +2391,11 @@ export type Table_Cumulative_Amount_Bool_Exp = {
   _or?: Maybe<Array<Maybe<Table_Cumulative_Amount_Bool_Exp>>>;
   date?: Maybe<Timestamptz_Comparison_Exp>;
   sum?: Maybe<Numeric_Comparison_Exp>;
+};
+
+/** input type for incrementing integer column in table "table_cumulative_amount" */
+export type Table_Cumulative_Amount_Inc_Input = {
+  sum?: Maybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "table_cumulative_amount" */
@@ -2438,6 +2613,13 @@ export type Table_Transactions_By_Category_Grouped_Bool_Exp = {
   date?: Maybe<Timestamptz_Comparison_Exp>;
   expense?: Maybe<Numeric_Comparison_Exp>;
   income?: Maybe<Numeric_Comparison_Exp>;
+};
+
+/** input type for incrementing integer column in table "table_transactions_by_category_grouped" */
+export type Table_Transactions_By_Category_Grouped_Inc_Input = {
+  balance?: Maybe<Scalars['numeric']>;
+  expense?: Maybe<Scalars['numeric']>;
+  income?: Maybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "table_transactions_by_category_grouped" */
@@ -2769,6 +2951,11 @@ export enum Transaction_Constraint {
   TransactionsPkey = 'transactions_pkey'
 }
 
+/** input type for incrementing integer column in table "transaction" */
+export type Transaction_Inc_Input = {
+  amount?: Maybe<Scalars['numeric']>;
+};
+
 /** input type for inserting data into table "transaction" */
 export type Transaction_Insert_Input = {
   account?: Maybe<Account_Obj_Rel_Insert_Input>;
@@ -2791,37 +2978,61 @@ export type Transaction_Insert_Input = {
 
 /** aggregate max on columns */
 export type Transaction_Max_Fields = {
+  account_id?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
+  category_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   date?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  linked_account_id?: Maybe<Scalars['uuid']>;
+  pair_id?: Maybe<Scalars['uuid']>;
+  paired_with_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by max() on columns of table "transaction" */
 export type Transaction_Max_Order_By = {
+  account_id?: Maybe<Order_By>;
   amount?: Maybe<Order_By>;
+  category_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  linked_account_id?: Maybe<Order_By>;
+  pair_id?: Maybe<Order_By>;
+  paired_with_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Transaction_Min_Fields = {
+  account_id?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
+  category_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   date?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['uuid']>;
+  linked_account_id?: Maybe<Scalars['uuid']>;
+  pair_id?: Maybe<Scalars['uuid']>;
+  paired_with_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "transaction" */
 export type Transaction_Min_Order_By = {
+  account_id?: Maybe<Order_By>;
   amount?: Maybe<Order_By>;
+  category_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  linked_account_id?: Maybe<Order_By>;
+  pair_id?: Maybe<Order_By>;
+  paired_with_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -2864,6 +3075,11 @@ export type Transaction_Order_By = {
   transaction?: Maybe<Transaction_Order_By>;
   transactions_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
   updated_at?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "transaction" */
+export type Transaction_Pk_Columns_Input = {
+  id: Scalars['uuid'];
 };
 
 /** select columns of table "transaction" */

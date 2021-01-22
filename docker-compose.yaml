@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
   graphql-engine:
-    image: hasura/graphql-engine:v1.1.0
+    image: hasura/graphql-engine:v1.3.3
     ports:
       - '8080:8080'
     restart: always
