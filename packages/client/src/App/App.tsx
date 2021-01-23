@@ -1,5 +1,12 @@
 import 'antd/dist/antd.css';
 
+import { Account, Category, TimePeriod } from '../types';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  useApolloClient,
+} from '@apollo/client';
 import {
   BarsOutlined,
   ClockCircleOutlined,
@@ -7,7 +14,7 @@ import {
   PieChartOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { BaseDataContext, time } from '../lib';
 import { Layout, Menu, Space, Spin } from 'antd';
 import React, { useState } from 'react';
 import {
@@ -18,25 +25,24 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import { useUrlState } from 'with-url-state';
-
-import { Select } from '../components';
-import { BaseDataContext, time } from '../lib';
-import BreakdownView from '../pages/BreakdownView';
-import CumulativeView from '../pages/CumulativeView';
-import DateRangeSelect from '../pages/DateRangeSelect';
-import ManageAccountsView from '../pages/ManageAccountsView';
-import ManageCategoriesView from '../pages/ManageCategoriesView';
-import TimelineView from '../pages/TimelineView';
-import TransactionsView from '../pages/TransactionsView';
-import theme from '../theme';
-import { Account, Category, TimePeriod } from '../types';
 import {
   createCatchAllAccount,
   createCatchAllCategory,
   useBaseData,
 } from './data';
+import styled, { ThemeProvider } from 'styled-components';
+
+import BreakdownView from '../pages/BreakdownView';
+import CumulativeView from '../pages/CumulativeView';
+import DateRangeSelect from '../pages/DateRangeSelect';
+import { GetAccountDataDocument } from '../generated/graphql';
+import ManageAccountsView from '../pages/ManageAccountsView';
+import ManageCategoriesView from '../pages/ManageCategoriesView';
+import { Select } from '../components';
+import TimelineView from '../pages/TimelineView';
+import TransactionsView from '../pages/TransactionsView';
+import theme from '../theme';
+import { useUrlState } from 'with-url-state';
 
 const Content = styled(Layout.Content)`
   background: #fff;
@@ -47,6 +53,28 @@ const ViewWrapper = styled(Content)`
   flex-direction: column;
   overflow-y: scroll;
 `;
+
+const GetAccountData = () => {
+  const client = useApolloClient();
+  const location = useLocation();
+
+  const search = new URLSearchParams(location.search);
+  const code = search.get('code');
+
+  async function doThing() {
+    const res = await client.mutate({
+      mutation: GetAccountDataDocument,
+      variables: { code },
+    });
+    console.log({ getAccountData: JSON.parse(res.data.getAccountData.data) });
+  }
+
+  React.useEffect(() => {
+    doThing();
+  }, []);
+
+  return <p>getting account data from truelayer</p>;
+};
 
 export type Filters = {
   accountIdFilter?: Account['id'];
@@ -336,6 +364,11 @@ function App() {
                     }}
                   />
                 ))}
+                <Route
+                  key="/callback"
+                  path="/callback"
+                  component={GetAccountData}
+                />
                 <Redirect
                   to={{ pathname: routes[0].path, search: location.search }}
                 />

@@ -1,13 +1,13 @@
-import { UploadOutlined } from '@ant-design/icons';
+import { AccountAvatar, Amount, DateDisplay } from '../../components';
 import { Button, Space, Table, Upload, notification } from 'antd';
+
+import { Account } from '../../types';
+import React from 'react';
 import { TableProps } from 'antd/lib/table';
+import { UploadOutlined } from '@ant-design/icons';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
-import React from 'react';
-
-import { AccountAvatar, Amount, DateDisplay } from '../../components';
 import { useBaseData } from '../../lib';
-import { Account } from '../../types';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -194,7 +194,7 @@ const ManageAccountsView = () => {
       <Space>
         <Button
           type="primary"
-          href="https://auth.truelayer.com/?response_type=code&client_id=moneytracker-41be3b&scope=info%20accounts%20balance%20transactions&redirect_uri=http://localhost:3000/callback&providers=uk-ob-all%20uk-oauth-all"
+          href="https://auth.truelayer.com/?response_type=code&client_id=moneytracker-41be3b&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=http://localhost:3000/callback&providers=uk-ob-monzo%20uk-oauth-all"
         >
           Authenticate account
         </Button>

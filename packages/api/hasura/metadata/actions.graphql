@@ -1,18 +1,17 @@
 type Mutation {
-  account_auth (
-    arg: SampleInput!
-  ): SampleOutput
+  getAccountData (
+    code: String!
+  ): AccountData
 }
 
 
 
 
-input SampleInput {
-  code : String!
-  scope : String!
-}
-
-type SampleOutput {
+type AccountAuthOutput {
   accessToken : String!
+}
+
+type AccountData {
+  data : String!
 }
 

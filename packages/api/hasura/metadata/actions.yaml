@@ -1,13 +1,13 @@
 actions:
-- name: account_auth
+- name: getAccountData
   definition:
     kind: synchronous
-    handler: http://host.docker.internal:9999
+    handler: http://host.docker.internal:9999/get-account-data
     forward_client_headers: true
 custom_types:
   enums: []
-  input_objects:
-  - name: SampleInput
+  input_objects: []
   objects:
-  - name: SampleOutput
+  - name: AccountAuthOutput
+  - name: AccountData
   scalars: []

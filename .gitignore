@@ -10,6 +10,7 @@
 /packages/*/coverage
 /packages/*/.eslintcache
 /packages/*/private
+/packages/*/.env
 /private
 
 # production
