@@ -68,7 +68,9 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
       />
       <RangePicker
         picker="month"
-        onChange={([start, end]) => {
+        onChange={(range) => {
+          const start = range?.[0];
+          const end = range?.[1];
           if (start && end) {
             setDates({
               startDate: time(start).startOf('day'),
