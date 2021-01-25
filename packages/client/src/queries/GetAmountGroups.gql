@@ -4,7 +4,7 @@ query GetAmountGroups(
   $categoryId: uuid
   $groupBy: String
 ) {
-  groups: func_transactions_by_category_grouped(
+  groups: func_timeline(
     args: { v_category_id: $categoryId, v_group_by: $groupBy }
     where: { date: { _gte: $startDate, _lte: $endDate } }
     order_by: { date: asc }
@@ -14,7 +14,7 @@ query GetAmountGroups(
     expense
     income
   }
-  aggregate: func_transactions_by_category_grouped_aggregate(
+  aggregate: func_timeline_aggregate(
     args: { v_category_id: $categoryId, v_group_by: $groupBy }
     where: { date: { _gte: $startDate, _lte: $endDate } }
     order_by: { date: asc }

@@ -882,6 +882,11 @@ export type Func_Cumulative_Amount_Args = {
   v_start_date?: Maybe<Scalars['timestamptz']>;
 };
 
+export type Func_Timeline_Args = {
+  v_category_id?: Maybe<Scalars['uuid']>;
+  v_group_by?: Maybe<Scalars['String']>;
+};
+
 export type Func_Transactions_By_Category_Grouped_Args = {
   v_category_id?: Maybe<Scalars['uuid']>;
   v_group_by?: Maybe<Scalars['String']>;
@@ -903,8 +908,6 @@ export type Json_Comparison_Exp = {
 
 /** mutation root */
 export type Mutation_Root = {
-  /** perform the action: "account_auth" */
-  account_auth?: Maybe<AccountAuthOutput>;
   /** delete data from the table: "account" */
   delete_account?: Maybe<Account_Mutation_Response>;
   /** delete single row from the table: "account" */
@@ -975,12 +978,6 @@ export type Mutation_Root = {
   update_transaction?: Maybe<Transaction_Mutation_Response>;
   /** update single row of the table: "transaction" */
   update_transaction_by_pk?: Maybe<Transaction>;
-};
-
-
-/** mutation root */
-export type Mutation_RootAccount_AuthArgs = {
-  code: Scalars['String'];
 };
 
 
@@ -1275,6 +1272,10 @@ export type Query_Root = {
   func_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** execute function "func_cumulative_amount" and query aggregates on result of table type "table_cumulative_amount" */
   func_cumulative_amount_aggregate: Table_Cumulative_Amount_Aggregate;
+  /** execute function "func_timeline" which returns "table_transactions_by_category_grouped" */
+  func_timeline: Array<Table_Transactions_By_Category_Grouped>;
+  /** execute function "func_timeline" and query aggregates on result of table type "table_transactions_by_category_grouped" */
+  func_timeline_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
   /** execute function "func_transactions_by_category_grouped" which returns "table_transactions_by_category_grouped" */
   func_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
   /**
@@ -1420,6 +1421,28 @@ export type Query_RootFunc_Cumulative_Amount_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Table_Cumulative_Amount_Order_By>>;
   where?: Maybe<Table_Cumulative_Amount_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootFunc_TimelineArgs = {
+  args: Func_Timeline_Args;
+  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
+  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootFunc_Timeline_AggregateArgs = {
+  args: Func_Timeline_Args;
+  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
+  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
 };
 
 
@@ -1595,6 +1618,10 @@ export type Subscription_Root = {
   func_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** execute function "func_cumulative_amount" and query aggregates on result of table type "table_cumulative_amount" */
   func_cumulative_amount_aggregate: Table_Cumulative_Amount_Aggregate;
+  /** execute function "func_timeline" which returns "table_transactions_by_category_grouped" */
+  func_timeline: Array<Table_Transactions_By_Category_Grouped>;
+  /** execute function "func_timeline" and query aggregates on result of table type "table_transactions_by_category_grouped" */
+  func_timeline_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
   /** execute function "func_transactions_by_category_grouped" which returns "table_transactions_by_category_grouped" */
   func_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
   /**
@@ -1740,6 +1767,28 @@ export type Subscription_RootFunc_Cumulative_Amount_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Table_Cumulative_Amount_Order_By>>;
   where?: Maybe<Table_Cumulative_Amount_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFunc_TimelineArgs = {
+  args: Func_Timeline_Args;
+  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
+  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootFunc_Timeline_AggregateArgs = {
+  args: Func_Timeline_Args;
+  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
+  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
 };
 
 
@@ -3829,13 +3878,13 @@ export type CheckTransactionLazyQueryHookResult = ReturnType<typeof useCheckTran
 export type CheckTransactionQueryResult = Apollo.QueryResult<CheckTransactionQuery, CheckTransactionQueryVariables>;
 export const GetAmountGroupsDocument = gql`
     query GetAmountGroups($startDate: timestamptz, $endDate: timestamptz, $categoryId: uuid, $groupBy: String) {
-  groups: func_transactions_by_category_grouped(args: {v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
+  groups: func_timeline(args: {v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
     date
     balance
     expense
     income
   }
-  aggregate: func_transactions_by_category_grouped_aggregate(args: {v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
+  aggregate: func_timeline_aggregate(args: {v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
     aggregate {
       avg {
         balance
