@@ -33,18 +33,14 @@ const DateRangeSelect: React.FC<Props> = ({ startDate, endDate, setDates }) => {
       time().subtract(12, 'month').startOf('month'),
       time().endOf('month'),
     ],
-    'Last Year': [
-      time().subtract(1, 'year').startOf('year'),
-      time().subtract(1, 'year').endOf('year'),
-    ],
     'Entire Range': [time('2017-01-01').startOf('year'), time()],
   };
 
-  // add the past 3 years before last year
-  for (let i = 0; i < 3; i += 1) {
+  // add the past 4 years
+  for (let i = 0; i < 4; i += 1) {
     const year = String(
       time()
-        .subtract(i + 2, 'year')
+        .subtract(i + 1, 'year')
         .year()
     );
     ranges[year] = [time(year).startOf('year'), time(year).endOf('year')];
