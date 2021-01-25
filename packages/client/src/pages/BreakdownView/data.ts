@@ -9,9 +9,11 @@ export const useCategories = ({
   endDate,
   groupCategories,
   accountId,
+  fractionOfIncome,
 }: TimePeriod & {
   groupCategories: boolean;
   accountId?: string;
+  fractionOfIncome: boolean;
 }) => {
   const { loading, error, data } = useGetCategoryBreakdownQuery({
     variables: {
@@ -44,14 +46,16 @@ export const useCategories = ({
     total: data?.incomeSum.aggregate?.sum?.amount,
   };
 
-  // add "Unspent/Uncategorised pseudo category"
-  expense.categories?.unshift({
-    _id: 'none',
-    id: 'Unspent/Uncategorised',
-    name: 'Unspent/Uncategorised',
-    label: 'Unspent/Uncategorised',
-    value: Math.abs(income.total ?? 0) - Math.abs(expense.total ?? 0),
-  });
+  if (fractionOfIncome) {
+    // add "Unspent/Uncategorised pseudo category"
+    expense.categories?.unshift({
+      _id: 'none',
+      id: 'Unspent/Uncategorised',
+      name: 'Unspent/Uncategorised',
+      label: 'Unspent/Uncategorised',
+      value: Math.abs(income.total ?? 0) - Math.abs(expense.total ?? 0),
+    });
+  }
 
   return {
     loading,

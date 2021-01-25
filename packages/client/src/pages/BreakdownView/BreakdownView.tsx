@@ -1,6 +1,7 @@
 import { Bar, BarSvgProps } from '@nivo/bar';
 import { Dimensions } from '@nivo/core';
 import { Pie, PieSvgProps } from '@nivo/pie';
+import { Checkbox, Space } from 'antd';
 import React, { useState } from 'react';
 
 import { Filters } from '../../App';
@@ -143,7 +144,8 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   accountIdFilter,
 }) => {
   const [graph, setGraph] = useState<'pie' | 'bar'>('pie');
-  const [grouping, setGrouping] = useState('category');
+  const [grouping, setGrouping] = useState(true);
+  const [fractionOfIncome, setFractionOfIncome] = useState(true);
   const [drawerState, setDrawerState] = useState<{
     isVisible: boolean;
     categoryId?: Category['id'];
@@ -154,8 +156,9 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   const { error, expense, income } = useCategories({
     startDate,
     endDate,
-    groupCategories: grouping === 'category',
+    groupCategories: grouping,
     accountId: accountIdFilter,
+    fractionOfIncome,
   });
   if (error) return <>error</>;
 
@@ -190,21 +193,28 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
           <Radio.Button value="pie">Pie</Radio.Button>
           <Radio.Button value="bar">Bar</Radio.Button>
         </Radio.Group>
-        <Radio.Group
-          buttonStyle="solid"
-          defaultValue={grouping}
-          onChange={(event) => setGrouping(event.target.value)}
+        <Checkbox
+          checked={grouping}
+          onChange={(event) => {
+            setGrouping(event.target.checked);
+          }}
         >
-          <Radio.Button value="subcategory">Subcategory</Radio.Button>
-          <Radio.Button value="category">Category</Radio.Button>
-        </Radio.Group>
+          Group categories
+        </Checkbox>
+        <Checkbox
+          checked={fractionOfIncome}
+          onChange={(event) => {
+            setFractionOfIncome(event.target.checked);
+          }}
+        >
+          Show as percentage of income
+        </Checkbox>
         {income.total && (
           <span>Total income: {toMoney(income.total, false)}</span>
         )}
         {expense.total && (
           <span>Total expense: {toMoney(expense.total, false)}</span>
         )}
-        <h2>Of total income:</h2>
       </VisualisationControls>
       <Visualisation>
         {({ height, width }) => {
