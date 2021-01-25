@@ -96,6 +96,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
   startDate,
   endDate,
   categoryIdFilter,
+  accountIdFilter,
 }) => {
   const [precision, setPrecision] = useState<time.OpUnitType>('month');
   const [amountType, setAmountType] = useState<'balance' | 'expense,income'>(
@@ -111,6 +112,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
     variables: {
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
+      accountId: accountIdFilter,
       categoryId: categoryIdFilter,
       groupBy: precision,
     },
@@ -162,9 +164,8 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
           <TransactionsView
             startDate={transactionViewDates.startDate}
             endDate={transactionViewDates.endDate}
-            setAccountIdFilter={() => {}}
             categoryIdFilter={categoryIdFilter}
-            setCategoryIdFilter={() => {}}
+            accountIdFilter={accountIdFilter}
           />
         </PageDrawer>
         <Radio.Group

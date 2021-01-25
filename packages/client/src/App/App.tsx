@@ -1,12 +1,5 @@
 import 'antd/dist/antd.css';
 
-import { Account, Category, TimePeriod } from '../types';
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  useApolloClient,
-} from '@apollo/client';
 import {
   BarsOutlined,
   ClockCircleOutlined,
@@ -14,7 +7,12 @@ import {
   PieChartOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { BaseDataContext, time } from '../lib';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  useApolloClient,
+} from '@apollo/client';
 import { Layout, Menu, Space, Spin } from 'antd';
 import React, { useState } from 'react';
 import {
@@ -25,24 +23,26 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
+import { useUrlState } from 'with-url-state';
+
+import { Select } from '../components';
+import { GetAccountDataDocument } from '../generated/graphql';
+import { BaseDataContext, time } from '../lib';
+import BreakdownView from '../pages/BreakdownView';
+import CumulativeView from '../pages/CumulativeView';
+import DateRangeSelect from '../pages/DateRangeSelect';
+import ManageAccountsView from '../pages/ManageAccountsView';
+import ManageCategoriesView from '../pages/ManageCategoriesView';
+import TimelineView from '../pages/TimelineView';
+import TransactionsView from '../pages/TransactionsView';
+import theme from '../theme';
+import { Account, Category, TimePeriod } from '../types';
 import {
   createCatchAllAccount,
   createCatchAllCategory,
   useBaseData,
 } from './data';
-import styled, { ThemeProvider } from 'styled-components';
-
-import BreakdownView from '../pages/BreakdownView';
-import CumulativeView from '../pages/CumulativeView';
-import DateRangeSelect from '../pages/DateRangeSelect';
-import { GetAccountDataDocument } from '../generated/graphql';
-import ManageAccountsView from '../pages/ManageAccountsView';
-import ManageCategoriesView from '../pages/ManageCategoriesView';
-import { Select } from '../components';
-import TimelineView from '../pages/TimelineView';
-import TransactionsView from '../pages/TransactionsView';
-import theme from '../theme';
-import { useUrlState } from 'with-url-state';
 
 const Content = styled(Layout.Content)`
   background: #fff;
@@ -78,9 +78,9 @@ const GetAccountData = () => {
 
 export type Filters = {
   accountIdFilter?: Account['id'];
-  setAccountIdFilter: (id: Account['id']) => void;
+  setAccountIdFilter?: (id: Account['id']) => void;
   categoryIdFilter?: Category['id'];
-  setCategoryIdFilter: (id: Category['id']) => void;
+  setCategoryIdFilter?: (id: Category['id']) => void;
 };
 
 interface IRoute {

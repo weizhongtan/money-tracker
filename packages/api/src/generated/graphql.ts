@@ -881,11 +881,7 @@ export type Func_Cumulative_Amount_Args = {
 };
 
 export type Func_Timeline_Args = {
-  v_category_id?: Maybe<Scalars['uuid']>;
-  v_group_by?: Maybe<Scalars['String']>;
-};
-
-export type Func_Transactions_By_Category_Grouped_Args = {
+  v_account_id?: Maybe<Scalars['uuid']>;
   v_category_id?: Maybe<Scalars['uuid']>;
   v_group_by?: Maybe<Scalars['String']>;
 };
@@ -914,14 +910,12 @@ export type Mutation_Root = {
   delete_category?: Maybe<Category_Mutation_Response>;
   /** delete single row from the table: "category" */
   delete_category_by_pk?: Maybe<Category>;
-  /** delete data from the table: "table_amount_groups" */
-  delete_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
+  /** delete data from the table: "table_amount_group" */
+  delete_table_amount_group?: Maybe<Table_Amount_Group_Mutation_Response>;
   /** delete data from the table: "table_breakdown" */
   delete_table_breakdown?: Maybe<Table_Breakdown_Mutation_Response>;
   /** delete data from the table: "table_cumulative_amount" */
   delete_table_cumulative_amount?: Maybe<Table_Cumulative_Amount_Mutation_Response>;
-  /** delete data from the table: "table_transactions_by_category_grouped" */
-  delete_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** delete data from the table: "transaction" */
   delete_transaction?: Maybe<Transaction_Mutation_Response>;
   /** delete single row from the table: "transaction" */
@@ -936,10 +930,10 @@ export type Mutation_Root = {
   insert_category?: Maybe<Category_Mutation_Response>;
   /** insert a single row into the table: "category" */
   insert_category_one?: Maybe<Category>;
-  /** insert data into the table: "table_amount_groups" */
-  insert_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
-  /** insert a single row into the table: "table_amount_groups" */
-  insert_table_amount_groups_one?: Maybe<Table_Amount_Groups>;
+  /** insert data into the table: "table_amount_group" */
+  insert_table_amount_group?: Maybe<Table_Amount_Group_Mutation_Response>;
+  /** insert a single row into the table: "table_amount_group" */
+  insert_table_amount_group_one?: Maybe<Table_Amount_Group>;
   /** insert data into the table: "table_breakdown" */
   insert_table_breakdown?: Maybe<Table_Breakdown_Mutation_Response>;
   /** insert a single row into the table: "table_breakdown" */
@@ -948,10 +942,6 @@ export type Mutation_Root = {
   insert_table_cumulative_amount?: Maybe<Table_Cumulative_Amount_Mutation_Response>;
   /** insert a single row into the table: "table_cumulative_amount" */
   insert_table_cumulative_amount_one?: Maybe<Table_Cumulative_Amount>;
-  /** insert data into the table: "table_transactions_by_category_grouped" */
-  insert_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
-  /** insert a single row into the table: "table_transactions_by_category_grouped" */
-  insert_table_transactions_by_category_grouped_one?: Maybe<Table_Transactions_By_Category_Grouped>;
   /** insert data into the table: "transaction" */
   insert_transaction?: Maybe<Transaction_Mutation_Response>;
   /** insert a single row into the table: "transaction" */
@@ -964,14 +954,12 @@ export type Mutation_Root = {
   update_category?: Maybe<Category_Mutation_Response>;
   /** update single row of the table: "category" */
   update_category_by_pk?: Maybe<Category>;
-  /** update data of the table: "table_amount_groups" */
-  update_table_amount_groups?: Maybe<Table_Amount_Groups_Mutation_Response>;
+  /** update data of the table: "table_amount_group" */
+  update_table_amount_group?: Maybe<Table_Amount_Group_Mutation_Response>;
   /** update data of the table: "table_breakdown" */
   update_table_breakdown?: Maybe<Table_Breakdown_Mutation_Response>;
   /** update data of the table: "table_cumulative_amount" */
   update_table_cumulative_amount?: Maybe<Table_Cumulative_Amount_Mutation_Response>;
-  /** update data of the table: "table_transactions_by_category_grouped" */
-  update_table_transactions_by_category_grouped?: Maybe<Table_Transactions_By_Category_Grouped_Mutation_Response>;
   /** update data of the table: "transaction" */
   update_transaction?: Maybe<Transaction_Mutation_Response>;
   /** update single row of the table: "transaction" */
@@ -1004,8 +992,8 @@ export type Mutation_RootDelete_Category_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_Table_Amount_GroupsArgs = {
-  where: Table_Amount_Groups_Bool_Exp;
+export type Mutation_RootDelete_Table_Amount_GroupArgs = {
+  where: Table_Amount_Group_Bool_Exp;
 };
 
 
@@ -1018,12 +1006,6 @@ export type Mutation_RootDelete_Table_BreakdownArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Table_Cumulative_AmountArgs = {
   where: Table_Cumulative_Amount_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Table_Transactions_By_Category_GroupedArgs = {
-  where: Table_Transactions_By_Category_Grouped_Bool_Exp;
 };
 
 
@@ -1074,14 +1056,14 @@ export type Mutation_RootInsert_Category_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_Table_Amount_GroupsArgs = {
-  objects: Array<Table_Amount_Groups_Insert_Input>;
+export type Mutation_RootInsert_Table_Amount_GroupArgs = {
+  objects: Array<Table_Amount_Group_Insert_Input>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_Table_Amount_Groups_OneArgs = {
-  object: Table_Amount_Groups_Insert_Input;
+export type Mutation_RootInsert_Table_Amount_Group_OneArgs = {
+  object: Table_Amount_Group_Insert_Input;
 };
 
 
@@ -1106,18 +1088,6 @@ export type Mutation_RootInsert_Table_Cumulative_AmountArgs = {
 /** mutation root */
 export type Mutation_RootInsert_Table_Cumulative_Amount_OneArgs = {
   object: Table_Cumulative_Amount_Insert_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Table_Transactions_By_Category_GroupedArgs = {
-  objects: Array<Table_Transactions_By_Category_Grouped_Insert_Input>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Table_Transactions_By_Category_Grouped_OneArgs = {
-  object: Table_Transactions_By_Category_Grouped_Insert_Input;
 };
 
 
@@ -1168,10 +1138,10 @@ export type Mutation_RootUpdate_Category_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Table_Amount_GroupsArgs = {
-  _inc?: Maybe<Table_Amount_Groups_Inc_Input>;
-  _set?: Maybe<Table_Amount_Groups_Set_Input>;
-  where: Table_Amount_Groups_Bool_Exp;
+export type Mutation_RootUpdate_Table_Amount_GroupArgs = {
+  _inc?: Maybe<Table_Amount_Group_Inc_Input>;
+  _set?: Maybe<Table_Amount_Group_Set_Input>;
+  where: Table_Amount_Group_Bool_Exp;
 };
 
 
@@ -1188,14 +1158,6 @@ export type Mutation_RootUpdate_Table_Cumulative_AmountArgs = {
   _inc?: Maybe<Table_Cumulative_Amount_Inc_Input>;
   _set?: Maybe<Table_Cumulative_Amount_Set_Input>;
   where: Table_Cumulative_Amount_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Table_Transactions_By_Category_GroupedArgs = {
-  _inc?: Maybe<Table_Transactions_By_Category_Grouped_Inc_Input>;
-  _set?: Maybe<Table_Transactions_By_Category_Grouped_Set_Input>;
-  where: Table_Transactions_By_Category_Grouped_Bool_Exp;
 };
 
 
@@ -1270,21 +1232,14 @@ export type Query_Root = {
   func_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** execute function "func_cumulative_amount" and query aggregates on result of table type "table_cumulative_amount" */
   func_cumulative_amount_aggregate: Table_Cumulative_Amount_Aggregate;
-  /** execute function "func_timeline" which returns "table_transactions_by_category_grouped" */
-  func_timeline: Array<Table_Transactions_By_Category_Grouped>;
-  /** execute function "func_timeline" and query aggregates on result of table type "table_transactions_by_category_grouped" */
-  func_timeline_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
-  /** execute function "func_transactions_by_category_grouped" which returns "table_transactions_by_category_grouped" */
-  func_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
-  /**
-   * execute function "func_transactions_by_category_grouped" and query aggregates
-   * on result of table type "table_transactions_by_category_grouped"
-   */
-  func_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
-  /** fetch data from the table: "table_amount_groups" */
-  table_amount_groups: Array<Table_Amount_Groups>;
-  /** fetch aggregated fields from the table: "table_amount_groups" */
-  table_amount_groups_aggregate: Table_Amount_Groups_Aggregate;
+  /** execute function "func_timeline" which returns "table_amount_group" */
+  func_timeline: Array<Table_Amount_Group>;
+  /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
+  func_timeline_aggregate: Table_Amount_Group_Aggregate;
+  /** fetch data from the table: "table_amount_group" */
+  table_amount_group: Array<Table_Amount_Group>;
+  /** fetch aggregated fields from the table: "table_amount_group" */
+  table_amount_group_aggregate: Table_Amount_Group_Aggregate;
   /** fetch data from the table: "table_breakdown" */
   table_breakdown: Array<Table_Breakdown>;
   /** fetch aggregated fields from the table: "table_breakdown" */
@@ -1293,10 +1248,6 @@ export type Query_Root = {
   table_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** fetch aggregated fields from the table: "table_cumulative_amount" */
   table_cumulative_amount_aggregate: Table_Cumulative_Amount_Aggregate;
-  /** fetch data from the table: "table_transactions_by_category_grouped" */
-  table_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
-  /** fetch aggregated fields from the table: "table_transactions_by_category_grouped" */
-  table_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
   /** fetch data from the table: "transaction" */
   transaction: Array<Transaction>;
   /** fetch aggregated fields from the table: "transaction" */
@@ -1425,64 +1376,42 @@ export type Query_RootFunc_Cumulative_Amount_AggregateArgs = {
 /** query root */
 export type Query_RootFunc_TimelineArgs = {
   args: Func_Timeline_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
 /** query root */
 export type Query_RootFunc_Timeline_AggregateArgs = {
   args: Func_Timeline_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootFunc_Transactions_By_Category_GroupedArgs = {
-  args: Func_Transactions_By_Category_Grouped_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+export type Query_RootTable_Amount_GroupArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
 /** query root */
-export type Query_RootFunc_Transactions_By_Category_Grouped_AggregateArgs = {
-  args: Func_Transactions_By_Category_Grouped_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+export type Query_RootTable_Amount_Group_AggregateArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootTable_Amount_GroupsArgs = {
-  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
-  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootTable_Amount_Groups_AggregateArgs = {
-  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
-  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
@@ -1523,26 +1452,6 @@ export type Query_RootTable_Cumulative_Amount_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Table_Cumulative_Amount_Order_By>>;
   where?: Maybe<Table_Cumulative_Amount_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootTable_Transactions_By_Category_GroupedArgs = {
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-};
-
-
-/** query root */
-export type Query_RootTable_Transactions_By_Category_Grouped_AggregateArgs = {
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
 };
 
 
@@ -1616,21 +1525,14 @@ export type Subscription_Root = {
   func_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** execute function "func_cumulative_amount" and query aggregates on result of table type "table_cumulative_amount" */
   func_cumulative_amount_aggregate: Table_Cumulative_Amount_Aggregate;
-  /** execute function "func_timeline" which returns "table_transactions_by_category_grouped" */
-  func_timeline: Array<Table_Transactions_By_Category_Grouped>;
-  /** execute function "func_timeline" and query aggregates on result of table type "table_transactions_by_category_grouped" */
-  func_timeline_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
-  /** execute function "func_transactions_by_category_grouped" which returns "table_transactions_by_category_grouped" */
-  func_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
-  /**
-   * execute function "func_transactions_by_category_grouped" and query aggregates
-   * on result of table type "table_transactions_by_category_grouped"
-   */
-  func_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
-  /** fetch data from the table: "table_amount_groups" */
-  table_amount_groups: Array<Table_Amount_Groups>;
-  /** fetch aggregated fields from the table: "table_amount_groups" */
-  table_amount_groups_aggregate: Table_Amount_Groups_Aggregate;
+  /** execute function "func_timeline" which returns "table_amount_group" */
+  func_timeline: Array<Table_Amount_Group>;
+  /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
+  func_timeline_aggregate: Table_Amount_Group_Aggregate;
+  /** fetch data from the table: "table_amount_group" */
+  table_amount_group: Array<Table_Amount_Group>;
+  /** fetch aggregated fields from the table: "table_amount_group" */
+  table_amount_group_aggregate: Table_Amount_Group_Aggregate;
   /** fetch data from the table: "table_breakdown" */
   table_breakdown: Array<Table_Breakdown>;
   /** fetch aggregated fields from the table: "table_breakdown" */
@@ -1639,10 +1541,6 @@ export type Subscription_Root = {
   table_cumulative_amount: Array<Table_Cumulative_Amount>;
   /** fetch aggregated fields from the table: "table_cumulative_amount" */
   table_cumulative_amount_aggregate: Table_Cumulative_Amount_Aggregate;
-  /** fetch data from the table: "table_transactions_by_category_grouped" */
-  table_transactions_by_category_grouped: Array<Table_Transactions_By_Category_Grouped>;
-  /** fetch aggregated fields from the table: "table_transactions_by_category_grouped" */
-  table_transactions_by_category_grouped_aggregate: Table_Transactions_By_Category_Grouped_Aggregate;
   /** fetch data from the table: "transaction" */
   transaction: Array<Transaction>;
   /** fetch aggregated fields from the table: "transaction" */
@@ -1771,64 +1669,42 @@ export type Subscription_RootFunc_Cumulative_Amount_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootFunc_TimelineArgs = {
   args: Func_Timeline_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
 /** subscription root */
 export type Subscription_RootFunc_Timeline_AggregateArgs = {
   args: Func_Timeline_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootFunc_Transactions_By_Category_GroupedArgs = {
-  args: Func_Transactions_By_Category_Grouped_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+export type Subscription_RootTable_Amount_GroupArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
 /** subscription root */
-export type Subscription_RootFunc_Transactions_By_Category_Grouped_AggregateArgs = {
-  args: Func_Transactions_By_Category_Grouped_Args;
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
+export type Subscription_RootTable_Amount_Group_AggregateArgs = {
+  distinct_on?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
   offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootTable_Amount_GroupsArgs = {
-  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
-  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootTable_Amount_Groups_AggregateArgs = {
-  distinct_on?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Amount_Groups_Order_By>>;
-  where?: Maybe<Table_Amount_Groups_Bool_Exp>;
+  order_by?: Maybe<Array<Table_Amount_Group_Order_By>>;
+  where?: Maybe<Table_Amount_Group_Bool_Exp>;
 };
 
 
@@ -1873,26 +1749,6 @@ export type Subscription_RootTable_Cumulative_Amount_AggregateArgs = {
 
 
 /** subscription root */
-export type Subscription_RootTable_Transactions_By_Category_GroupedArgs = {
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-};
-
-
-/** subscription root */
-export type Subscription_RootTable_Transactions_By_Category_Grouped_AggregateArgs = {
-  distinct_on?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
-  limit?: Maybe<Scalars['Int']>;
-  offset?: Maybe<Scalars['Int']>;
-  order_by?: Maybe<Array<Table_Transactions_By_Category_Grouped_Order_By>>;
-  where?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-};
-
-
-/** subscription root */
 export type Subscription_RootTransactionArgs = {
   distinct_on?: Maybe<Array<Transaction_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -1917,96 +1773,96 @@ export type Subscription_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
-/** columns and relationships of "table_amount_groups" */
-export type Table_Amount_Groups = {
+/** columns and relationships of "table_amount_group" */
+export type Table_Amount_Group = {
   balance: Scalars['numeric'];
   date: Scalars['timestamptz'];
   expense: Scalars['numeric'];
   income: Scalars['numeric'];
 };
 
-/** aggregated selection of "table_amount_groups" */
-export type Table_Amount_Groups_Aggregate = {
-  aggregate?: Maybe<Table_Amount_Groups_Aggregate_Fields>;
-  nodes: Array<Table_Amount_Groups>;
+/** aggregated selection of "table_amount_group" */
+export type Table_Amount_Group_Aggregate = {
+  aggregate?: Maybe<Table_Amount_Group_Aggregate_Fields>;
+  nodes: Array<Table_Amount_Group>;
 };
 
-/** aggregate fields of "table_amount_groups" */
-export type Table_Amount_Groups_Aggregate_Fields = {
-  avg?: Maybe<Table_Amount_Groups_Avg_Fields>;
+/** aggregate fields of "table_amount_group" */
+export type Table_Amount_Group_Aggregate_Fields = {
+  avg?: Maybe<Table_Amount_Group_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Table_Amount_Groups_Max_Fields>;
-  min?: Maybe<Table_Amount_Groups_Min_Fields>;
-  stddev?: Maybe<Table_Amount_Groups_Stddev_Fields>;
-  stddev_pop?: Maybe<Table_Amount_Groups_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Table_Amount_Groups_Stddev_Samp_Fields>;
-  sum?: Maybe<Table_Amount_Groups_Sum_Fields>;
-  var_pop?: Maybe<Table_Amount_Groups_Var_Pop_Fields>;
-  var_samp?: Maybe<Table_Amount_Groups_Var_Samp_Fields>;
-  variance?: Maybe<Table_Amount_Groups_Variance_Fields>;
+  max?: Maybe<Table_Amount_Group_Max_Fields>;
+  min?: Maybe<Table_Amount_Group_Min_Fields>;
+  stddev?: Maybe<Table_Amount_Group_Stddev_Fields>;
+  stddev_pop?: Maybe<Table_Amount_Group_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Table_Amount_Group_Stddev_Samp_Fields>;
+  sum?: Maybe<Table_Amount_Group_Sum_Fields>;
+  var_pop?: Maybe<Table_Amount_Group_Var_Pop_Fields>;
+  var_samp?: Maybe<Table_Amount_Group_Var_Samp_Fields>;
+  variance?: Maybe<Table_Amount_Group_Variance_Fields>;
 };
 
 
-/** aggregate fields of "table_amount_groups" */
-export type Table_Amount_Groups_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Table_Amount_Groups_Select_Column>>;
+/** aggregate fields of "table_amount_group" */
+export type Table_Amount_Group_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Table_Amount_Group_Select_Column>>;
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
-/** order by aggregate values of table "table_amount_groups" */
-export type Table_Amount_Groups_Aggregate_Order_By = {
-  avg?: Maybe<Table_Amount_Groups_Avg_Order_By>;
+/** order by aggregate values of table "table_amount_group" */
+export type Table_Amount_Group_Aggregate_Order_By = {
+  avg?: Maybe<Table_Amount_Group_Avg_Order_By>;
   count?: Maybe<Order_By>;
-  max?: Maybe<Table_Amount_Groups_Max_Order_By>;
-  min?: Maybe<Table_Amount_Groups_Min_Order_By>;
-  stddev?: Maybe<Table_Amount_Groups_Stddev_Order_By>;
-  stddev_pop?: Maybe<Table_Amount_Groups_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Table_Amount_Groups_Stddev_Samp_Order_By>;
-  sum?: Maybe<Table_Amount_Groups_Sum_Order_By>;
-  var_pop?: Maybe<Table_Amount_Groups_Var_Pop_Order_By>;
-  var_samp?: Maybe<Table_Amount_Groups_Var_Samp_Order_By>;
-  variance?: Maybe<Table_Amount_Groups_Variance_Order_By>;
+  max?: Maybe<Table_Amount_Group_Max_Order_By>;
+  min?: Maybe<Table_Amount_Group_Min_Order_By>;
+  stddev?: Maybe<Table_Amount_Group_Stddev_Order_By>;
+  stddev_pop?: Maybe<Table_Amount_Group_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Table_Amount_Group_Stddev_Samp_Order_By>;
+  sum?: Maybe<Table_Amount_Group_Sum_Order_By>;
+  var_pop?: Maybe<Table_Amount_Group_Var_Pop_Order_By>;
+  var_samp?: Maybe<Table_Amount_Group_Var_Samp_Order_By>;
+  variance?: Maybe<Table_Amount_Group_Variance_Order_By>;
 };
 
-/** input type for inserting array relation for remote table "table_amount_groups" */
-export type Table_Amount_Groups_Arr_Rel_Insert_Input = {
-  data: Array<Table_Amount_Groups_Insert_Input>;
+/** input type for inserting array relation for remote table "table_amount_group" */
+export type Table_Amount_Group_Arr_Rel_Insert_Input = {
+  data: Array<Table_Amount_Group_Insert_Input>;
 };
 
 /** aggregate avg on columns */
-export type Table_Amount_Groups_Avg_Fields = {
+export type Table_Amount_Group_Avg_Fields = {
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
 };
 
-/** order by avg() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Avg_Order_By = {
+/** order by avg() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Avg_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
-/** Boolean expression to filter rows from the table "table_amount_groups". All fields are combined with a logical 'AND'. */
-export type Table_Amount_Groups_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Table_Amount_Groups_Bool_Exp>>>;
-  _not?: Maybe<Table_Amount_Groups_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Table_Amount_Groups_Bool_Exp>>>;
+/** Boolean expression to filter rows from the table "table_amount_group". All fields are combined with a logical 'AND'. */
+export type Table_Amount_Group_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Table_Amount_Group_Bool_Exp>>>;
+  _not?: Maybe<Table_Amount_Group_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Table_Amount_Group_Bool_Exp>>>;
   balance?: Maybe<Numeric_Comparison_Exp>;
   date?: Maybe<Timestamptz_Comparison_Exp>;
   expense?: Maybe<Numeric_Comparison_Exp>;
   income?: Maybe<Numeric_Comparison_Exp>;
 };
 
-/** input type for incrementing integer column in table "table_amount_groups" */
-export type Table_Amount_Groups_Inc_Input = {
+/** input type for incrementing integer column in table "table_amount_group" */
+export type Table_Amount_Group_Inc_Input = {
   balance?: Maybe<Scalars['numeric']>;
   expense?: Maybe<Scalars['numeric']>;
   income?: Maybe<Scalars['numeric']>;
 };
 
-/** input type for inserting data into table "table_amount_groups" */
-export type Table_Amount_Groups_Insert_Input = {
+/** input type for inserting data into table "table_amount_group" */
+export type Table_Amount_Group_Insert_Input = {
   balance?: Maybe<Scalars['numeric']>;
   date?: Maybe<Scalars['timestamptz']>;
   expense?: Maybe<Scalars['numeric']>;
@@ -2014,15 +1870,15 @@ export type Table_Amount_Groups_Insert_Input = {
 };
 
 /** aggregate max on columns */
-export type Table_Amount_Groups_Max_Fields = {
+export type Table_Amount_Group_Max_Fields = {
   balance?: Maybe<Scalars['numeric']>;
   date?: Maybe<Scalars['timestamptz']>;
   expense?: Maybe<Scalars['numeric']>;
   income?: Maybe<Scalars['numeric']>;
 };
 
-/** order by max() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Max_Order_By = {
+/** order by max() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Max_Order_By = {
   balance?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
@@ -2030,44 +1886,44 @@ export type Table_Amount_Groups_Max_Order_By = {
 };
 
 /** aggregate min on columns */
-export type Table_Amount_Groups_Min_Fields = {
+export type Table_Amount_Group_Min_Fields = {
   balance?: Maybe<Scalars['numeric']>;
   date?: Maybe<Scalars['timestamptz']>;
   expense?: Maybe<Scalars['numeric']>;
   income?: Maybe<Scalars['numeric']>;
 };
 
-/** order by min() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Min_Order_By = {
+/** order by min() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Min_Order_By = {
   balance?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
-/** response of any mutation on the table "table_amount_groups" */
-export type Table_Amount_Groups_Mutation_Response = {
+/** response of any mutation on the table "table_amount_group" */
+export type Table_Amount_Group_Mutation_Response = {
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int'];
   /** data of the affected rows by the mutation */
-  returning: Array<Table_Amount_Groups>;
+  returning: Array<Table_Amount_Group>;
 };
 
-/** input type for inserting object relation for remote table "table_amount_groups" */
-export type Table_Amount_Groups_Obj_Rel_Insert_Input = {
-  data: Table_Amount_Groups_Insert_Input;
+/** input type for inserting object relation for remote table "table_amount_group" */
+export type Table_Amount_Group_Obj_Rel_Insert_Input = {
+  data: Table_Amount_Group_Insert_Input;
 };
 
-/** ordering options when selecting data from "table_amount_groups" */
-export type Table_Amount_Groups_Order_By = {
+/** ordering options when selecting data from "table_amount_group" */
+export type Table_Amount_Group_Order_By = {
   balance?: Maybe<Order_By>;
   date?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
-/** select columns of table "table_amount_groups" */
-export enum Table_Amount_Groups_Select_Column {
+/** select columns of table "table_amount_group" */
+export enum Table_Amount_Group_Select_Column {
   /** column name */
   Balance = 'balance',
   /** column name */
@@ -2078,8 +1934,8 @@ export enum Table_Amount_Groups_Select_Column {
   Income = 'income'
 }
 
-/** input type for updating data in table "table_amount_groups" */
-export type Table_Amount_Groups_Set_Input = {
+/** input type for updating data in table "table_amount_group" */
+export type Table_Amount_Group_Set_Input = {
   balance?: Maybe<Scalars['numeric']>;
   date?: Maybe<Scalars['timestamptz']>;
   expense?: Maybe<Scalars['numeric']>;
@@ -2087,98 +1943,98 @@ export type Table_Amount_Groups_Set_Input = {
 };
 
 /** aggregate stddev on columns */
-export type Table_Amount_Groups_Stddev_Fields = {
+export type Table_Amount_Group_Stddev_Fields = {
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Stddev_Order_By = {
+/** order by stddev() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Stddev_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
-export type Table_Amount_Groups_Stddev_Pop_Fields = {
+export type Table_Amount_Group_Stddev_Pop_Fields = {
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_pop() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Stddev_Pop_Order_By = {
+/** order by stddev_pop() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Stddev_Pop_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
-export type Table_Amount_Groups_Stddev_Samp_Fields = {
+export type Table_Amount_Group_Stddev_Samp_Fields = {
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
 };
 
-/** order by stddev_samp() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Stddev_Samp_Order_By = {
+/** order by stddev_samp() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Stddev_Samp_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
-export type Table_Amount_Groups_Sum_Fields = {
+export type Table_Amount_Group_Sum_Fields = {
   balance?: Maybe<Scalars['numeric']>;
   expense?: Maybe<Scalars['numeric']>;
   income?: Maybe<Scalars['numeric']>;
 };
 
-/** order by sum() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Sum_Order_By = {
+/** order by sum() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Sum_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
 /** aggregate var_pop on columns */
-export type Table_Amount_Groups_Var_Pop_Fields = {
+export type Table_Amount_Group_Var_Pop_Fields = {
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_pop() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Var_Pop_Order_By = {
+/** order by var_pop() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Var_Pop_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
-export type Table_Amount_Groups_Var_Samp_Fields = {
+export type Table_Amount_Group_Var_Samp_Fields = {
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
 };
 
-/** order by var_samp() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Var_Samp_Order_By = {
+/** order by var_samp() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Var_Samp_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
-export type Table_Amount_Groups_Variance_Fields = {
+export type Table_Amount_Group_Variance_Fields = {
   balance?: Maybe<Scalars['Float']>;
   expense?: Maybe<Scalars['Float']>;
   income?: Maybe<Scalars['Float']>;
 };
 
-/** order by variance() on columns of table "table_amount_groups" */
-export type Table_Amount_Groups_Variance_Order_By = {
+/** order by variance() on columns of table "table_amount_group" */
+export type Table_Amount_Group_Variance_Order_By = {
   balance?: Maybe<Order_By>;
   expense?: Maybe<Order_By>;
   income?: Maybe<Order_By>;
@@ -2615,276 +2471,6 @@ export type Table_Cumulative_Amount_Variance_Fields = {
 /** order by variance() on columns of table "table_cumulative_amount" */
 export type Table_Cumulative_Amount_Variance_Order_By = {
   sum?: Maybe<Order_By>;
-};
-
-/** columns and relationships of "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped = {
-  balance: Scalars['numeric'];
-  date: Scalars['timestamptz'];
-  expense: Scalars['numeric'];
-  income: Scalars['numeric'];
-};
-
-/** aggregated selection of "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Aggregate = {
-  aggregate?: Maybe<Table_Transactions_By_Category_Grouped_Aggregate_Fields>;
-  nodes: Array<Table_Transactions_By_Category_Grouped>;
-};
-
-/** aggregate fields of "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Aggregate_Fields = {
-  avg?: Maybe<Table_Transactions_By_Category_Grouped_Avg_Fields>;
-  count?: Maybe<Scalars['Int']>;
-  max?: Maybe<Table_Transactions_By_Category_Grouped_Max_Fields>;
-  min?: Maybe<Table_Transactions_By_Category_Grouped_Min_Fields>;
-  stddev?: Maybe<Table_Transactions_By_Category_Grouped_Stddev_Fields>;
-  stddev_pop?: Maybe<Table_Transactions_By_Category_Grouped_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Table_Transactions_By_Category_Grouped_Stddev_Samp_Fields>;
-  sum?: Maybe<Table_Transactions_By_Category_Grouped_Sum_Fields>;
-  var_pop?: Maybe<Table_Transactions_By_Category_Grouped_Var_Pop_Fields>;
-  var_samp?: Maybe<Table_Transactions_By_Category_Grouped_Var_Samp_Fields>;
-  variance?: Maybe<Table_Transactions_By_Category_Grouped_Variance_Fields>;
-};
-
-
-/** aggregate fields of "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Aggregate_FieldsCountArgs = {
-  columns?: Maybe<Array<Table_Transactions_By_Category_Grouped_Select_Column>>;
-  distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Aggregate_Order_By = {
-  avg?: Maybe<Table_Transactions_By_Category_Grouped_Avg_Order_By>;
-  count?: Maybe<Order_By>;
-  max?: Maybe<Table_Transactions_By_Category_Grouped_Max_Order_By>;
-  min?: Maybe<Table_Transactions_By_Category_Grouped_Min_Order_By>;
-  stddev?: Maybe<Table_Transactions_By_Category_Grouped_Stddev_Order_By>;
-  stddev_pop?: Maybe<Table_Transactions_By_Category_Grouped_Stddev_Pop_Order_By>;
-  stddev_samp?: Maybe<Table_Transactions_By_Category_Grouped_Stddev_Samp_Order_By>;
-  sum?: Maybe<Table_Transactions_By_Category_Grouped_Sum_Order_By>;
-  var_pop?: Maybe<Table_Transactions_By_Category_Grouped_Var_Pop_Order_By>;
-  var_samp?: Maybe<Table_Transactions_By_Category_Grouped_Var_Samp_Order_By>;
-  variance?: Maybe<Table_Transactions_By_Category_Grouped_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Arr_Rel_Insert_Input = {
-  data: Array<Table_Transactions_By_Category_Grouped_Insert_Input>;
-};
-
-/** aggregate avg on columns */
-export type Table_Transactions_By_Category_Grouped_Avg_Fields = {
-  balance?: Maybe<Scalars['Float']>;
-  expense?: Maybe<Scalars['Float']>;
-  income?: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Avg_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/**
- * Boolean expression to filter rows from the table
- * "table_transactions_by_category_grouped". All fields are combined with a logical 'AND'.
- */
-export type Table_Transactions_By_Category_Grouped_Bool_Exp = {
-  _and?: Maybe<Array<Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>>>;
-  _not?: Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>;
-  _or?: Maybe<Array<Maybe<Table_Transactions_By_Category_Grouped_Bool_Exp>>>;
-  balance?: Maybe<Numeric_Comparison_Exp>;
-  date?: Maybe<Timestamptz_Comparison_Exp>;
-  expense?: Maybe<Numeric_Comparison_Exp>;
-  income?: Maybe<Numeric_Comparison_Exp>;
-};
-
-/** input type for incrementing integer column in table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Inc_Input = {
-  balance?: Maybe<Scalars['numeric']>;
-  expense?: Maybe<Scalars['numeric']>;
-  income?: Maybe<Scalars['numeric']>;
-};
-
-/** input type for inserting data into table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Insert_Input = {
-  balance?: Maybe<Scalars['numeric']>;
-  date?: Maybe<Scalars['timestamptz']>;
-  expense?: Maybe<Scalars['numeric']>;
-  income?: Maybe<Scalars['numeric']>;
-};
-
-/** aggregate max on columns */
-export type Table_Transactions_By_Category_Grouped_Max_Fields = {
-  balance?: Maybe<Scalars['numeric']>;
-  date?: Maybe<Scalars['timestamptz']>;
-  expense?: Maybe<Scalars['numeric']>;
-  income?: Maybe<Scalars['numeric']>;
-};
-
-/** order by max() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Max_Order_By = {
-  balance?: Maybe<Order_By>;
-  date?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Table_Transactions_By_Category_Grouped_Min_Fields = {
-  balance?: Maybe<Scalars['numeric']>;
-  date?: Maybe<Scalars['timestamptz']>;
-  expense?: Maybe<Scalars['numeric']>;
-  income?: Maybe<Scalars['numeric']>;
-};
-
-/** order by min() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Min_Order_By = {
-  balance?: Maybe<Order_By>;
-  date?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Mutation_Response = {
-  /** number of affected rows by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data of the affected rows by the mutation */
-  returning: Array<Table_Transactions_By_Category_Grouped>;
-};
-
-/** input type for inserting object relation for remote table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Obj_Rel_Insert_Input = {
-  data: Table_Transactions_By_Category_Grouped_Insert_Input;
-};
-
-/** ordering options when selecting data from "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Order_By = {
-  balance?: Maybe<Order_By>;
-  date?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** select columns of table "table_transactions_by_category_grouped" */
-export enum Table_Transactions_By_Category_Grouped_Select_Column {
-  /** column name */
-  Balance = 'balance',
-  /** column name */
-  Date = 'date',
-  /** column name */
-  Expense = 'expense',
-  /** column name */
-  Income = 'income'
-}
-
-/** input type for updating data in table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Set_Input = {
-  balance?: Maybe<Scalars['numeric']>;
-  date?: Maybe<Scalars['timestamptz']>;
-  expense?: Maybe<Scalars['numeric']>;
-  income?: Maybe<Scalars['numeric']>;
-};
-
-/** aggregate stddev on columns */
-export type Table_Transactions_By_Category_Grouped_Stddev_Fields = {
-  balance?: Maybe<Scalars['Float']>;
-  expense?: Maybe<Scalars['Float']>;
-  income?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Stddev_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Table_Transactions_By_Category_Grouped_Stddev_Pop_Fields = {
-  balance?: Maybe<Scalars['Float']>;
-  expense?: Maybe<Scalars['Float']>;
-  income?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Stddev_Pop_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Table_Transactions_By_Category_Grouped_Stddev_Samp_Fields = {
-  balance?: Maybe<Scalars['Float']>;
-  expense?: Maybe<Scalars['Float']>;
-  income?: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Stddev_Samp_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type Table_Transactions_By_Category_Grouped_Sum_Fields = {
-  balance?: Maybe<Scalars['numeric']>;
-  expense?: Maybe<Scalars['numeric']>;
-  income?: Maybe<Scalars['numeric']>;
-};
-
-/** order by sum() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Sum_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** aggregate var_pop on columns */
-export type Table_Transactions_By_Category_Grouped_Var_Pop_Fields = {
-  balance?: Maybe<Scalars['Float']>;
-  expense?: Maybe<Scalars['Float']>;
-  income?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Var_Pop_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Table_Transactions_By_Category_Grouped_Var_Samp_Fields = {
-  balance?: Maybe<Scalars['Float']>;
-  expense?: Maybe<Scalars['Float']>;
-  income?: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Var_Samp_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Table_Transactions_By_Category_Grouped_Variance_Fields = {
-  balance?: Maybe<Scalars['Float']>;
-  expense?: Maybe<Scalars['Float']>;
-  income?: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "table_transactions_by_category_grouped" */
-export type Table_Transactions_By_Category_Grouped_Variance_Order_By = {
-  balance?: Maybe<Order_By>;
-  expense?: Maybe<Order_By>;
-  income?: Maybe<Order_By>;
 };
 
 

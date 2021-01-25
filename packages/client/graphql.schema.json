@@ -997,7 +997,7 @@
           },
           {
             "name": "func_timeline",
-            "description": "execute function \"func_timeline\" which returns \"table_transactions_by_category_grouped\"",
+            "description": "execute function \"func_timeline\" which returns \"table_amount_group\"",
             "args": [
               {
                 "name": "args",
@@ -1024,7 +1024,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -1062,7 +1062,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -1074,7 +1074,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1091,7 +1091,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
+                    "name": "table_amount_group",
                     "ofType": null
                   }
                 }
@@ -1102,7 +1102,7 @@
           },
           {
             "name": "func_timeline_aggregate",
-            "description": "execute function \"func_timeline\" and query aggregates on result of table type \"table_transactions_by_category_grouped\"",
+            "description": "execute function \"func_timeline\" and query aggregates on result of table type \"table_amount_group\"",
             "args": [
               {
                 "name": "args",
@@ -1129,7 +1129,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -1167,7 +1167,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -1179,7 +1179,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1190,7 +1190,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "table_transactions_by_category_grouped_aggregate",
+                "name": "table_amount_group_aggregate",
                 "ofType": null
               }
             },
@@ -1198,23 +1198,9 @@
             "deprecationReason": null
           },
           {
-            "name": "func_transactions_by_category_grouped",
-            "description": "execute function \"func_transactions_by_category_grouped\" which returns \"table_transactions_by_category_grouped\"",
+            "name": "table_amount_group",
+            "description": "fetch data from the table: \"table_amount_group\"",
             "args": [
-              {
-                "name": "args",
-                "description": "input parameters for function \"func_transactions_by_category_grouped\"",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "func_transactions_by_category_grouped_args",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              },
               {
                 "name": "distinct_on",
                 "description": "distinct select on columns",
@@ -1226,7 +1212,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -1264,7 +1250,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -1276,7 +1262,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1293,7 +1279,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
+                    "name": "table_amount_group",
                     "ofType": null
                   }
                 }
@@ -1303,23 +1289,9 @@
             "deprecationReason": null
           },
           {
-            "name": "func_transactions_by_category_grouped_aggregate",
-            "description": "execute function \"func_transactions_by_category_grouped\" and query aggregates on result of table type \"table_transactions_by_category_grouped\"",
+            "name": "table_amount_group_aggregate",
+            "description": "fetch aggregated fields from the table: \"table_amount_group\"",
             "args": [
-              {
-                "name": "args",
-                "description": "input parameters for function \"func_transactions_by_category_grouped\"",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "func_transactions_by_category_grouped_args",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              },
               {
                 "name": "distinct_on",
                 "description": "distinct select on columns",
@@ -1331,7 +1303,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -1369,7 +1341,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -1381,7 +1353,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -1392,181 +1364,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "table_transactions_by_category_grouped_aggregate",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_amount_groups",
-            "description": "fetch data from the table: \"table_amount_groups\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_amount_groups_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_amount_groups_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_amount_groups_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "table_amount_groups",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_amount_groups_aggregate",
-            "description": "fetch aggregated fields from the table: \"table_amount_groups\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_amount_groups_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_amount_groups_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_amount_groups_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "table_amount_groups_aggregate",
+                "name": "table_amount_group_aggregate",
                 "ofType": null
               }
             },
@@ -1915,180 +1713,6 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "table_cumulative_amount_aggregate",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_transactions_by_category_grouped",
-            "description": "fetch data from the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_transactions_by_category_grouped_aggregate",
-            "description": "fetch aggregated fields from the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "table_transactions_by_category_grouped_aggregate",
                 "ofType": null
               }
             },
@@ -9653,6 +9277,16 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "v_account_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "v_category_id",
             "description": null,
             "type": {
@@ -9679,8 +9313,8 @@
       },
       {
         "kind": "ENUM",
-        "name": "table_transactions_by_category_grouped_select_column",
-        "description": "select columns of table \"table_transactions_by_category_grouped\"",
+        "name": "table_amount_group_select_column",
+        "description": "select columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": null,
         "interfaces": null,
@@ -9714,8 +9348,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_order_by",
-        "description": "ordering options when selecting data from \"table_transactions_by_category_grouped\"",
+        "name": "table_amount_group_order_by",
+        "description": "ordering options when selecting data from \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -9765,8 +9399,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"table_transactions_by_category_grouped\". All fields are combined with a logical 'AND'.",
+        "name": "table_amount_group_bool_exp",
+        "description": "Boolean expression to filter rows from the table \"table_amount_group\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -9777,7 +9411,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "table_transactions_by_category_grouped_bool_exp",
+                "name": "table_amount_group_bool_exp",
                 "ofType": null
               }
             },
@@ -9788,7 +9422,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_bool_exp",
+              "name": "table_amount_group_bool_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -9801,7 +9435,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "table_transactions_by_category_grouped_bool_exp",
+                "name": "table_amount_group_bool_exp",
                 "ofType": null
               }
             },
@@ -9854,8 +9488,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped",
-        "description": "columns and relationships of \"table_transactions_by_category_grouped\"",
+        "name": "table_amount_group",
+        "description": "columns and relationships of \"table_amount_group\"",
         "fields": [
           {
             "name": "balance",
@@ -9929,8 +9563,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_aggregate",
-        "description": "aggregated selection of \"table_transactions_by_category_grouped\"",
+        "name": "table_amount_group_aggregate",
+        "description": "aggregated selection of \"table_amount_group\"",
         "fields": [
           {
             "name": "aggregate",
@@ -9938,7 +9572,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_aggregate_fields",
+              "name": "table_amount_group_aggregate_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9959,7 +9593,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
+                    "name": "table_amount_group",
                     "ofType": null
                   }
                 }
@@ -9976,8 +9610,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_aggregate_fields",
-        "description": "aggregate fields of \"table_transactions_by_category_grouped\"",
+        "name": "table_amount_group_aggregate_fields",
+        "description": "aggregate fields of \"table_amount_group\"",
         "fields": [
           {
             "name": "avg",
@@ -9985,7 +9619,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_avg_fields",
+              "name": "table_amount_group_avg_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10006,7 +9640,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -10038,7 +9672,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_max_fields",
+              "name": "table_amount_group_max_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10050,7 +9684,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_min_fields",
+              "name": "table_amount_group_min_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10062,7 +9696,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_stddev_fields",
+              "name": "table_amount_group_stddev_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10074,7 +9708,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_stddev_pop_fields",
+              "name": "table_amount_group_stddev_pop_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10086,7 +9720,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_stddev_samp_fields",
+              "name": "table_amount_group_stddev_samp_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10098,7 +9732,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_sum_fields",
+              "name": "table_amount_group_sum_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10110,7 +9744,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_var_pop_fields",
+              "name": "table_amount_group_var_pop_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10122,7 +9756,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_var_samp_fields",
+              "name": "table_amount_group_var_samp_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10134,7 +9768,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_variance_fields",
+              "name": "table_amount_group_variance_fields",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10148,7 +9782,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_avg_fields",
+        "name": "table_amount_group_avg_fields",
         "description": "aggregate avg on columns",
         "fields": [
           {
@@ -10195,7 +9829,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_max_fields",
+        "name": "table_amount_group_max_fields",
         "description": "aggregate max on columns",
         "fields": [
           {
@@ -10254,7 +9888,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_min_fields",
+        "name": "table_amount_group_min_fields",
         "description": "aggregate min on columns",
         "fields": [
           {
@@ -10313,7 +9947,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_stddev_fields",
+        "name": "table_amount_group_stddev_fields",
         "description": "aggregate stddev on columns",
         "fields": [
           {
@@ -10360,7 +9994,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_stddev_pop_fields",
+        "name": "table_amount_group_stddev_pop_fields",
         "description": "aggregate stddev_pop on columns",
         "fields": [
           {
@@ -10407,7 +10041,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_stddev_samp_fields",
+        "name": "table_amount_group_stddev_samp_fields",
         "description": "aggregate stddev_samp on columns",
         "fields": [
           {
@@ -10454,7 +10088,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_sum_fields",
+        "name": "table_amount_group_sum_fields",
         "description": "aggregate sum on columns",
         "fields": [
           {
@@ -10501,7 +10135,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_var_pop_fields",
+        "name": "table_amount_group_var_pop_fields",
         "description": "aggregate var_pop on columns",
         "fields": [
           {
@@ -10548,7 +10182,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_var_samp_fields",
+        "name": "table_amount_group_var_samp_fields",
         "description": "aggregate var_samp on columns",
         "fields": [
           {
@@ -10595,1001 +10229,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_variance_fields",
-        "description": "aggregate variance on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "func_transactions_by_category_grouped_args",
-        "description": null,
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "v_category_id",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "uuid",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "v_group_by",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "ENUM",
-        "name": "table_amount_groups_select_column",
-        "description": "select columns of table \"table_amount_groups\"",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": [
-          {
-            "name": "balance",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "date",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": "column name",
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_order_by",
-        "description": "ordering options when selecting data from \"table_amount_groups\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"table_amount_groups\". All fields are combined with a logical 'AND'.",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "_and",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "table_amount_groups_bool_exp",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "_not",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_bool_exp",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "_or",
-            "description": null,
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "table_amount_groups_bool_exp",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "numeric_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "timestamptz_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "numeric_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "numeric_comparison_exp",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups",
-        "description": "columns and relationships of \"table_amount_groups\"",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "numeric",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "timestamptz",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "numeric",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "numeric",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_aggregate",
-        "description": "aggregated selection of \"table_amount_groups\"",
-        "fields": [
-          {
-            "name": "aggregate",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_aggregate_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "nodes",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "table_amount_groups",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_aggregate_fields",
-        "description": "aggregate fields of \"table_amount_groups\"",
-        "fields": [
-          {
-            "name": "avg",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_avg_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "count",
-            "description": null,
-            "args": [
-              {
-                "name": "columns",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_amount_groups_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "distinct",
-                "description": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Boolean",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Int",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "max",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_max_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "min",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_min_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "stddev",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_stddev_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "stddev_pop",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_stddev_pop_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "stddev_samp",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_stddev_samp_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "sum",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_sum_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "var_pop",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_var_pop_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "var_samp",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_var_samp_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "variance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_amount_groups_variance_fields",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_avg_fields",
-        "description": "aggregate avg on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_max_fields",
-        "description": "aggregate max on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamptz",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_min_fields",
-        "description": "aggregate min on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamptz",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_stddev_fields",
-        "description": "aggregate stddev on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_stddev_pop_fields",
-        "description": "aggregate stddev_pop on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_stddev_samp_fields",
-        "description": "aggregate stddev_samp on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_sum_fields",
-        "description": "aggregate sum on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_var_pop_fields",
-        "description": "aggregate var_pop on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_var_samp_fields",
-        "description": "aggregate var_samp on columns",
-        "fields": [
-          {
-            "name": "balance",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "Float",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_amount_groups_variance_fields",
+        "name": "table_amount_group_variance_fields",
         "description": "aggregate variance on columns",
         "fields": [
           {
@@ -12453,8 +11093,8 @@
             "deprecationReason": null
           },
           {
-            "name": "delete_table_amount_groups",
-            "description": "delete data from the table: \"table_amount_groups\"",
+            "name": "delete_table_amount_group",
+            "description": "delete data from the table: \"table_amount_group\"",
             "args": [
               {
                 "name": "where",
@@ -12464,7 +11104,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "table_amount_groups_bool_exp",
+                    "name": "table_amount_group_bool_exp",
                     "ofType": null
                   }
                 },
@@ -12473,7 +11113,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "table_amount_groups_mutation_response",
+              "name": "table_amount_group_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -12528,33 +11168,6 @@
             "type": {
               "kind": "OBJECT",
               "name": "table_cumulative_amount_mutation_response",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "delete_table_transactions_by_category_grouped",
-            "description": "delete data from the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "where",
-                "description": "filter the rows which have to be deleted",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "table_transactions_by_category_grouped_bool_exp",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -12806,8 +11419,8 @@
             "deprecationReason": null
           },
           {
-            "name": "insert_table_amount_groups",
-            "description": "insert data into the table: \"table_amount_groups\"",
+            "name": "insert_table_amount_group",
+            "description": "insert data into the table: \"table_amount_group\"",
             "args": [
               {
                 "name": "objects",
@@ -12823,7 +11436,7 @@
                       "name": null,
                       "ofType": {
                         "kind": "INPUT_OBJECT",
-                        "name": "table_amount_groups_insert_input",
+                        "name": "table_amount_group_insert_input",
                         "ofType": null
                       }
                     }
@@ -12834,15 +11447,15 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "table_amount_groups_mutation_response",
+              "name": "table_amount_group_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "insert_table_amount_groups_one",
-            "description": "insert a single row into the table: \"table_amount_groups\"",
+            "name": "insert_table_amount_group_one",
+            "description": "insert a single row into the table: \"table_amount_group\"",
             "args": [
               {
                 "name": "object",
@@ -12852,7 +11465,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "table_amount_groups_insert_input",
+                    "name": "table_amount_group_insert_input",
                     "ofType": null
                   }
                 },
@@ -12861,7 +11474,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "table_amount_groups",
+              "name": "table_amount_group",
               "ofType": null
             },
             "isDeprecated": false,
@@ -12986,68 +11599,6 @@
             "type": {
               "kind": "OBJECT",
               "name": "table_cumulative_amount",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "insert_table_transactions_by_category_grouped",
-            "description": "insert data into the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "objects",
-                "description": "the rows to be inserted",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "LIST",
-                    "name": null,
-                    "ofType": {
-                      "kind": "NON_NULL",
-                      "name": null,
-                      "ofType": {
-                        "kind": "INPUT_OBJECT",
-                        "name": "table_transactions_by_category_grouped_insert_input",
-                        "ofType": null
-                      }
-                    }
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_mutation_response",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "insert_table_transactions_by_category_grouped_one",
-            "description": "insert a single row into the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "object",
-                "description": "the row to be inserted",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "table_transactions_by_category_grouped_insert_input",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped",
               "ofType": null
             },
             "isDeprecated": false,
@@ -13324,15 +11875,15 @@
             "deprecationReason": null
           },
           {
-            "name": "update_table_amount_groups",
-            "description": "update data of the table: \"table_amount_groups\"",
+            "name": "update_table_amount_group",
+            "description": "update data of the table: \"table_amount_group\"",
             "args": [
               {
                 "name": "_inc",
                 "description": "increments the integer columns with given value of the filtered values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_amount_groups_inc_input",
+                  "name": "table_amount_group_inc_input",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -13342,7 +11893,7 @@
                 "description": "sets the columns of the filtered rows to the given values",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_amount_groups_set_input",
+                  "name": "table_amount_group_set_input",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -13355,7 +11906,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "table_amount_groups_bool_exp",
+                    "name": "table_amount_group_bool_exp",
                     "ofType": null
                   }
                 },
@@ -13364,7 +11915,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "table_amount_groups_mutation_response",
+              "name": "table_amount_group_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -13459,53 +12010,6 @@
             "type": {
               "kind": "OBJECT",
               "name": "table_cumulative_amount_mutation_response",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "update_table_transactions_by_category_grouped",
-            "description": "update data of the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "_inc",
-                "description": "increments the integer columns with given value of the filtered values",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_inc_input",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_set",
-                "description": "sets the columns of the filtered rows to the given values",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_set_input",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows which have to be updated",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "table_transactions_by_category_grouped_bool_exp",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "OBJECT",
-              "name": "table_transactions_by_category_grouped_mutation_response",
               "ofType": null
             },
             "isDeprecated": false,
@@ -13715,8 +12219,8 @@
       },
       {
         "kind": "OBJECT",
-        "name": "table_amount_groups_mutation_response",
-        "description": "response of any mutation on the table \"table_amount_groups\"",
+        "name": "table_amount_group_mutation_response",
+        "description": "response of any mutation on the table \"table_amount_group\"",
         "fields": [
           {
             "name": "affected_rows",
@@ -13749,7 +12253,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "table_amount_groups",
+                    "name": "table_amount_group",
                     "ofType": null
                   }
                 }
@@ -13852,57 +12356,6 @@
                   "ofType": {
                     "kind": "OBJECT",
                     "name": "table_cumulative_amount",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "table_transactions_by_category_grouped_mutation_response",
-        "description": "response of any mutation on the table \"table_transactions_by_category_grouped\"",
-        "fields": [
-          {
-            "name": "affected_rows",
-            "description": "number of affected rows by the mutation",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "returning",
-            "description": "data of the affected rows by the mutation",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
                     "ofType": null
                   }
                 }
@@ -15072,8 +13525,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_insert_input",
-        "description": "input type for inserting data into table \"table_amount_groups\"",
+        "name": "table_amount_group_insert_input",
+        "description": "input type for inserting data into table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -15180,57 +13633,6 @@
           },
           {
             "name": "sum",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_insert_input",
-        "description": "input type for inserting data into table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamptz",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -15580,8 +13982,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_inc_input",
-        "description": "input type for incrementing integer column in table \"table_amount_groups\"",
+        "name": "table_amount_group_inc_input",
+        "description": "input type for incrementing integer column in table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -15621,8 +14023,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_set_input",
-        "description": "input type for updating data in table \"table_amount_groups\"",
+        "name": "table_amount_group_set_input",
+        "description": "input type for updating data in table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -15771,98 +14173,6 @@
           },
           {
             "name": "sum",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_inc_input",
-        "description": "input type for incrementing integer column in table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_set_input",
-        "description": "input type for updating data in table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "timestamptz",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "numeric",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -17030,7 +15340,7 @@
           },
           {
             "name": "func_timeline",
-            "description": "execute function \"func_timeline\" which returns \"table_transactions_by_category_grouped\"",
+            "description": "execute function \"func_timeline\" which returns \"table_amount_group\"",
             "args": [
               {
                 "name": "args",
@@ -17057,7 +15367,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -17095,7 +15405,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -17107,7 +15417,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -17124,7 +15434,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
+                    "name": "table_amount_group",
                     "ofType": null
                   }
                 }
@@ -17135,7 +15445,7 @@
           },
           {
             "name": "func_timeline_aggregate",
-            "description": "execute function \"func_timeline\" and query aggregates on result of table type \"table_transactions_by_category_grouped\"",
+            "description": "execute function \"func_timeline\" and query aggregates on result of table type \"table_amount_group\"",
             "args": [
               {
                 "name": "args",
@@ -17162,7 +15472,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -17200,7 +15510,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -17212,7 +15522,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -17223,7 +15533,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "table_transactions_by_category_grouped_aggregate",
+                "name": "table_amount_group_aggregate",
                 "ofType": null
               }
             },
@@ -17231,23 +15541,9 @@
             "deprecationReason": null
           },
           {
-            "name": "func_transactions_by_category_grouped",
-            "description": "execute function \"func_transactions_by_category_grouped\" which returns \"table_transactions_by_category_grouped\"",
+            "name": "table_amount_group",
+            "description": "fetch data from the table: \"table_amount_group\"",
             "args": [
-              {
-                "name": "args",
-                "description": "input parameters for function \"func_transactions_by_category_grouped\"",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "func_transactions_by_category_grouped_args",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              },
               {
                 "name": "distinct_on",
                 "description": "distinct select on columns",
@@ -17259,7 +15555,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -17297,7 +15593,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -17309,7 +15605,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -17326,7 +15622,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
+                    "name": "table_amount_group",
                     "ofType": null
                   }
                 }
@@ -17336,23 +15632,9 @@
             "deprecationReason": null
           },
           {
-            "name": "func_transactions_by_category_grouped_aggregate",
-            "description": "execute function \"func_transactions_by_category_grouped\" and query aggregates on result of table type \"table_transactions_by_category_grouped\"",
+            "name": "table_amount_group_aggregate",
+            "description": "fetch aggregated fields from the table: \"table_amount_group\"",
             "args": [
-              {
-                "name": "args",
-                "description": "input parameters for function \"func_transactions_by_category_grouped\"",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "func_transactions_by_category_grouped_args",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              },
               {
                 "name": "distinct_on",
                 "description": "distinct select on columns",
@@ -17364,7 +15646,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
+                      "name": "table_amount_group_select_column",
                       "ofType": null
                     }
                   }
@@ -17402,7 +15684,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
+                      "name": "table_amount_group_order_by",
                       "ofType": null
                     }
                   }
@@ -17414,7 +15696,7 @@
                 "description": "filter the rows returned",
                 "type": {
                   "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
+                  "name": "table_amount_group_bool_exp",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -17425,181 +15707,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "table_transactions_by_category_grouped_aggregate",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_amount_groups",
-            "description": "fetch data from the table: \"table_amount_groups\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_amount_groups_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_amount_groups_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_amount_groups_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "table_amount_groups",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_amount_groups_aggregate",
-            "description": "fetch aggregated fields from the table: \"table_amount_groups\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_amount_groups_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_amount_groups_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_amount_groups_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "table_amount_groups_aggregate",
+                "name": "table_amount_group_aggregate",
                 "ofType": null
               }
             },
@@ -17948,180 +16056,6 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "table_cumulative_amount_aggregate",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_transactions_by_category_grouped",
-            "description": "fetch data from the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "table_transactions_by_category_grouped",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "table_transactions_by_category_grouped_aggregate",
-            "description": "fetch aggregated fields from the table: \"table_transactions_by_category_grouped\"",
-            "args": [
-              {
-                "name": "distinct_on",
-                "description": "distinct select on columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "ENUM",
-                      "name": "table_transactions_by_category_grouped_select_column",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "limit",
-                "description": "limit the number of rows returned",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "offset",
-                "description": "skip the first n rows. Use only with order_by",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "order_by",
-                "description": "sort the rows by one or more columns",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "NON_NULL",
-                    "name": null,
-                    "ofType": {
-                      "kind": "INPUT_OBJECT",
-                      "name": "table_transactions_by_category_grouped_order_by",
-                      "ofType": null
-                    }
-                  }
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "where",
-                "description": "filter the rows returned",
-                "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "table_transactions_by_category_grouped_bool_exp",
-                  "ofType": null
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "table_transactions_by_category_grouped_aggregate",
                 "ofType": null
               }
             },
@@ -20021,8 +17955,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_aggregate_order_by",
-        "description": "order by aggregate values of table \"table_amount_groups\"",
+        "name": "table_amount_group_aggregate_order_by",
+        "description": "order by aggregate values of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20030,7 +17964,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_avg_order_by",
+              "name": "table_amount_group_avg_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20050,7 +17984,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_max_order_by",
+              "name": "table_amount_group_max_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20060,7 +17994,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_min_order_by",
+              "name": "table_amount_group_min_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20070,7 +18004,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_stddev_order_by",
+              "name": "table_amount_group_stddev_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20080,7 +18014,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_stddev_pop_order_by",
+              "name": "table_amount_group_stddev_pop_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20090,7 +18024,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_stddev_samp_order_by",
+              "name": "table_amount_group_stddev_samp_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20100,7 +18034,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_sum_order_by",
+              "name": "table_amount_group_sum_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20110,7 +18044,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_var_pop_order_by",
+              "name": "table_amount_group_var_pop_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20120,7 +18054,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_var_samp_order_by",
+              "name": "table_amount_group_var_samp_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20130,7 +18064,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "table_amount_groups_variance_order_by",
+              "name": "table_amount_group_variance_order_by",
               "ofType": null
             },
             "defaultValue": null
@@ -20142,8 +18076,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_avg_order_by",
-        "description": "order by avg() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_avg_order_by",
+        "description": "order by avg() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20183,59 +18117,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_max_order_by",
-        "description": "order by max() on columns of table \"table_amount_groups\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_min_order_by",
-        "description": "order by min() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_max_order_by",
+        "description": "order by max() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20285,8 +18168,59 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_stddev_order_by",
-        "description": "order by stddev() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_min_order_by",
+        "description": "order by min() on columns of table \"table_amount_group\"",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "balance",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "date",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "expense",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "income",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "table_amount_group_stddev_order_by",
+        "description": "order by stddev() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20326,8 +18260,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_stddev_pop_order_by",
-        "description": "order by stddev_pop() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_stddev_pop_order_by",
+        "description": "order by stddev_pop() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20367,8 +18301,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_stddev_samp_order_by",
-        "description": "order by stddev_samp() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_stddev_samp_order_by",
+        "description": "order by stddev_samp() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20408,8 +18342,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_sum_order_by",
-        "description": "order by sum() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_sum_order_by",
+        "description": "order by sum() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20449,8 +18383,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_var_pop_order_by",
-        "description": "order by var_pop() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_var_pop_order_by",
+        "description": "order by var_pop() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20490,8 +18424,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_var_samp_order_by",
-        "description": "order by var_samp() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_var_samp_order_by",
+        "description": "order by var_samp() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20531,8 +18465,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_variance_order_by",
-        "description": "order by variance() on columns of table \"table_amount_groups\"",
+        "name": "table_amount_group_variance_order_by",
+        "description": "order by variance() on columns of table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20572,8 +18506,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_arr_rel_insert_input",
-        "description": "input type for inserting array relation for remote table \"table_amount_groups\"",
+        "name": "table_amount_group_arr_rel_insert_input",
+        "description": "input type for inserting array relation for remote table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20590,7 +18524,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "table_amount_groups_insert_input",
+                    "name": "table_amount_group_insert_input",
                     "ofType": null
                   }
                 }
@@ -20605,8 +18539,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "table_amount_groups_obj_rel_insert_input",
-        "description": "input type for inserting object relation for remote table \"table_amount_groups\"",
+        "name": "table_amount_group_obj_rel_insert_input",
+        "description": "input type for inserting object relation for remote table \"table_amount_group\"",
         "fields": null,
         "inputFields": [
           {
@@ -20617,7 +18551,7 @@
               "name": null,
               "ofType": {
                 "kind": "INPUT_OBJECT",
-                "name": "table_amount_groups_insert_input",
+                "name": "table_amount_group_insert_input",
                 "ofType": null
               }
             },
@@ -21456,615 +19390,6 @@
               "ofType": {
                 "kind": "INPUT_OBJECT",
                 "name": "table_cumulative_amount_insert_input",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_aggregate_order_by",
-        "description": "order by aggregate values of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "avg",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_avg_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "count",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "max",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_max_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "min",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_min_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "stddev",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_stddev_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "stddev_pop",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_stddev_pop_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "stddev_samp",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_stddev_samp_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "sum",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_sum_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "var_pop",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_var_pop_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "var_samp",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_var_samp_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "variance",
-            "description": null,
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "table_transactions_by_category_grouped_variance_order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_avg_order_by",
-        "description": "order by avg() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_max_order_by",
-        "description": "order by max() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_min_order_by",
-        "description": "order by min() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "date",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_stddev_order_by",
-        "description": "order by stddev() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_stddev_pop_order_by",
-        "description": "order by stddev_pop() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_stddev_samp_order_by",
-        "description": "order by stddev_samp() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_sum_order_by",
-        "description": "order by sum() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_var_pop_order_by",
-        "description": "order by var_pop() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_var_samp_order_by",
-        "description": "order by var_samp() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_variance_order_by",
-        "description": "order by variance() on columns of table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "balance",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "expense",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "income",
-            "description": null,
-            "type": {
-              "kind": "ENUM",
-              "name": "order_by",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_arr_rel_insert_input",
-        "description": "input type for inserting array relation for remote table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "data",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "table_transactions_by_category_grouped_insert_input",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "table_transactions_by_category_grouped_obj_rel_insert_input",
-        "description": "input type for inserting object relation for remote table \"table_transactions_by_category_grouped\"",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "data",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "table_transactions_by_category_grouped_insert_input",
                 "ofType": null
               }
             },

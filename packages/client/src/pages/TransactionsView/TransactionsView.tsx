@@ -284,12 +284,14 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={(_, record) => {
             return (
               <Space>
-                <FilterByButton
-                  title={`Filter to ${record.account.name}`}
-                  onClick={() => {
-                    setAccountIdFilter(record.account.id);
-                  }}
-                />
+                {setAccountIdFilter && (
+                  <FilterByButton
+                    title={`Filter to ${record.account.name}`}
+                    onClick={() => {
+                      setAccountIdFilter(record.account.id);
+                    }}
+                  />
+                )}
                 <AccountIndicator
                   to={record.account}
                   linked={record.linkedAccount}
@@ -315,12 +317,14 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={(_, record) => {
             return (
               <Space>
-                <FilterByButton
-                  title={`Filter to ${record.category.name}`}
-                  onClick={() => {
-                    setCategoryIdFilter(record.category.id);
-                  }}
-                />
+                {setCategoryIdFilter && (
+                  <FilterByButton
+                    title={`Filter to ${record.category.name}`}
+                    onClick={() => {
+                      setCategoryIdFilter(record.category.id);
+                    }}
+                  />
+                )}
                 <ButtonSelect
                   value={record.category.id}
                   onChange={(newCategoryId) => {

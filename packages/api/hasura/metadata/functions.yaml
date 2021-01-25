@@ -10,6 +10,3 @@
 - function:
     schema: public
     name: func_timeline
-- function:
-    schema: public
-    name: func_transactions_by_category_grouped
