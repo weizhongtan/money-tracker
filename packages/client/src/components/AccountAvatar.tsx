@@ -2,10 +2,11 @@ import Avatar, { AvatarProps } from 'antd/lib/avatar';
 import React from 'react';
 
 import { useTheme } from '../lib';
+import { Nullable } from '../types';
 
 type Props = AvatarProps & {
   name: string;
-  colour: string;
+  colour: Nullable<string>;
 };
 
 const AccountAvatar: React.FC<Props> = ({ name, colour, ...props }) => {
@@ -14,9 +15,9 @@ const AccountAvatar: React.FC<Props> = ({ name, colour, ...props }) => {
     <span>
       <Avatar
         style={{
-          background:
-            theme.colors.presetPrimaryColors[colour] ??
-            theme.colors.presetPrimaryColors.grey,
+          background: colour
+            ? theme.colors.presetPrimaryColors[colour]
+            : theme.colors.presetPrimaryColors.grey,
         }}
         size="small"
         {...props}

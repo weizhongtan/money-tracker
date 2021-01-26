@@ -23,8 +23,8 @@ import {
   Amount,
   ButtonSelect,
   DateDisplay,
-  Select,
 } from '../../components';
+import Select, { SelectProps } from '../../components/Select';
 import { useBaseData, useTheme } from '../../lib';
 import {
   Account,
@@ -70,15 +70,12 @@ const AccountIndicator: React.FC<AccountIndicatorProps> = ({
       )}
     >
       <div>
-        <AccountAvatar name={to.name as string} colour={to.colour as string} />
+        <AccountAvatar name={to.name} colour={to.colour} />
         {linked?.name && (
           <>
             {' '}
             {arrow}{' '}
-            <AccountAvatar
-              name={linked?.name}
-              colour={linked?.colour as string}
-            />
+            <AccountAvatar name={linked?.name} colour={linked?.colour} />
           </>
         )}
       </div>
@@ -114,12 +111,12 @@ const RowActionsDrawer: React.FC<RowActionsDrawerProps> = ({
       width={320}
     >
       <Space direction="vertical">
-        <Select
+        <Select<React.FC<SelectProps<string>>>
           value="Select category"
           onSelect={(id) => {
             updateTransactionsCategory({
               transactionIds: selectedRows.map((x) => x.id),
-              newCategoryId: id as string,
+              newCategoryId: id,
               currentCategoryIds: selectedRows.map((x) => x.category.id),
             });
             setSelectedRows([]);
@@ -330,7 +327,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
                   onChange={(newCategoryId) => {
                     updateTransactionsCategory({
                       transactionIds: [record.id],
-                      newCategoryId: newCategoryId as string,
+                      newCategoryId: newCategoryId,
                       currentCategoryIds: [record.category.id],
                     });
                   }}

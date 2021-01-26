@@ -1,12 +1,10 @@
 import {
   GetBaseDataDocument,
   GetBaseDataQuery,
-  UpdateCategoryMutationVariables,
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useUpdateCategoryMutation,
 } from '../../generated/graphql';
-import { Category } from '../../types';
 
 export const useCreateCategory = () => {
   const [_createCategory] = useCreateCategoryMutation({

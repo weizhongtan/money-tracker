@@ -2,7 +2,7 @@ import _Button, { ButtonType } from 'antd/lib/button';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import Select, { SelectProps, SelectValue } from './Select';
+import Select, { SelectProps } from './Select';
 
 const Button = styled(_Button)`
   text-align: left;
@@ -11,7 +11,7 @@ const Button = styled(_Button)`
   overflow: hidden;
 `;
 
-interface Props extends SelectProps<SelectValue> {
+interface Props extends SelectProps<string> {
   buttonText: string;
   buttonType: ButtonType;
 }
@@ -27,7 +27,7 @@ const ButtonSelect: React.FC<Props> = ({
   const [isOpen, setOpen] = useState(false);
   if (isOpen) {
     return (
-      <Select
+      <Select<React.FC<SelectProps<string>>>
         onChange={(...args) => {
           onChange(...args);
           setOpen(false);

@@ -26,7 +26,7 @@ import {
 import styled, { ThemeProvider } from 'styled-components';
 import { useUrlState } from 'with-url-state';
 
-import { Select } from '../components';
+import Select, { SelectProps } from '../components/Select';
 import { GetAccountDataDocument } from '../generated/graphql';
 import { BaseDataContext, time } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
@@ -216,13 +216,11 @@ function App() {
                   setDates,
                 }}
               />
-              <Select
+              <Select<React.FC<SelectProps<string>>>
                 value={accountIdFilter ?? createCatchAllAccount().id}
                 onSelect={(val) =>
                   setAccountIdFilter(
-                    val === createCatchAllAccount().id
-                      ? undefined
-                      : (val as string)
+                    val === createCatchAllAccount().id ? undefined : val
                   )
                 }
                 showSearch
@@ -238,13 +236,11 @@ function App() {
                   </Select.Option>
                 ))}
               </Select>
-              <Select
+              <Select<React.FC<SelectProps<string>>>
                 value={categoryIdFilter ?? createCatchAllCategory().id}
                 onSelect={(val) =>
                   setCategoryIdFilter(
-                    val === createCatchAllCategory().id
-                      ? undefined
-                      : (val as string)
+                    val === createCatchAllCategory().id ? undefined : val
                   )
                 }
                 showSearch
@@ -278,7 +274,7 @@ function App() {
                 selectedKeys={[location.pathname]}
                 onSelect={({ key }) => {
                   history.push({
-                    pathname: key as string,
+                    pathname: String(key),
                     search: location.search,
                   });
                 }}

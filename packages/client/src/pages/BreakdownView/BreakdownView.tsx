@@ -1,7 +1,7 @@
 import { Bar, BarSvgProps } from '@nivo/bar';
 import { Dimensions } from '@nivo/core';
 import { Pie, PieSvgProps } from '@nivo/pie';
-import { Checkbox, Space } from 'antd';
+import { Checkbox } from 'antd';
 import React, { useState } from 'react';
 
 import { Filters } from '../../App';

@@ -146,7 +146,7 @@ export const useUpdateTransactions = () => {
               categoryId,
             },
           });
-          return data?.update_transaction?.affected_rows as number;
+          return data?.update_transaction?.affected_rows ?? 0;
         })
       );
       const recordsUpdated = results.reduce((acc, val) => acc + val, 0);
