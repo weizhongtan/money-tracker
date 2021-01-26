@@ -10,7 +10,7 @@ import {
   VisualisationControls,
 } from '../../components';
 import { useGetAmountGroupsQuery } from '../../generated/graphql';
-import { time, toMoney, useTheme } from '../../lib';
+import { time, toLabelledValue, toMoney, useTheme } from '../../lib';
 import { Nullable, TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 
@@ -68,7 +68,10 @@ const Graph: React.FC<GraphProps> = ({
       tooltip={({ indexValue, value }) => {
         return (
           <span>
-            {time(indexValue).format('MMM YY')} - {toMoney(value, false)}
+            {toLabelledValue(
+              time(indexValue).format('MMM YY'),
+              toMoney(value, false)
+            )}
           </span>
         );
       }}

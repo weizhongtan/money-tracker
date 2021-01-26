@@ -11,7 +11,7 @@ import {
   Visualisation,
   VisualisationControls,
 } from '../../components';
-import { toMoney, toPercent } from '../../lib';
+import { toLabelledValue, toMoney, toPercent } from '../../lib';
 import { Category, TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 import { useCategories } from './data';
@@ -48,11 +48,7 @@ const PieBreakdown: React.FC<PieBreakdownProps> = ({
     slicesLabelsSkipAngle={10}
     slicesLabelsTextColor={{ from: 'color' }}
     tooltip={({ label, value }) => {
-      return (
-        <span>
-          {label} - {toMoney(value, false)}
-        </span>
-      );
+      return <span>{toLabelledValue(label, toMoney(value, false))}</span>;
     }}
     animate={true}
     motionStiffness={90}
@@ -125,11 +121,7 @@ const BarBreakdown: React.FC<BarBreakdownProps> = ({ total, ...props }) => (
     labelSkipHeight={12}
     labelTextColor={{ from: 'color', modifiers: [['brighter', 1.6]] }}
     tooltip={({ indexValue, value }) => {
-      return (
-        <span>
-          {indexValue} - {toMoney(value, false)}
-        </span>
-      );
+      return <span>{toLabelledValue(indexValue, toMoney(value, false))}</span>;
     }}
     isInteractive={true}
     {...props}

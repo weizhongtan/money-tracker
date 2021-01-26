@@ -17,6 +17,15 @@ export const toMoney = (amount: number | string | Date, compact = true) =>
 export const toPercent = (amount: number) =>
   `${(Math.abs(amount) * 100).toFixed(2)}%`;
 
+export const toLabelledValue = (
+  label: React.ReactText,
+  val: React.ReactText
+) => (
+  <>
+    {label} | <strong>{val}</strong>
+  </>
+);
+
 export const BaseDataContext = React.createContext<BaseData>({
   accounts: [],
   categories: [],

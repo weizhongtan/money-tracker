@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { Filters } from '../../App';
 import { Radio, Visualisation, VisualisationControls } from '../../components';
-import { time, toMoney } from '../../lib';
+import { time, toLabelledValue, toMoney } from '../../lib';
 import { TimePeriod } from '../../types';
 import { useData } from './data';
 
@@ -117,7 +117,10 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
               const { data } = slice.points[0];
               return (
                 <Tag>
-                  {time(data.x).format('DD MMM YY')} - {toMoney(data.y, false)}
+                  {toLabelledValue(
+                    time(data.x).format('DD MMM YY'),
+                    toMoney(data.y, false)
+                  )}
                 </Tag>
               );
             }}
