@@ -1,14 +1,21 @@
-import { UploadOutlined } from '@ant-design/icons';
-import { Button, Space, Table, Upload, notification } from 'antd';
+import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
+import { Button, Space, Table, Typography, Upload, notification } from 'antd';
+import {
+  useExchangeCodeMutation,
+  useGetAuthUrlQuery,
+  useImportTransactionsMutation,
+} from '../../generated/graphql';
+import { useHistory, useLocation } from 'react-router-dom';
+
+import { Account } from '../../types';
+import React from 'react';
+import { SelectProps } from 'antd/lib/select';
 import { TableProps } from 'antd/lib/table';
+import { UploadOutlined } from '@ant-design/icons';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
-import React from 'react';
-
-import { AccountAvatar, Amount, DateDisplay } from '../../components';
-import { useGetAuthUrlQuery } from '../../generated/graphql';
+import { useApolloClient } from '@apollo/client';
 import { useBaseData } from '../../lib';
-import { Account } from '../../types';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -184,6 +191,101 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
   );
 };
 
+const ImportAccount = () => {
+  const baseData = useBaseData();
+  const location = useLocation();
+  const history = useHistory();
+  const [exchangeCode, { data, loading, error }] = useExchangeCodeMutation();
+  const [importTransactions] = useImportTransactionsMutation();
+  const [createTransaction] = useCreateTransaction();
+
+  const search = new URLSearchParams(location.search);
+  const code = search.get('code');
+
+  async function doThing(code: string) {
+    await exchangeCode({
+      variables: { code },
+    });
+  }
+
+  React.useEffect(() => {
+    if (code) {
+      search.delete('code');
+      search.delete('scope');
+      history.push({ search: search.toString() });
+      doThing(code);
+    }
+  }, []);
+
+  const [accountId, setAccountId] = React.useState('');
+
+  if (data) {
+    return (
+      <>
+        <Select<React.FC<SelectProps<string>>>
+          value={accountId}
+          onSelect={(val) => setAccountId(val)}
+          showSearch
+          optionFilterProp="label"
+        >
+          {baseData.accounts.map(({ id, name }) => (
+            <Select.Option value={id} key={id} label={name}>
+              {name}
+            </Select.Option>
+          ))}
+        </Select>
+        Card IDs:
+        {data.exchangeCode?.cardIds?.map((id) => {
+          return (
+            <Button
+              onClick={async () => {
+                const res = await importTransactions({
+                  variables: { cardId: id },
+                });
+                console.log(res);
+
+                const parsedJson = JSON.parse(
+                  res.data?.importTransactions?.transactionsJSON ?? '[]'
+                );
+
+                const proms = parsedJson.map((t: any) => {
+                  return createTransaction({
+                    accountId,
+                    amount: t.amount,
+                    date: t.timestamp,
+                    description: t.description,
+                  });
+                });
+                const results = await Promise.all(proms);
+
+                const created = results.filter((x) => x).length;
+                const skipped = results.length - created;
+
+                console.log(`Created ${created} records`);
+                console.log(`Skipped ${skipped} records`);
+
+                notification.success({
+                  message: 'Import complete',
+                  description: (
+                    <span>
+                      Created {created} records, skipped {skipped} records
+                    </span>
+                  ),
+                  placement: 'topLeft',
+                });
+              }}
+            >
+              <Typography.Paragraph code>{id}</Typography.Paragraph>
+            </Button>
+          );
+        })}
+      </>
+    );
+  }
+
+  return <p>getting account data from truelayer</p>;
+};
+
 const ManageAccountsView = () => {
   const baseData = useBaseData();
   const { data } = useGetAuthUrlQuery();
@@ -203,6 +305,7 @@ const ManageAccountsView = () => {
         >
           Authenticate account
         </Button>
+        <ImportAccount />
       </Space>
       <AccountsTable dataSource={active} title={() => 'Active accounts'} />
       <AccountsTable dataSource={inactive} title={() => 'Inactive accounts'} />

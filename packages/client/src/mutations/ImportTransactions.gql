@@ -1,5 +1,5 @@
-mutation ImportTransactions($accountId: uuid!) {
-  importTransactions(accountId: $accountId) {
-    transactions
+mutation ImportTransactions($accountId: String, $cardId: String) {
+  importTransactions(accountId: $accountId, cardId: $cardId) {
+    transactionsJSON
   }
 }

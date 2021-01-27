@@ -47,7 +47,7 @@ export type Boolean_Comparison_Exp = {
 };
 
 export type ImportTransactionsOutput = {
-  transactions: Scalars['String'];
+  transactionsJSON: Scalars['String'];
 };
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
@@ -1064,7 +1064,8 @@ export type Mutation_RootExchangeCodeArgs = {
 
 /** mutation root */
 export type Mutation_RootImportTransactionsArgs = {
-  accountId: Scalars['uuid'];
+  accountId?: Maybe<Scalars['String']>;
+  cardId?: Maybe<Scalars['String']>;
 };
 
 

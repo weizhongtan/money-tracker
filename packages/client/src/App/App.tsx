@@ -1,5 +1,12 @@
 import 'antd/dist/antd.css';
 
+import { Account, Category, TimePeriod, Transaction } from '../types';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  useApolloClient,
+} from '@apollo/client';
 import {
   BarChartOutlined,
   BarsOutlined,
@@ -7,12 +14,7 @@ import {
   PieChartOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  useApolloClient,
-} from '@apollo/client';
+import { BaseDataContext, time, useUrlState } from '../lib';
 import { Layout, Menu, Space, Spin, Switch } from 'antd';
 import React, { useState } from 'react';
 import {
@@ -23,25 +25,22 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-
-import DateRangeSelect from '../components/DateRangeSelect';
 import Select, { SelectProps } from '../components/Select';
-import { ExchangeCodeDocument } from '../generated/graphql';
-import { BaseDataContext, time, useUrlState } from '../lib';
-import BreakdownView from '../pages/BreakdownView';
-import CumulativeView from '../pages/CumulativeView';
-import ManageAccountsView from '../pages/ManageAccountsView';
-import ManageCategoriesView from '../pages/ManageCategoriesView';
-import TimelineView from '../pages/TimelineView';
-import TransactionsView from '../pages/TransactionsView';
-import theme from '../theme';
-import { Account, Category, TimePeriod, Transaction } from '../types';
 import {
   createCatchAllAccount,
   createCatchAllCategory,
   useBaseData,
 } from './data';
+import styled, { ThemeProvider } from 'styled-components';
+
+import BreakdownView from '../pages/BreakdownView';
+import CumulativeView from '../pages/CumulativeView';
+import DateRangeSelect from '../components/DateRangeSelect';
+import ManageAccountsView from '../pages/ManageAccountsView';
+import ManageCategoriesView from '../pages/ManageCategoriesView';
+import TimelineView from '../pages/TimelineView';
+import TransactionsView from '../pages/TransactionsView';
+import theme from '../theme';
 
 const Content = styled(Layout.Content)`
   background: #fff;
@@ -53,40 +52,32 @@ const ViewWrapper = styled(Content)`
   overflow-y: scroll;
 `;
 
-const GetAccountData = () => {
-  const client = useApolloClient();
-  const location = useLocation();
-  const history = useHistory();
-
-  const search = new URLSearchParams(location.search);
-  const code = search.get('code');
-
-  async function doThing() {
-    const res = await client.mutate({
-      mutation: ExchangeCodeDocument,
-      variables: { code },
-    });
-    console.log({ res });
-  }
-
-  React.useEffect(() => {
-    if (code) {
-      search.delete('code');
-      search.delete('scope');
-      history.push({ search: search.toString() });
-      doThing();
-    }
-  }, []);
-
-  return <p>getting account data from truelayer</p>;
-};
-
 export type Filters = {
   accountIdFilter?: Account['id'];
   setAccountIdFilter?: (id: Account['id']) => void;
   categoryIdFilter?: Category['id'];
   setCategoryIdFilter?: (id: Category['id']) => void;
   showControls: boolean;
+};
+
+const accountsRoute = {
+  path: '/accounts',
+  title: 'Accounts',
+  Component: ManageAccountsView,
+};
+
+const manageRoute = {
+  path: '/manage',
+  title: 'Manage',
+  icon: <SettingOutlined />,
+  children: [
+    {
+      path: '/categories',
+      title: 'Categories',
+      Component: ManageCategoriesView,
+    },
+    accountsRoute,
+  ],
 };
 
 interface IRoute {
@@ -126,23 +117,7 @@ const routes: IRoute[] = [
     icon: <BarChartOutlined />,
     Component: TimelineView,
   },
-  {
-    path: '/manage',
-    title: 'Manage',
-    icon: <SettingOutlined />,
-    children: [
-      {
-        path: '/categories',
-        title: 'Categories',
-        Component: ManageCategoriesView,
-      },
-      {
-        path: '/accounts',
-        title: 'Accounts',
-        Component: ManageAccountsView,
-      },
-    ],
-  },
+  manageRoute,
 ];
 
 function App() {
@@ -381,10 +356,12 @@ function App() {
                     }}
                   />
                 ))}
-                <Route
-                  key="/callback"
+                <Redirect
                   path="/callback"
-                  component={GetAccountData}
+                  to={{
+                    pathname: manageRoute.path + accountsRoute.path,
+                    search: location.search,
+                  }}
                 />
                 <Redirect
                   to={{ pathname: routes[0].path, search: location.search }}

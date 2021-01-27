@@ -12,7 +12,8 @@ type Query {
 
 type Mutation {
   importTransactions (
-    accountId: uuid!
+    accountId: String
+    cardId: String
   ): ImportTransactionsOutput
 }
 
@@ -38,6 +39,6 @@ type AuthSuccess {
 }
 
 type ImportTransactionsOutput {
-  transactions : String!
+  transactionsJSON : String!
 }
 

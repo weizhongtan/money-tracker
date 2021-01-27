@@ -49,7 +49,7 @@ export type Boolean_Comparison_Exp = {
 };
 
 export type ImportTransactionsOutput = {
-  transactions: Scalars['String'];
+  transactionsJSON: Scalars['String'];
 };
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
@@ -1066,7 +1066,8 @@ export type Mutation_RootExchangeCodeArgs = {
 
 /** mutation root */
 export type Mutation_RootImportTransactionsArgs = {
-  accountId: Scalars['uuid'];
+  accountId?: Maybe<Scalars['String']>;
+  cardId?: Maybe<Scalars['String']>;
 };
 
 
@@ -2973,11 +2974,12 @@ export type ExchangeCodeMutationVariables = Exact<{
 export type ExchangeCodeMutation = { exchangeCode?: Maybe<Pick<AuthSuccess, 'message' | 'accountIds' | 'cardIds'>> };
 
 export type ImportTransactionsMutationVariables = Exact<{
-  accountId: Scalars['uuid'];
+  accountId?: Maybe<Scalars['String']>;
+  cardId?: Maybe<Scalars['String']>;
 }>;
 
 
-export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'transactions'>> };
+export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'transactionsJSON'>> };
 
 export type InsertTransactionMutationVariables = Exact<{
   accountId?: Maybe<Scalars['uuid']>;
@@ -3265,9 +3267,9 @@ export type ExchangeCodeMutationHookResult = ReturnType<typeof useExchangeCodeMu
 export type ExchangeCodeMutationResult = Apollo.MutationResult<ExchangeCodeMutation>;
 export type ExchangeCodeMutationOptions = Apollo.BaseMutationOptions<ExchangeCodeMutation, ExchangeCodeMutationVariables>;
 export const ImportTransactionsDocument = gql`
-    mutation ImportTransactions($accountId: uuid!) {
-  importTransactions(accountId: $accountId) {
-    transactions
+    mutation ImportTransactions($accountId: String, $cardId: String) {
+  importTransactions(accountId: $accountId, cardId: $cardId) {
+    transactionsJSON
   }
 }
     `;
@@ -3287,6 +3289,7 @@ export type ImportTransactionsMutationFn = Apollo.MutationFunction<ImportTransac
  * const [importTransactionsMutation, { data, loading, error }] = useImportTransactionsMutation({
  *   variables: {
  *      accountId: // value for 'accountId'
+ *      cardId: // value for 'cardId'
  *   },
  * });
  */
