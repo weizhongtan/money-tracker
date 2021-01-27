@@ -7,7 +7,7 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-graphql-request
+      # - typescript-graphql-request
     config:
       skipTypename: true
   './graphql.schema.json':

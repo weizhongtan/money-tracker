@@ -1,12 +1,5 @@
 type Mutation {
-  getAccountData (
-    code: String!
-  ): AccountData
-}
-
-
-type Mutation {
-  getAuthTokens (
+  exchangeCode (
     code: String
   ): AuthSuccess
 }
@@ -14,6 +7,13 @@ type Mutation {
 
 type Query {
   getAuthUrl : AuthUrl
+}
+
+
+type Mutation {
+  importTransactions (
+    accountId: uuid!
+  ): ImportTransactionsOutput
 }
 
 
@@ -33,5 +33,11 @@ type AuthUrl {
 
 type AuthSuccess {
   message : String!
+  accountIds : [String!]
+  cardIds : [String!]
+}
+
+type ImportTransactionsOutput {
+  transactions : String!
 }
 

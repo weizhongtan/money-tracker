@@ -1,5 +1,0 @@
-mutation GetAccountData($code: String!) {
-  getAccountData(code: $code) {
-    data
-  }
-}

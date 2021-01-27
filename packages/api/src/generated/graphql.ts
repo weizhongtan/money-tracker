@@ -9,10 +9,64 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  json: any;
+  numeric: any;
   timestamptz: any;
   uuid: any;
-  numeric: any;
-  json: any;
+};
+
+export type AccountAuthOutput = {
+  accessToken: Scalars['String'];
+};
+
+export type AccountData = {
+  data: Scalars['String'];
+};
+
+export type AuthSuccess = {
+  accountIds?: Maybe<Array<Scalars['String']>>;
+  cardIds?: Maybe<Array<Scalars['String']>>;
+  message: Scalars['String'];
+};
+
+export type AuthUrl = {
+  url?: Maybe<Scalars['String']>;
+};
+
+/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: Maybe<Scalars['Boolean']>;
+  _gt?: Maybe<Scalars['Boolean']>;
+  _gte?: Maybe<Scalars['Boolean']>;
+  _in?: Maybe<Array<Scalars['Boolean']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Boolean']>;
+  _lte?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<Scalars['Boolean']>;
+  _nin?: Maybe<Array<Scalars['Boolean']>>;
+};
+
+export type ImportTransactionsOutput = {
+  transactions: Scalars['String'];
+};
+
+/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+export type String_Comparison_Exp = {
+  _eq?: Maybe<Scalars['String']>;
+  _gt?: Maybe<Scalars['String']>;
+  _gte?: Maybe<Scalars['String']>;
+  _ilike?: Maybe<Scalars['String']>;
+  _in?: Maybe<Array<Scalars['String']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _like?: Maybe<Scalars['String']>;
+  _lt?: Maybe<Scalars['String']>;
+  _lte?: Maybe<Scalars['String']>;
+  _neq?: Maybe<Scalars['String']>;
+  _nilike?: Maybe<Scalars['String']>;
+  _nin?: Maybe<Array<Scalars['String']>>;
+  _nlike?: Maybe<Scalars['String']>;
+  _nsimilar?: Maybe<Scalars['String']>;
+  _similar?: Maybe<Scalars['String']>;
 };
 
 /** columns and relationships of "account" */
@@ -459,35 +513,6 @@ export type Account_Variance_Order_By = {
   sum?: Maybe<Order_By>;
 };
 
-export type AccountAuthOutput = {
-  accessToken: Scalars['String'];
-};
-
-export type AccountData = {
-  data: Scalars['String'];
-};
-
-export type AuthSuccess = {
-  message: Scalars['String'];
-};
-
-export type AuthUrl = {
-  url?: Maybe<Scalars['String']>;
-};
-
-/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
-export type Boolean_Comparison_Exp = {
-  _eq?: Maybe<Scalars['Boolean']>;
-  _gt?: Maybe<Scalars['Boolean']>;
-  _gte?: Maybe<Scalars['Boolean']>;
-  _in?: Maybe<Array<Scalars['Boolean']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['Boolean']>;
-  _lte?: Maybe<Scalars['Boolean']>;
-  _neq?: Maybe<Scalars['Boolean']>;
-  _nin?: Maybe<Array<Scalars['Boolean']>>;
-};
-
 /** columns and relationships of "category" */
 export type Category = {
   /** An array relationship */
@@ -928,10 +953,10 @@ export type Mutation_Root = {
   delete_transaction?: Maybe<Transaction_Mutation_Response>;
   /** delete single row from the table: "transaction" */
   delete_transaction_by_pk?: Maybe<Transaction>;
-  /** perform the action: "getAccountData" */
-  getAccountData?: Maybe<AccountData>;
-  /** perform the action: "getAuthTokens" */
-  getAuthTokens?: Maybe<AuthSuccess>;
+  /** perform the action: "exchangeCode" */
+  exchangeCode?: Maybe<AuthSuccess>;
+  /** perform the action: "importTransactions" */
+  importTransactions?: Maybe<ImportTransactionsOutput>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
@@ -1032,14 +1057,14 @@ export type Mutation_RootDelete_Transaction_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootGetAccountDataArgs = {
-  code: Scalars['String'];
+export type Mutation_RootExchangeCodeArgs = {
+  code?: Maybe<Scalars['String']>;
 };
 
 
 /** mutation root */
-export type Mutation_RootGetAuthTokensArgs = {
-  code?: Maybe<Scalars['String']>;
+export type Mutation_RootImportTransactionsArgs = {
+  accountId: Scalars['uuid'];
 };
 
 
@@ -1496,25 +1521,6 @@ export type Query_RootTransaction_AggregateArgs = {
 /** query root */
 export type Query_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
-export type String_Comparison_Exp = {
-  _eq?: Maybe<Scalars['String']>;
-  _gt?: Maybe<Scalars['String']>;
-  _gte?: Maybe<Scalars['String']>;
-  _ilike?: Maybe<Scalars['String']>;
-  _in?: Maybe<Array<Scalars['String']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _like?: Maybe<Scalars['String']>;
-  _lt?: Maybe<Scalars['String']>;
-  _lte?: Maybe<Scalars['String']>;
-  _neq?: Maybe<Scalars['String']>;
-  _nilike?: Maybe<Scalars['String']>;
-  _nin?: Maybe<Array<Scalars['String']>>;
-  _nlike?: Maybe<Scalars['String']>;
-  _nsimilar?: Maybe<Scalars['String']>;
-  _similar?: Maybe<Scalars['String']>;
 };
 
 /** subscription root */

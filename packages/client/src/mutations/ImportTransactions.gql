@@ -1,0 +1,5 @@
+mutation ImportTransactions($accountId: uuid!) {
+  importTransactions(accountId: $accountId) {
+    transactions
+  }
+}

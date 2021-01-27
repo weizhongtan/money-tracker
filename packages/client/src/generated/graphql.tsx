@@ -11,10 +11,64 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  json: any;
+  numeric: number;
   timestamptz: string;
   uuid: string;
-  numeric: number;
-  json: any;
+};
+
+export type AccountAuthOutput = {
+  accessToken: Scalars['String'];
+};
+
+export type AccountData = {
+  data: Scalars['String'];
+};
+
+export type AuthSuccess = {
+  accountIds?: Maybe<Array<Scalars['String']>>;
+  cardIds?: Maybe<Array<Scalars['String']>>;
+  message: Scalars['String'];
+};
+
+export type AuthUrl = {
+  url?: Maybe<Scalars['String']>;
+};
+
+/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: Maybe<Scalars['Boolean']>;
+  _gt?: Maybe<Scalars['Boolean']>;
+  _gte?: Maybe<Scalars['Boolean']>;
+  _in?: Maybe<Array<Scalars['Boolean']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Boolean']>;
+  _lte?: Maybe<Scalars['Boolean']>;
+  _neq?: Maybe<Scalars['Boolean']>;
+  _nin?: Maybe<Array<Scalars['Boolean']>>;
+};
+
+export type ImportTransactionsOutput = {
+  transactions: Scalars['String'];
+};
+
+/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
+export type String_Comparison_Exp = {
+  _eq?: Maybe<Scalars['String']>;
+  _gt?: Maybe<Scalars['String']>;
+  _gte?: Maybe<Scalars['String']>;
+  _ilike?: Maybe<Scalars['String']>;
+  _in?: Maybe<Array<Scalars['String']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _like?: Maybe<Scalars['String']>;
+  _lt?: Maybe<Scalars['String']>;
+  _lte?: Maybe<Scalars['String']>;
+  _neq?: Maybe<Scalars['String']>;
+  _nilike?: Maybe<Scalars['String']>;
+  _nin?: Maybe<Array<Scalars['String']>>;
+  _nlike?: Maybe<Scalars['String']>;
+  _nsimilar?: Maybe<Scalars['String']>;
+  _similar?: Maybe<Scalars['String']>;
 };
 
 /** columns and relationships of "account" */
@@ -461,35 +515,6 @@ export type Account_Variance_Order_By = {
   sum?: Maybe<Order_By>;
 };
 
-export type AccountAuthOutput = {
-  accessToken: Scalars['String'];
-};
-
-export type AccountData = {
-  data: Scalars['String'];
-};
-
-export type AuthSuccess = {
-  message: Scalars['String'];
-};
-
-export type AuthUrl = {
-  url?: Maybe<Scalars['String']>;
-};
-
-/** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
-export type Boolean_Comparison_Exp = {
-  _eq?: Maybe<Scalars['Boolean']>;
-  _gt?: Maybe<Scalars['Boolean']>;
-  _gte?: Maybe<Scalars['Boolean']>;
-  _in?: Maybe<Array<Scalars['Boolean']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['Boolean']>;
-  _lte?: Maybe<Scalars['Boolean']>;
-  _neq?: Maybe<Scalars['Boolean']>;
-  _nin?: Maybe<Array<Scalars['Boolean']>>;
-};
-
 /** columns and relationships of "category" */
 export type Category = {
   /** An array relationship */
@@ -930,10 +955,10 @@ export type Mutation_Root = {
   delete_transaction?: Maybe<Transaction_Mutation_Response>;
   /** delete single row from the table: "transaction" */
   delete_transaction_by_pk?: Maybe<Transaction>;
-  /** perform the action: "getAccountData" */
-  getAccountData?: Maybe<AccountData>;
-  /** perform the action: "getAuthTokens" */
-  getAuthTokens?: Maybe<AuthSuccess>;
+  /** perform the action: "exchangeCode" */
+  exchangeCode?: Maybe<AuthSuccess>;
+  /** perform the action: "importTransactions" */
+  importTransactions?: Maybe<ImportTransactionsOutput>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
@@ -1034,14 +1059,14 @@ export type Mutation_RootDelete_Transaction_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootGetAccountDataArgs = {
-  code: Scalars['String'];
+export type Mutation_RootExchangeCodeArgs = {
+  code?: Maybe<Scalars['String']>;
 };
 
 
 /** mutation root */
-export type Mutation_RootGetAuthTokensArgs = {
-  code?: Maybe<Scalars['String']>;
+export type Mutation_RootImportTransactionsArgs = {
+  accountId: Scalars['uuid'];
 };
 
 
@@ -1498,25 +1523,6 @@ export type Query_RootTransaction_AggregateArgs = {
 /** query root */
 export type Query_RootTransaction_By_PkArgs = {
   id: Scalars['uuid'];
-};
-
-/** expression to compare columns of type String. All fields are combined with logical 'AND'. */
-export type String_Comparison_Exp = {
-  _eq?: Maybe<Scalars['String']>;
-  _gt?: Maybe<Scalars['String']>;
-  _gte?: Maybe<Scalars['String']>;
-  _ilike?: Maybe<Scalars['String']>;
-  _in?: Maybe<Array<Scalars['String']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _like?: Maybe<Scalars['String']>;
-  _lt?: Maybe<Scalars['String']>;
-  _lte?: Maybe<Scalars['String']>;
-  _neq?: Maybe<Scalars['String']>;
-  _nilike?: Maybe<Scalars['String']>;
-  _nin?: Maybe<Array<Scalars['String']>>;
-  _nlike?: Maybe<Scalars['String']>;
-  _nsimilar?: Maybe<Scalars['String']>;
-  _similar?: Maybe<Scalars['String']>;
 };
 
 /** subscription root */
@@ -2959,19 +2965,19 @@ export type DeleteTransactionsMutationVariables = Exact<{
 
 export type DeleteTransactionsMutation = { delete_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
 
-export type GetAccountDataMutationVariables = Exact<{
+export type ExchangeCodeMutationVariables = Exact<{
   code: Scalars['String'];
 }>;
 
 
-export type GetAccountDataMutation = { getAccountData?: Maybe<Pick<AccountData, 'data'>> };
+export type ExchangeCodeMutation = { exchangeCode?: Maybe<Pick<AuthSuccess, 'message' | 'accountIds' | 'cardIds'>> };
 
-export type GetAuthTokensMutationVariables = Exact<{
-  code: Scalars['String'];
+export type ImportTransactionsMutationVariables = Exact<{
+  accountId: Scalars['uuid'];
 }>;
 
 
-export type GetAuthTokensMutation = { getAuthTokens?: Maybe<Pick<AuthSuccess, 'message'>> };
+export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'transactions'>> };
 
 export type InsertTransactionMutationVariables = Exact<{
   accountId?: Maybe<Scalars['uuid']>;
@@ -3224,73 +3230,77 @@ export function useDeleteTransactionsMutation(baseOptions?: Apollo.MutationHookO
 export type DeleteTransactionsMutationHookResult = ReturnType<typeof useDeleteTransactionsMutation>;
 export type DeleteTransactionsMutationResult = Apollo.MutationResult<DeleteTransactionsMutation>;
 export type DeleteTransactionsMutationOptions = Apollo.BaseMutationOptions<DeleteTransactionsMutation, DeleteTransactionsMutationVariables>;
-export const GetAccountDataDocument = gql`
-    mutation GetAccountData($code: String!) {
-  getAccountData(code: $code) {
-    data
-  }
-}
-    `;
-export type GetAccountDataMutationFn = Apollo.MutationFunction<GetAccountDataMutation, GetAccountDataMutationVariables>;
-
-/**
- * __useGetAccountDataMutation__
- *
- * To run a mutation, you first call `useGetAccountDataMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useGetAccountDataMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [getAccountDataMutation, { data, loading, error }] = useGetAccountDataMutation({
- *   variables: {
- *      code: // value for 'code'
- *   },
- * });
- */
-export function useGetAccountDataMutation(baseOptions?: Apollo.MutationHookOptions<GetAccountDataMutation, GetAccountDataMutationVariables>) {
-        return Apollo.useMutation<GetAccountDataMutation, GetAccountDataMutationVariables>(GetAccountDataDocument, baseOptions);
-      }
-export type GetAccountDataMutationHookResult = ReturnType<typeof useGetAccountDataMutation>;
-export type GetAccountDataMutationResult = Apollo.MutationResult<GetAccountDataMutation>;
-export type GetAccountDataMutationOptions = Apollo.BaseMutationOptions<GetAccountDataMutation, GetAccountDataMutationVariables>;
-export const GetAuthTokensDocument = gql`
-    mutation GetAuthTokens($code: String!) {
-  getAuthTokens(code: $code) {
+export const ExchangeCodeDocument = gql`
+    mutation ExchangeCode($code: String!) {
+  exchangeCode(code: $code) {
     message
+    accountIds
+    cardIds
   }
 }
     `;
-export type GetAuthTokensMutationFn = Apollo.MutationFunction<GetAuthTokensMutation, GetAuthTokensMutationVariables>;
+export type ExchangeCodeMutationFn = Apollo.MutationFunction<ExchangeCodeMutation, ExchangeCodeMutationVariables>;
 
 /**
- * __useGetAuthTokensMutation__
+ * __useExchangeCodeMutation__
  *
- * To run a mutation, you first call `useGetAuthTokensMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useGetAuthTokensMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useExchangeCodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useExchangeCodeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [getAuthTokensMutation, { data, loading, error }] = useGetAuthTokensMutation({
+ * const [exchangeCodeMutation, { data, loading, error }] = useExchangeCodeMutation({
  *   variables: {
  *      code: // value for 'code'
  *   },
  * });
  */
-export function useGetAuthTokensMutation(baseOptions?: Apollo.MutationHookOptions<GetAuthTokensMutation, GetAuthTokensMutationVariables>) {
-        return Apollo.useMutation<GetAuthTokensMutation, GetAuthTokensMutationVariables>(GetAuthTokensDocument, baseOptions);
+export function useExchangeCodeMutation(baseOptions?: Apollo.MutationHookOptions<ExchangeCodeMutation, ExchangeCodeMutationVariables>) {
+        return Apollo.useMutation<ExchangeCodeMutation, ExchangeCodeMutationVariables>(ExchangeCodeDocument, baseOptions);
       }
-export type GetAuthTokensMutationHookResult = ReturnType<typeof useGetAuthTokensMutation>;
-export type GetAuthTokensMutationResult = Apollo.MutationResult<GetAuthTokensMutation>;
-export type GetAuthTokensMutationOptions = Apollo.BaseMutationOptions<GetAuthTokensMutation, GetAuthTokensMutationVariables>;
+export type ExchangeCodeMutationHookResult = ReturnType<typeof useExchangeCodeMutation>;
+export type ExchangeCodeMutationResult = Apollo.MutationResult<ExchangeCodeMutation>;
+export type ExchangeCodeMutationOptions = Apollo.BaseMutationOptions<ExchangeCodeMutation, ExchangeCodeMutationVariables>;
+export const ImportTransactionsDocument = gql`
+    mutation ImportTransactions($accountId: uuid!) {
+  importTransactions(accountId: $accountId) {
+    transactions
+  }
+}
+    `;
+export type ImportTransactionsMutationFn = Apollo.MutationFunction<ImportTransactionsMutation, ImportTransactionsMutationVariables>;
+
+/**
+ * __useImportTransactionsMutation__
+ *
+ * To run a mutation, you first call `useImportTransactionsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportTransactionsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [importTransactionsMutation, { data, loading, error }] = useImportTransactionsMutation({
+ *   variables: {
+ *      accountId: // value for 'accountId'
+ *   },
+ * });
+ */
+export function useImportTransactionsMutation(baseOptions?: Apollo.MutationHookOptions<ImportTransactionsMutation, ImportTransactionsMutationVariables>) {
+        return Apollo.useMutation<ImportTransactionsMutation, ImportTransactionsMutationVariables>(ImportTransactionsDocument, baseOptions);
+      }
+export type ImportTransactionsMutationHookResult = ReturnType<typeof useImportTransactionsMutation>;
+export type ImportTransactionsMutationResult = Apollo.MutationResult<ImportTransactionsMutation>;
+export type ImportTransactionsMutationOptions = Apollo.BaseMutationOptions<ImportTransactionsMutation, ImportTransactionsMutationVariables>;
 export const InsertTransactionDocument = gql`
     mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String) {
-  insert_transaction(objects: {account_id: $accountId, amount: $amount, date: $date, description: $description}) {
+  insert_transaction(
+    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description}
+  ) {
     affected_rows
   }
 }
@@ -3325,7 +3335,10 @@ export type InsertTransactionMutationResult = Apollo.MutationResult<InsertTransa
 export type InsertTransactionMutationOptions = Apollo.BaseMutationOptions<InsertTransactionMutation, InsertTransactionMutationVariables>;
 export const PairTransactionsDocument = gql`
     mutation PairTransactions($transactionIds: [uuid!]!, $setLinkedAccountId: uuid, $setPairId: uuid) {
-  update_transaction(where: {id: {_in: $transactionIds}}, _set: {updated_at: "now", linked_account_id: $setLinkedAccountId, pair_id: $setPairId}) {
+  update_transaction(
+    where: {id: {_in: $transactionIds}}
+    _set: {updated_at: "now", linked_account_id: $setLinkedAccountId, pair_id: $setPairId}
+  ) {
     affected_rows
     returning {
       id
@@ -3368,7 +3381,10 @@ export type PairTransactionsMutationResult = Apollo.MutationResult<PairTransacti
 export type PairTransactionsMutationOptions = Apollo.BaseMutationOptions<PairTransactionsMutation, PairTransactionsMutationVariables>;
 export const UnpairTransactionsDocument = gql`
     mutation UnpairTransactions($pairIds: [uuid!]!) {
-  update_transaction(where: {pair_id: {_in: $pairIds}}, _set: {linked_account_id: null, updated_at: "now", pair_id: null}) {
+  update_transaction(
+    where: {pair_id: {_in: $pairIds}}
+    _set: {linked_account_id: null, updated_at: "now", pair_id: null}
+  ) {
     affected_rows
     returning {
       id
@@ -3403,7 +3419,10 @@ export type UnpairTransactionsMutationResult = Apollo.MutationResult<UnpairTrans
 export type UnpairTransactionsMutationOptions = Apollo.BaseMutationOptions<UnpairTransactionsMutation, UnpairTransactionsMutationVariables>;
 export const UpdateCategoryDocument = gql`
     mutation UpdateCategory($ids: [uuid!]!, $name: String, $type: String, $isParent: Boolean, $parentCategoryId: uuid) {
-  update_category(where: {id: {_in: $ids}}, _set: {name: $name, type: $type, is_parent: $isParent, parent_category_id: $parentCategoryId}) {
+  update_category(
+    where: {id: {_in: $ids}}
+    _set: {name: $name, type: $type, is_parent: $isParent, parent_category_id: $parentCategoryId}
+  ) {
     affected_rows
     returning {
       id
@@ -3448,7 +3467,10 @@ export type UpdateCategoryMutationResult = Apollo.MutationResult<UpdateCategoryM
 export type UpdateCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateCategoryMutation, UpdateCategoryMutationVariables>;
 export const UpdateTransactionsCategoryDocument = gql`
     mutation UpdateTransactionsCategory($transactionIds: [uuid!]!, $categoryId: uuid!) {
-  update_transaction(where: {id: {_in: $transactionIds}}, _set: {category_id: $categoryId, updated_at: "now"}) {
+  update_transaction(
+    where: {id: {_in: $transactionIds}}
+    _set: {category_id: $categoryId, updated_at: "now"}
+  ) {
     affected_rows
     returning {
       id
@@ -3488,7 +3510,9 @@ export type UpdateTransactionsCategoryMutationResult = Apollo.MutationResult<Upd
 export type UpdateTransactionsCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateTransactionsCategoryMutation, UpdateTransactionsCategoryMutationVariables>;
 export const CheckTransactionDocument = gql`
     query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!) {
-  transaction(where: {_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}) {
+  transaction(
+    where: {_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}
+  ) {
     id
     account_id
     amount
@@ -3529,13 +3553,21 @@ export type CheckTransactionLazyQueryHookResult = ReturnType<typeof useCheckTran
 export type CheckTransactionQueryResult = Apollo.QueryResult<CheckTransactionQuery, CheckTransactionQueryVariables>;
 export const GetAmountGroupsDocument = gql`
     query GetAmountGroups($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $categoryId: uuid, $groupBy: String) {
-  groups: func_timeline(args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
+  groups: func_timeline(
+    args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}
+    where: {date: {_gte: $startDate, _lte: $endDate}}
+    order_by: {date: asc}
+  ) {
     date
     balance
     expense
     income
   }
-  aggregate: func_timeline_aggregate(args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
+  aggregate: func_timeline_aggregate(
+    args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}
+    where: {date: {_gte: $startDate, _lte: $endDate}}
+    order_by: {date: asc}
+  ) {
     aggregate {
       avg {
         balance
@@ -3617,7 +3649,11 @@ export type GetAuthUrlLazyQueryHookResult = ReturnType<typeof useGetAuthUrlLazyQ
 export type GetAuthUrlQueryResult = Apollo.QueryResult<GetAuthUrlQuery, GetAuthUrlQueryVariables>;
 export const GetBalancesDocument = gql`
     query GetBalances($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $groupBy: String) {
-  balances: func_cumulative_amount(args: {v_account_id: $accountId, v_group_by: $groupBy, v_start_date: $startDate, v_end_date: $endDate}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {
+  balances: func_cumulative_amount(
+    args: {v_account_id: $accountId, v_group_by: $groupBy, v_start_date: $startDate, v_end_date: $endDate}
+    where: {date: {_gte: $startDate, _lte: $endDate}}
+    order_by: {date: asc}
+  ) {
     date
     sum
   }
@@ -3705,24 +3741,32 @@ export type GetBaseDataLazyQueryHookResult = ReturnType<typeof useGetBaseDataLaz
 export type GetBaseDataQueryResult = Apollo.QueryResult<GetBaseDataQuery, GetBaseDataQueryVariables>;
 export const GetCategoryBreakdownDocument = gql`
     query GetCategoryBreakdown($startDate: timestamptz, $endDate: timestamptz, $groupCategories: Boolean!, $accountId: uuid) {
-  expenseCategories: func_category_breakdown(args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "expense", v_account_id: $accountId}) {
+  expenseCategories: func_category_breakdown(
+    args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "expense", v_account_id: $accountId}
+  ) {
     id
     name
     sum
   }
-  expenseSum: transaction_aggregate(where: {category: {type: {_eq: "expense"}}, date: {_gte: $startDate, _lte: $endDate}}) {
+  expenseSum: transaction_aggregate(
+    where: {category: {type: {_eq: "expense"}}, date: {_gte: $startDate, _lte: $endDate}}
+  ) {
     aggregate {
       sum {
         amount
       }
     }
   }
-  incomeCategories: func_category_breakdown(args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "income", v_account_id: $accountId}) {
+  incomeCategories: func_category_breakdown(
+    args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "income", v_account_id: $accountId}
+  ) {
     id
     name
     sum
   }
-  incomeSum: transaction_aggregate(where: {category: {type: {_eq: "income"}}, date: {_gte: $startDate, _lte: $endDate}}) {
+  incomeSum: transaction_aggregate(
+    where: {category: {type: {_eq: "income"}}, date: {_gte: $startDate, _lte: $endDate}}
+  ) {
     aggregate {
       sum {
         amount
@@ -3762,7 +3806,10 @@ export type GetCategoryBreakdownLazyQueryHookResult = ReturnType<typeof useGetCa
 export type GetCategoryBreakdownQueryResult = Apollo.QueryResult<GetCategoryBreakdownQuery, GetCategoryBreakdownQueryVariables>;
 export const GetTransactionsDocument = gql`
     query GetTransactions($startDate: timestamptz, $endDate: timestamptz, $categoryIds: [uuid!], $accountId: uuid, $searchText: String!, $searchAmount: numeric!, $searchAmountComplement: numeric!) {
-  transactions: transaction_aggregate(where: {date: {_gte: $startDate, _lte: $endDate}, account_id: {_eq: $accountId}, _and: [{_or: [{category_id: {_is_null: true}}, {category_id: {_in: $categoryIds}}, {category: {parent_category_id: {_in: $categoryIds}}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}, order_by: {date: desc}) {
+  transactions: transaction_aggregate(
+    where: {date: {_gte: $startDate, _lte: $endDate}, account_id: {_eq: $accountId}, _and: [{_or: [{category_id: {_is_null: true}}, {category_id: {_in: $categoryIds}}, {category: {parent_category_id: {_in: $categoryIds}}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}
+    order_by: {date: desc}
+  ) {
     aggregate {
       count
     }
