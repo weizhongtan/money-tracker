@@ -469,6 +469,10 @@ export type AccountData = {
   data: Scalars['String'];
 };
 
+export type AuthUrl = {
+  url?: Maybe<Scalars['String']>;
+};
+
 /** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
 export type Boolean_Comparison_Exp = {
   _eq?: Maybe<Scalars['Boolean']>;
@@ -1238,6 +1242,8 @@ export type Query_Root = {
   func_timeline: Array<Table_Amount_Group>;
   /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
   func_timeline_aggregate: Table_Amount_Group_Aggregate;
+  /** perform the action: "getAuthUrl" */
+  getAuthUrl?: Maybe<AuthUrl>;
   /** fetch data from the table: "table_amount_group" */
   table_amount_group: Array<Table_Amount_Group>;
   /** fetch aggregated fields from the table: "table_amount_group" */
@@ -1531,6 +1537,8 @@ export type Subscription_Root = {
   func_timeline: Array<Table_Amount_Group>;
   /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
   func_timeline_aggregate: Table_Amount_Group_Aggregate;
+  /** perform the action: "getAuthUrl" */
+  getAuthUrl?: Maybe<AuthUrl>;
   /** fetch data from the table: "table_amount_group" */
   table_amount_group: Array<Table_Amount_Group>;
   /** fetch aggregated fields from the table: "table_amount_group" */
@@ -3035,6 +3043,11 @@ export type GetAmountGroupsQueryVariables = Exact<{
 
 export type GetAmountGroupsQuery = { groups: Array<Pick<Table_Amount_Group, 'date' | 'balance' | 'expense' | 'income'>>, aggregate: { aggregate?: Maybe<{ avg?: Maybe<Pick<Table_Amount_Group_Avg_Fields, 'balance' | 'expense' | 'income'>>, max?: Maybe<Pick<Table_Amount_Group_Max_Fields, 'balance' | 'income'>>, min?: Maybe<Pick<Table_Amount_Group_Min_Fields, 'expense'>> }> } };
 
+export type GetAuthUrlQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAuthUrlQuery = { getAuthUrl?: Maybe<Pick<AuthUrl, 'url'>> };
+
 export type GetBalancesQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
   endDate?: Maybe<Scalars['timestamptz']>;
@@ -3519,6 +3532,38 @@ export function useGetAmountGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetAmountGroupsQueryHookResult = ReturnType<typeof useGetAmountGroupsQuery>;
 export type GetAmountGroupsLazyQueryHookResult = ReturnType<typeof useGetAmountGroupsLazyQuery>;
 export type GetAmountGroupsQueryResult = Apollo.QueryResult<GetAmountGroupsQuery, GetAmountGroupsQueryVariables>;
+export const GetAuthUrlDocument = gql`
+    query GetAuthUrl {
+  getAuthUrl {
+    url
+  }
+}
+    `;
+
+/**
+ * __useGetAuthUrlQuery__
+ *
+ * To run a query within a React component, call `useGetAuthUrlQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAuthUrlQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAuthUrlQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAuthUrlQuery(baseOptions?: Apollo.QueryHookOptions<GetAuthUrlQuery, GetAuthUrlQueryVariables>) {
+        return Apollo.useQuery<GetAuthUrlQuery, GetAuthUrlQueryVariables>(GetAuthUrlDocument, baseOptions);
+      }
+export function useGetAuthUrlLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAuthUrlQuery, GetAuthUrlQueryVariables>) {
+          return Apollo.useLazyQuery<GetAuthUrlQuery, GetAuthUrlQueryVariables>(GetAuthUrlDocument, baseOptions);
+        }
+export type GetAuthUrlQueryHookResult = ReturnType<typeof useGetAuthUrlQuery>;
+export type GetAuthUrlLazyQueryHookResult = ReturnType<typeof useGetAuthUrlLazyQuery>;
+export type GetAuthUrlQueryResult = Apollo.QueryResult<GetAuthUrlQuery, GetAuthUrlQueryVariables>;
 export const GetBalancesDocument = gql`
     query GetBalances($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $groupBy: String) {
   balances: func_cumulative_amount(args: {v_account_id: $accountId, v_group_by: $groupBy, v_start_date: $startDate, v_end_date: $endDate}, where: {date: {_gte: $startDate, _lte: $endDate}}, order_by: {date: asc}) {

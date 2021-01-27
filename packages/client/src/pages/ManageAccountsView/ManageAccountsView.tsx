@@ -1,13 +1,14 @@
-import { AccountAvatar, Amount, DateDisplay } from '../../components';
-import { Button, Space, Table, Upload, notification } from 'antd';
-
-import { Account } from '../../types';
-import React from 'react';
-import { TableProps } from 'antd/lib/table';
 import { UploadOutlined } from '@ant-design/icons';
+import { Button, Space, Table, Upload, notification } from 'antd';
+import { TableProps } from 'antd/lib/table';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
+import React from 'react';
+
+import { AccountAvatar, Amount, DateDisplay } from '../../components';
+import { useGetAuthUrlQuery } from '../../generated/graphql';
 import { useBaseData } from '../../lib';
+import { Account } from '../../types';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -185,6 +186,8 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
 
 const ManageAccountsView = () => {
   const baseData = useBaseData();
+  const { data } = useGetAuthUrlQuery();
+  const authUrl = data?.getAuthUrl?.url;
 
   const active = baseData.accounts.filter((x) => x.status === 'active');
   const inactive = baseData.accounts.filter((x) => x.status === 'inactive');
@@ -194,7 +197,9 @@ const ManageAccountsView = () => {
       <Space>
         <Button
           type="primary"
-          href="https://auth.truelayer.com/?response_type=code&client_id=moneytracker-41be3b&scope=info%20accounts%20balance%20cards%20transactions%20direct_debits%20standing_orders%20offline_access&redirect_uri=http://localhost:3000/callback&providers=uk-ob-monzo%20uk-oauth-all"
+          href={authUrl ?? '#'}
+          loading={!authUrl}
+          disabled={!authUrl}
         >
           Authenticate account
         </Button>

@@ -5,6 +5,11 @@ type Mutation {
 }
 
 
+type Query {
+  getAuthUrl : AuthUrl
+}
+
+
 
 
 type AccountAuthOutput {
@@ -13,5 +18,9 @@ type AccountAuthOutput {
 
 type AccountData {
   data : String!
+}
+
+type AuthUrl {
+  url : String
 }
 

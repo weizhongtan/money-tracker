@@ -1,18 +1,16 @@
-import * as querystring from 'querystring';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import express, { Request, Response } from 'express';
+import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
 
 import {
   AccountData,
   Mutation_RootGetAccountDataArgs,
 } from './generated/graphql';
-import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
-import express, { Request, Response } from 'express';
-
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 
 dotenv.config();
 
-const redirect_uri = 'http://localhost:3000/callback';
+const redirectUri = 'http://localhost:3000/callback';
 
 const client = new AuthAPIClient({
   client_id: process.env.CLIENT_ID ?? '',
@@ -22,6 +20,16 @@ const client = new AuthAPIClient({
 const app = express();
 
 app.use(bodyParser.json());
+
+app.post('/get-auth-url', async (req, res) => {
+  res.json({
+    url: client.getAuthUrl({
+      redirectURI: redirectUri,
+      scope: ['info', 'accounts', 'balance', 'cards', 'transactions'],
+      nonce: 'nonce',
+    }),
+  });
+});
 
 let tokens: { access_token: string };
 
@@ -34,7 +42,7 @@ app.post(
     const { code } = req.body.input;
 
     if (!tokens) {
-      tokens = await client.exchangeCodeForToken(redirect_uri, code);
+      tokens = await client.exchangeCodeForToken(redirectUri, code);
     }
 
     let accounts;

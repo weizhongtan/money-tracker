@@ -467,6 +467,10 @@ export type AccountData = {
   data: Scalars['String'];
 };
 
+export type AuthUrl = {
+  url?: Maybe<Scalars['String']>;
+};
+
 /** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
 export type Boolean_Comparison_Exp = {
   _eq?: Maybe<Scalars['Boolean']>;
@@ -1236,6 +1240,8 @@ export type Query_Root = {
   func_timeline: Array<Table_Amount_Group>;
   /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
   func_timeline_aggregate: Table_Amount_Group_Aggregate;
+  /** perform the action: "getAuthUrl" */
+  getAuthUrl?: Maybe<AuthUrl>;
   /** fetch data from the table: "table_amount_group" */
   table_amount_group: Array<Table_Amount_Group>;
   /** fetch aggregated fields from the table: "table_amount_group" */
@@ -1529,6 +1535,8 @@ export type Subscription_Root = {
   func_timeline: Array<Table_Amount_Group>;
   /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
   func_timeline_aggregate: Table_Amount_Group_Aggregate;
+  /** perform the action: "getAuthUrl" */
+  getAuthUrl?: Maybe<AuthUrl>;
   /** fetch data from the table: "table_amount_group" */
   table_amount_group: Array<Table_Amount_Group>;
   /** fetch aggregated fields from the table: "table_amount_group" */

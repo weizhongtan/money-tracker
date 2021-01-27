@@ -4,10 +4,15 @@ actions:
     kind: synchronous
     handler: http://host.docker.internal:9999/get-account-data
     forward_client_headers: true
+- name: getAuthUrl
+  definition:
+    kind: ""
+    handler: http://host.docker.internal:9999/get-auth-url
 custom_types:
   enums: []
   input_objects: []
   objects:
   - name: AccountAuthOutput
   - name: AccountData
+  - name: AuthUrl
   scalars: []

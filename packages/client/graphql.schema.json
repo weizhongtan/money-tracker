@@ -1198,6 +1198,18 @@
             "deprecationReason": null
           },
           {
+            "name": "getAuthUrl",
+            "description": "perform the action: \"getAuthUrl\"",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AuthUrl",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "table_amount_group",
             "description": "fetch data from the table: \"table_amount_group\"",
             "args": [
@@ -10275,6 +10287,29 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "AuthUrl",
+        "description": null,
+        "fields": [
+          {
+            "name": "url",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "ENUM",
         "name": "table_breakdown_select_column",
         "description": "select columns of table \"table_breakdown\"",
@@ -15536,6 +15571,18 @@
                 "name": "table_amount_group_aggregate",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "getAuthUrl",
+            "description": "perform the action: \"getAuthUrl\"",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "AuthUrl",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
