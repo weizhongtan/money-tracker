@@ -1,12 +1,15 @@
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
-import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
-
 import {
   AccountData,
   Mutation_RootGetAccountDataArgs,
 } from './generated/graphql';
+import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
+import express, { Request, Response } from 'express';
+
+import { GraphQLClient } from 'graphql-request';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+
+// import { getSdk } from './generated/graphql'; // THIS FILE IS THE GENERATED FILE
 
 dotenv.config();
 
@@ -18,6 +21,11 @@ const client = new AuthAPIClient({
 });
 
 const app = express();
+
+// async function main() {
+//   const client = new GraphQLClient('http://localhost:3000/v1/graphql');
+//   const sdk = getSdk(client);
+// }
 
 app.use(bodyParser.json());
 
@@ -33,6 +41,18 @@ app.post('/get-auth-url', async (req, res) => {
 
 let tokens: { access_token: string };
 
+app.post('/get-auth-tokens', async (req, res) => {
+  const { code } = req.body.input;
+
+  if (!tokens) {
+    tokens = await client.exchangeCodeForToken(redirectUri, code);
+  }
+
+  res.json({
+    message: 'successfully exchanged tokens!',
+  });
+});
+
 app.post(
   '/get-account-data',
   async (
@@ -40,10 +60,6 @@ app.post(
     res: Response
   ) => {
     const { code } = req.body.input;
-
-    if (!tokens) {
-      tokens = await client.exchangeCodeForToken(redirectUri, code);
-    }
 
     let accounts;
     try {

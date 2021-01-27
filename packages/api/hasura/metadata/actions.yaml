@@ -4,6 +4,10 @@ actions:
     kind: synchronous
     handler: http://host.docker.internal:9999/get-account-data
     forward_client_headers: true
+- name: getAuthTokens
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:9999/get-auth-tokens
 - name: getAuthUrl
   definition:
     kind: ""
@@ -15,4 +19,5 @@ custom_types:
   - name: AccountAuthOutput
   - name: AccountData
   - name: AuthUrl
+  - name: AuthSuccess
   scalars: []

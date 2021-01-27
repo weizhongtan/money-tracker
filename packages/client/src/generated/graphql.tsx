@@ -469,6 +469,10 @@ export type AccountData = {
   data: Scalars['String'];
 };
 
+export type AuthSuccess = {
+  message: Scalars['String'];
+};
+
 export type AuthUrl = {
   url?: Maybe<Scalars['String']>;
 };
@@ -928,6 +932,8 @@ export type Mutation_Root = {
   delete_transaction_by_pk?: Maybe<Transaction>;
   /** perform the action: "getAccountData" */
   getAccountData?: Maybe<AccountData>;
+  /** perform the action: "getAuthTokens" */
+  getAuthTokens?: Maybe<AuthSuccess>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
@@ -1030,6 +1036,12 @@ export type Mutation_RootDelete_Transaction_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootGetAccountDataArgs = {
   code: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootGetAuthTokensArgs = {
+  code?: Maybe<Scalars['String']>;
 };
 
 
@@ -2954,6 +2966,13 @@ export type GetAccountDataMutationVariables = Exact<{
 
 export type GetAccountDataMutation = { getAccountData?: Maybe<Pick<AccountData, 'data'>> };
 
+export type GetAuthTokensMutationVariables = Exact<{
+  code: Scalars['String'];
+}>;
+
+
+export type GetAuthTokensMutation = { getAuthTokens?: Maybe<Pick<AuthSuccess, 'message'>> };
+
 export type InsertTransactionMutationVariables = Exact<{
   accountId?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
@@ -3237,6 +3256,38 @@ export function useGetAccountDataMutation(baseOptions?: Apollo.MutationHookOptio
 export type GetAccountDataMutationHookResult = ReturnType<typeof useGetAccountDataMutation>;
 export type GetAccountDataMutationResult = Apollo.MutationResult<GetAccountDataMutation>;
 export type GetAccountDataMutationOptions = Apollo.BaseMutationOptions<GetAccountDataMutation, GetAccountDataMutationVariables>;
+export const GetAuthTokensDocument = gql`
+    mutation GetAuthTokens($code: String!) {
+  getAuthTokens(code: $code) {
+    message
+  }
+}
+    `;
+export type GetAuthTokensMutationFn = Apollo.MutationFunction<GetAuthTokensMutation, GetAuthTokensMutationVariables>;
+
+/**
+ * __useGetAuthTokensMutation__
+ *
+ * To run a mutation, you first call `useGetAuthTokensMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetAuthTokensMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getAuthTokensMutation, { data, loading, error }] = useGetAuthTokensMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useGetAuthTokensMutation(baseOptions?: Apollo.MutationHookOptions<GetAuthTokensMutation, GetAuthTokensMutationVariables>) {
+        return Apollo.useMutation<GetAuthTokensMutation, GetAuthTokensMutationVariables>(GetAuthTokensDocument, baseOptions);
+      }
+export type GetAuthTokensMutationHookResult = ReturnType<typeof useGetAuthTokensMutation>;
+export type GetAuthTokensMutationResult = Apollo.MutationResult<GetAuthTokensMutation>;
+export type GetAuthTokensMutationOptions = Apollo.BaseMutationOptions<GetAuthTokensMutation, GetAuthTokensMutationVariables>;
 export const InsertTransactionDocument = gql`
     mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String) {
   insert_transaction(objects: {account_id: $accountId, amount: $amount, date: $date, description: $description}) {

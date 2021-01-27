@@ -467,6 +467,10 @@ export type AccountData = {
   data: Scalars['String'];
 };
 
+export type AuthSuccess = {
+  message: Scalars['String'];
+};
+
 export type AuthUrl = {
   url?: Maybe<Scalars['String']>;
 };
@@ -926,6 +930,8 @@ export type Mutation_Root = {
   delete_transaction_by_pk?: Maybe<Transaction>;
   /** perform the action: "getAccountData" */
   getAccountData?: Maybe<AccountData>;
+  /** perform the action: "getAuthTokens" */
+  getAuthTokens?: Maybe<AuthSuccess>;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
@@ -1028,6 +1034,12 @@ export type Mutation_RootDelete_Transaction_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootGetAccountDataArgs = {
   code: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootGetAuthTokensArgs = {
+  code?: Maybe<Scalars['String']>;
 };
 
 

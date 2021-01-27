@@ -1,0 +1,5 @@
+mutation GetAuthTokens($code: String!) {
+  getAuthTokens(code: $code) {
+    message
+  }
+}

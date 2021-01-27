@@ -5,6 +5,13 @@ type Mutation {
 }
 
 
+type Mutation {
+  getAuthTokens (
+    code: String
+  ): AuthSuccess
+}
+
+
 type Query {
   getAuthUrl : AuthUrl
 }
@@ -22,5 +29,9 @@ type AccountData {
 
 type AuthUrl {
   url : String
+}
+
+type AuthSuccess {
+  message : String!
 }
 

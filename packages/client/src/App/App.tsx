@@ -1,5 +1,12 @@
 import 'antd/dist/antd.css';
 
+import { Account, Category, TimePeriod, Transaction } from '../types';
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  useApolloClient,
+} from '@apollo/client';
 import {
   BarChartOutlined,
   BarsOutlined,
@@ -7,12 +14,11 @@ import {
   PieChartOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
+import { BaseDataContext, time, useUrlState } from '../lib';
 import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  useApolloClient,
-} from '@apollo/client';
+  GetAccountDataDocument,
+  GetAuthTokensDocument,
+} from '../generated/graphql';
 import { Layout, Menu, Space, Spin, Switch } from 'antd';
 import React, { useState } from 'react';
 import {
@@ -23,25 +29,22 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-
-import DateRangeSelect from '../components/DateRangeSelect';
 import Select, { SelectProps } from '../components/Select';
-import { GetAccountDataDocument } from '../generated/graphql';
-import { BaseDataContext, time, useUrlState } from '../lib';
-import BreakdownView from '../pages/BreakdownView';
-import CumulativeView from '../pages/CumulativeView';
-import ManageAccountsView from '../pages/ManageAccountsView';
-import ManageCategoriesView from '../pages/ManageCategoriesView';
-import TimelineView from '../pages/TimelineView';
-import TransactionsView from '../pages/TransactionsView';
-import theme from '../theme';
-import { Account, Category, TimePeriod, Transaction } from '../types';
 import {
   createCatchAllAccount,
   createCatchAllCategory,
   useBaseData,
 } from './data';
+import styled, { ThemeProvider } from 'styled-components';
+
+import BreakdownView from '../pages/BreakdownView';
+import CumulativeView from '../pages/CumulativeView';
+import DateRangeSelect from '../components/DateRangeSelect';
+import ManageAccountsView from '../pages/ManageAccountsView';
+import ManageCategoriesView from '../pages/ManageCategoriesView';
+import TimelineView from '../pages/TimelineView';
+import TransactionsView from '../pages/TransactionsView';
+import theme from '../theme';
 
 const Content = styled(Layout.Content)`
   background: #fff;
@@ -62,10 +65,10 @@ const GetAccountData = () => {
 
   async function doThing() {
     const res = await client.mutate({
-      mutation: GetAccountDataDocument,
+      mutation: GetAuthTokensDocument,
       variables: { code },
     });
-    console.log({ getAccountData: JSON.parse(res.data.getAccountData.data) });
+    console.log({ res });
   }
 
   React.useEffect(() => {
