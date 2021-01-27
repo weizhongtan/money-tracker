@@ -24,11 +24,10 @@ import {
   useLocation,
 } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
-import { useUrlState } from 'with-url-state';
 
 import Select, { SelectProps } from '../components/Select';
 import { GetAccountDataDocument } from '../generated/graphql';
-import { BaseDataContext, time } from '../lib';
+import { BaseDataContext, time, useUrlState } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
 import CumulativeView from '../pages/CumulativeView';
 import DateRangeSelect from '../pages/DateRangeSelect';
@@ -37,7 +36,7 @@ import ManageCategoriesView from '../pages/ManageCategoriesView';
 import TimelineView from '../pages/TimelineView';
 import TransactionsView from '../pages/TransactionsView';
 import theme from '../theme';
-import { Account, Category, TimePeriod } from '../types';
+import { Account, Category, TimePeriod, Transaction } from '../types';
 import {
   createCatchAllAccount,
   createCatchAllCategory,
@@ -143,42 +142,34 @@ function App() {
   const location = useLocation();
   const history = useHistory();
 
-  const [urlState, setUrlState] = useUrlState<
-    TimePeriod & {
-      accountIdFilter?: Account['id'];
-      categoryIdFilter?: Category['id'];
-    }
-  >(
-    {
-      startDate: time().subtract(1, 'year').startOf('year').toISOString(),
-      endDate: time().toISOString(),
-      accountIdFilter: undefined,
-      categoryIdFilter: undefined,
-    },
-    { history }
-  );
+  const [urlState, setUrlState] = useUrlState<{
+    startDate: Transaction['date'];
+    endDate: Transaction['date'];
+    accountIdFilter?: Account['id'];
+    categoryIdFilter?: Category['id'];
+    collapsed: boolean;
+  }>({
+    startDate: time().subtract(1, 'year').startOf('year').toISOString(),
+    endDate: time().toISOString(),
+    accountIdFilter: undefined,
+    categoryIdFilter: undefined,
+    collapsed: false,
+  });
   const startDate = time(urlState.startDate);
   const endDate = time(urlState.endDate);
   const setDates = ({ startDate, endDate }: TimePeriod) => {
     setUrlState({
-      ...urlState,
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
     });
   };
   const { accountIdFilter } = urlState;
   const setAccountIdFilter = (id?: Account['id']) => {
-    setUrlState({
-      ...urlState,
-      accountIdFilter: id,
-    });
+    setUrlState({ accountIdFilter: id });
   };
   const { categoryIdFilter } = urlState;
   const setCategoryIdFilter = (id?: Category['id']) => {
-    setUrlState({
-      ...urlState,
-      categoryIdFilter: id,
-    });
+    setUrlState({ categoryIdFilter: id });
   };
 
   const defaultOpenKeys = [
@@ -261,6 +252,10 @@ function App() {
           <Layout>
             <Layout.Sider
               collapsible
+              collapsed={urlState.collapsed}
+              onCollapse={(collapsed) => {
+                setUrlState({ collapsed });
+              }}
               style={{
                 overflow: 'auto',
                 height: '100%',

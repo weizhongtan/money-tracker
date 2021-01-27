@@ -1,3 +1,4 @@
+import useUrlStateInternal from '@ahooksjs/use-url-state';
 import { UndoOutlined } from '@ant-design/icons';
 import { Button, notification } from 'antd';
 import dayjs from 'dayjs';
@@ -91,4 +92,28 @@ export const useIsMount = () => {
     isMountRef.current = false;
   }, []);
   return isMountRef.current;
+};
+
+export const useUrlState = <InitialState extends {}>(
+  initialState?: InitialState
+) => {
+  const [urlState, setUrlStateInternal] = useUrlStateInternal<InitialState>(
+    initialState
+  );
+
+  function setUrlState(s: React.SetStateAction<Partial<InitialState>>) {
+    return setUrlStateInternal(s);
+  }
+
+  // assume true and false should be parsed as boolean
+  const parsedUrlState: { [key: string]: string | boolean } = {};
+  Object.entries(urlState).forEach(([key, val]) => {
+    if (typeof val === 'string') {
+      const parsedVal =
+        val === 'true' || val === 'false' ? val === 'true' : val;
+      parsedUrlState[key] = parsedVal;
+    }
+  });
+
+  return [parsedUrlState as InitialState, setUrlState] as const;
 };
