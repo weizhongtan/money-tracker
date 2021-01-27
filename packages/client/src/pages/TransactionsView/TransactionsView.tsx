@@ -198,7 +198,7 @@ const FilterByButton: React.FC<FilterByButtonProps> = ({ title, onClick }) => {
   );
 };
 
-type TransactionsViewProps = TimePeriod & Filters;
+type TransactionsViewProps = TimePeriod & Omit<Filters, 'showControls'>;
 
 const TransactionsView: React.FC<TransactionsViewProps> = ({
   startDate,

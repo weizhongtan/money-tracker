@@ -13,13 +13,13 @@ import {
   InMemoryCache,
   useApolloClient,
 } from '@apollo/client';
-import { Layout, Menu, Space, Spin } from 'antd';
+import { Layout, Menu, Space, Spin, Switch } from 'antd';
 import React, { useState } from 'react';
 import {
   Redirect,
   Route,
   BrowserRouter as Router,
-  Switch,
+  Switch as RouterSwitch,
   useHistory,
   useLocation,
 } from 'react-router-dom';
@@ -80,6 +80,7 @@ export type Filters = {
   setAccountIdFilter?: (id: Account['id']) => void;
   categoryIdFilter?: Category['id'];
   setCategoryIdFilter?: (id: Category['id']) => void;
+  showControls: boolean;
 };
 
 interface IRoute {
@@ -148,12 +149,14 @@ function App() {
     accountIdFilter?: Account['id'];
     categoryIdFilter?: Category['id'];
     collapsed: boolean;
+    showControls: boolean;
   }>({
     startDate: time().subtract(1, 'year').startOf('year').toISOString(),
     endDate: time().toISOString(),
     accountIdFilter: undefined,
     categoryIdFilter: undefined,
     collapsed: false,
+    showControls: false,
   });
   const startDate = time(urlState.startDate);
   const endDate = time(urlState.endDate);
@@ -163,13 +166,23 @@ function App() {
       endDate: endDate.toISOString(),
     });
   };
-  const { accountIdFilter } = urlState;
+  const {
+    accountIdFilter,
+    categoryIdFilter,
+    collapsed,
+    showControls,
+  } = urlState;
   const setAccountIdFilter = (id?: Account['id']) => {
     setUrlState({ accountIdFilter: id });
   };
-  const { categoryIdFilter } = urlState;
   const setCategoryIdFilter = (id?: Category['id']) => {
     setUrlState({ categoryIdFilter: id });
+  };
+  const setCollapsed = (val: boolean) => {
+    setUrlState({ collapsed: val });
+  };
+  const setShowControls = (val: boolean) => {
+    setUrlState({ showControls: val });
   };
 
   const defaultOpenKeys = [
@@ -247,15 +260,21 @@ function App() {
                   </Select.Option>
                 ))}
               </Select>
+              <Switch
+                checked={showControls}
+                onChange={(checked) => {
+                  setShowControls(checked);
+                }}
+                checkedChildren="Hide controls"
+                unCheckedChildren="Show controls"
+              />
             </Space>
           </Layout.Header>
           <Layout>
             <Layout.Sider
               collapsible
-              collapsed={urlState.collapsed}
-              onCollapse={(collapsed) => {
-                setUrlState({ collapsed });
-              }}
+              collapsed={collapsed}
+              onCollapse={setCollapsed}
               style={{
                 overflow: 'auto',
                 height: '100%',
@@ -307,7 +326,7 @@ function App() {
               </Menu>
             </Layout.Sider>
             <ViewWrapper>
-              <Switch>
+              <RouterSwitch>
                 {routes.map(({ path, Component, children }) => (
                   <Route
                     key={path}
@@ -324,6 +343,7 @@ function App() {
                                 setAccountIdFilter,
                                 categoryIdFilter,
                                 setCategoryIdFilter,
+                                showControls,
                               }}
                             />
                           );
@@ -363,7 +383,7 @@ function App() {
                 <Redirect
                   to={{ pathname: routes[0].path, search: location.search }}
                 />
-              </Switch>
+              </RouterSwitch>
             </ViewWrapper>
           </Layout>
         </Layout>

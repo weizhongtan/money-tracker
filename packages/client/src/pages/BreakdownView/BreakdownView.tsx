@@ -134,6 +134,7 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
   startDate,
   endDate,
   accountIdFilter,
+  showControls,
 }) => {
   const [graph, setGraph] = useState<'pie' | 'bar'>('pie');
   const [grouping, setGrouping] = useState(true);
@@ -158,7 +159,7 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
 
   return (
     <>
-      <VisualisationControls>
+      <VisualisationControls show={showControls}>
         <PageDrawer
           visible={drawerState.isVisible}
           onClose={() =>
@@ -172,9 +173,7 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
             startDate={startDate}
             endDate={endDate}
             accountIdFilter={accountIdFilter}
-            setAccountIdFilter={() => {}}
             categoryIdFilter={drawerState.categoryId}
-            setCategoryIdFilter={() => {}}
           />
         </PageDrawer>
         <Radio.Group

@@ -100,6 +100,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
   endDate,
   categoryIdFilter,
   accountIdFilter,
+  showControls,
 }) => {
   const [precision, setPrecision] = useState<time.OpUnitType>('month');
   const [amountType, setAmountType] = useState<'balance' | 'expense,income'>(
@@ -155,7 +156,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
 
   return (
     <>
-      <VisualisationControls>
+      <VisualisationControls show={showControls}>
         <PageDrawer
           visible={
             isVisible &&

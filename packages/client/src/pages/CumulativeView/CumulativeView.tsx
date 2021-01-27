@@ -46,6 +46,7 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
   startDate,
   endDate,
   accountIdFilter,
+  showControls,
 }) => {
   const defaultPrecision =
     endDate.diff(startDate, 'months') >= 6 ? 'week' : 'day';
@@ -70,7 +71,7 @@ const CumulativeView: React.FC<CumulativeViewProps> = ({
 
   return (
     <>
-      <VisualisationControls>
+      <VisualisationControls show={showControls}>
         <Space>
           <Radio.Group
             buttonStyle="solid"
