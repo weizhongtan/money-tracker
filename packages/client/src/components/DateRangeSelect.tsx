@@ -1,9 +1,9 @@
 import { Space } from 'antd';
 import React from 'react';
 
-import { DatePicker } from '../components';
 import { time } from '../lib';
 import { TimePeriod } from '../types';
+import { DatePicker } from '.';
 
 const { MonthPicker, RangePicker } = DatePicker;
 

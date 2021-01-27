@@ -25,12 +25,12 @@ import {
 } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 
+import DateRangeSelect from '../components/DateRangeSelect';
 import Select, { SelectProps } from '../components/Select';
 import { GetAccountDataDocument } from '../generated/graphql';
 import { BaseDataContext, time, useUrlState } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
 import CumulativeView from '../pages/CumulativeView';
-import DateRangeSelect from '../pages/DateRangeSelect';
 import ManageAccountsView from '../pages/ManageAccountsView';
 import ManageCategoriesView from '../pages/ManageCategoriesView';
 import TimelineView from '../pages/TimelineView';
