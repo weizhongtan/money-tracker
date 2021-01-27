@@ -1,8 +1,8 @@
 import 'antd/dist/antd.css';
 
 import {
+  BarChartOutlined,
   BarsOutlined,
-  ClockCircleOutlined,
   FundOutlined,
   PieChartOutlined,
   SettingOutlined,
@@ -117,7 +117,7 @@ const routes: IRoute[] = [
   {
     path: '/timeline',
     title: 'Timeline',
-    icon: <ClockCircleOutlined />,
+    icon: <BarChartOutlined />,
     Component: TimelineView,
   },
   {
