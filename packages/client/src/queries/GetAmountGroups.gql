@@ -1,0 +1,46 @@
+query GetAmountGroups(
+  $startDate: timestamptz
+  $endDate: timestamptz
+  $accountId: uuid
+  $categoryId: uuid
+  $groupBy: String
+) {
+  groups: func_timeline(
+    args: {
+      v_account_id: $accountId
+      v_category_id: $categoryId
+      v_group_by: $groupBy
+    }
+    where: { date: { _gte: $startDate, _lte: $endDate } }
+    order_by: { date: asc }
+  ) {
+    date
+    balance
+    expense
+    income
+  }
+  aggregate: func_timeline_aggregate(
+    args: {
+      v_account_id: $accountId
+      v_category_id: $categoryId
+      v_group_by: $groupBy
+    }
+    where: { date: { _gte: $startDate, _lte: $endDate } }
+    order_by: { date: asc }
+  ) {
+    aggregate {
+      avg {
+        balance
+        expense
+        income
+      }
+      max {
+        balance
+        income
+      }
+      min {
+        expense
+      }
+    }
+  }
+}

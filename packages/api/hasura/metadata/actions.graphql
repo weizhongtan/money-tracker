@@ -1,0 +1,44 @@
+type Mutation {
+  exchangeCode (
+    code: String
+  ): AuthSuccess
+}
+
+
+type Query {
+  getAuthUrl : AuthUrl
+}
+
+
+type Mutation {
+  importTransactions (
+    accountId: String
+    cardId: String
+  ): ImportTransactionsOutput
+}
+
+
+
+
+type AccountAuthOutput {
+  accessToken : String!
+}
+
+type AccountData {
+  data : String!
+}
+
+type AuthUrl {
+  url : String
+}
+
+type AuthSuccess {
+  message : String!
+  accountIds : [String!]
+  cardIds : [String!]
+}
+
+type ImportTransactionsOutput {
+  transactionsJSON : String!
+}
+

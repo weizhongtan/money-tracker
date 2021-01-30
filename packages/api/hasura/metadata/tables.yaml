@@ -1,0 +1,73 @@
+- table:
+    schema: public
+    name: account
+  array_relationships:
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: linked_account_id
+        table:
+          schema: public
+          name: transaction
+  - name: transactionsByToAccountId
+    using:
+      foreign_key_constraint_on:
+        column: account_id
+        table:
+          schema: public
+          name: transaction
+- table:
+    schema: public
+    name: category
+  object_relationships:
+  - name: category
+    using:
+      foreign_key_constraint_on: parent_category_id
+  array_relationships:
+  - name: categories
+    using:
+      foreign_key_constraint_on:
+        column: parent_category_id
+        table:
+          schema: public
+          name: category
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: category_id
+        table:
+          schema: public
+          name: transaction
+- table:
+    schema: public
+    name: table_amount_group
+- table:
+    schema: public
+    name: table_breakdown
+- table:
+    schema: public
+    name: table_cumulative_amount
+- table:
+    schema: public
+    name: transaction
+  object_relationships:
+  - name: account
+    using:
+      foreign_key_constraint_on: account_id
+  - name: category
+    using:
+      foreign_key_constraint_on: category_id
+  - name: linkedAccount
+    using:
+      foreign_key_constraint_on: linked_account_id
+  - name: transaction
+    using:
+      foreign_key_constraint_on: paired_with_id
+  array_relationships:
+  - name: transactions
+    using:
+      foreign_key_constraint_on:
+        column: paired_with_id
+        table:
+          schema: public
+          name: transaction

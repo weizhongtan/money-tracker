@@ -1,0 +1,7 @@
+mutation ExchangeCode($code: String!) {
+  exchangeCode(code: $code) {
+    message
+    accountIds
+    cardIds
+  }
+}

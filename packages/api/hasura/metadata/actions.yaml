@@ -1,0 +1,24 @@
+actions:
+- name: exchangeCode
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:9999/exchange-code
+- name: getAuthUrl
+  definition:
+    kind: ""
+    handler: http://host.docker.internal:9999/get-auth-url
+- name: importTransactions
+  definition:
+    kind: synchronous
+    handler: http://host.docker.internal:9999/import-transactions
+    forward_client_headers: true
+custom_types:
+  enums: []
+  input_objects: []
+  objects:
+  - name: AccountAuthOutput
+  - name: AccountData
+  - name: AuthUrl
+  - name: AuthSuccess
+  - name: ImportTransactionsOutput
+  scalars: []
