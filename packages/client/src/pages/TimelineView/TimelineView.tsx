@@ -156,22 +156,22 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
 
   return (
     <>
+      <PageDrawer
+        visible={
+          isVisible &&
+          !!transactionViewDates.startDate &&
+          !!transactionViewDates.endDate
+        }
+        onClose={() => setVisible(false)}
+      >
+        <TransactionsView
+          startDate={transactionViewDates.startDate}
+          endDate={transactionViewDates.endDate}
+          categoryIdFilter={categoryIdFilter}
+          accountIdFilter={accountIdFilter}
+        />
+      </PageDrawer>
       <VisualisationControls show={showControls}>
-        <PageDrawer
-          visible={
-            isVisible &&
-            !!transactionViewDates.startDate &&
-            !!transactionViewDates.endDate
-          }
-          onClose={() => setVisible(false)}
-        >
-          <TransactionsView
-            startDate={transactionViewDates.startDate}
-            endDate={transactionViewDates.endDate}
-            categoryIdFilter={categoryIdFilter}
-            accountIdFilter={accountIdFilter}
-          />
-        </PageDrawer>
         <Radio.Group
           buttonStyle="solid"
           defaultValue={precision}

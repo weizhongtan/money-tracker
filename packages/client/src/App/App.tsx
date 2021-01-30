@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import {
   BarChartOutlined,
   BarsOutlined,
+  ControlOutlined,
   FundOutlined,
   PieChartOutlined,
   SettingOutlined,
@@ -241,8 +242,8 @@ function App() {
                 onChange={(checked) => {
                   setShowControls(checked);
                 }}
-                checkedChildren="Hide controls"
-                unCheckedChildren="Show controls"
+                checkedChildren={<ControlOutlined />}
+                unCheckedChildren={<ControlOutlined />}
               />
             </Space>
           </Layout.Header>

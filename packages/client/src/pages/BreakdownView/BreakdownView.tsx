@@ -159,23 +159,23 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
 
   return (
     <>
+      <PageDrawer
+        visible={drawerState.isVisible}
+        onClose={() =>
+          setDrawerState({
+            ...drawerState,
+            isVisible: false,
+          })
+        }
+      >
+        <TransactionsView
+          startDate={startDate}
+          endDate={endDate}
+          accountIdFilter={accountIdFilter}
+          categoryIdFilter={drawerState.categoryId}
+        />
+      </PageDrawer>
       <VisualisationControls show={showControls}>
-        <PageDrawer
-          visible={drawerState.isVisible}
-          onClose={() =>
-            setDrawerState({
-              ...drawerState,
-              isVisible: false,
-            })
-          }
-        >
-          <TransactionsView
-            startDate={startDate}
-            endDate={endDate}
-            accountIdFilter={accountIdFilter}
-            categoryIdFilter={drawerState.categoryId}
-          />
-        </PageDrawer>
         <Radio.Group
           buttonStyle="solid"
           defaultValue={graph}
