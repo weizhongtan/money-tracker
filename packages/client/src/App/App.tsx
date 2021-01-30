@@ -1,12 +1,5 @@
 import 'antd/dist/antd.css';
 
-import { Account, Category, TimePeriod, Transaction } from '../types';
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-  useApolloClient,
-} from '@apollo/client';
 import {
   BarChartOutlined,
   BarsOutlined,
@@ -14,7 +7,7 @@ import {
   PieChartOutlined,
   SettingOutlined,
 } from '@ant-design/icons';
-import { BaseDataContext, time, useUrlState } from '../lib';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { Layout, Menu, Space, Spin, Switch } from 'antd';
 import React, { useState } from 'react';
 import {
@@ -25,22 +18,24 @@ import {
   useHistory,
   useLocation,
 } from 'react-router-dom';
-import Select, { SelectProps } from '../components/Select';
-import {
-  createCatchAllAccount,
-  createCatchAllCategory,
-  useBaseData,
-} from './data';
 import styled, { ThemeProvider } from 'styled-components';
 
+import DateRangeSelect from '../components/DateRangeSelect';
+import Select, { SelectProps } from '../components/Select';
+import { BaseDataContext, time, useUrlState } from '../lib';
 import BreakdownView from '../pages/BreakdownView';
 import CumulativeView from '../pages/CumulativeView';
-import DateRangeSelect from '../components/DateRangeSelect';
 import ManageAccountsView from '../pages/ManageAccountsView';
 import ManageCategoriesView from '../pages/ManageCategoriesView';
 import TimelineView from '../pages/TimelineView';
 import TransactionsView from '../pages/TransactionsView';
 import theme from '../theme';
+import { Account, Category, TimePeriod, Transaction } from '../types';
+import {
+  createCatchAllAccount,
+  createCatchAllCategory,
+  useBaseData,
+} from './data';
 
 const Content = styled(Layout.Content)`
   background: #fff;

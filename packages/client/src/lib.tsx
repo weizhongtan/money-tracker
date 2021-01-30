@@ -108,10 +108,10 @@ export const useUrlState = <InitialState extends {}>(
   // assume true and false should be parsed as boolean
   const parsedUrlState: { [key: string]: string | boolean } = {};
   Object.entries(urlState).forEach(([key, val]) => {
-    if (typeof val === 'string') {
-      const parsedVal =
-        val === 'true' || val === 'false' ? val === 'true' : val;
-      parsedUrlState[key] = parsedVal;
+    if (val === 'true' || val === 'false') {
+      parsedUrlState[key] = val === 'true';
+    } else if (typeof val === 'string' || typeof val === 'boolean') {
+      parsedUrlState[key] = val;
     }
   });
 
