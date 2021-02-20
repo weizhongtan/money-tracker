@@ -17617,6 +17617,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "args": [],
@@ -18510,6 +18522,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "type": {
@@ -18582,6 +18606,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "transaction_original_id_key",
+            "description": "unique or primary key constraint",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "transactions_pkey",
             "description": "unique or primary key constraint",
@@ -18746,6 +18776,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -18919,6 +18961,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "args": [],
@@ -19052,6 +19106,18 @@
           },
           {
             "name": "linked_account_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19205,6 +19271,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "args": [],
@@ -19338,6 +19416,18 @@
           },
           {
             "name": "linked_account_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19681,6 +19771,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "type": {
@@ -19829,6 +19931,12 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": "column name",
             "isDeprecated": false,
@@ -19945,6 +20053,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -20228,6 +20348,12 @@
           },
           {
             "name": "linked_account_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null

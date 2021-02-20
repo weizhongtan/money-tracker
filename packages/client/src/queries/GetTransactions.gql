@@ -54,6 +54,7 @@ query GetTransactions(
         name
       }
       pair_id
+      original_id
     }
   }
 }

@@ -1,21 +1,21 @@
-import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
+import { UploadOutlined } from '@ant-design/icons';
+import { useApolloClient } from '@apollo/client';
 import { Button, Space, Table, Typography, Upload, notification } from 'antd';
+import { SelectProps } from 'antd/lib/select';
+import { TableProps } from 'antd/lib/table';
+import csvjson from 'csvjson';
+import { parse as parseOFX } from 'ofx-js';
+import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+
+import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
 import {
   useExchangeCodeMutation,
   useGetAuthUrlQuery,
   useImportTransactionsMutation,
 } from '../../generated/graphql';
-import { useHistory, useLocation } from 'react-router-dom';
-
+import { time, useBaseData } from '../../lib';
 import { Account } from '../../types';
-import React from 'react';
-import { SelectProps } from 'antd/lib/select';
-import { TableProps } from 'antd/lib/table';
-import { UploadOutlined } from '@ant-design/icons';
-import csvjson from 'csvjson';
-import { parse as parseOFX } from 'ofx-js';
-import { useApolloClient } from '@apollo/client';
-import { useBaseData } from '../../lib';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -217,14 +217,17 @@ const ImportAccount = () => {
     }
   }, []);
 
-  const [accountId, setAccountId] = React.useState('');
+  const [account, setAccount] = React.useState<Account>();
 
   if (data) {
     return (
       <>
         <Select<React.FC<SelectProps<string>>>
-          value={accountId}
-          onSelect={(val) => setAccountId(val)}
+          value={account?.id}
+          onSelect={(val) => {
+            const selectedAccount = baseData.accounts.find((x) => x.id === val);
+            setAccount(selectedAccount);
+          }}
           showSearch
           optionFilterProp="label"
         >
@@ -239,6 +242,10 @@ const ImportAccount = () => {
           return (
             <Button
               onClick={async () => {
+                if (!account) {
+                  console.log('select an account!');
+                  return;
+                }
                 const res = await importTransactions({
                   variables: { cardId: id },
                 });
@@ -248,14 +255,23 @@ const ImportAccount = () => {
                   res.data?.importTransactions?.transactionsJSON ?? '[]'
                 );
 
-                const proms = parsedJson.map((t: any) => {
-                  return createTransaction({
-                    accountId,
-                    amount: t.amount,
-                    date: t.timestamp,
-                    description: t.description,
+                const proms = parsedJson
+                  .filter((t: any) => {
+                    return (
+                      account.mostRecentTransactionDate &&
+                      time(t.timestamp) >=
+                        time(account.mostRecentTransactionDate)
+                    );
+                  })
+                  .map((t: any) => {
+                    return createTransaction({
+                      accountId: account.id,
+                      amount: -t.amount,
+                      date: t.timestamp,
+                      description: t.description,
+                      originalId: t.transaction_id,
+                    });
                   });
-                });
                 const results = await Promise.all(proms);
 
                 const created = results.filter((x) => x).length;

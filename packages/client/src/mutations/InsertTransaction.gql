@@ -3,6 +3,7 @@ mutation InsertTransaction(
   $amount: numeric
   $date: timestamptz
   $description: String
+  $originalId: String
 ) {
   insert_transaction(
     objects: {
@@ -10,6 +11,7 @@ mutation InsertTransaction(
       amount: $amount
       date: $date
       description: $description
+      original_id: $originalId
     }
   ) {
     affected_rows

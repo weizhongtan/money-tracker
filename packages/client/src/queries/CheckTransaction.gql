@@ -4,14 +4,20 @@ query CheckTransaction(
   $startDate: timestamptz!
   $endDate: timestamptz!
   $description: String!
+  $originalId: String!
 ) {
   transaction(
     where: {
-      _and: [
-        { account_id: { _eq: $accountId } }
-        { amount: { _eq: $amount } }
-        { date: { _gte: $startDate, _lt: $endDate } }
-        { description: { _eq: $description } }
+      _or: [
+        {
+          _and: [
+            { account_id: { _eq: $accountId } }
+            { amount: { _eq: $amount } }
+            { date: { _gte: $startDate, _lt: $endDate } }
+            { description: { _eq: $description } }
+          ]
+        }
+        { original_id: { _eq: $originalId } }
       ]
     }
   ) {

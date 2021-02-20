@@ -1,10 +1,10 @@
-// import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
-import express, { Request, Response } from 'express';
-
-import { AccountData } from './generated/graphql';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
+import express, { Request, Response } from 'express';
+// import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
+
+import { AccountData } from './generated/graphql';
 
 dotenv.config();
 
@@ -39,7 +39,12 @@ let tokens: { access_token: string };
 app.post('/exchange-code', async (req, res) => {
   const { code } = req.body.input;
 
-  if (!tokens) {
+  // get new access token if none exists, or if cached tokens have expired
+  if (
+    !tokens ||
+    (tokens && !DataAPIClient.validateToken(tokens.access_token))
+  ) {
+    console.log('exchanging code for token');
     tokens = await authClient.exchangeCodeForToken(redirectUri, code);
   }
 
@@ -69,23 +74,26 @@ app.post('/exchange-code', async (req, res) => {
 app.post('/import-transactions', async (req, res) => {
   const { accountId, cardId } = req.body.input;
 
+  let api;
+  let id;
   if (cardId) {
-    const data = await DataAPIClient.getCardTransactions(
-      tokens.access_token,
-      cardId
-    );
-
-    console.log(data);
-
-    res.json({
-      transactionsJSON: JSON.stringify(data.results),
+    id = cardId;
+    api = DataAPIClient.getCardTransactions;
+  } else if (accountId) {
+    id = accountId;
+    api = DataAPIClient.getTransactions;
+  } else {
+    return res.json({
+      data: 'Error: could not get any card or account data',
     });
-
-    return;
   }
 
+  const data = await api(tokens.access_token, id);
+
+  console.log(data);
+
   res.json({
-    data: 'Error: could not get any card or account data',
+    transactionsJSON: JSON.stringify(data.results),
   });
 });
 

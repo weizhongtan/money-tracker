@@ -15,6 +15,7 @@ interface Transaction {
   amount: number;
   date: string;
   description: string;
+  originalId: string;
 }
 
 export const useCreateTransaction = () => {
@@ -25,6 +26,7 @@ export const useCreateTransaction = () => {
     amount,
     date,
     description,
+    originalId,
   }: Transaction) => {
     // do not add transactions that exist already
     // match any existing transaction to the same account, for the same amount, with the same description
@@ -45,6 +47,7 @@ export const useCreateTransaction = () => {
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
         description,
+        originalId,
       },
       fetchPolicy: 'no-cache',
     });
@@ -64,6 +67,7 @@ export const useCreateTransaction = () => {
         amount,
         date,
         description,
+        originalId,
       },
     });
     return true;
