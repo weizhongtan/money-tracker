@@ -41,6 +41,7 @@ type AuthSuccess {
 }
 
 type ImportTransactionsOutput {
+  message : String!
   created : Int!
   skipped : Int!
 }

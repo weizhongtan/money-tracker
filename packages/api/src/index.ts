@@ -4,10 +4,21 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import { GraphQLClient } from 'graphql-request';
-import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
+import morgan from 'morgan';
+import {
+  AuthAPIClient,
+  DataAPIClient,
+  ICardTransaction,
+  IResult,
+  ITokenResponse,
+  ITransaction,
+} from 'truelayer-client';
 
 import { time } from '../../client/src/lib';
-import { getSdk } from '../../common/generated/graphql-request';
+import {
+  ImportTransactionsMutationVariables,
+  getSdk,
+} from '../../common/generated/graphql-request';
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
@@ -24,6 +35,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(
+  morgan(':method :url :status :res[content-length] - :response-time ms')
+);
+
 app.post('/get-auth-url', async (req, res) => {
   res.json({
     url: authClient.getAuthUrl({
@@ -34,19 +49,13 @@ app.post('/get-auth-url', async (req, res) => {
   });
 });
 
-let tokens: { access_token: string };
+let tokens: ITokenResponse;
 
 app.post('/exchange-code', async (req, res) => {
   const { code } = req.body.input;
 
-  // get new access token if none exists, or if cached tokens have expired
-  if (
-    !tokens ||
-    (tokens && !DataAPIClient.validateToken(tokens.access_token))
-  ) {
-    console.log('exchanging code for token');
-    tokens = await authClient.exchangeCodeForToken(redirectUri, code);
-  }
+  console.log('exchanging code for token');
+  tokens = await authClient.exchangeCodeForToken(redirectUri, code);
 
   console.log(tokens);
 
@@ -74,77 +83,101 @@ app.post('/exchange-code', async (req, res) => {
 const gqlClient = new GraphQLClient('http://localhost:3000/v1/graphql');
 const sdk = getSdk(gqlClient);
 
-app.post('/import-transactions', async (req, res) => {
-  const { fromAccountId, fromCardId, toAccountId, startDate } = req.body.input;
+app.post(
+  '/import-transactions',
+  async (
+    req: Request<{}, {}, { input: ImportTransactionsMutationVariables }>,
+    res
+  ) => {
+    const {
+      fromAccountId,
+      fromCardId,
+      toAccountId,
+      startDate,
+    } = req.body.input;
 
-  console.log({ fromAccountId, fromCardId, toAccountId, startDate });
+    console.log({ fromAccountId, fromCardId, toAccountId, startDate });
 
-  let api;
-  let fromId;
-  if (fromCardId) {
-    fromId = fromCardId;
-    api = DataAPIClient.getCardTransactions;
-  } else if (fromAccountId) {
-    fromId = fromAccountId;
-    api = DataAPIClient.getTransactions;
-  } else {
-    return res.json({
-      data: 'Error: could not get any card or account data',
-    });
-  }
-
-  const data = await api(
-    tokens.access_token,
-    fromId,
-    time(startDate).format('YYYY-MM-DD'),
-    time().format('YYYY-MM-DD')
-  );
-
-  console.log(data);
-
-  const proms = data.results.map(async (t) => {
-    const startDate = new Date(t.timestamp);
-    startDate.setHours(0);
-    startDate.setMinutes(0);
-    startDate.setSeconds(0);
-    startDate.setMilliseconds(0);
-    const endDate = time(startDate).add(1, 'day').toDate();
-    const res = await sdk.CheckTransaction({
-      accountId: toAccountId,
-      amount: t.amount,
-      startDate: time(startDate).toISOString(),
-      endDate: endDate.toISOString(),
-      description: t.description,
-      originalId: t.transaction_id,
-    });
-    if (res.transaction.length) {
-      console.error(`Transaction already exists`, res.transaction);
-      return false;
+    let api;
+    let fromId;
+    if (fromCardId) {
+      fromId = fromCardId;
+      api = DataAPIClient.getCardTransactions;
+    } else if (fromAccountId) {
+      fromId = fromAccountId;
+      api = DataAPIClient.getTransactions;
+    } else {
+      return res.json({
+        message: 'Error: could not get any card or account data',
+        created: 0,
+        skipped: 0,
+      });
     }
 
-    await sdk.InsertTransaction({
-      accountId: toAccountId,
-      amount: -t.amount,
-      date: t.timestamp,
-      description: t.description,
-      originalId: t.transaction_id,
+    console.log('################# getting data from API');
+    const data: IResult<ICardTransaction | ITransaction> = await api(
+      tokens.access_token,
+      fromId,
+      time(startDate).format('YYYY-MM-DD'),
+      time().format('YYYY-MM-DD')
+    );
+
+    console.log(data);
+
+    const proms = data.results.map(async (t) => {
+      const startDate = new Date(t.timestamp);
+      startDate.setHours(0);
+      startDate.setMinutes(0);
+      startDate.setSeconds(0);
+      startDate.setMilliseconds(0);
+      const endDate = time(startDate).add(1, 'day').toDate();
+
+      if (!('transaction_type' in t)) {
+        console.log('could not parse transaction_type');
+        return false;
+      }
+      const amount =
+        t.transaction_type === 'DEBIT'
+          ? -Math.abs(t.amount)
+          : Math.abs(t.amount);
+      const res = await sdk.CheckTransaction({
+        accountId: toAccountId,
+        amount,
+        startDate: time(startDate).toISOString(),
+        endDate: endDate.toISOString(),
+        description: t.description,
+        originalId: t.transaction_id,
+      });
+      if (res.transaction.length) {
+        console.error(`Transaction already exists`, res.transaction);
+        return false;
+      }
+
+      await sdk.InsertTransaction({
+        accountId: toAccountId,
+        amount,
+        date: t.timestamp,
+        description: t.description,
+        originalId: t.transaction_id,
+      });
+
+      return true;
     });
+    const results = await Promise.all(proms);
 
-    return true;
-  });
-  const results = await Promise.all(proms);
+    const created = results.filter((x) => x).length;
+    const skipped = results.length - created;
 
-  const created = results.filter((x) => x).length;
-  const skipped = results.length - created;
+    console.log(`Created ${created} records`);
+    console.log(`Skipped ${skipped} records`);
 
-  console.log(`Created ${created} records`);
-  console.log(`Skipped ${skipped} records`);
-
-  res.json({
-    created,
-    skipped,
-  });
-});
+    res.json({
+      message: 'success',
+      created,
+      skipped,
+    });
+  }
+);
 
 app.listen(9999, () => {
   console.log('listening');

@@ -50,6 +50,7 @@ export type Boolean_Comparison_Exp = {
 
 export type ImportTransactionsOutput = {
   created: Scalars['Int'];
+  message: Scalars['String'];
   skipped: Scalars['Int'];
 };
 
