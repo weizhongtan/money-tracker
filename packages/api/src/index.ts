@@ -1,15 +1,19 @@
 import 'cross-fetch/polyfill';
 
+import path from 'path';
+
 import bodyParser from 'body-parser';
-import dayjs from 'dayjs';
 import dotenv from 'dotenv';
 import express, { Request, Response } from 'express';
 import { GraphQLClient } from 'graphql-request';
 import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
 
+import { time } from '../../client/src/lib';
 import { getSdk } from '../../common/generated/graphql-request';
 
-dotenv.config();
+dotenv.config({
+  path: path.resolve(__dirname, '../.env'),
+});
 
 const redirectUri = 'http://localhost:3000/callback';
 
@@ -94,8 +98,8 @@ app.post('/import-transactions', async (req, res) => {
   const data = await api(
     tokens.access_token,
     fromId,
-    dayjs(startDate).format('YYYY-MM-DD'),
-    dayjs().format('YYYY-MM-DD')
+    time(startDate).format('YYYY-MM-DD'),
+    time().format('YYYY-MM-DD')
   );
 
   console.log(data);
@@ -106,11 +110,11 @@ app.post('/import-transactions', async (req, res) => {
     startDate.setMinutes(0);
     startDate.setSeconds(0);
     startDate.setMilliseconds(0);
-    const endDate = dayjs(startDate).add(1, 'day').toDate();
+    const endDate = time(startDate).add(1, 'day').toDate();
     const res = await sdk.CheckTransaction({
       accountId: toAccountId,
       amount: t.amount,
-      startDate: dayjs(startDate).toISOString(),
+      startDate: time(startDate).toISOString(),
       endDate: endDate.toISOString(),
       description: t.description,
       originalId: t.transaction_id,
