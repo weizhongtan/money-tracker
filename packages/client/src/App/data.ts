@@ -1,6 +1,6 @@
 import { ApolloError } from '@apollo/client';
 
-import { useGetBaseDataQuery } from '../generated/graphql';
+import { useGetBaseDataQuery } from '../../../common/generated/graphql-react-apollo';
 import { Account, BaseData, Category } from '../types';
 
 export function createCatchAllAccount(id = 'all'): Account {

@@ -1,13 +1,13 @@
 import 'cross-fetch/polyfill';
 
-import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
-import express, { Request, Response } from 'express';
-
-import { GraphQLClient } from 'graphql-request';
 import bodyParser from 'body-parser';
 import dayjs from 'dayjs';
 import dotenv from 'dotenv';
-import { getSdk } from './generated/graphql';
+import express, { Request, Response } from 'express';
+import { GraphQLClient } from 'graphql-request';
+import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
+
+import { getSdk } from '../../common/generated/graphql-request';
 
 dotenv.config();
 
@@ -110,8 +110,8 @@ app.post('/import-transactions', async (req, res) => {
     const res = await sdk.CheckTransaction({
       accountId: toAccountId,
       amount: t.amount,
-      startDate,
-      endDate,
+      startDate: dayjs(startDate).toISOString(),
+      endDate: endDate.toISOString(),
       description: t.description,
       originalId: t.transaction_id,
     });

@@ -8,12 +8,12 @@ import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
 import {
   useExchangeCodeMutation,
   useGetAuthUrlQuery,
   useImportTransactionsMutation,
-} from '../../generated/graphql';
+} from '../../../../common/generated/graphql-react-apollo';
+import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
 import { time, useBaseData } from '../../lib';
 import { Account } from '../../types';
 import { useCreateTransaction } from './data';

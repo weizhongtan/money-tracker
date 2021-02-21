@@ -2952,6 +2952,29 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type CheckTransactionQueryVariables = Exact<{
+  accountId: Scalars['uuid'];
+  amount: Scalars['numeric'];
+  startDate: Scalars['timestamptz'];
+  endDate: Scalars['timestamptz'];
+  description: Scalars['String'];
+  originalId: Scalars['String'];
+}>;
+
+
+export type CheckTransactionQuery = { transaction: Array<Pick<Transaction, 'id' | 'account_id' | 'amount' | 'date' | 'description'>> };
+
+export type InsertTransactionMutationVariables = Exact<{
+  accountId?: Maybe<Scalars['uuid']>;
+  amount?: Maybe<Scalars['numeric']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  originalId?: Maybe<Scalars['String']>;
+}>;
+
+
+export type InsertTransactionMutation = { insert_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
+
 export type CreateCategoryMutationVariables = Exact<{
   name: Scalars['String'];
   type?: Maybe<Scalars['String']>;
@@ -3000,17 +3023,6 @@ export type ImportTransactionsMutationVariables = Exact<{
 
 
 export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'created' | 'skipped'>> };
-
-export type InsertTransactionMutationVariables = Exact<{
-  accountId?: Maybe<Scalars['uuid']>;
-  amount?: Maybe<Scalars['numeric']>;
-  date?: Maybe<Scalars['timestamptz']>;
-  description?: Maybe<Scalars['String']>;
-  originalId?: Maybe<Scalars['String']>;
-}>;
-
-
-export type InsertTransactionMutation = { insert_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
 
 export type PairTransactionsMutationVariables = Exact<{
   transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
@@ -3068,18 +3080,6 @@ export type UpdateTransactionsCategoryMutation = { update_transaction?: Maybe<(
       & { category: Pick<Category, 'id' | 'name'> }
     )> }
   )> };
-
-export type CheckTransactionQueryVariables = Exact<{
-  accountId: Scalars['uuid'];
-  amount: Scalars['numeric'];
-  startDate: Scalars['timestamptz'];
-  endDate: Scalars['timestamptz'];
-  description: Scalars['String'];
-  originalId: Scalars['String'];
-}>;
-
-
-export type CheckTransactionQuery = { transaction: Array<Pick<Transaction, 'id' | 'account_id' | 'amount' | 'date' | 'description'>> };
 
 export type GetAmountGroupsQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -3147,6 +3147,88 @@ export type GetTransactionsQuery = { transactions: { aggregate?: Maybe<Pick<Tran
     )> } };
 
 
+export const CheckTransactionDocument = gql`
+    query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!, $originalId: String!) {
+  transaction(
+    where: {_or: [{_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}, {original_id: {_eq: $originalId}}]}
+  ) {
+    id
+    account_id
+    amount
+    date
+    description
+  }
+}
+    `;
+
+/**
+ * __useCheckTransactionQuery__
+ *
+ * To run a query within a React component, call `useCheckTransactionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckTransactionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckTransactionQuery({
+ *   variables: {
+ *      accountId: // value for 'accountId'
+ *      amount: // value for 'amount'
+ *      startDate: // value for 'startDate'
+ *      endDate: // value for 'endDate'
+ *      description: // value for 'description'
+ *      originalId: // value for 'originalId'
+ *   },
+ * });
+ */
+export function useCheckTransactionQuery(baseOptions: Apollo.QueryHookOptions<CheckTransactionQuery, CheckTransactionQueryVariables>) {
+        return Apollo.useQuery<CheckTransactionQuery, CheckTransactionQueryVariables>(CheckTransactionDocument, baseOptions);
+      }
+export function useCheckTransactionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckTransactionQuery, CheckTransactionQueryVariables>) {
+          return Apollo.useLazyQuery<CheckTransactionQuery, CheckTransactionQueryVariables>(CheckTransactionDocument, baseOptions);
+        }
+export type CheckTransactionQueryHookResult = ReturnType<typeof useCheckTransactionQuery>;
+export type CheckTransactionLazyQueryHookResult = ReturnType<typeof useCheckTransactionLazyQuery>;
+export type CheckTransactionQueryResult = Apollo.QueryResult<CheckTransactionQuery, CheckTransactionQueryVariables>;
+export const InsertTransactionDocument = gql`
+    mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String, $originalId: String) {
+  insert_transaction(
+    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description, original_id: $originalId}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type InsertTransactionMutationFn = Apollo.MutationFunction<InsertTransactionMutation, InsertTransactionMutationVariables>;
+
+/**
+ * __useInsertTransactionMutation__
+ *
+ * To run a mutation, you first call `useInsertTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertTransactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertTransactionMutation, { data, loading, error }] = useInsertTransactionMutation({
+ *   variables: {
+ *      accountId: // value for 'accountId'
+ *      amount: // value for 'amount'
+ *      date: // value for 'date'
+ *      description: // value for 'description'
+ *      originalId: // value for 'originalId'
+ *   },
+ * });
+ */
+export function useInsertTransactionMutation(baseOptions?: Apollo.MutationHookOptions<InsertTransactionMutation, InsertTransactionMutationVariables>) {
+        return Apollo.useMutation<InsertTransactionMutation, InsertTransactionMutationVariables>(InsertTransactionDocument, baseOptions);
+      }
+export type InsertTransactionMutationHookResult = ReturnType<typeof useInsertTransactionMutation>;
+export type InsertTransactionMutationResult = Apollo.MutationResult<InsertTransactionMutation>;
+export type InsertTransactionMutationOptions = Apollo.BaseMutationOptions<InsertTransactionMutation, InsertTransactionMutationVariables>;
 export const CreateCategoryDocument = gql`
     mutation CreateCategory($name: String!, $type: String, $isParent: Boolean) {
   insert_category(objects: {name: $name, type: $type, is_parent: $isParent}) {
@@ -3329,44 +3411,6 @@ export function useImportTransactionsMutation(baseOptions?: Apollo.MutationHookO
 export type ImportTransactionsMutationHookResult = ReturnType<typeof useImportTransactionsMutation>;
 export type ImportTransactionsMutationResult = Apollo.MutationResult<ImportTransactionsMutation>;
 export type ImportTransactionsMutationOptions = Apollo.BaseMutationOptions<ImportTransactionsMutation, ImportTransactionsMutationVariables>;
-export const InsertTransactionDocument = gql`
-    mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String, $originalId: String) {
-  insert_transaction(
-    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description, original_id: $originalId}
-  ) {
-    affected_rows
-  }
-}
-    `;
-export type InsertTransactionMutationFn = Apollo.MutationFunction<InsertTransactionMutation, InsertTransactionMutationVariables>;
-
-/**
- * __useInsertTransactionMutation__
- *
- * To run a mutation, you first call `useInsertTransactionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertTransactionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertTransactionMutation, { data, loading, error }] = useInsertTransactionMutation({
- *   variables: {
- *      accountId: // value for 'accountId'
- *      amount: // value for 'amount'
- *      date: // value for 'date'
- *      description: // value for 'description'
- *      originalId: // value for 'originalId'
- *   },
- * });
- */
-export function useInsertTransactionMutation(baseOptions?: Apollo.MutationHookOptions<InsertTransactionMutation, InsertTransactionMutationVariables>) {
-        return Apollo.useMutation<InsertTransactionMutation, InsertTransactionMutationVariables>(InsertTransactionDocument, baseOptions);
-      }
-export type InsertTransactionMutationHookResult = ReturnType<typeof useInsertTransactionMutation>;
-export type InsertTransactionMutationResult = Apollo.MutationResult<InsertTransactionMutation>;
-export type InsertTransactionMutationOptions = Apollo.BaseMutationOptions<InsertTransactionMutation, InsertTransactionMutationVariables>;
 export const PairTransactionsDocument = gql`
     mutation PairTransactions($transactionIds: [uuid!]!, $setLinkedAccountId: uuid, $setPairId: uuid) {
   update_transaction(
@@ -3542,50 +3586,6 @@ export function useUpdateTransactionsCategoryMutation(baseOptions?: Apollo.Mutat
 export type UpdateTransactionsCategoryMutationHookResult = ReturnType<typeof useUpdateTransactionsCategoryMutation>;
 export type UpdateTransactionsCategoryMutationResult = Apollo.MutationResult<UpdateTransactionsCategoryMutation>;
 export type UpdateTransactionsCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateTransactionsCategoryMutation, UpdateTransactionsCategoryMutationVariables>;
-export const CheckTransactionDocument = gql`
-    query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!, $originalId: String!) {
-  transaction(
-    where: {_or: [{_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}, {original_id: {_eq: $originalId}}]}
-  ) {
-    id
-    account_id
-    amount
-    date
-    description
-  }
-}
-    `;
-
-/**
- * __useCheckTransactionQuery__
- *
- * To run a query within a React component, call `useCheckTransactionQuery` and pass it any options that fit your needs.
- * When your component renders, `useCheckTransactionQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCheckTransactionQuery({
- *   variables: {
- *      accountId: // value for 'accountId'
- *      amount: // value for 'amount'
- *      startDate: // value for 'startDate'
- *      endDate: // value for 'endDate'
- *      description: // value for 'description'
- *      originalId: // value for 'originalId'
- *   },
- * });
- */
-export function useCheckTransactionQuery(baseOptions: Apollo.QueryHookOptions<CheckTransactionQuery, CheckTransactionQueryVariables>) {
-        return Apollo.useQuery<CheckTransactionQuery, CheckTransactionQueryVariables>(CheckTransactionDocument, baseOptions);
-      }
-export function useCheckTransactionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckTransactionQuery, CheckTransactionQueryVariables>) {
-          return Apollo.useLazyQuery<CheckTransactionQuery, CheckTransactionQueryVariables>(CheckTransactionDocument, baseOptions);
-        }
-export type CheckTransactionQueryHookResult = ReturnType<typeof useCheckTransactionQuery>;
-export type CheckTransactionLazyQueryHookResult = ReturnType<typeof useCheckTransactionLazyQuery>;
-export type CheckTransactionQueryResult = Apollo.QueryResult<CheckTransactionQuery, CheckTransactionQueryVariables>;
 export const GetAmountGroupsDocument = gql`
     query GetAmountGroups($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $categoryId: uuid, $groupBy: String) {
   groups: func_timeline(

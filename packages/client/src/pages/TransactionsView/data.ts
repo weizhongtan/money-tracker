@@ -6,7 +6,7 @@ import {
   usePairTransactionsMutation,
   useUnpairTransactionsMutation,
   useUpdateTransactionsCategoryMutation,
-} from '../../generated/graphql';
+} from '../../../../common/generated/graphql-react-apollo';
 import { reversible, useBaseData } from '../../lib';
 import { Account, Nullable, TimePeriod } from '../../types';
 

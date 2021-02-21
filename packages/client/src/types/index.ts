@@ -1,4 +1,7 @@
-import { GetBaseDataQuery, GetTransactionsQuery } from '../generated/graphql';
+import {
+  GetBaseDataQuery,
+  GetTransactionsQuery,
+} from '../../../common/generated/graphql-react-apollo';
 import { time } from '../lib';
 
 export type GetElementType<T extends Array<any>> = T extends (infer U)[]

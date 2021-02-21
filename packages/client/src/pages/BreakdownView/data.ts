@@ -1,7 +1,7 @@
 import {
   GetCategoryBreakdownQuery,
   useGetCategoryBreakdownQuery,
-} from '../../generated/graphql';
+} from '../../../../common/generated/graphql-react-apollo';
 import { GetElementType, TimePeriod } from '../../types';
 
 export const useCategories = ({

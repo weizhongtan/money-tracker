@@ -4,7 +4,7 @@ import {
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useUpdateCategoryMutation,
-} from '../../generated/graphql';
+} from '../../../../common/generated/graphql-react-apollo';
 
 export const useCreateCategory = () => {
   const [_createCategory] = useCreateCategoryMutation({

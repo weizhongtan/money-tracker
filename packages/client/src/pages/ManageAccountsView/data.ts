@@ -7,7 +7,7 @@ import {
   InsertTransactionDocument,
   InsertTransactionMutation,
   InsertTransactionMutationVariables,
-} from '../../generated/graphql';
+} from '../../../../common/generated/graphql-react-apollo';
 import { time } from '../../lib';
 
 interface Transaction {
