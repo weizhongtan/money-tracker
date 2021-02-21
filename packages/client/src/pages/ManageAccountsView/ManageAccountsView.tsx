@@ -1,21 +1,21 @@
-import { UploadOutlined } from '@ant-design/icons';
-import { useApolloClient } from '@apollo/client';
-import { Button, Space, Table, Typography, Upload, notification } from 'antd';
-import { SelectProps } from 'antd/lib/select';
-import { TableProps } from 'antd/lib/table';
-import csvjson from 'csvjson';
-import { parse as parseOFX } from 'ofx-js';
-import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-
 import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
+import { Button, Space, Table, Typography, Upload, notification } from 'antd';
+import { time, useBaseData } from '../../lib';
 import {
   useExchangeCodeMutation,
   useGetAuthUrlQuery,
   useImportTransactionsMutation,
 } from '../../generated/graphql';
-import { time, useBaseData } from '../../lib';
+import { useHistory, useLocation } from 'react-router-dom';
+
 import { Account } from '../../types';
+import React from 'react';
+import { SelectProps } from 'antd/lib/select';
+import { TableProps } from 'antd/lib/table';
+import { UploadOutlined } from '@ant-design/icons';
+import csvjson from 'csvjson';
+import { parse as parseOFX } from 'ofx-js';
+import { useApolloClient } from '@apollo/client';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -247,44 +247,20 @@ const ImportAccount = () => {
                   return;
                 }
                 const res = await importTransactions({
-                  variables: { cardId: id },
+                  variables: {
+                    fromCardId: id,
+                    toAccountId: account.id,
+                    startDate:
+                      account.mostRecentTransactionDate ?? time().toISOString(),
+                  },
                 });
-                console.log(res);
-
-                const parsedJson = JSON.parse(
-                  res.data?.importTransactions?.transactionsJSON ?? '[]'
-                );
-
-                const proms = parsedJson
-                  .filter((t: any) => {
-                    return (
-                      account.mostRecentTransactionDate &&
-                      time(t.timestamp) >=
-                        time(account.mostRecentTransactionDate)
-                    );
-                  })
-                  .map((t: any) => {
-                    return createTransaction({
-                      accountId: account.id,
-                      amount: -t.amount,
-                      date: t.timestamp,
-                      description: t.description,
-                      originalId: t.transaction_id,
-                    });
-                  });
-                const results = await Promise.all(proms);
-
-                const created = results.filter((x) => x).length;
-                const skipped = results.length - created;
-
-                console.log(`Created ${created} records`);
-                console.log(`Skipped ${skipped} records`);
 
                 notification.success({
                   message: 'Import complete',
                   description: (
                     <span>
-                      Created {created} records, skipped {skipped} records
+                      Created {res.data?.importTransactions?.created} records,
+                      skipped {res.data?.importTransactions?.skipped} records
                     </span>
                   ),
                   placement: 'topLeft',

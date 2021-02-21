@@ -1,3 +1,7 @@
+import { GraphQLClient } from 'graphql-request';
+import * as Dom from 'graphql-request/dist/types.dom';
+import { print } from 'graphql';
+import gql from 'graphql-tag';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
@@ -47,7 +51,8 @@ export type Boolean_Comparison_Exp = {
 };
 
 export type ImportTransactionsOutput = {
-  transactionsJSON: Scalars['String'];
+  created: Scalars['Int'];
+  skipped: Scalars['Int'];
 };
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
@@ -1064,8 +1069,10 @@ export type Mutation_RootExchangeCodeArgs = {
 
 /** mutation root */
 export type Mutation_RootImportTransactionsArgs = {
-  accountId?: Maybe<Scalars['String']>;
-  cardId?: Maybe<Scalars['String']>;
+  fromAccountId?: Maybe<Scalars['String']>;
+  fromCardId?: Maybe<Scalars['String']>;
+  startDate: Scalars['timestamptz'];
+  toAccountId: Scalars['String'];
 };
 
 
@@ -2946,3 +2953,66 @@ export type Uuid_Comparison_Exp = {
   _neq?: Maybe<Scalars['uuid']>;
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
+
+export type CheckTransactionQueryVariables = Exact<{
+  accountId: Scalars['uuid'];
+  amount: Scalars['numeric'];
+  startDate: Scalars['timestamptz'];
+  endDate: Scalars['timestamptz'];
+  description: Scalars['String'];
+  originalId: Scalars['String'];
+}>;
+
+
+export type CheckTransactionQuery = { transaction: Array<Pick<Transaction, 'id' | 'account_id' | 'amount' | 'date' | 'description'>> };
+
+export type InsertTransactionMutationVariables = Exact<{
+  accountId?: Maybe<Scalars['uuid']>;
+  amount?: Maybe<Scalars['numeric']>;
+  date?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  originalId?: Maybe<Scalars['String']>;
+}>;
+
+
+export type InsertTransactionMutation = { insert_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
+
+
+export const CheckTransactionDocument = gql`
+    query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!, $originalId: String!) {
+  transaction(
+    where: {_or: [{_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}, {original_id: {_eq: $originalId}}]}
+  ) {
+    id
+    account_id
+    amount
+    date
+    description
+  }
+}
+    `;
+export const InsertTransactionDocument = gql`
+    mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String, $originalId: String) {
+  insert_transaction(
+    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description, original_id: $originalId}
+  ) {
+    affected_rows
+  }
+}
+    `;
+
+export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
+
+
+const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+  return {
+    CheckTransaction(variables: CheckTransactionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CheckTransactionQuery> {
+      return withWrapper(() => client.request<CheckTransactionQuery>(print(CheckTransactionDocument), variables, requestHeaders));
+    },
+    InsertTransaction(variables?: InsertTransactionMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<InsertTransactionMutation> {
+      return withWrapper(() => client.request<InsertTransactionMutation>(print(InsertTransactionDocument), variables, requestHeaders));
+    }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;
