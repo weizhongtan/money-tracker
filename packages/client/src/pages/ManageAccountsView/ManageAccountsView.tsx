@@ -1,21 +1,21 @@
-import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
+import { UploadOutlined } from '@ant-design/icons';
+import { useApolloClient } from '@apollo/client';
 import { Button, Space, Table, Typography, Upload, notification } from 'antd';
-import { time, useBaseData } from '../../lib';
+import { SelectProps } from 'antd/lib/select';
+import { TableProps } from 'antd/lib/table';
+import csvjson from 'csvjson';
+import { parse as parseOFX } from 'ofx-js';
+import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+
+import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
 import {
   useExchangeCodeMutation,
   useGetAuthUrlQuery,
   useImportTransactionsMutation,
 } from '../../generated/graphql';
-import { useHistory, useLocation } from 'react-router-dom';
-
+import { time, useBaseData } from '../../lib';
 import { Account } from '../../types';
-import React from 'react';
-import { SelectProps } from 'antd/lib/select';
-import { TableProps } from 'antd/lib/table';
-import { UploadOutlined } from '@ant-design/icons';
-import csvjson from 'csvjson';
-import { parse as parseOFX } from 'ofx-js';
-import { useApolloClient } from '@apollo/client';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -161,7 +161,7 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
                 console.log(parsedJson);
 
                 const proms = parsedJson.map((t) => {
-                  return createTransaction(t);
+                  // return createTransaction(t);
                 });
                 const results = await Promise.all(proms);
 
