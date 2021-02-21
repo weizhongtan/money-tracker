@@ -2,10 +2,10 @@
 schema:
   - http://localhost:3000/v1/graphql
 documents:
-  - './src/**/*.gql'
+  - './packages/**/*.gql'
 overwrite: true
 generates:
-  './src/generated/graphql.tsx':
+  './packages/common/generated/graphql-react-apollo.ts':
     plugins:
       - typescript
       - typescript-operations
@@ -15,10 +15,18 @@ generates:
       withHOC: false
       withComponent: false
       skipTypename: true
-      scalars:
+      scalars: &scalars
         timestamptz: string
         uuid: string
         numeric: number
-  './graphql.schema.json':
+  './packages/common/generated/graphql-request.ts':
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request
+    config:
+      skipTypename: true
+      scalars: *scalars
+  './packages/common/graphql.schema.json':
     plugins:
       - introspection

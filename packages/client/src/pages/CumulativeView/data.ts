@@ -1,4 +1,4 @@
-import { useGetBalancesQuery } from '../../generated/graphql';
+import { useGetBalancesQuery } from '../../../../common/generated/graphql-react-apollo';
 import { TimePeriod } from '../../types';
 
 export const useData = ({

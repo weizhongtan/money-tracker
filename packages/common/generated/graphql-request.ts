@@ -14,9 +14,9 @@ export type Scalars = {
   Int: number;
   Float: number;
   json: any;
-  numeric: any;
-  timestamptz: any;
-  uuid: any;
+  numeric: number;
+  timestamptz: string;
+  uuid: string;
 };
 
 export type AccountAuthOutput = {
@@ -2954,17 +2954,54 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
-export type CheckTransactionQueryVariables = Exact<{
-  accountId: Scalars['uuid'];
-  amount: Scalars['numeric'];
-  startDate: Scalars['timestamptz'];
-  endDate: Scalars['timestamptz'];
-  description: Scalars['String'];
-  originalId: Scalars['String'];
+export type CreateCategoryMutationVariables = Exact<{
+  name: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
+  isParent?: Maybe<Scalars['Boolean']>;
 }>;
 
 
-export type CheckTransactionQuery = { transaction: Array<Pick<Transaction, 'id' | 'account_id' | 'amount' | 'date' | 'description'>> };
+export type CreateCategoryMutation = { insert_category?: Maybe<(
+    Pick<Category_Mutation_Response, 'affected_rows'>
+    & { returning: Array<Pick<Category, 'id'>> }
+  )> };
+
+export type DeleteCategoryMutationVariables = Exact<{
+  id?: Maybe<Scalars['uuid']>;
+}>;
+
+
+export type DeleteCategoryMutation = { delete_category?: Maybe<(
+    Pick<Category_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      Pick<Category, 'id' | 'name' | 'type'>
+      & { key: Category['id'] }
+    )> }
+  )> };
+
+export type DeleteTransactionsMutationVariables = Exact<{
+  transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
+}>;
+
+
+export type DeleteTransactionsMutation = { delete_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
+
+export type ExchangeCodeMutationVariables = Exact<{
+  code: Scalars['String'];
+}>;
+
+
+export type ExchangeCodeMutation = { exchangeCode?: Maybe<Pick<AuthSuccess, 'message' | 'accountIds' | 'cardIds'>> };
+
+export type ImportTransactionsMutationVariables = Exact<{
+  fromAccountId?: Maybe<Scalars['String']>;
+  fromCardId?: Maybe<Scalars['String']>;
+  toAccountId: Scalars['String'];
+  startDate: Scalars['timestamptz'];
+}>;
+
+
+export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'created' | 'skipped'>> };
 
 export type InsertTransactionMutationVariables = Exact<{
   accountId?: Maybe<Scalars['uuid']>;
@@ -2977,7 +3014,270 @@ export type InsertTransactionMutationVariables = Exact<{
 
 export type InsertTransactionMutation = { insert_transaction?: Maybe<Pick<Transaction_Mutation_Response, 'affected_rows'>> };
 
+export type PairTransactionsMutationVariables = Exact<{
+  transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
+  setLinkedAccountId?: Maybe<Scalars['uuid']>;
+  setPairId?: Maybe<Scalars['uuid']>;
+}>;
 
+
+export type PairTransactionsMutation = { update_transaction?: Maybe<(
+    Pick<Transaction_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      Pick<Transaction, 'id' | 'pair_id'>
+      & { linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>> }
+    )> }
+  )> };
+
+export type UnpairTransactionsMutationVariables = Exact<{
+  pairIds: Array<Scalars['uuid']> | Scalars['uuid'];
+}>;
+
+
+export type UnpairTransactionsMutation = { update_transaction?: Maybe<(
+    Pick<Transaction_Mutation_Response, 'affected_rows'>
+    & { returning: Array<Pick<Transaction, 'id'>> }
+  )> };
+
+export type UpdateCategoryMutationVariables = Exact<{
+  ids: Array<Scalars['uuid']> | Scalars['uuid'];
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  isParent?: Maybe<Scalars['Boolean']>;
+  parentCategoryId?: Maybe<Scalars['uuid']>;
+}>;
+
+
+export type UpdateCategoryMutation = { update_category?: Maybe<(
+    Pick<Category_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      Pick<Category, 'id' | 'name' | 'type'>
+      & { isParent: Category['is_parent'] }
+      & { parent?: Maybe<Pick<Category, 'id'>> }
+    )> }
+  )> };
+
+export type UpdateTransactionsCategoryMutationVariables = Exact<{
+  transactionIds: Array<Scalars['uuid']> | Scalars['uuid'];
+  categoryId: Scalars['uuid'];
+}>;
+
+
+export type UpdateTransactionsCategoryMutation = { update_transaction?: Maybe<(
+    Pick<Transaction_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      Pick<Transaction, 'id'>
+      & { category: Pick<Category, 'id' | 'name'> }
+    )> }
+  )> };
+
+export type CheckTransactionQueryVariables = Exact<{
+  accountId: Scalars['uuid'];
+  amount: Scalars['numeric'];
+  startDate: Scalars['timestamptz'];
+  endDate: Scalars['timestamptz'];
+  description: Scalars['String'];
+  originalId: Scalars['String'];
+}>;
+
+
+export type CheckTransactionQuery = { transaction: Array<Pick<Transaction, 'id' | 'account_id' | 'amount' | 'date' | 'description'>> };
+
+export type GetAmountGroupsQueryVariables = Exact<{
+  startDate?: Maybe<Scalars['timestamptz']>;
+  endDate?: Maybe<Scalars['timestamptz']>;
+  accountId?: Maybe<Scalars['uuid']>;
+  categoryId?: Maybe<Scalars['uuid']>;
+  groupBy?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetAmountGroupsQuery = { groups: Array<Pick<Table_Amount_Group, 'date' | 'balance' | 'expense' | 'income'>>, aggregate: { aggregate?: Maybe<{ avg?: Maybe<Pick<Table_Amount_Group_Avg_Fields, 'balance' | 'expense' | 'income'>>, max?: Maybe<Pick<Table_Amount_Group_Max_Fields, 'balance' | 'income'>>, min?: Maybe<Pick<Table_Amount_Group_Min_Fields, 'expense'>> }> } };
+
+export type GetAuthUrlQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAuthUrlQuery = { getAuthUrl?: Maybe<Pick<AuthUrl, 'url'>> };
+
+export type GetBalancesQueryVariables = Exact<{
+  startDate?: Maybe<Scalars['timestamptz']>;
+  endDate?: Maybe<Scalars['timestamptz']>;
+  accountId?: Maybe<Scalars['uuid']>;
+  groupBy?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetBalancesQuery = { balances: Array<Pick<Table_Cumulative_Amount, 'date' | 'sum'>> };
+
+export type GetBaseDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBaseDataQuery = { accounts: Array<(
+    Pick<Account, 'id' | 'name' | 'sum' | 'minimum' | 'colour' | 'status'>
+    & { key: Account['id'], initialAmount: Account['initial_amount'], mostRecentTransactionDate: Account['most_recent_transaction_date'] }
+  )>, categories: Array<(
+    Pick<Category, 'id' | 'name' | 'type'>
+    & { key: Category['id'], isParent: Category['is_parent'] }
+    & { parent?: Maybe<Pick<Category, 'id' | 'name'>> }
+  )> };
+
+export type GetCategoryBreakdownQueryVariables = Exact<{
+  startDate?: Maybe<Scalars['timestamptz']>;
+  endDate?: Maybe<Scalars['timestamptz']>;
+  groupCategories: Scalars['Boolean'];
+  accountId?: Maybe<Scalars['uuid']>;
+}>;
+
+
+export type GetCategoryBreakdownQuery = { expenseCategories: Array<Pick<Category, 'id' | 'name' | 'sum'>>, expenseSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> }, incomeCategories: Array<Pick<Category, 'id' | 'name' | 'sum'>>, incomeSum: { aggregate?: Maybe<{ sum?: Maybe<Pick<Transaction_Sum_Fields, 'amount'>> }> } };
+
+export type GetTransactionsQueryVariables = Exact<{
+  startDate?: Maybe<Scalars['timestamptz']>;
+  endDate?: Maybe<Scalars['timestamptz']>;
+  categoryIds?: Maybe<Array<Scalars['uuid']> | Scalars['uuid']>;
+  accountId?: Maybe<Scalars['uuid']>;
+  searchText: Scalars['String'];
+  searchAmount: Scalars['numeric'];
+  searchAmountComplement: Scalars['numeric'];
+}>;
+
+
+export type GetTransactionsQuery = { transactions: { aggregate?: Maybe<Pick<Transaction_Aggregate_Fields, 'count'>>, nodes: Array<(
+      Pick<Transaction, 'id' | 'date' | 'amount' | 'description' | 'pair_id' | 'original_id'>
+      & { key: Transaction['id'] }
+      & { account: Pick<Account, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>>, category: Pick<Category, 'id' | 'name'> }
+    )> } };
+
+
+export const CreateCategoryDocument = gql`
+    mutation CreateCategory($name: String!, $type: String, $isParent: Boolean) {
+  insert_category(objects: {name: $name, type: $type, is_parent: $isParent}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const DeleteCategoryDocument = gql`
+    mutation DeleteCategory($id: uuid) {
+  delete_category(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+      key: id
+      name
+      type
+    }
+  }
+}
+    `;
+export const DeleteTransactionsDocument = gql`
+    mutation DeleteTransactions($transactionIds: [uuid!]!) {
+  delete_transaction(where: {id: {_in: $transactionIds}}) {
+    affected_rows
+  }
+}
+    `;
+export const ExchangeCodeDocument = gql`
+    mutation ExchangeCode($code: String!) {
+  exchangeCode(code: $code) {
+    message
+    accountIds
+    cardIds
+  }
+}
+    `;
+export const ImportTransactionsDocument = gql`
+    mutation ImportTransactions($fromAccountId: String, $fromCardId: String, $toAccountId: String!, $startDate: timestamptz!) {
+  importTransactions(
+    fromAccountId: $fromAccountId
+    fromCardId: $fromCardId
+    toAccountId: $toAccountId
+    startDate: $startDate
+  ) {
+    created
+    skipped
+  }
+}
+    `;
+export const InsertTransactionDocument = gql`
+    mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String, $originalId: String) {
+  insert_transaction(
+    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description, original_id: $originalId}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const PairTransactionsDocument = gql`
+    mutation PairTransactions($transactionIds: [uuid!]!, $setLinkedAccountId: uuid, $setPairId: uuid) {
+  update_transaction(
+    where: {id: {_in: $transactionIds}}
+    _set: {updated_at: "now", linked_account_id: $setLinkedAccountId, pair_id: $setPairId}
+  ) {
+    affected_rows
+    returning {
+      id
+      linkedAccount {
+        id
+        name
+        colour
+      }
+      pair_id
+    }
+  }
+}
+    `;
+export const UnpairTransactionsDocument = gql`
+    mutation UnpairTransactions($pairIds: [uuid!]!) {
+  update_transaction(
+    where: {pair_id: {_in: $pairIds}}
+    _set: {linked_account_id: null, updated_at: "now", pair_id: null}
+  ) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const UpdateCategoryDocument = gql`
+    mutation UpdateCategory($ids: [uuid!]!, $name: String, $type: String, $isParent: Boolean, $parentCategoryId: uuid) {
+  update_category(
+    where: {id: {_in: $ids}}
+    _set: {name: $name, type: $type, is_parent: $isParent, parent_category_id: $parentCategoryId}
+  ) {
+    affected_rows
+    returning {
+      id
+      name
+      type
+      isParent: is_parent
+      parent: category {
+        id
+      }
+    }
+  }
+}
+    `;
+export const UpdateTransactionsCategoryDocument = gql`
+    mutation UpdateTransactionsCategory($transactionIds: [uuid!]!, $categoryId: uuid!) {
+  update_transaction(
+    where: {id: {_in: $transactionIds}}
+    _set: {category_id: $categoryId, updated_at: "now"}
+  ) {
+    affected_rows
+    returning {
+      id
+      category {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
 export const CheckTransactionDocument = gql`
     query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!, $originalId: String!) {
   transaction(
@@ -2991,12 +3291,153 @@ export const CheckTransactionDocument = gql`
   }
 }
     `;
-export const InsertTransactionDocument = gql`
-    mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String, $originalId: String) {
-  insert_transaction(
-    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description, original_id: $originalId}
+export const GetAmountGroupsDocument = gql`
+    query GetAmountGroups($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $categoryId: uuid, $groupBy: String) {
+  groups: func_timeline(
+    args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}
+    where: {date: {_gte: $startDate, _lte: $endDate}}
+    order_by: {date: asc}
   ) {
-    affected_rows
+    date
+    balance
+    expense
+    income
+  }
+  aggregate: func_timeline_aggregate(
+    args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}
+    where: {date: {_gte: $startDate, _lte: $endDate}}
+    order_by: {date: asc}
+  ) {
+    aggregate {
+      avg {
+        balance
+        expense
+        income
+      }
+      max {
+        balance
+        income
+      }
+      min {
+        expense
+      }
+    }
+  }
+}
+    `;
+export const GetAuthUrlDocument = gql`
+    query GetAuthUrl {
+  getAuthUrl {
+    url
+  }
+}
+    `;
+export const GetBalancesDocument = gql`
+    query GetBalances($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $groupBy: String) {
+  balances: func_cumulative_amount(
+    args: {v_account_id: $accountId, v_group_by: $groupBy, v_start_date: $startDate, v_end_date: $endDate}
+    where: {date: {_gte: $startDate, _lte: $endDate}}
+    order_by: {date: asc}
+  ) {
+    date
+    sum
+  }
+}
+    `;
+export const GetBaseDataDocument = gql`
+    query GetBaseData {
+  accounts: func_account(order_by: {name: asc}) {
+    id
+    key: id
+    name
+    initialAmount: initial_amount
+    sum
+    minimum
+    colour
+    mostRecentTransactionDate: most_recent_transaction_date
+    status
+  }
+  categories: category(order_by: {name: asc}) {
+    id
+    key: id
+    name
+    type
+    isParent: is_parent
+    parent: category {
+      id
+      name
+    }
+  }
+}
+    `;
+export const GetCategoryBreakdownDocument = gql`
+    query GetCategoryBreakdown($startDate: timestamptz, $endDate: timestamptz, $groupCategories: Boolean!, $accountId: uuid) {
+  expenseCategories: func_category_breakdown(
+    args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "expense", v_account_id: $accountId}
+  ) {
+    id
+    name
+    sum
+  }
+  expenseSum: transaction_aggregate(
+    where: {category: {type: {_eq: "expense"}}, date: {_gte: $startDate, _lte: $endDate}}
+  ) {
+    aggregate {
+      sum {
+        amount
+      }
+    }
+  }
+  incomeCategories: func_category_breakdown(
+    args: {v_start_date: $startDate, v_end_date: $endDate, v_group_categories: $groupCategories, v_category_type: "income", v_account_id: $accountId}
+  ) {
+    id
+    name
+    sum
+  }
+  incomeSum: transaction_aggregate(
+    where: {category: {type: {_eq: "income"}}, date: {_gte: $startDate, _lte: $endDate}}
+  ) {
+    aggregate {
+      sum {
+        amount
+      }
+    }
+  }
+}
+    `;
+export const GetTransactionsDocument = gql`
+    query GetTransactions($startDate: timestamptz, $endDate: timestamptz, $categoryIds: [uuid!], $accountId: uuid, $searchText: String!, $searchAmount: numeric!, $searchAmountComplement: numeric!) {
+  transactions: transaction_aggregate(
+    where: {date: {_gte: $startDate, _lte: $endDate}, account_id: {_eq: $accountId}, _and: [{_or: [{category_id: {_is_null: true}}, {category_id: {_in: $categoryIds}}, {category: {parent_category_id: {_in: $categoryIds}}}]}, {_or: [{description: {_ilike: $searchText}}, {amount: {_eq: $searchAmount}}, {amount: {_eq: $searchAmountComplement}}]}]}
+    order_by: {date: desc}
+  ) {
+    aggregate {
+      count
+    }
+    nodes {
+      id
+      key: id
+      date
+      amount
+      description
+      account {
+        id
+        name
+        colour
+      }
+      linkedAccount {
+        id
+        name
+        colour
+      }
+      category {
+        id
+        name
+      }
+      pair_id
+      original_id
+    }
   }
 }
     `;
@@ -3007,11 +3448,56 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    CheckTransaction(variables: CheckTransactionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CheckTransactionQuery> {
-      return withWrapper(() => client.request<CheckTransactionQuery>(print(CheckTransactionDocument), variables, requestHeaders));
+    CreateCategory(variables: CreateCategoryMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateCategoryMutation> {
+      return withWrapper(() => client.request<CreateCategoryMutation>(print(CreateCategoryDocument), variables, requestHeaders));
+    },
+    DeleteCategory(variables?: DeleteCategoryMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteCategoryMutation> {
+      return withWrapper(() => client.request<DeleteCategoryMutation>(print(DeleteCategoryDocument), variables, requestHeaders));
+    },
+    DeleteTransactions(variables: DeleteTransactionsMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteTransactionsMutation> {
+      return withWrapper(() => client.request<DeleteTransactionsMutation>(print(DeleteTransactionsDocument), variables, requestHeaders));
+    },
+    ExchangeCode(variables: ExchangeCodeMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ExchangeCodeMutation> {
+      return withWrapper(() => client.request<ExchangeCodeMutation>(print(ExchangeCodeDocument), variables, requestHeaders));
+    },
+    ImportTransactions(variables: ImportTransactionsMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ImportTransactionsMutation> {
+      return withWrapper(() => client.request<ImportTransactionsMutation>(print(ImportTransactionsDocument), variables, requestHeaders));
     },
     InsertTransaction(variables?: InsertTransactionMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<InsertTransactionMutation> {
       return withWrapper(() => client.request<InsertTransactionMutation>(print(InsertTransactionDocument), variables, requestHeaders));
+    },
+    PairTransactions(variables: PairTransactionsMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<PairTransactionsMutation> {
+      return withWrapper(() => client.request<PairTransactionsMutation>(print(PairTransactionsDocument), variables, requestHeaders));
+    },
+    UnpairTransactions(variables: UnpairTransactionsMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UnpairTransactionsMutation> {
+      return withWrapper(() => client.request<UnpairTransactionsMutation>(print(UnpairTransactionsDocument), variables, requestHeaders));
+    },
+    UpdateCategory(variables: UpdateCategoryMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateCategoryMutation> {
+      return withWrapper(() => client.request<UpdateCategoryMutation>(print(UpdateCategoryDocument), variables, requestHeaders));
+    },
+    UpdateTransactionsCategory(variables: UpdateTransactionsCategoryMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateTransactionsCategoryMutation> {
+      return withWrapper(() => client.request<UpdateTransactionsCategoryMutation>(print(UpdateTransactionsCategoryDocument), variables, requestHeaders));
+    },
+    CheckTransaction(variables: CheckTransactionQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CheckTransactionQuery> {
+      return withWrapper(() => client.request<CheckTransactionQuery>(print(CheckTransactionDocument), variables, requestHeaders));
+    },
+    GetAmountGroups(variables?: GetAmountGroupsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAmountGroupsQuery> {
+      return withWrapper(() => client.request<GetAmountGroupsQuery>(print(GetAmountGroupsDocument), variables, requestHeaders));
+    },
+    GetAuthUrl(variables?: GetAuthUrlQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAuthUrlQuery> {
+      return withWrapper(() => client.request<GetAuthUrlQuery>(print(GetAuthUrlDocument), variables, requestHeaders));
+    },
+    GetBalances(variables?: GetBalancesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetBalancesQuery> {
+      return withWrapper(() => client.request<GetBalancesQuery>(print(GetBalancesDocument), variables, requestHeaders));
+    },
+    GetBaseData(variables?: GetBaseDataQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetBaseDataQuery> {
+      return withWrapper(() => client.request<GetBaseDataQuery>(print(GetBaseDataDocument), variables, requestHeaders));
+    },
+    GetCategoryBreakdown(variables: GetCategoryBreakdownQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetCategoryBreakdownQuery> {
+      return withWrapper(() => client.request<GetCategoryBreakdownQuery>(print(GetCategoryBreakdownDocument), variables, requestHeaders));
+    },
+    GetTransactions(variables: GetTransactionsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetTransactionsQuery> {
+      return withWrapper(() => client.request<GetTransactionsQuery>(print(GetTransactionsDocument), variables, requestHeaders));
     }
   };
 }

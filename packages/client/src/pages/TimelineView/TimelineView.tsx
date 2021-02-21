@@ -2,6 +2,7 @@ import { Bar, BarSvgProps } from '@nivo/bar';
 import { Dimensions } from '@nivo/core';
 import React, { useState } from 'react';
 
+import { useGetAmountGroupsQuery } from '../../../../common/generated/graphql-react-apollo';
 import { Filters } from '../../App';
 import {
   PageDrawer,
@@ -9,7 +10,6 @@ import {
   Visualisation,
   VisualisationControls,
 } from '../../components';
-import { useGetAmountGroupsQuery } from '../../generated/graphql';
 import { time, toLabelledValue, toMoney, useTheme } from '../../lib';
 import { Nullable, TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
