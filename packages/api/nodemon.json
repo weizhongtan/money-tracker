@@ -1,7 +1,6 @@
 {
-  "watch": ["src"],
-  "ignore": ["src/**/*.test.ts"],
+  "watch": ["packages/api"],
   "ext": "ts,mjs,js,json,graphql",
-  "exec": "tsc && etsc && node ./build/index.js",
+  "exec": "tsc --project packages/api/tsconfig.json && TS_NODE_PROJECT=packages/api/tsconfig.json ts-eager packages/api/src/index.ts",
   "legacyWatch": true
 }
