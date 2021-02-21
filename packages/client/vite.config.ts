@@ -1,5 +1,5 @@
 import reactRefresh from '@vitejs/plugin-react-refresh';
-import builtins from 'rollup-plugin-node-builtins';
+import polyfills from 'rollup-plugin-node-polyfills';
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
@@ -19,7 +19,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      plugins: [builtins()],
+      plugins: [polyfills()],
     },
   },
 });
