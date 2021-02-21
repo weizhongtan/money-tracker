@@ -1,5 +1,3 @@
-import 'cross-fetch/polyfill';
-
 import path from 'path';
 
 import bodyParser from 'body-parser';
