@@ -6,7 +6,6 @@
     "types": ["vite/client"],
     "allowJs": false,
     "esModuleInterop": false,
-    "noEmit": true,
     "jsx": "react"
   },
   "include": ["src"]
