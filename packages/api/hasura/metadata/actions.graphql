@@ -12,8 +12,10 @@ type Query {
 
 type Mutation {
   importTransactions (
-    accountId: String
-    cardId: String
+    fromAccountId: String
+    fromCardId: String
+    toAccountId: String!
+    startDate: timestamptz!
   ): ImportTransactionsOutput
 }
 
@@ -39,6 +41,7 @@ type AuthSuccess {
 }
 
 type ImportTransactionsOutput {
-  transactionsJSON : String!
+  created : Int!
+  skipped : Int!
 }
 

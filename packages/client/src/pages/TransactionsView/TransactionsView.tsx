@@ -1,6 +1,7 @@
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
+  CheckCircleTwoTone,
   FilterOutlined,
 } from '@ant-design/icons';
 import {
@@ -306,7 +307,23 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           sorter={(a, b) => a.amount - b.amount}
           align="right"
         />
-        <Column title="Description" dataIndex="description" key="description" />
+        <Column<Transaction>
+          title="Description"
+          dataIndex="description"
+          key="description"
+          render={(description, record) => {
+            return (
+              <>
+                {!!record.original_id && (
+                  <Tooltip title={`Original ID: ${record.original_id}`}>
+                    <CheckCircleTwoTone twoToneColor={theme.positive} />
+                  </Tooltip>
+                )}{' '}
+                {description}
+              </>
+            );
+          }}
+        />
         <Column<Transaction>
           title="Category"
           dataIndex="category"

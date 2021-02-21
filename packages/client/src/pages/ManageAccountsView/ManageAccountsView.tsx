@@ -1,5 +1,6 @@
 import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
 import { Button, Space, Table, Typography, Upload, notification } from 'antd';
+import { time, useBaseData } from '../../lib';
 import {
   useExchangeCodeMutation,
   useGetAuthUrlQuery,
@@ -15,7 +16,6 @@ import { UploadOutlined } from '@ant-design/icons';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
 import { useApolloClient } from '@apollo/client';
-import { useBaseData } from '../../lib';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -217,14 +217,17 @@ const ImportAccount = () => {
     }
   }, []);
 
-  const [accountId, setAccountId] = React.useState('');
+  const [account, setAccount] = React.useState<Account>();
 
   if (data) {
     return (
       <>
         <Select<React.FC<SelectProps<string>>>
-          value={accountId}
-          onSelect={(val) => setAccountId(val)}
+          value={account?.id}
+          onSelect={(val) => {
+            const selectedAccount = baseData.accounts.find((x) => x.id === val);
+            setAccount(selectedAccount);
+          }}
           showSearch
           optionFilterProp="label"
         >
@@ -239,36 +242,25 @@ const ImportAccount = () => {
           return (
             <Button
               onClick={async () => {
+                if (!account) {
+                  console.log('select an account!');
+                  return;
+                }
                 const res = await importTransactions({
-                  variables: { cardId: id },
+                  variables: {
+                    fromCardId: id,
+                    toAccountId: account.id,
+                    startDate:
+                      account.mostRecentTransactionDate ?? time().toISOString(),
+                  },
                 });
-                console.log(res);
-
-                const parsedJson = JSON.parse(
-                  res.data?.importTransactions?.transactionsJSON ?? '[]'
-                );
-
-                const proms = parsedJson.map((t: any) => {
-                  return createTransaction({
-                    accountId,
-                    amount: t.amount,
-                    date: t.timestamp,
-                    description: t.description,
-                  });
-                });
-                const results = await Promise.all(proms);
-
-                const created = results.filter((x) => x).length;
-                const skipped = results.length - created;
-
-                console.log(`Created ${created} records`);
-                console.log(`Skipped ${skipped} records`);
 
                 notification.success({
                   message: 'Import complete',
                   description: (
                     <span>
-                      Created {created} records, skipped {skipped} records
+                      Created {res.data?.importTransactions?.created} records,
+                      skipped {res.data?.importTransactions?.skipped} records
                     </span>
                   ),
                   placement: 'topLeft',

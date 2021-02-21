@@ -49,7 +49,8 @@ export type Boolean_Comparison_Exp = {
 };
 
 export type ImportTransactionsOutput = {
-  transactionsJSON: Scalars['String'];
+  created: Scalars['Int'];
+  skipped: Scalars['Int'];
 };
 
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
@@ -1066,8 +1067,10 @@ export type Mutation_RootExchangeCodeArgs = {
 
 /** mutation root */
 export type Mutation_RootImportTransactionsArgs = {
-  accountId?: Maybe<Scalars['String']>;
-  cardId?: Maybe<Scalars['String']>;
+  fromAccountId?: Maybe<Scalars['String']>;
+  fromCardId?: Maybe<Scalars['String']>;
+  startDate: Scalars['timestamptz'];
+  toAccountId: Scalars['String'];
 };
 
 
@@ -2533,6 +2536,7 @@ export type Transaction = {
   /** An object relationship */
   linkedAccount?: Maybe<Account>;
   linked_account_id?: Maybe<Scalars['uuid']>;
+  original_id?: Maybe<Scalars['String']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
   /** An object relationship */
@@ -2639,6 +2643,7 @@ export type Transaction_Bool_Exp = {
   id?: Maybe<Uuid_Comparison_Exp>;
   linkedAccount?: Maybe<Account_Bool_Exp>;
   linked_account_id?: Maybe<Uuid_Comparison_Exp>;
+  original_id?: Maybe<String_Comparison_Exp>;
   pair_id?: Maybe<Uuid_Comparison_Exp>;
   paired_with_id?: Maybe<Uuid_Comparison_Exp>;
   transaction?: Maybe<Transaction_Bool_Exp>;
@@ -2648,6 +2653,8 @@ export type Transaction_Bool_Exp = {
 
 /** unique or primary key constraints on table "transaction" */
 export enum Transaction_Constraint {
+  /** unique or primary key constraint */
+  TransactionOriginalIdKey = 'transaction_original_id_key',
   /** unique or primary key constraint */
   TransactionsPkey = 'transactions_pkey'
 }
@@ -2670,6 +2677,7 @@ export type Transaction_Insert_Input = {
   id?: Maybe<Scalars['uuid']>;
   linkedAccount?: Maybe<Account_Obj_Rel_Insert_Input>;
   linked_account_id?: Maybe<Scalars['uuid']>;
+  original_id?: Maybe<Scalars['String']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
   transaction?: Maybe<Transaction_Obj_Rel_Insert_Input>;
@@ -2687,6 +2695,7 @@ export type Transaction_Max_Fields = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   linked_account_id?: Maybe<Scalars['uuid']>;
+  original_id?: Maybe<Scalars['String']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2702,6 +2711,7 @@ export type Transaction_Max_Order_By = {
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   linked_account_id?: Maybe<Order_By>;
+  original_id?: Maybe<Order_By>;
   pair_id?: Maybe<Order_By>;
   paired_with_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -2717,6 +2727,7 @@ export type Transaction_Min_Fields = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   linked_account_id?: Maybe<Scalars['uuid']>;
+  original_id?: Maybe<Scalars['String']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2732,6 +2743,7 @@ export type Transaction_Min_Order_By = {
   description?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   linked_account_id?: Maybe<Order_By>;
+  original_id?: Maybe<Order_By>;
   pair_id?: Maybe<Order_By>;
   paired_with_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -2771,6 +2783,7 @@ export type Transaction_Order_By = {
   id?: Maybe<Order_By>;
   linkedAccount?: Maybe<Account_Order_By>;
   linked_account_id?: Maybe<Order_By>;
+  original_id?: Maybe<Order_By>;
   pair_id?: Maybe<Order_By>;
   paired_with_id?: Maybe<Order_By>;
   transaction?: Maybe<Transaction_Order_By>;
@@ -2802,6 +2815,8 @@ export enum Transaction_Select_Column {
   /** column name */
   LinkedAccountId = 'linked_account_id',
   /** column name */
+  OriginalId = 'original_id',
+  /** column name */
   PairId = 'pair_id',
   /** column name */
   PairedWithId = 'paired_with_id',
@@ -2819,6 +2834,7 @@ export type Transaction_Set_Input = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   linked_account_id?: Maybe<Scalars['uuid']>;
+  original_id?: Maybe<Scalars['String']>;
   pair_id?: Maybe<Scalars['uuid']>;
   paired_with_id?: Maybe<Scalars['uuid']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -2882,6 +2898,8 @@ export enum Transaction_Update_Column {
   Id = 'id',
   /** column name */
   LinkedAccountId = 'linked_account_id',
+  /** column name */
+  OriginalId = 'original_id',
   /** column name */
   PairId = 'pair_id',
   /** column name */
@@ -2974,18 +2992,21 @@ export type ExchangeCodeMutationVariables = Exact<{
 export type ExchangeCodeMutation = { exchangeCode?: Maybe<Pick<AuthSuccess, 'message' | 'accountIds' | 'cardIds'>> };
 
 export type ImportTransactionsMutationVariables = Exact<{
-  accountId?: Maybe<Scalars['String']>;
-  cardId?: Maybe<Scalars['String']>;
+  fromAccountId?: Maybe<Scalars['String']>;
+  fromCardId?: Maybe<Scalars['String']>;
+  toAccountId: Scalars['String'];
+  startDate: Scalars['timestamptz'];
 }>;
 
 
-export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'transactionsJSON'>> };
+export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'created' | 'skipped'>> };
 
 export type InsertTransactionMutationVariables = Exact<{
   accountId?: Maybe<Scalars['uuid']>;
   amount?: Maybe<Scalars['numeric']>;
   date?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
+  originalId?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -3054,6 +3075,7 @@ export type CheckTransactionQueryVariables = Exact<{
   startDate: Scalars['timestamptz'];
   endDate: Scalars['timestamptz'];
   description: Scalars['String'];
+  originalId: Scalars['String'];
 }>;
 
 
@@ -3119,7 +3141,7 @@ export type GetTransactionsQueryVariables = Exact<{
 
 
 export type GetTransactionsQuery = { transactions: { aggregate?: Maybe<Pick<Transaction_Aggregate_Fields, 'count'>>, nodes: Array<(
-      Pick<Transaction, 'id' | 'date' | 'amount' | 'description' | 'pair_id'>
+      Pick<Transaction, 'id' | 'date' | 'amount' | 'description' | 'pair_id' | 'original_id'>
       & { key: Transaction['id'] }
       & { account: Pick<Account, 'id' | 'name' | 'colour'>, linkedAccount?: Maybe<Pick<Account, 'id' | 'name' | 'colour'>>, category: Pick<Category, 'id' | 'name'> }
     )> } };
@@ -3267,9 +3289,15 @@ export type ExchangeCodeMutationHookResult = ReturnType<typeof useExchangeCodeMu
 export type ExchangeCodeMutationResult = Apollo.MutationResult<ExchangeCodeMutation>;
 export type ExchangeCodeMutationOptions = Apollo.BaseMutationOptions<ExchangeCodeMutation, ExchangeCodeMutationVariables>;
 export const ImportTransactionsDocument = gql`
-    mutation ImportTransactions($accountId: String, $cardId: String) {
-  importTransactions(accountId: $accountId, cardId: $cardId) {
-    transactionsJSON
+    mutation ImportTransactions($fromAccountId: String, $fromCardId: String, $toAccountId: String!, $startDate: timestamptz!) {
+  importTransactions(
+    fromAccountId: $fromAccountId
+    fromCardId: $fromCardId
+    toAccountId: $toAccountId
+    startDate: $startDate
+  ) {
+    created
+    skipped
   }
 }
     `;
@@ -3288,8 +3316,10 @@ export type ImportTransactionsMutationFn = Apollo.MutationFunction<ImportTransac
  * @example
  * const [importTransactionsMutation, { data, loading, error }] = useImportTransactionsMutation({
  *   variables: {
- *      accountId: // value for 'accountId'
- *      cardId: // value for 'cardId'
+ *      fromAccountId: // value for 'fromAccountId'
+ *      fromCardId: // value for 'fromCardId'
+ *      toAccountId: // value for 'toAccountId'
+ *      startDate: // value for 'startDate'
  *   },
  * });
  */
@@ -3300,9 +3330,9 @@ export type ImportTransactionsMutationHookResult = ReturnType<typeof useImportTr
 export type ImportTransactionsMutationResult = Apollo.MutationResult<ImportTransactionsMutation>;
 export type ImportTransactionsMutationOptions = Apollo.BaseMutationOptions<ImportTransactionsMutation, ImportTransactionsMutationVariables>;
 export const InsertTransactionDocument = gql`
-    mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String) {
+    mutation InsertTransaction($accountId: uuid, $amount: numeric, $date: timestamptz, $description: String, $originalId: String) {
   insert_transaction(
-    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description}
+    objects: {account_id: $accountId, amount: $amount, date: $date, description: $description, original_id: $originalId}
   ) {
     affected_rows
   }
@@ -3327,6 +3357,7 @@ export type InsertTransactionMutationFn = Apollo.MutationFunction<InsertTransact
  *      amount: // value for 'amount'
  *      date: // value for 'date'
  *      description: // value for 'description'
+ *      originalId: // value for 'originalId'
  *   },
  * });
  */
@@ -3512,9 +3543,9 @@ export type UpdateTransactionsCategoryMutationHookResult = ReturnType<typeof use
 export type UpdateTransactionsCategoryMutationResult = Apollo.MutationResult<UpdateTransactionsCategoryMutation>;
 export type UpdateTransactionsCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateTransactionsCategoryMutation, UpdateTransactionsCategoryMutationVariables>;
 export const CheckTransactionDocument = gql`
-    query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!) {
+    query CheckTransaction($accountId: uuid!, $amount: numeric!, $startDate: timestamptz!, $endDate: timestamptz!, $description: String!, $originalId: String!) {
   transaction(
-    where: {_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}
+    where: {_or: [{_and: [{account_id: {_eq: $accountId}}, {amount: {_eq: $amount}}, {date: {_gte: $startDate, _lt: $endDate}}, {description: {_eq: $description}}]}, {original_id: {_eq: $originalId}}]}
   ) {
     id
     account_id
@@ -3542,6 +3573,7 @@ export const CheckTransactionDocument = gql`
  *      startDate: // value for 'startDate'
  *      endDate: // value for 'endDate'
  *      description: // value for 'description'
+ *      originalId: // value for 'originalId'
  *   },
  * });
  */
@@ -3837,6 +3869,7 @@ export const GetTransactionsDocument = gql`
         name
       }
       pair_id
+      original_id
     }
   }
 }

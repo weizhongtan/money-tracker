@@ -1,10 +1,13 @@
-// import { ApolloClient, InMemoryCache } from '@apollo/client';
+import 'cross-fetch/polyfill';
+
 import { AuthAPIClient, DataAPIClient } from 'truelayer-client';
 import express, { Request, Response } from 'express';
 
-import { AccountData } from './generated/graphql';
+import { GraphQLClient } from 'graphql-request';
 import bodyParser from 'body-parser';
+import dayjs from 'dayjs';
 import dotenv from 'dotenv';
+import { getSdk } from './generated/graphql';
 
 dotenv.config();
 
@@ -14,11 +17,6 @@ const authClient = new AuthAPIClient({
   client_id: process.env.CLIENT_ID ?? '',
   client_secret: process.env.CLIENT_SECRET ?? '',
 });
-
-// const apolloClient = new ApolloClient({
-//   uri: 'http://localhost:3000/v1/graphql',
-//   cache: new InMemoryCache(),
-// });
 
 const app = express();
 
@@ -39,7 +37,12 @@ let tokens: { access_token: string };
 app.post('/exchange-code', async (req, res) => {
   const { code } = req.body.input;
 
-  if (!tokens) {
+  // get new access token if none exists, or if cached tokens have expired
+  if (
+    !tokens ||
+    (tokens && !DataAPIClient.validateToken(tokens.access_token))
+  ) {
+    console.log('exchanging code for token');
     tokens = await authClient.exchangeCodeForToken(redirectUri, code);
   }
 
@@ -66,26 +69,78 @@ app.post('/exchange-code', async (req, res) => {
   });
 });
 
+const gqlClient = new GraphQLClient('http://localhost:3000/v1/graphql');
+const sdk = getSdk(gqlClient);
+
 app.post('/import-transactions', async (req, res) => {
-  const { accountId, cardId } = req.body.input;
+  const { fromAccountId, fromCardId, toAccountId, startDate } = req.body.input;
 
-  if (cardId) {
-    const data = await DataAPIClient.getCardTransactions(
-      tokens.access_token,
-      cardId
-    );
+  console.log({ fromAccountId, fromCardId, toAccountId, startDate });
 
-    console.log(data);
-
-    res.json({
-      transactionsJSON: JSON.stringify(data.results),
+  let api;
+  let fromId;
+  if (fromCardId) {
+    fromId = fromCardId;
+    api = DataAPIClient.getCardTransactions;
+  } else if (fromAccountId) {
+    fromId = fromAccountId;
+    api = DataAPIClient.getTransactions;
+  } else {
+    return res.json({
+      data: 'Error: could not get any card or account data',
     });
-
-    return;
   }
 
+  const data = await api(
+    tokens.access_token,
+    fromId,
+    dayjs(startDate).format('YYYY-MM-DD'),
+    dayjs().format('YYYY-MM-DD')
+  );
+
+  console.log(data);
+
+  const proms = data.results.map(async (t) => {
+    const startDate = new Date(t.timestamp);
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+    startDate.setMilliseconds(0);
+    const endDate = dayjs(startDate).add(1, 'day').toDate();
+    const res = await sdk.CheckTransaction({
+      accountId: toAccountId,
+      amount: t.amount,
+      startDate,
+      endDate,
+      description: t.description,
+      originalId: t.transaction_id,
+    });
+    if (res.transaction.length) {
+      console.error(`Transaction already exists`, res.transaction);
+      return false;
+    }
+
+    await sdk.InsertTransaction({
+      accountId: toAccountId,
+      amount: -t.amount,
+      date: t.timestamp,
+      description: t.description,
+      originalId: t.transaction_id,
+    });
+
+    return true;
+  });
+  const results = await Promise.all(proms);
+
+  const created = results.filter((x) => x).length;
+  const skipped = results.length - created;
+
+  console.log(`Created ${created} records`);
+  console.log(`Skipped ${skipped} records`);
+
   res.json({
-    data: 'Error: could not get any card or account data',
+    created,
+    skipped,
   });
 });
 

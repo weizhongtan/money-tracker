@@ -315,7 +315,7 @@
         "description": null,
         "fields": [
           {
-            "name": "transactionsJSON",
+            "name": "created",
             "description": null,
             "args": [],
             "type": {
@@ -323,7 +323,23 @@
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "skipped",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
             },
@@ -333,6 +349,16 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "Int",
+        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -1095,16 +1121,6 @@
         ],
         "inputFields": null,
         "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "SCALAR",
-        "name": "Int",
-        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -7289,7 +7305,7 @@
             "description": "perform the action: \"importTransactions\"",
             "args": [
               {
-                "name": "accountId",
+                "name": "fromAccountId",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
@@ -7301,12 +7317,44 @@
                 "deprecationReason": null
               },
               {
-                "name": "cardId",
+                "name": "fromCardId",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
                   "name": "String",
                   "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "startDate",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "timestamptz",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "toAccountId",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
                 },
                 "defaultValue": null,
                 "isDeprecated": false,
@@ -17617,6 +17665,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "args": [],
@@ -18510,6 +18570,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "String_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "type": {
@@ -18582,6 +18654,12 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": [
+          {
+            "name": "transaction_original_id_key",
+            "description": "unique or primary key constraint",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "transactions_pkey",
             "description": "unique or primary key constraint",
@@ -18746,6 +18824,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -18919,6 +19009,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "args": [],
@@ -19052,6 +19154,18 @@
           },
           {
             "name": "linked_account_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19205,6 +19319,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "args": [],
@@ -19338,6 +19464,18 @@
           },
           {
             "name": "linked_account_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -19681,6 +19819,18 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": null,
             "type": {
@@ -19829,6 +19979,12 @@
             "deprecationReason": null
           },
           {
+            "name": "original_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "pair_id",
             "description": "column name",
             "isDeprecated": false,
@@ -19945,6 +20101,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "uuid",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -20228,6 +20396,12 @@
           },
           {
             "name": "linked_account_id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "original_id",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
