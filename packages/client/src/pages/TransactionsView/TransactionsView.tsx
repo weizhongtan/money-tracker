@@ -316,7 +316,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
               <>
                 {!!record.original_id && (
                   <Tooltip title={`Original ID: ${record.original_id}`}>
-                    <CheckCircleTwoTone twoToneColor="#52c41a" />
+                    <CheckCircleTwoTone twoToneColor={theme.positive} />
                   </Tooltip>
                 )}{' '}
                 {description}
