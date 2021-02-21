@@ -237,8 +237,17 @@ const ImportAccount = () => {
             </Select.Option>
           ))}
         </Select>
-        Card IDs:
-        {data.exchangeCode?.cardIds?.map((id) => {
+        IDs:
+        {[
+          ...(data.exchangeCode?.cardIds ?? []).map((id) => ({
+            cardId: id,
+            accountId: null,
+          })),
+          ...(data.exchangeCode?.accountIds ?? []).map((id) => ({
+            cardId: null,
+            accountId: id,
+          })),
+        ].map(({ cardId, accountId }) => {
           return (
             <Button
               onClick={async () => {
@@ -248,7 +257,8 @@ const ImportAccount = () => {
                 }
                 const res = await importTransactions({
                   variables: {
-                    fromCardId: id,
+                    fromCardId: cardId,
+                    fromAccountId: accountId,
                     toAccountId: account.id,
                     startDate:
                       account.mostRecentTransactionDate ?? time().toISOString(),
@@ -267,7 +277,9 @@ const ImportAccount = () => {
                 });
               }}
             >
-              <Typography.Paragraph code>{id}</Typography.Paragraph>
+              <Typography.Paragraph code>
+                {cardId ?? accountId}
+              </Typography.Paragraph>
             </Button>
           );
         })}
