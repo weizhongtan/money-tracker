@@ -17,22 +17,8 @@ export type Scalars = {
   uuid: string;
 };
 
-export type AccountAuthOutput = {
-  accessToken: Scalars['String'];
-};
-
-export type AccountData = {
-  data: Scalars['String'];
-};
-
-export type AuthSuccess = {
-  accountIds?: Maybe<Array<Scalars['String']>>;
-  cardIds?: Maybe<Array<Scalars['String']>>;
-  message: Scalars['String'];
-};
-
 export type AuthUrl = {
-  url?: Maybe<Scalars['String']>;
+  url: Scalars['String'];
 };
 
 /** expression to compare columns of type Boolean. All fields are combined with logical 'AND'. */
@@ -46,6 +32,23 @@ export type Boolean_Comparison_Exp = {
   _lte?: Maybe<Scalars['Boolean']>;
   _neq?: Maybe<Scalars['Boolean']>;
   _nin?: Maybe<Array<Scalars['Boolean']>>;
+};
+
+export type ExchangeCodeInput = {
+  code: Scalars['String'];
+};
+
+export type ExchangeCodeOutput = {
+  accountIds?: Maybe<Array<Scalars['String']>>;
+  cardIds?: Maybe<Array<Scalars['String']>>;
+  message: Scalars['String'];
+};
+
+export type ImportTransactionsInput = {
+  fromAccountId?: Maybe<Scalars['String']>;
+  fromCardId?: Maybe<Scalars['String']>;
+  startDate: Scalars['timestamptz'];
+  toAccountId: Scalars['String'];
 };
 
 export type ImportTransactionsOutput = {
@@ -958,9 +961,9 @@ export type Mutation_Root = {
   /** delete single row from the table: "transaction" */
   delete_transaction_by_pk?: Maybe<Transaction>;
   /** perform the action: "exchangeCode" */
-  exchangeCode?: Maybe<AuthSuccess>;
+  exchangeCode: ExchangeCodeOutput;
   /** perform the action: "importTransactions" */
-  importTransactions?: Maybe<ImportTransactionsOutput>;
+  importTransactions: ImportTransactionsOutput;
   /** insert data into the table: "account" */
   insert_account?: Maybe<Account_Mutation_Response>;
   /** insert a single row into the table: "account" */
@@ -1062,16 +1065,13 @@ export type Mutation_RootDelete_Transaction_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootExchangeCodeArgs = {
-  code?: Maybe<Scalars['String']>;
+  args: ExchangeCodeInput;
 };
 
 
 /** mutation root */
 export type Mutation_RootImportTransactionsArgs = {
-  fromAccountId?: Maybe<Scalars['String']>;
-  fromCardId?: Maybe<Scalars['String']>;
-  startDate: Scalars['timestamptz'];
-  toAccountId: Scalars['String'];
+  args: ImportTransactionsInput;
 };
 
 
@@ -1285,7 +1285,7 @@ export type Query_Root = {
   /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
   func_timeline_aggregate: Table_Amount_Group_Aggregate;
   /** perform the action: "getAuthUrl" */
-  getAuthUrl?: Maybe<AuthUrl>;
+  getAuthUrl: AuthUrl;
   /** fetch data from the table: "table_amount_group" */
   table_amount_group: Array<Table_Amount_Group>;
   /** fetch aggregated fields from the table: "table_amount_group" */
@@ -1561,7 +1561,7 @@ export type Subscription_Root = {
   /** execute function "func_timeline" and query aggregates on result of table type "table_amount_group" */
   func_timeline_aggregate: Table_Amount_Group_Aggregate;
   /** perform the action: "getAuthUrl" */
-  getAuthUrl?: Maybe<AuthUrl>;
+  getAuthUrl: AuthUrl;
   /** fetch data from the table: "table_amount_group" */
   table_amount_group: Array<Table_Amount_Group>;
   /** fetch aggregated fields from the table: "table_amount_group" */
@@ -2990,7 +2990,7 @@ export type ExchangeCodeMutationVariables = Exact<{
 }>;
 
 
-export type ExchangeCodeMutation = { exchangeCode?: Maybe<Pick<AuthSuccess, 'message' | 'accountIds' | 'cardIds'>> };
+export type ExchangeCodeMutation = { exchangeCode: Pick<ExchangeCodeOutput, 'message' | 'accountIds' | 'cardIds'> };
 
 export type ImportTransactionsMutationVariables = Exact<{
   fromAccountId?: Maybe<Scalars['String']>;
@@ -3000,7 +3000,7 @@ export type ImportTransactionsMutationVariables = Exact<{
 }>;
 
 
-export type ImportTransactionsMutation = { importTransactions?: Maybe<Pick<ImportTransactionsOutput, 'created' | 'skipped'>> };
+export type ImportTransactionsMutation = { importTransactions: Pick<ImportTransactionsOutput, 'created' | 'skipped'> };
 
 export type InsertTransactionMutationVariables = Exact<{
   accountId?: Maybe<Scalars['uuid']>;
@@ -3096,7 +3096,7 @@ export type GetAmountGroupsQuery = { groups: Array<Pick<Table_Amount_Group, 'dat
 export type GetAuthUrlQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthUrlQuery = { getAuthUrl?: Maybe<Pick<AuthUrl, 'url'>> };
+export type GetAuthUrlQuery = { getAuthUrl: Pick<AuthUrl, 'url'> };
 
 export type GetBalancesQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
@@ -3257,7 +3257,7 @@ export type DeleteTransactionsMutationResult = Apollo.MutationResult<DeleteTrans
 export type DeleteTransactionsMutationOptions = Apollo.BaseMutationOptions<DeleteTransactionsMutation, DeleteTransactionsMutationVariables>;
 export const ExchangeCodeDocument = gql`
     mutation ExchangeCode($code: String!) {
-  exchangeCode(code: $code) {
+  exchangeCode(args: {code: $code}) {
     message
     accountIds
     cardIds
@@ -3292,10 +3292,7 @@ export type ExchangeCodeMutationOptions = Apollo.BaseMutationOptions<ExchangeCod
 export const ImportTransactionsDocument = gql`
     mutation ImportTransactions($fromAccountId: String, $fromCardId: String, $toAccountId: String!, $startDate: timestamptz!) {
   importTransactions(
-    fromAccountId: $fromAccountId
-    fromCardId: $fromCardId
-    toAccountId: $toAccountId
-    startDate: $startDate
+    args: {fromAccountId: $fromAccountId, fromCardId: $fromCardId, toAccountId: $toAccountId, startDate: $startDate}
   ) {
     created
     skipped

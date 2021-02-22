@@ -1,6 +1,14 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { useApolloClient } from '@apollo/client';
-import { Button, Space, Table, Typography, Upload, notification } from 'antd';
+import {
+  Button,
+  Form,
+  Modal,
+  Radio,
+  Space,
+  Table,
+  Upload,
+  notification,
+} from 'antd';
 import { SelectProps } from 'antd/lib/select';
 import { TableProps } from 'antd/lib/table';
 import csvjson from 'csvjson';
@@ -13,9 +21,10 @@ import {
   useGetAuthUrlQuery,
   useImportTransactionsMutation,
 } from '../../../../common/generated/graphql-react-apollo';
+import { createCatchAllAccount } from '../../App/data';
 import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
 import { time, useBaseData } from '../../lib';
-import { Account } from '../../types';
+import { Account, Nullable } from '../../types';
 import { useCreateTransaction } from './data';
 
 const { Column } = Table;
@@ -161,7 +170,7 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
                 console.log(parsedJson);
 
                 const proms = parsedJson.map((t) => {
-                  // return createTransaction(t);
+                  return createTransaction(t);
                 });
                 const results = await Promise.all(proms);
 
@@ -197,15 +206,15 @@ const ImportAccount = () => {
   const history = useHistory();
   const [exchangeCode, { data, loading, error }] = useExchangeCodeMutation();
   const [importTransactions] = useImportTransactionsMutation();
-  const [createTransaction] = useCreateTransaction();
 
   const search = new URLSearchParams(location.search);
   const code = search.get('code');
 
-  async function doThing(code: string) {
+  async function continueFlow(code: string) {
     await exchangeCode({
       variables: { code },
     });
+    setShowModal(true);
   }
 
   React.useEffect(() => {
@@ -213,81 +222,118 @@ const ImportAccount = () => {
       search.delete('code');
       search.delete('scope');
       history.push({ search: search.toString() });
-      doThing(code);
+      continueFlow(code);
     }
   }, []);
 
-  const [account, setAccount] = React.useState<Account>();
+  const [showModal, setShowModal] = React.useState(false);
+  const [isImporting, setIsImporting] = React.useState(false);
 
-  if (data) {
-    return (
-      <>
-        <Select<React.FC<SelectProps<string>>>
-          value={account?.id}
-          onSelect={(val) => {
-            const selectedAccount = baseData.accounts.find((x) => x.id === val);
-            setAccount(selectedAccount);
-          }}
-          showSearch
-          optionFilterProp="label"
-        >
-          {baseData.accounts.map(({ id, name }) => (
-            <Select.Option value={id} key={id} label={name}>
-              {name}
-            </Select.Option>
-          ))}
-        </Select>
-        IDs:
-        {[
-          ...(data.exchangeCode?.cardIds ?? []).map((id) => ({
-            cardId: id,
-            accountId: null,
-          })),
-          ...(data.exchangeCode?.accountIds ?? []).map((id) => ({
-            cardId: null,
-            accountId: id,
-          })),
-        ].map(({ cardId, accountId }) => {
-          return (
-            <Button
-              onClick={async () => {
-                if (!account) {
-                  console.log('select an account!');
-                  return;
-                }
-                const res = await importTransactions({
-                  variables: {
-                    fromCardId: cardId,
-                    fromAccountId: accountId,
-                    toAccountId: account.id,
-                    startDate:
-                      account.mostRecentTransactionDate ?? time().toISOString(),
-                  },
-                });
+  const initialValues: {
+    fromCardId: Nullable<string>;
+    fromAccountId: Nullable<string>;
+    toAccountId: Nullable<Account['id']>;
+  } = {
+    fromCardId: null,
+    fromAccountId: null,
+    toAccountId: null,
+  };
 
-                notification.success({
-                  message: 'Import complete',
-                  description: (
-                    <span>
-                      Created {res.data?.importTransactions?.created} records,
-                      skipped {res.data?.importTransactions?.skipped} records
-                    </span>
-                  ),
-                  placement: 'topLeft',
-                });
-              }}
-            >
-              <Typography.Paragraph code>
-                {cardId ?? accountId}
-              </Typography.Paragraph>
-            </Button>
-          );
-        })}
-      </>
+  const handleFinish = async (values: typeof initialValues) => {
+    setIsImporting(true);
+    const toAccount = baseData.accounts.find(
+      (x) => x.id === values.toAccountId
     );
-  }
 
-  return <p>getting account data from truelayer</p>;
+    if (!toAccount) {
+      return false;
+    }
+
+    const res = await importTransactions({
+      variables: {
+        fromCardId: values.fromCardId,
+        fromAccountId: values.fromAccountId,
+        toAccountId: toAccount.id,
+        startDate: toAccount.mostRecentTransactionDate ?? time().toISOString(),
+      },
+    });
+
+    notification.success({
+      message: 'Import complete',
+      description: (
+        <span>
+          Created {res.data?.importTransactions.created} records, skipped{' '}
+          {res.data?.importTransactions.skipped} records
+        </span>
+      ),
+      placement: 'topLeft',
+    });
+    setIsImporting(false);
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <Modal
+        title="Select the account to import into"
+        visible={!!data && showModal}
+        onCancel={() => setShowModal(false)}
+        footer={null}
+      >
+        <Form
+          layout="vertical"
+          initialValues={initialValues}
+          onFinish={handleFinish}
+        >
+          <Form.Item label="From card" name="fromCardId">
+            <Radio.Group>
+              {data?.exchangeCode?.cardIds?.map((id) => {
+                return (
+                  <Radio value={id} key={id}>
+                    {id}
+                  </Radio>
+                );
+              })}
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item label="From account" name="fromAccountId">
+            <Radio.Group>
+              {data?.exchangeCode?.accountIds?.map((id) => {
+                return (
+                  <Radio value={id} key={id}>
+                    {id}
+                  </Radio>
+                );
+              })}
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item
+            label="Into"
+            name="toAccountId"
+            rules={[{ required: true }]}
+          >
+            <Select<React.FC<SelectProps<string>>>
+              showSearch
+              optionFilterProp="label"
+            >
+              {baseData.accounts
+                .filter((x) => x.id !== createCatchAllAccount().id)
+                .map(({ id, name }) => (
+                  <Select.Option value={id} key={id} label={name}>
+                    {name}
+                  </Select.Option>
+                ))}
+            </Select>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={isImporting}>
+              Import
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
 };
 
 const ManageAccountsView = () => {
@@ -307,7 +353,7 @@ const ManageAccountsView = () => {
           loading={!authUrl}
           disabled={!authUrl}
         >
-          Authenticate account
+          Import transactions
         </Button>
         <ImportAccount />
       </Space>

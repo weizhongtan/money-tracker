@@ -14,11 +14,11 @@ actions:
     forward_client_headers: true
 custom_types:
   enums: []
-  input_objects: []
+  input_objects:
+  - name: ExchangeCodeInput
+  - name: ImportTransactionsInput
   objects:
-  - name: AccountAuthOutput
-  - name: AccountData
   - name: AuthUrl
-  - name: AuthSuccess
   - name: ImportTransactionsOutput
+  - name: ExchangeCodeOutput
   scalars: []

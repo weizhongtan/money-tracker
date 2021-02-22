@@ -1,5 +1,5 @@
 mutation ExchangeCode($code: String!) {
-  exchangeCode(code: $code) {
+  exchangeCode(args: { code: $code }) {
     message
     accountIds
     cardIds

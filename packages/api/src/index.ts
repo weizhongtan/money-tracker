@@ -2,7 +2,7 @@ import path from 'path';
 
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
+import express, { Request as ExpressRequest, Response } from 'express';
 import { GraphQLClient } from 'graphql-request';
 import morgan from 'morgan';
 import {
@@ -16,13 +16,20 @@ import {
 
 import { time } from '../../client/src/lib';
 import {
-  ImportTransactionsMutationVariables,
+  AuthUrl,
+  ExchangeCodeInput,
+  ExchangeCodeOutput,
+  ImportTransactionsInput,
+  ImportTransactionsOutput,
   getSdk,
 } from '../../common/generated/graphql-request';
 
 dotenv.config({
   path: path.resolve(__dirname, '../.env'),
 });
+
+interface Request<Args>
+  extends ExpressRequest<{}, {}, { input: { args: Args } }> {}
 
 const redirectUri = 'http://localhost:3000/callback';
 
@@ -39,7 +46,7 @@ app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms')
 );
 
-app.post('/get-auth-url', async (req, res) => {
+app.post('/get-auth-url', async (req, res: Response<AuthUrl>) => {
   res.json({
     url: authClient.getAuthUrl({
       redirectURI: redirectUri,
@@ -51,34 +58,40 @@ app.post('/get-auth-url', async (req, res) => {
 
 let tokens: ITokenResponse;
 
-app.post('/exchange-code', async (req, res) => {
-  const { code } = req.body.input;
+app.post(
+  '/exchange-code',
+  async (
+    req: Request<ExchangeCodeInput>,
+    res: Response<ExchangeCodeOutput>
+  ) => {
+    const { code } = req.body.input.args;
 
-  console.log('exchanging code for token');
-  tokens = await authClient.exchangeCodeForToken(redirectUri, code);
+    console.log('exchanging code for token');
+    tokens = await authClient.exchangeCodeForToken(redirectUri, code);
 
-  console.log(tokens);
+    console.log(tokens);
 
-  let accounts;
-  try {
-    accounts = (await DataAPIClient.getAccounts(tokens.access_token)).results;
-  } catch (err) {
-    console.log('accounts not supported, trying cards...');
+    let accounts;
+    try {
+      accounts = (await DataAPIClient.getAccounts(tokens.access_token)).results;
+    } catch (err) {
+      console.log('accounts not supported, trying cards...');
+    }
+
+    let cards;
+    try {
+      cards = (await DataAPIClient.getCards(tokens.access_token)).results;
+    } catch (err) {
+      console.log('cards not supported, giving up');
+    }
+
+    res.json({
+      message: 'successfully exchanged tokens!',
+      accountIds: accounts?.map((x) => x.account_id),
+      cardIds: cards?.map((x) => x.account_id),
+    });
   }
-
-  let cards;
-  try {
-    cards = (await DataAPIClient.getCards(tokens.access_token)).results;
-  } catch (err) {
-    console.log('cards not supported, giving up');
-  }
-
-  res.json({
-    message: 'successfully exchanged tokens!',
-    accountIds: accounts?.map((x) => x.account_id),
-    cardIds: cards?.map((x) => x.account_id),
-  });
-});
+);
 
 const gqlClient = new GraphQLClient('http://localhost:3000/v1/graphql');
 const sdk = getSdk(gqlClient);
@@ -86,15 +99,15 @@ const sdk = getSdk(gqlClient);
 app.post(
   '/import-transactions',
   async (
-    req: Request<{}, {}, { input: ImportTransactionsMutationVariables }>,
-    res
+    req: Request<ImportTransactionsInput>,
+    res: Response<ImportTransactionsOutput>
   ) => {
     const {
       fromAccountId,
       fromCardId,
       toAccountId,
       startDate,
-    } = req.body.input;
+    } = req.body.input.args;
 
     console.log({ fromAccountId, fromCardId, toAccountId, startDate });
 
