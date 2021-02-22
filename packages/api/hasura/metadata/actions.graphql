@@ -1,48 +1,48 @@
 type Mutation {
   exchangeCode (
-    code: String
-  ): AuthSuccess
+    args: ExchangeCodeInput!
+  ): ExchangeCodeOutput!
 }
 
 
 type Query {
-  getAuthUrl : AuthUrl
+  getAuthUrl : AuthUrl!
 }
 
 
 type Mutation {
   importTransactions (
-    fromAccountId: String
-    fromCardId: String
-    toAccountId: String!
-    startDate: timestamptz!
-  ): ImportTransactionsOutput
+    args: ImportTransactionsInput!
+  ): ImportTransactionsOutput!
 }
 
 
 
 
-type AccountAuthOutput {
-  accessToken : String!
+input ExchangeCodeInput {
+  code : String!
 }
 
-type AccountData {
-  data : String!
+input ImportTransactionsInput {
+  fromAccountId : String
+  fromCardId : String
+  toAccountId : String!
+  startDate : timestamptz!
 }
 
 type AuthUrl {
-  url : String
-}
-
-type AuthSuccess {
-  message : String!
-  accountIds : [String!]
-  cardIds : [String!]
+  url : String!
 }
 
 type ImportTransactionsOutput {
   message : String!
   created : Int!
   skipped : Int!
+}
+
+type ExchangeCodeOutput {
+  message : String!
+  accountIds : [String!]
+  cardIds : [String!]
 }
 

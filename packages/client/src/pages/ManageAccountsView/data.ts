@@ -15,7 +15,7 @@ interface Transaction {
   amount: number;
   date: string;
   description: string;
-  originalId: string;
+  originalId?: string;
 }
 
 export const useCreateTransaction = () => {
@@ -26,7 +26,7 @@ export const useCreateTransaction = () => {
     amount,
     date,
     description,
-    originalId,
+    originalId = 'none', // if no original ID is provided, this ensures CheckTransaction doesn't match any existing ones
   }: Transaction) => {
     // do not add transactions that exist already
     // match any existing transaction to the same account, for the same amount, with the same description

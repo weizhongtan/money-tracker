@@ -5,10 +5,12 @@ mutation ImportTransactions(
   $startDate: timestamptz!
 ) {
   importTransactions(
-    fromAccountId: $fromAccountId
-    fromCardId: $fromCardId
-    toAccountId: $toAccountId
-    startDate: $startDate
+    args: {
+      fromAccountId: $fromAccountId
+      fromCardId: $fromCardId
+      toAccountId: $toAccountId
+      startDate: $startDate
+    }
   ) {
     created
     skipped
