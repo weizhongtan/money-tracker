@@ -26,7 +26,7 @@ export const useCreateTransaction = () => {
     amount,
     date,
     description,
-    originalId = 'none', // if no original ID is provided, this ensures CheckTransaction doesn't match any existing ones
+    originalId,
   }: Transaction) => {
     // do not add transactions that exist already
     // match any existing transaction to the same account, for the same amount, with the same description
@@ -47,7 +47,8 @@ export const useCreateTransaction = () => {
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
         description,
-        originalId,
+        // if no original ID is provided, this ensures CheckTransaction doesn't match any existing ones
+        originalId: originalId ?? 'none',
       },
       fetchPolicy: 'no-cache',
     });
