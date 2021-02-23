@@ -1,16 +1,17 @@
-import { UploadOutlined } from '@ant-design/icons';
+import { ImportOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   Button,
   Form,
   Modal,
   Radio,
   Space,
+  Spin,
   Table,
   Upload,
   notification,
 } from 'antd';
-import { SelectProps } from 'antd/lib/select';
 import { TableProps } from 'antd/lib/table';
+import Paragraph from 'antd/lib/typography/Paragraph';
 import csvjson from 'csvjson';
 import { parse as parseOFX } from 'ofx-js';
 import React from 'react';
@@ -21,8 +22,7 @@ import {
   useGetAuthUrlQuery,
   useImportTransactionsMutation,
 } from '../../../../common/generated/graphql-react-apollo';
-import { createCatchAllAccount } from '../../App/data';
-import { AccountAvatar, Amount, DateDisplay, Select } from '../../components';
+import { AccountAvatar, Amount, DateDisplay } from '../../components';
 import { time, useBaseData } from '../../lib';
 import { Account, Nullable } from '../../types';
 import { useCreateTransaction } from './data';
@@ -94,8 +94,10 @@ const parsers: { [name: string]: Parser } = {
   qif: qifParser,
 };
 
-const AccountsTable: React.FC<TableProps<Account>> = (props) => {
+const AccountsTable: React.FC<TableProps<Account>> = ({ ...props }) => {
   const [createTransaction] = useCreateTransaction();
+  const { data } = useGetAuthUrlQuery();
+  const authUrl = data?.getAuthUrl?.url;
 
   return (
     <>
@@ -145,54 +147,64 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
           title="Actions"
           dataIndex="id"
           key="id"
-          render={(accountId) => (
-            <Upload
-              showUploadList={false}
-              customRequest={async ({ file }) => {
-                const rawData = await file.text();
+          render={(_, record) => (
+            <Space>
+              <Upload
+                showUploadList={false}
+                customRequest={async ({ file }) => {
+                  const rawData = await file.text();
 
-                const sections = file.name.split('.');
-                const ext = sections[sections.length - 1];
+                  const sections = file.name.split('.');
+                  const ext = sections[sections.length - 1];
 
-                const parser = parsers[ext];
+                  const parser = parsers[ext];
 
-                const data = await parser(rawData);
-                if (!data || !data.length) {
-                  throw new Error('parser return nothing!');
-                }
+                  const data = await parser(rawData);
+                  if (!data || !data.length) {
+                    throw new Error('parser return nothing!');
+                  }
 
-                const parsedJson = data.map((t) => ({
-                  ...t,
-                  accountId,
-                }));
+                  const parsedJson = data.map((t) => ({
+                    ...t,
+                    accountId: record.id,
+                  }));
 
-                console.log('parsedJson');
-                console.log(parsedJson);
+                  console.log('parsedJson');
+                  console.log(parsedJson);
 
-                const proms = parsedJson.map((t) => {
-                  return createTransaction(t);
-                });
-                const results = await Promise.all(proms);
+                  const proms = parsedJson.map((t) => {
+                    return createTransaction(t);
+                  });
+                  const results = await Promise.all(proms);
 
-                const created = results.filter((x) => x).length;
-                const skipped = results.length - created;
+                  const created = results.filter((x) => x).length;
+                  const skipped = results.length - created;
 
-                console.log(`Created ${created} records`);
-                console.log(`Skipped ${skipped} records`);
+                  console.log(`Created ${created} records`);
+                  console.log(`Skipped ${skipped} records`);
 
-                notification.success({
-                  message: 'Import complete',
-                  description: (
-                    <span>
-                      Created {created} records, skipped {skipped} records
-                    </span>
-                  ),
-                  placement: 'topLeft',
-                });
-              }}
-            >
-              <Button icon={<UploadOutlined />}>Upload Transactions</Button>
-            </Upload>
+                  notification.success({
+                    message: 'Import complete',
+                    description: (
+                      <span>
+                        Created {created} records, skipped {skipped} records
+                      </span>
+                    ),
+                    placement: 'topLeft',
+                  });
+                }}
+              >
+                <Button icon={<UploadOutlined />}>Upload transactions</Button>
+              </Upload>
+              <Button
+                icon={<ImportOutlined />}
+                href={`${authUrl}&state=${record.id}` ?? '#'}
+                loading={!authUrl}
+                disabled={!authUrl}
+              >
+                Connect to bank
+              </Button>
+            </Space>
           )}
         />
       </Table>
@@ -200,54 +212,64 @@ const AccountsTable: React.FC<TableProps<Account>> = (props) => {
   );
 };
 
-const ImportAccount = () => {
-  const baseData = useBaseData();
+const useTrueLayerCode = () => {
   const location = useLocation();
   const history = useHistory();
-  const [exchangeCode, { data, loading, error }] = useExchangeCodeMutation();
-  const [importTransactions] = useImportTransactionsMutation();
-
-  const search = new URLSearchParams(location.search);
-  const code = search.get('code');
-
-  async function continueFlow(code: string) {
-    await exchangeCode({
-      variables: { code },
-    });
-    setShowModal(true);
-  }
+  const [exchangeCode, { data, loading }] = useExchangeCodeMutation();
+  const [toAccountId, setToAccountId] = React.useState<string>();
 
   React.useEffect(() => {
-    if (code) {
+    const search = new URLSearchParams(location.search);
+    const code = search.get('code');
+    const toAccountId = search.get('state');
+
+    if (code && toAccountId) {
+      setToAccountId(toAccountId);
       search.delete('code');
       search.delete('scope');
+      search.delete('state');
       history.push({ search: search.toString() });
-      continueFlow(code);
+      exchangeCode({
+        variables: { code },
+      });
     }
   }, []);
 
-  const [showModal, setShowModal] = React.useState(false);
+  return [
+    {
+      toAccountId,
+      cardIds: data?.exchangeCode?.cardIds,
+      accountIds: data?.exchangeCode?.accountIds,
+    },
+    { loading },
+  ] as const;
+};
+
+type ImportModalProps = {
+  cardIds: Nullable<string[]>;
+  accountIds: Nullable<string[]>;
+  toAccount?: Account;
+};
+
+const ImportModal: React.FC<ImportModalProps> = ({
+  cardIds,
+  accountIds,
+  toAccount,
+}) => {
+  const [importTransactions] = useImportTransactionsMutation();
+  const [showModal, setShowModal] = React.useState(true);
   const [isImporting, setIsImporting] = React.useState(false);
 
   const initialValues: {
     fromCardId: Nullable<string>;
     fromAccountId: Nullable<string>;
-    toAccountId: Nullable<Account['id']>;
   } = {
     fromCardId: null,
     fromAccountId: null,
-    toAccountId: null,
   };
 
   const handleFinish = async (values: typeof initialValues) => {
     setIsImporting(true);
-    const toAccount = baseData.accounts.find(
-      (x) => x.id === values.toAccountId
-    );
-
-    if (!toAccount) {
-      return false;
-    }
 
     const res = await importTransactions({
       variables: {
@@ -275,56 +297,57 @@ const ImportAccount = () => {
   return (
     <>
       <Modal
-        title="Select the account to import into"
-        visible={!!data && showModal}
+        title="Select which account to import from"
+        visible={(!!cardIds || !!accountIds) && showModal}
         onCancel={() => setShowModal(false)}
         footer={null}
       >
+        {toAccount && (
+          <Paragraph>
+            Importing into{' '}
+            <AccountAvatar name={toAccount.name} colour={toAccount.colour} />{' '}
+            {toAccount.name}
+          </Paragraph>
+        )}
         <Form
           layout="vertical"
           initialValues={initialValues}
           onFinish={handleFinish}
         >
-          <Form.Item label="From card" name="fromCardId">
-            <Radio.Group>
-              {data?.exchangeCode?.cardIds?.map((id) => {
-                return (
-                  <Radio value={id} key={id}>
-                    {id}
-                  </Radio>
-                );
-              })}
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item label="From account" name="fromAccountId">
-            <Radio.Group>
-              {data?.exchangeCode?.accountIds?.map((id) => {
-                return (
-                  <Radio value={id} key={id}>
-                    {id}
-                  </Radio>
-                );
-              })}
-            </Radio.Group>
-          </Form.Item>
-          <Form.Item
-            label="Into"
-            name="toAccountId"
-            rules={[{ required: true }]}
-          >
-            <Select<React.FC<SelectProps<string>>>
-              showSearch
-              optionFilterProp="label"
+          {cardIds && (
+            <Form.Item
+              label="From card"
+              name="fromCardId"
+              rules={[{ required: true }]}
             >
-              {baseData.accounts
-                .filter((x) => x.id !== createCatchAllAccount().id)
-                .map(({ id, name }) => (
-                  <Select.Option value={id} key={id} label={name}>
-                    {name}
-                  </Select.Option>
-                ))}
-            </Select>
-          </Form.Item>
+              <Radio.Group>
+                {cardIds.map((id) => {
+                  return (
+                    <Radio value={id} key={id}>
+                      {id}
+                    </Radio>
+                  );
+                })}
+              </Radio.Group>
+            </Form.Item>
+          )}
+          {accountIds && (
+            <Form.Item
+              label="From account"
+              name="fromAccountId"
+              rules={[{ required: true }]}
+            >
+              <Radio.Group>
+                {accountIds.map((id) => {
+                  return (
+                    <Radio value={id} key={id}>
+                      {id}
+                    </Radio>
+                  );
+                })}
+              </Radio.Group>
+            </Form.Item>
+          )}
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={isImporting}>
               Import
@@ -338,27 +361,29 @@ const ImportAccount = () => {
 
 const ManageAccountsView = () => {
   const baseData = useBaseData();
-  const { data } = useGetAuthUrlQuery();
-  const authUrl = data?.getAuthUrl?.url;
+  const [
+    { cardIds, accountIds, toAccountId },
+    { loading },
+  ] = useTrueLayerCode();
 
+  const toAccount = baseData.accounts.find((a) => a.id === toAccountId);
   const active = baseData.accounts.filter((x) => x.status === 'active');
   const inactive = baseData.accounts.filter((x) => x.status === 'inactive');
 
   return (
     <>
-      <Space>
-        <Button
-          type="primary"
-          href={authUrl ?? '#'}
-          loading={!authUrl}
-          disabled={!authUrl}
-        >
-          Import transactions
-        </Button>
-        <ImportAccount />
-      </Space>
-      <AccountsTable dataSource={active} title={() => 'Active accounts'} />
-      <AccountsTable dataSource={inactive} title={() => 'Inactive accounts'} />
+      <Spin spinning={loading}>
+        <ImportModal
+          cardIds={cardIds}
+          accountIds={accountIds}
+          toAccount={toAccount}
+        />
+        <AccountsTable dataSource={active} title={() => 'Active accounts'} />
+        <AccountsTable
+          dataSource={inactive}
+          title={() => 'Inactive accounts'}
+        />
+      </Spin>
     </>
   );
 };
