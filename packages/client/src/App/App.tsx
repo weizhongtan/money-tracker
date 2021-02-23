@@ -48,7 +48,8 @@ const ViewWrapper = styled(Content)`
   overflow-y: scroll;
 `;
 
-export type Filters = {
+export type Filters = TimePeriod & {
+  setDates?: (period: TimePeriod) => void;
   accountIdFilter?: Account['id'];
   setAccountIdFilter?: (id: Account['id']) => void;
   categoryIdFilter?: Category['id'];
@@ -316,6 +317,7 @@ function App() {
                               {...{
                                 startDate,
                                 endDate,
+                                setDates,
                                 accountIdFilter,
                                 setAccountIdFilter,
                                 categoryIdFilter,

@@ -5,7 +5,7 @@ import TimeAgo from 'react-timeago';
 import { time } from '../lib';
 
 type Props = {
-  date: Date;
+  date: string | Date;
   asTimeAgo?: boolean;
 };
 
