@@ -26,7 +26,7 @@ import {
   DateDisplay,
 } from '../../components';
 import Select, { SelectProps } from '../../components/Select';
-import { useBaseData, useTheme } from '../../lib';
+import { time, useBaseData, useTheme } from '../../lib';
 import {
   Account,
   Category,
@@ -204,6 +204,7 @@ type TransactionsViewProps = TimePeriod & Omit<Filters, 'showControls'>;
 const TransactionsView: React.FC<TransactionsViewProps> = ({
   startDate,
   endDate,
+  setDates,
   accountIdFilter,
   setAccountIdFilter,
   categoryIdFilter,
@@ -273,7 +274,24 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           title="Date"
           dataIndex="date"
           key="date"
-          render={(date) => <DateDisplay date={date} />}
+          render={(_, record) => (
+            <Space>
+              {setDates && (
+                <FilterByButton
+                  title="Filter to near this date"
+                  onClick={() => {
+                    if (setDates) {
+                      const midpoint = time(record.date);
+                      const startDate = midpoint.subtract(5, 'days');
+                      const endDate = midpoint.add(5, 'days');
+                      setDates({ startDate, endDate });
+                    }
+                  }}
+                />
+              )}
+              <DateDisplay date={record.date} />
+            </Space>
+          )}
         />
         <Column<Transaction>
           title="Account"
@@ -282,7 +300,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={(_, record) => {
             return (
               <Space>
-                {setAccountIdFilter && (
+                {!accountIdFilter && setAccountIdFilter && (
                   <FilterByButton
                     title={`Filter to ${record.account.name}`}
                     onClick={() => {
@@ -331,7 +349,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={(_, record) => {
             return (
               <Space>
-                {setCategoryIdFilter && (
+                {!categoryIdFilter && setCategoryIdFilter && (
                   <FilterByButton
                     title={`Filter to ${record.category.name}`}
                     onClick={() => {

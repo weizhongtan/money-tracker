@@ -5,14 +5,14 @@ import TimeAgo from 'react-timeago';
 import { time } from '../lib';
 
 type Props = {
-  date: Date;
+  date: string | Date;
   asTimeAgo?: boolean;
 };
 
 const DateDisplay: React.FC<Props> = ({ date, asTimeAgo = false }) => {
   if (asTimeAgo) {
     return (
-      <Tooltip title={time(date).format('DD/MM/YY')}>
+      <Tooltip title={time(date).format('DD MMM YY')}>
         <span>
           <TimeAgo date={date} />
         </span>
@@ -21,7 +21,7 @@ const DateDisplay: React.FC<Props> = ({ date, asTimeAgo = false }) => {
   }
   return (
     <Tooltip title={<TimeAgo date={date} />}>
-      <span>{time(date).format('DD/MM/YY')}</span>
+      <span>{time(date).format('DD MMM YY')}</span>
     </Tooltip>
   );
 };
