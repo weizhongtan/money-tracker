@@ -269,10 +269,6 @@ const ImportModal: React.FC<ImportModalProps> = ({
   const [showModal, setShowModal] = React.useState(true);
   const [isImporting, setIsImporting] = React.useState(false);
 
-  if (!toAccount) {
-    return <>error: no toAccount found</>;
-  }
-
   const initialValues: {
     fromCardId: Nullable<string>;
     fromAccountId: Nullable<string>;
@@ -281,7 +277,10 @@ const ImportModal: React.FC<ImportModalProps> = ({
     fromAccountId: null,
   };
 
-  const handleFinish = async (values: typeof initialValues) => {
+  const handleFinish = async (
+    values: typeof initialValues,
+    toAccount: Account
+  ) => {
     setIsImporting(true);
 
     const res = await importTransactions({
@@ -316,57 +315,60 @@ const ImportModal: React.FC<ImportModalProps> = ({
         footer={null}
       >
         {toAccount && (
-          <Paragraph>
-            Importing into{' '}
-            <AccountAvatar name={toAccount.name} colour={toAccount.colour} />{' '}
-            {toAccount.name}
-          </Paragraph>
+          <>
+            <Paragraph>
+              Importing into{' '}
+              <AccountAvatar name={toAccount.name} colour={toAccount.colour} />{' '}
+              {toAccount.name}
+            </Paragraph>
+
+            <Form
+              layout="vertical"
+              initialValues={initialValues}
+              onFinish={(values) => handleFinish(values, toAccount)}
+            >
+              {cards && (
+                <Form.Item
+                  label="From card"
+                  name="fromCardId"
+                  rules={[{ required: true }]}
+                >
+                  <Radio.Group>
+                    {cards.map(({ account_id: id, display_name }) => {
+                      return (
+                        <Radio value={id} key={id}>
+                          {display_name}
+                        </Radio>
+                      );
+                    })}
+                  </Radio.Group>
+                </Form.Item>
+              )}
+              {accounts && (
+                <Form.Item
+                  label="From account"
+                  name="fromAccountId"
+                  rules={[{ required: true }]}
+                >
+                  <Radio.Group>
+                    {accounts.map(({ account_id: id, display_name }) => {
+                      return (
+                        <Radio value={id} key={id}>
+                          {display_name}
+                        </Radio>
+                      );
+                    })}
+                  </Radio.Group>
+                </Form.Item>
+              )}
+              <Form.Item>
+                <Button type="primary" htmlType="submit" loading={isImporting}>
+                  Import
+                </Button>
+              </Form.Item>
+            </Form>
+          </>
         )}
-        <Form
-          layout="vertical"
-          initialValues={initialValues}
-          onFinish={handleFinish}
-        >
-          {cards && (
-            <Form.Item
-              label="From card"
-              name="fromCardId"
-              rules={[{ required: true }]}
-            >
-              <Radio.Group>
-                {cards.map(({ account_id: id, display_name }) => {
-                  return (
-                    <Radio value={id} key={id}>
-                      {display_name}
-                    </Radio>
-                  );
-                })}
-              </Radio.Group>
-            </Form.Item>
-          )}
-          {accounts && (
-            <Form.Item
-              label="From account"
-              name="fromAccountId"
-              rules={[{ required: true }]}
-            >
-              <Radio.Group>
-                {accounts.map(({ account_id: id, display_name }) => {
-                  return (
-                    <Radio value={id} key={id}>
-                      {display_name}
-                    </Radio>
-                  );
-                })}
-              </Radio.Group>
-            </Form.Item>
-          )}
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={isImporting}>
-              Import
-            </Button>
-          </Form.Item>
-        </Form>
       </Modal>
     </>
   );
