@@ -39,8 +39,8 @@ export type ExchangeCodeInput = {
 };
 
 export type ExchangeCodeOutput = {
-  accountIds?: Maybe<Array<Scalars['String']>>;
-  cardIds?: Maybe<Array<Scalars['String']>>;
+  accounts?: Maybe<Array<Scalars['String']>>;
+  cards?: Maybe<Array<Scalars['String']>>;
   message: Scalars['String'];
 };
 
@@ -2990,7 +2990,7 @@ export type ExchangeCodeMutationVariables = Exact<{
 }>;
 
 
-export type ExchangeCodeMutation = { exchangeCode: Pick<ExchangeCodeOutput, 'message' | 'accountIds' | 'cardIds'> };
+export type ExchangeCodeMutation = { exchangeCode: Pick<ExchangeCodeOutput, 'message' | 'accounts' | 'cards'> };
 
 export type ImportTransactionsMutationVariables = Exact<{
   fromAccountId?: Maybe<Scalars['String']>;
@@ -3259,8 +3259,8 @@ export const ExchangeCodeDocument = gql`
     mutation ExchangeCode($code: String!) {
   exchangeCode(args: {code: $code}) {
     message
-    accountIds
-    cardIds
+    accounts
+    cards
   }
 }
     `;

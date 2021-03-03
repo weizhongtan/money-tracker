@@ -225,7 +225,7 @@
         "description": null,
         "fields": [
           {
-            "name": "accountIds",
+            "name": "accounts",
             "description": null,
             "args": [],
             "type": {
@@ -245,7 +245,7 @@
             "deprecationReason": null
           },
           {
-            "name": "cardIds",
+            "name": "cards",
             "description": null,
             "args": [],
             "type": {

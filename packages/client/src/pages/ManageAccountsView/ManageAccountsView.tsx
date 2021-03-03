@@ -212,6 +212,11 @@ const AccountsTable: React.FC<TableProps<Account>> = ({ ...props }) => {
   );
 };
 
+type BankAccount = {
+  account_id: string;
+  display_name: string;
+};
+
 const useTrueLayerCode = () => {
   const location = useLocation();
   const history = useHistory();
@@ -238,27 +243,35 @@ const useTrueLayerCode = () => {
   return [
     {
       toAccountId,
-      cardIds: data?.exchangeCode?.cardIds,
-      accountIds: data?.exchangeCode?.accountIds,
+      cards: data?.exchangeCode?.cards?.map(
+        (x) => JSON.parse(x) as BankAccount
+      ),
+      accounts: data?.exchangeCode?.accounts?.map(
+        (x) => JSON.parse(x) as BankAccount
+      ),
     },
     { loading },
   ] as const;
 };
 
 type ImportModalProps = {
-  cardIds: Nullable<string[]>;
-  accountIds: Nullable<string[]>;
+  cards: Nullable<BankAccount[]>;
+  accounts: Nullable<BankAccount[]>;
   toAccount?: Account;
 };
 
 const ImportModal: React.FC<ImportModalProps> = ({
-  cardIds,
-  accountIds,
+  cards,
+  accounts,
   toAccount,
 }) => {
   const [importTransactions] = useImportTransactionsMutation();
   const [showModal, setShowModal] = React.useState(true);
   const [isImporting, setIsImporting] = React.useState(false);
+
+  if (!toAccount) {
+    return <>error: no toAccount found</>;
+  }
 
   const initialValues: {
     fromCardId: Nullable<string>;
@@ -298,7 +311,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
     <>
       <Modal
         title="Select which account to import from"
-        visible={(!!cardIds || !!accountIds) && showModal}
+        visible={(!!cards || !!accounts) && showModal}
         onCancel={() => setShowModal(false)}
         footer={null}
       >
@@ -314,34 +327,34 @@ const ImportModal: React.FC<ImportModalProps> = ({
           initialValues={initialValues}
           onFinish={handleFinish}
         >
-          {cardIds && (
+          {cards && (
             <Form.Item
               label="From card"
               name="fromCardId"
               rules={[{ required: true }]}
             >
               <Radio.Group>
-                {cardIds.map((id) => {
+                {cards.map(({ account_id: id, display_name }) => {
                   return (
                     <Radio value={id} key={id}>
-                      {id}
+                      {display_name}
                     </Radio>
                   );
                 })}
               </Radio.Group>
             </Form.Item>
           )}
-          {accountIds && (
+          {accounts && (
             <Form.Item
               label="From account"
               name="fromAccountId"
               rules={[{ required: true }]}
             >
               <Radio.Group>
-                {accountIds.map((id) => {
+                {accounts.map(({ account_id: id, display_name }) => {
                   return (
                     <Radio value={id} key={id}>
-                      {id}
+                      {display_name}
                     </Radio>
                   );
                 })}
@@ -361,10 +374,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
 
 const ManageAccountsView = () => {
   const baseData = useBaseData();
-  const [
-    { cardIds, accountIds, toAccountId },
-    { loading },
-  ] = useTrueLayerCode();
+  const [{ cards, accounts, toAccountId }, { loading }] = useTrueLayerCode();
 
   const toAccount = baseData.accounts.find((a) => a.id === toAccountId);
   const active = baseData.accounts.filter((x) => x.status === 'active');
@@ -373,11 +383,7 @@ const ManageAccountsView = () => {
   return (
     <>
       <Spin spinning={loading}>
-        <ImportModal
-          cardIds={cardIds}
-          accountIds={accountIds}
-          toAccount={toAccount}
-        />
+        <ImportModal cards={cards} accounts={accounts} toAccount={toAccount} />
         <AccountsTable dataSource={active} title={() => 'Active accounts'} />
         <AccountsTable
           dataSource={inactive}

@@ -42,7 +42,7 @@ type ImportTransactionsOutput {
 
 type ExchangeCodeOutput {
   message : String!
-  accountIds : [String!]
-  cardIds : [String!]
+  accounts : [String!]
+  cards : [String!]
 }
 

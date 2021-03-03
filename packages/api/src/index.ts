@@ -87,8 +87,8 @@ app.post(
 
     res.json({
       message: 'successfully exchanged tokens!',
-      accountIds: accounts?.map((x) => x.account_id),
-      cardIds: cards?.map((x) => x.account_id),
+      accounts: accounts?.map((x) => JSON.stringify(x)),
+      cards: cards?.map((x) => JSON.stringify(x)),
     });
   }
 );
