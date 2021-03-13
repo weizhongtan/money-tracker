@@ -176,7 +176,10 @@ function App() {
   const [openKeys, setOpenKeys] = useState<any[]>(defaultOpenKeys);
   const { loading, error, data } = useBaseData();
 
-  if (error) return <>error</>;
+  if (error) {
+    console.error(error);
+    return 'error, see console';
+  }
 
   const accounts = data.accounts.length
     ? data.accounts

@@ -235,7 +235,7 @@ const useTrueLayerCode = () => {
       search.delete('state');
       history.push({ search: search.toString() });
       exchangeCode({
-        variables: { code },
+        variables: { code, toAccountId },
       });
     }
   }, []);

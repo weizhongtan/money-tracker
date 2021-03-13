@@ -36,6 +36,7 @@ export type Boolean_Comparison_Exp = {
 
 export type ExchangeCodeInput = {
   code: Scalars['String'];
+  toAccountId: Scalars['String'];
 };
 
 export type ExchangeCodeOutput = {
@@ -78,6 +79,7 @@ export type String_Comparison_Exp = {
 
 /** columns and relationships of "account" */
 export type Account = {
+  access_token?: Maybe<Scalars['String']>;
   colour?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['uuid'];
@@ -86,6 +88,7 @@ export type Account = {
   minimum: Scalars['numeric'];
   most_recent_transaction_date?: Maybe<Scalars['timestamptz']>;
   name: Scalars['String'];
+  refresh_token?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
   /** An array relationship */
@@ -207,6 +210,7 @@ export type Account_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Account_Bool_Exp>>>;
   _not?: Maybe<Account_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Account_Bool_Exp>>>;
+  access_token?: Maybe<String_Comparison_Exp>;
   colour?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
@@ -215,6 +219,7 @@ export type Account_Bool_Exp = {
   minimum?: Maybe<Numeric_Comparison_Exp>;
   most_recent_transaction_date?: Maybe<Timestamptz_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
+  refresh_token?: Maybe<String_Comparison_Exp>;
   status?: Maybe<String_Comparison_Exp>;
   sum?: Maybe<Numeric_Comparison_Exp>;
   transactions?: Maybe<Transaction_Bool_Exp>;
@@ -237,6 +242,7 @@ export type Account_Inc_Input = {
 
 /** input type for inserting data into table "account" */
 export type Account_Insert_Input = {
+  access_token?: Maybe<Scalars['String']>;
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
@@ -245,6 +251,7 @@ export type Account_Insert_Input = {
   minimum?: Maybe<Scalars['numeric']>;
   most_recent_transaction_date?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
+  refresh_token?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
   transactions?: Maybe<Transaction_Arr_Rel_Insert_Input>;
@@ -254,6 +261,7 @@ export type Account_Insert_Input = {
 
 /** aggregate max on columns */
 export type Account_Max_Fields = {
+  access_token?: Maybe<Scalars['String']>;
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
@@ -262,6 +270,7 @@ export type Account_Max_Fields = {
   minimum?: Maybe<Scalars['numeric']>;
   most_recent_transaction_date?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
+  refresh_token?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -269,6 +278,7 @@ export type Account_Max_Fields = {
 
 /** order by max() on columns of table "account" */
 export type Account_Max_Order_By = {
+  access_token?: Maybe<Order_By>;
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -277,6 +287,7 @@ export type Account_Max_Order_By = {
   minimum?: Maybe<Order_By>;
   most_recent_transaction_date?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  refresh_token?: Maybe<Order_By>;
   status?: Maybe<Order_By>;
   sum?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -284,6 +295,7 @@ export type Account_Max_Order_By = {
 
 /** aggregate min on columns */
 export type Account_Min_Fields = {
+  access_token?: Maybe<Scalars['String']>;
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
@@ -292,6 +304,7 @@ export type Account_Min_Fields = {
   minimum?: Maybe<Scalars['numeric']>;
   most_recent_transaction_date?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
+  refresh_token?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -299,6 +312,7 @@ export type Account_Min_Fields = {
 
 /** order by min() on columns of table "account" */
 export type Account_Min_Order_By = {
+  access_token?: Maybe<Order_By>;
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -307,6 +321,7 @@ export type Account_Min_Order_By = {
   minimum?: Maybe<Order_By>;
   most_recent_transaction_date?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  refresh_token?: Maybe<Order_By>;
   status?: Maybe<Order_By>;
   sum?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
@@ -335,6 +350,7 @@ export type Account_On_Conflict = {
 
 /** ordering options when selecting data from "account" */
 export type Account_Order_By = {
+  access_token?: Maybe<Order_By>;
   colour?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -343,6 +359,7 @@ export type Account_Order_By = {
   minimum?: Maybe<Order_By>;
   most_recent_transaction_date?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  refresh_token?: Maybe<Order_By>;
   status?: Maybe<Order_By>;
   sum?: Maybe<Order_By>;
   transactionsByToAccountId_aggregate?: Maybe<Transaction_Aggregate_Order_By>;
@@ -357,6 +374,8 @@ export type Account_Pk_Columns_Input = {
 
 /** select columns of table "account" */
 export enum Account_Select_Column {
+  /** column name */
+  AccessToken = 'access_token',
   /** column name */
   Colour = 'colour',
   /** column name */
@@ -374,6 +393,8 @@ export enum Account_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  RefreshToken = 'refresh_token',
+  /** column name */
   Status = 'status',
   /** column name */
   Sum = 'sum',
@@ -383,6 +404,7 @@ export enum Account_Select_Column {
 
 /** input type for updating data in table "account" */
 export type Account_Set_Input = {
+  access_token?: Maybe<Scalars['String']>;
   colour?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
@@ -391,6 +413,7 @@ export type Account_Set_Input = {
   minimum?: Maybe<Scalars['numeric']>;
   most_recent_transaction_date?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
+  refresh_token?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   sum?: Maybe<Scalars['numeric']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -455,6 +478,8 @@ export type Account_Sum_Order_By = {
 /** update columns of table "account" */
 export enum Account_Update_Column {
   /** column name */
+  AccessToken = 'access_token',
+  /** column name */
   Colour = 'colour',
   /** column name */
   CreatedAt = 'created_at',
@@ -470,6 +495,8 @@ export enum Account_Update_Column {
   MostRecentTransactionDate = 'most_recent_transaction_date',
   /** column name */
   Name = 'name',
+  /** column name */
+  RefreshToken = 'refresh_token',
   /** column name */
   Status = 'status',
   /** column name */
@@ -2953,6 +2980,13 @@ export type Uuid_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
 
+export type GetAccountByPkQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetAccountByPkQuery = { account_by_pk?: Maybe<Pick<Account, 'id' | 'name' | 'access_token' | 'refresh_token'>> };
+
 export type CreateCategoryMutationVariables = Exact<{
   name: Scalars['String'];
   type?: Maybe<Scalars['String']>;
@@ -2987,6 +3021,7 @@ export type DeleteTransactionsMutation = { delete_transaction?: Maybe<Pick<Trans
 
 export type ExchangeCodeMutationVariables = Exact<{
   code: Scalars['String'];
+  toAccountId: Scalars['String'];
 }>;
 
 
@@ -3036,6 +3071,18 @@ export type UnpairTransactionsMutationVariables = Exact<{
 export type UnpairTransactionsMutation = { update_transaction?: Maybe<(
     Pick<Transaction_Mutation_Response, 'affected_rows'>
     & { returning: Array<Pick<Transaction, 'id'>> }
+  )> };
+
+export type UpdateAccountTokensMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  accessToken?: Maybe<Scalars['String']>;
+  refreshToken?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateAccountTokensMutation = { update_account?: Maybe<(
+    Pick<Account_Mutation_Response, 'affected_rows'>
+    & { returning: Array<Pick<Account, 'id' | 'access_token' | 'refresh_token'>> }
   )> };
 
 export type UpdateCategoryMutationVariables = Exact<{
@@ -3148,6 +3195,42 @@ export type GetTransactionsQuery = { transactions: { aggregate?: Maybe<Pick<Tran
     )> } };
 
 
+export const GetAccountByPkDocument = gql`
+    query GetAccountByPk($id: uuid!) {
+  account_by_pk(id: $id) {
+    id
+    name
+    access_token
+    refresh_token
+  }
+}
+    `;
+
+/**
+ * __useGetAccountByPkQuery__
+ *
+ * To run a query within a React component, call `useGetAccountByPkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountByPkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountByPkQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAccountByPkQuery(baseOptions: Apollo.QueryHookOptions<GetAccountByPkQuery, GetAccountByPkQueryVariables>) {
+        return Apollo.useQuery<GetAccountByPkQuery, GetAccountByPkQueryVariables>(GetAccountByPkDocument, baseOptions);
+      }
+export function useGetAccountByPkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccountByPkQuery, GetAccountByPkQueryVariables>) {
+          return Apollo.useLazyQuery<GetAccountByPkQuery, GetAccountByPkQueryVariables>(GetAccountByPkDocument, baseOptions);
+        }
+export type GetAccountByPkQueryHookResult = ReturnType<typeof useGetAccountByPkQuery>;
+export type GetAccountByPkLazyQueryHookResult = ReturnType<typeof useGetAccountByPkLazyQuery>;
+export type GetAccountByPkQueryResult = Apollo.QueryResult<GetAccountByPkQuery, GetAccountByPkQueryVariables>;
 export const CreateCategoryDocument = gql`
     mutation CreateCategory($name: String!, $type: String, $isParent: Boolean) {
   insert_category(objects: {name: $name, type: $type, is_parent: $isParent}) {
@@ -3256,8 +3339,8 @@ export type DeleteTransactionsMutationHookResult = ReturnType<typeof useDeleteTr
 export type DeleteTransactionsMutationResult = Apollo.MutationResult<DeleteTransactionsMutation>;
 export type DeleteTransactionsMutationOptions = Apollo.BaseMutationOptions<DeleteTransactionsMutation, DeleteTransactionsMutationVariables>;
 export const ExchangeCodeDocument = gql`
-    mutation ExchangeCode($code: String!) {
-  exchangeCode(args: {code: $code}) {
+    mutation ExchangeCode($code: String!, $toAccountId: String!) {
+  exchangeCode(args: {code: $code, toAccountId: $toAccountId}) {
     message
     accounts
     cards
@@ -3280,6 +3363,7 @@ export type ExchangeCodeMutationFn = Apollo.MutationFunction<ExchangeCodeMutatio
  * const [exchangeCodeMutation, { data, loading, error }] = useExchangeCodeMutation({
  *   variables: {
  *      code: // value for 'code'
+ *      toAccountId: // value for 'toAccountId'
  *   },
  * });
  */
@@ -3449,6 +3533,48 @@ export function useUnpairTransactionsMutation(baseOptions?: Apollo.MutationHookO
 export type UnpairTransactionsMutationHookResult = ReturnType<typeof useUnpairTransactionsMutation>;
 export type UnpairTransactionsMutationResult = Apollo.MutationResult<UnpairTransactionsMutation>;
 export type UnpairTransactionsMutationOptions = Apollo.BaseMutationOptions<UnpairTransactionsMutation, UnpairTransactionsMutationVariables>;
+export const UpdateAccountTokensDocument = gql`
+    mutation UpdateAccountTokens($id: uuid!, $accessToken: String, $refreshToken: String) {
+  update_account(
+    where: {id: {_eq: $id}}
+    _set: {access_token: $accessToken, refresh_token: $refreshToken}
+  ) {
+    affected_rows
+    returning {
+      id
+      access_token
+      refresh_token
+    }
+  }
+}
+    `;
+export type UpdateAccountTokensMutationFn = Apollo.MutationFunction<UpdateAccountTokensMutation, UpdateAccountTokensMutationVariables>;
+
+/**
+ * __useUpdateAccountTokensMutation__
+ *
+ * To run a mutation, you first call `useUpdateAccountTokensMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAccountTokensMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAccountTokensMutation, { data, loading, error }] = useUpdateAccountTokensMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      accessToken: // value for 'accessToken'
+ *      refreshToken: // value for 'refreshToken'
+ *   },
+ * });
+ */
+export function useUpdateAccountTokensMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAccountTokensMutation, UpdateAccountTokensMutationVariables>) {
+        return Apollo.useMutation<UpdateAccountTokensMutation, UpdateAccountTokensMutationVariables>(UpdateAccountTokensDocument, baseOptions);
+      }
+export type UpdateAccountTokensMutationHookResult = ReturnType<typeof useUpdateAccountTokensMutation>;
+export type UpdateAccountTokensMutationResult = Apollo.MutationResult<UpdateAccountTokensMutation>;
+export type UpdateAccountTokensMutationOptions = Apollo.BaseMutationOptions<UpdateAccountTokensMutation, UpdateAccountTokensMutationVariables>;
 export const UpdateCategoryDocument = gql`
     mutation UpdateCategory($ids: [uuid!]!, $name: String, $type: String, $isParent: Boolean, $parentCategoryId: uuid) {
   update_category(
