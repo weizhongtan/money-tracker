@@ -646,6 +646,16 @@
         "possibleTypes": null
       },
       {
+        "kind": "SCALAR",
+        "name": "_uuid",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "account",
         "description": "columns and relationships of \"account\"",
@@ -7152,11 +7162,11 @@
             "deprecationReason": null
           },
           {
-            "name": "v_category_id",
+            "name": "v_category_ids",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "uuid",
+              "name": "_uuid",
               "ofType": null
             },
             "defaultValue": null,

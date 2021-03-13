@@ -52,8 +52,8 @@ export type Filters = TimePeriod & {
   setDates?: (period: TimePeriod) => void;
   accountIdFilter?: Account['id'];
   setAccountIdFilter?: (id: Account['id']) => void;
-  categoryIdFilter?: Category['id'];
-  setCategoryIdFilter?: (id: Category['id']) => void;
+  categoryIdsFilter: Category['id'][];
+  setCategoryIdsFilter?: (ids: Category['id'][]) => void;
   showControls: boolean;
 };
 
@@ -125,14 +125,14 @@ function App() {
     startDate: Transaction['date'];
     endDate: Transaction['date'];
     accountIdFilter?: Account['id'];
-    categoryIdFilter?: Category['id'];
+    categoryIdsFilter?: string;
     collapsed: boolean;
     showControls: boolean;
   }>({
     startDate: time().subtract(1, 'year').startOf('year').toISOString(),
     endDate: time().toISOString(),
     accountIdFilter: undefined,
-    categoryIdFilter: undefined,
+    categoryIdsFilter: undefined,
     collapsed: false,
     showControls: false,
   });
@@ -146,15 +146,16 @@ function App() {
   };
   const {
     accountIdFilter,
-    categoryIdFilter,
+    categoryIdsFilter: categoryIdsFilterString,
     collapsed,
     showControls,
   } = urlState;
+  const categoryIdsFilter = categoryIdsFilterString?.split(',') ?? [];
   const setAccountIdFilter = (id?: Account['id']) => {
     setUrlState({ accountIdFilter: id });
   };
-  const setCategoryIdFilter = (id?: Category['id']) => {
-    setUrlState({ categoryIdFilter: id });
+  const setCategoryIdsFilter = (ids: Category['id'][]) => {
+    setUrlState({ categoryIdsFilter: ids.join(',') });
   };
   const setCollapsed = (val: boolean) => {
     setUrlState({ collapsed: val });
@@ -178,7 +179,7 @@ function App() {
 
   if (error) {
     console.error(error);
-    return 'error, see console';
+    return <>error, see console</>;
   }
 
   const accounts = data.accounts.length
@@ -186,7 +187,7 @@ function App() {
     : [createCatchAllAccount(accountIdFilter)];
   const categories = data.categories.length
     ? data.categories
-    : [createCatchAllCategory(categoryIdFilter)];
+    : [createCatchAllCategory(categoryIdsFilter?.[0])];
 
   return (
     <BaseDataContext.Provider value={data}>
@@ -221,18 +222,17 @@ function App() {
                   </Select.Option>
                 ))}
               </Select>
-              <Select<React.FC<SelectProps<string>>>
-                value={categoryIdFilter ?? createCatchAllCategory().id}
-                onSelect={(val) =>
-                  setCategoryIdFilter(
-                    val === createCatchAllCategory().id ? undefined : val
-                  )
-                }
+              <Select<React.FC<SelectProps<string[]>>>
+                value={categoryIdsFilter}
+                onChange={(val) => {
+                  setCategoryIdsFilter(val);
+                }}
+                mode="multiple"
                 showSearch
                 optionFilterProp="label"
                 allowClear
                 onClear={() => {
-                  setCategoryIdFilter(undefined);
+                  setCategoryIdsFilter([]);
                 }}
               >
                 {categories.map(({ id, name }) => (
@@ -323,8 +323,8 @@ function App() {
                                 setDates,
                                 accountIdFilter,
                                 setAccountIdFilter,
-                                categoryIdFilter,
-                                setCategoryIdFilter,
+                                categoryIdsFilter,
+                                setCategoryIdsFilter,
                                 showControls,
                               }}
                             />

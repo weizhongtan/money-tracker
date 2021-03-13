@@ -207,7 +207,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
   setDates,
   accountIdFilter,
   setAccountIdFilter,
-  categoryIdFilter,
+  categoryIdsFilter: categoryIdFilter,
   setCategoryIdFilter,
 }) => {
   const baseData = useBaseData();

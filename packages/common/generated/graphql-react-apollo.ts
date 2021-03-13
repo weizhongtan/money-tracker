@@ -11,6 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  _uuid: any;
   json: any;
   numeric: number;
   timestamptz: string;
@@ -76,6 +77,7 @@ export type String_Comparison_Exp = {
   _nsimilar?: Maybe<Scalars['String']>;
   _similar?: Maybe<Scalars['String']>;
 };
+
 
 /** columns and relationships of "account" */
 export type Account = {
@@ -949,7 +951,7 @@ export type Func_Cumulative_Amount_Args = {
 
 export type Func_Timeline_Args = {
   v_account_id?: Maybe<Scalars['uuid']>;
-  v_category_id?: Maybe<Scalars['uuid']>;
+  v_category_ids?: Maybe<Scalars['_uuid']>;
   v_group_by?: Maybe<Scalars['String']>;
 };
 
@@ -3133,7 +3135,7 @@ export type GetAmountGroupsQueryVariables = Exact<{
   startDate?: Maybe<Scalars['timestamptz']>;
   endDate?: Maybe<Scalars['timestamptz']>;
   accountId?: Maybe<Scalars['uuid']>;
-  categoryId?: Maybe<Scalars['uuid']>;
+  categoryIds?: Maybe<Scalars['_uuid']>;
   groupBy?: Maybe<Scalars['String']>;
 }>;
 
@@ -3711,9 +3713,9 @@ export type CheckTransactionQueryHookResult = ReturnType<typeof useCheckTransact
 export type CheckTransactionLazyQueryHookResult = ReturnType<typeof useCheckTransactionLazyQuery>;
 export type CheckTransactionQueryResult = Apollo.QueryResult<CheckTransactionQuery, CheckTransactionQueryVariables>;
 export const GetAmountGroupsDocument = gql`
-    query GetAmountGroups($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $categoryId: uuid, $groupBy: String) {
+    query GetAmountGroups($startDate: timestamptz, $endDate: timestamptz, $accountId: uuid, $categoryIds: _uuid, $groupBy: String) {
   groups: func_timeline(
-    args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}
+    args: {v_account_id: $accountId, v_category_ids: $categoryIds, v_group_by: $groupBy}
     where: {date: {_gte: $startDate, _lte: $endDate}}
     order_by: {date: asc}
   ) {
@@ -3723,7 +3725,7 @@ export const GetAmountGroupsDocument = gql`
     income
   }
   aggregate: func_timeline_aggregate(
-    args: {v_account_id: $accountId, v_category_id: $categoryId, v_group_by: $groupBy}
+    args: {v_account_id: $accountId, v_category_ids: $categoryIds, v_group_by: $groupBy}
     where: {date: {_gte: $startDate, _lte: $endDate}}
     order_by: {date: asc}
   ) {
@@ -3760,7 +3762,7 @@ export const GetAmountGroupsDocument = gql`
  *      startDate: // value for 'startDate'
  *      endDate: // value for 'endDate'
  *      accountId: // value for 'accountId'
- *      categoryId: // value for 'categoryId'
+ *      categoryIds: // value for 'categoryIds'
  *      groupBy: // value for 'groupBy'
  *   },
  * });

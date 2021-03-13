@@ -117,3 +117,5 @@ export const useUrlState = <InitialState extends {}>(
 
   return [parsedUrlState as InitialState, setUrlState] as const;
 };
+
+export const uuidArrayVariable = (ids: string[]) => `{${ids.join(',')}}`;
