@@ -21,6 +21,7 @@ type Mutation {
 
 input ExchangeCodeInput {
   code : String!
+  toAccountId : String!
 }
 
 input ImportTransactionsInput {

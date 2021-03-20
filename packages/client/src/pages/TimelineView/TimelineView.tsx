@@ -10,7 +10,13 @@ import {
   Visualisation,
   VisualisationControls,
 } from '../../components';
-import { time, toLabelledValue, toMoney, useTheme } from '../../lib';
+import {
+  time,
+  toLabelledValue,
+  toMoney,
+  useTheme,
+  uuidArrayVariable,
+} from '../../lib';
 import { Nullable, TimePeriod } from '../../types';
 import TransactionsView from '../TransactionsView';
 
@@ -98,7 +104,7 @@ type TimeLineViewProps = TimePeriod & Filters;
 const TimelineView: React.FC<TimeLineViewProps> = ({
   startDate,
   endDate,
-  categoryIdFilter,
+  categoryIdsFilter,
   accountIdFilter,
   showControls,
 }) => {
@@ -117,11 +123,14 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
       startDate: startDate.toISOString(),
       endDate: endDate.toISOString(),
       accountId: accountIdFilter,
-      categoryId: categoryIdFilter,
+      categoryIds: uuidArrayVariable(categoryIdsFilter),
       groupBy: precision,
     },
   });
-  if (error) return <>error</>;
+  if (error) {
+    console.error(error);
+    return <>error</>;
+  }
 
   const groups =
     data?.groups.map(({ date, balance, expense, income }) => ({
@@ -167,7 +176,7 @@ const TimelineView: React.FC<TimeLineViewProps> = ({
         <TransactionsView
           startDate={transactionViewDates.startDate}
           endDate={transactionViewDates.endDate}
-          categoryIdFilter={categoryIdFilter}
+          categoryIdsFilter={categoryIdsFilter}
           accountIdFilter={accountIdFilter}
         />
       </PageDrawer>

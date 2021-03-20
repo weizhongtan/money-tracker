@@ -172,7 +172,7 @@ const BreakdownView: React.FC<BreakdownViewProps> = ({
           startDate={startDate}
           endDate={endDate}
           accountIdFilter={accountIdFilter}
-          categoryIdFilter={drawerState.categoryId}
+          categoryIdsFilter={drawerState.categoryId}
         />
       </PageDrawer>
       <VisualisationControls show={showControls}>

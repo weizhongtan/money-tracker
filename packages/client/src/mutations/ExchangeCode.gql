@@ -1,5 +1,5 @@
-mutation ExchangeCode($code: String!) {
-  exchangeCode(args: { code: $code }) {
+mutation ExchangeCode($code: String!, $toAccountId: String!) {
+  exchangeCode(args: { code: $code, toAccountId: $toAccountId }) {
     message
     accounts
     cards

@@ -19,6 +19,7 @@ generates:
         timestamptz: string
         uuid: string
         numeric: number
+        _uuid: string # Format matches `{uuid,uuid,uuid}`
   './packages/common/generated/graphql-request.ts':
     plugins:
       - typescript

@@ -235,7 +235,7 @@ const useTrueLayerCode = () => {
       search.delete('state');
       history.push({ search: search.toString() });
       exchangeCode({
-        variables: { code },
+        variables: { code, toAccountId },
       });
     }
   }, []);
@@ -288,7 +288,8 @@ const ImportModal: React.FC<ImportModalProps> = ({
         fromCardId: values.fromCardId,
         fromAccountId: values.fromAccountId,
         toAccountId: toAccount.id,
-        startDate: toAccount.mostRecentTransactionDate ?? time().toISOString(),
+        startDate:
+          toAccount.mostRecentTransactionDate ?? time('2017').toISOString(),
       },
     });
 
@@ -327,7 +328,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
               initialValues={initialValues}
               onFinish={(values) => handleFinish(values, toAccount)}
             >
-              {cards && (
+              {!!cards?.length && (
                 <Form.Item
                   label="From card"
                   name="fromCardId"
@@ -344,7 +345,7 @@ const ImportModal: React.FC<ImportModalProps> = ({
                   </Radio.Group>
                 </Form.Item>
               )}
-              {accounts && (
+              {!!accounts?.length && (
                 <Form.Item
                   label="From account"
                   name="fromAccountId"

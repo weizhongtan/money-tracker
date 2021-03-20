@@ -8,16 +8,16 @@ import {
   useUpdateTransactionsCategoryMutation,
 } from '../../../../common/generated/graphql-react-apollo';
 import { reversible, useBaseData } from '../../lib';
-import { Account, Nullable, TimePeriod } from '../../types';
+import { Account, Category, Nullable, TimePeriod } from '../../types';
 
 export const useTransactions = ({
   startDate,
   endDate,
-  categoryId,
+  categoryIds,
   accountId,
   searchText,
 }: TimePeriod & {
-  categoryId?: string;
+  categoryIds: Category['id'][];
   accountId?: string;
   searchText: string;
 }) => {
@@ -27,7 +27,7 @@ export const useTransactions = ({
   const variables = {
     startDate: startDate?.toISOString(),
     endDate: endDate?.toISOString(),
-    categoryIds: categoryId ? [categoryId] : undefined,
+    categoryIds: categoryIds.length ? categoryIds : undefined,
     accountId,
     searchText: `%${searchText}%`,
     searchAmount,

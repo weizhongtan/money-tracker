@@ -1,0 +1,17 @@
+mutation UpdateAccountTokens(
+  $id: uuid!
+  $accessToken: String
+  $refreshToken: String
+) {
+  update_account(
+    where: { id: { _eq: $id } }
+    _set: { access_token: $accessToken, refresh_token: $refreshToken }
+  ) {
+    affected_rows
+    returning {
+      id
+      access_token
+      refresh_token
+    }
+  }
+}

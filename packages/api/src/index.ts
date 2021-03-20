@@ -10,7 +10,6 @@ import {
   DataAPIClient,
   ICardTransaction,
   IResult,
-  ITokenResponse,
   ITransaction,
 } from 'truelayer-client';
 
@@ -38,6 +37,9 @@ const authClient = new AuthAPIClient({
   client_secret: process.env.CLIENT_SECRET ?? '',
 });
 
+const gqlClient = new GraphQLClient('http://localhost:3000/v1/graphql');
+const sdk = getSdk(gqlClient);
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -50,13 +52,25 @@ app.post('/get-auth-url', async (req, res: Response<AuthUrl>) => {
   res.json({
     url: authClient.getAuthUrl({
       redirectURI: redirectUri,
-      scope: ['info', 'accounts', 'balance', 'cards', 'transactions'],
+      scope: [
+        'info',
+        'accounts',
+        'balance',
+        'cards',
+        'transactions',
+        'offline_access',
+      ],
       nonce: 'nonce',
     }),
   });
 });
 
-let tokens: ITokenResponse;
+const tokenCache: {
+  [accountId: string]: {
+    access_token: string;
+    refresh_token?: string | null;
+  };
+} = {};
 
 app.post(
   '/exchange-code',
@@ -64,12 +78,49 @@ app.post(
     req: Request<ExchangeCodeInput>,
     res: Response<ExchangeCodeOutput>
   ) => {
-    const { code } = req.body.input.args;
+    const { code, toAccountId } = req.body.input.args;
 
-    console.log('exchanging code for token');
-    tokens = await authClient.exchangeCodeForToken(redirectUri, code);
+    // first, check if any cached access_token is valid
+    if (
+      !(
+        tokenCache[toAccountId] &&
+        DataAPIClient.validateToken(tokenCache[toAccountId].access_token)
+      )
+    ) {
+      // cache isn't valid, try fetching from database
+      const { account_by_pk } = await sdk.GetAccountByPk({ id: toAccountId });
+      if (
+        account_by_pk?.access_token &&
+        DataAPIClient.validateToken(account_by_pk.access_token)
+      ) {
+        tokenCache[toAccountId] = {
+          access_token: account_by_pk.access_token,
+          refresh_token: account_by_pk.refresh_token,
+        };
+        console.log('got valid tokens from database');
+      } else {
+        console.log('exchanging code for new access token');
+        tokenCache[toAccountId] = await authClient.exchangeCodeForToken(
+          redirectUri,
+          code
+        );
+      }
+    } else {
+      console.log('using cached tokens');
+    }
+
+    console.log('current token cache:');
+    console.log(tokenCache);
+
+    const tokens = tokenCache[toAccountId];
 
     console.log(tokens);
+
+    await sdk.UpdateAccountTokens({
+      id: toAccountId,
+      accessToken: tokens.access_token,
+      refreshToken: tokens.refresh_token,
+    });
 
     let accounts;
     try {
@@ -92,9 +143,6 @@ app.post(
     });
   }
 );
-
-const gqlClient = new GraphQLClient('http://localhost:3000/v1/graphql');
-const sdk = getSdk(gqlClient);
 
 app.post(
   '/import-transactions',
@@ -129,7 +177,7 @@ app.post(
 
     console.log('################# getting data from API');
     const data: IResult<ICardTransaction | ITransaction> = await api(
-      tokens.access_token,
+      tokenCache[toAccountId].access_token,
       fromId,
       time(startDate).format('YYYY-MM-DD'),
       time().format('YYYY-MM-DD')
