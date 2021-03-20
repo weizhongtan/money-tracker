@@ -207,8 +207,8 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
   setDates,
   accountIdFilter,
   setAccountIdFilter,
-  categoryIdsFilter: categoryIdFilter,
-  setCategoryIdFilter,
+  categoryIdsFilter,
+  setCategoryIdsFilter,
 }) => {
   const baseData = useBaseData();
   const theme = useTheme();
@@ -223,7 +223,7 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
   const { loading, error, transactions, count } = useTransactions({
     startDate,
     endDate,
-    categoryId: categoryIdFilter,
+    categoryIds: categoryIdsFilter,
     accountId: accountIdFilter,
     searchText,
   });
@@ -349,11 +349,11 @@ const TransactionsView: React.FC<TransactionsViewProps> = ({
           render={(_, record) => {
             return (
               <Space>
-                {!categoryIdFilter && setCategoryIdFilter && (
+                {!categoryIdsFilter.length && setCategoryIdsFilter && (
                   <FilterByButton
                     title={`Filter to ${record.category.name}`}
                     onClick={() => {
-                      setCategoryIdFilter(record.category.id);
+                      setCategoryIdsFilter([record.category.id]);
                     }}
                   />
                 )}
