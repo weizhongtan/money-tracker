@@ -32,11 +32,7 @@ import TimelineView from '../pages/TimelineView';
 import TransactionsView from '../pages/TransactionsView';
 import theme from '../theme';
 import { Account, Category, TimePeriod, Transaction } from '../types';
-import {
-  createCatchAllAccount,
-  createCatchAllCategory,
-  useBaseData,
-} from './data';
+import { createCatchAllAccount, useBaseData } from './data';
 
 const Content = styled(Layout.Content)`
   background: #fff;
@@ -185,9 +181,7 @@ function App() {
   const accounts = data.accounts.length
     ? data.accounts
     : [createCatchAllAccount(accountIdFilter)];
-  const categories = data.categories.length
-    ? data.categories
-    : [createCatchAllCategory(categoryIdsFilter?.[0])];
+  const categories = data.categories;
 
   return (
     <BaseDataContext.Provider value={data}>
@@ -224,6 +218,7 @@ function App() {
               </Select>
               <Select<React.FC<SelectProps<string[]>>>
                 value={categoryIdsFilter}
+                placeholder="Filter categories"
                 onChange={(val) => {
                   setCategoryIdsFilter(val);
                 }}
@@ -234,6 +229,7 @@ function App() {
                 onClear={() => {
                   setCategoryIdsFilter([]);
                 }}
+                maxTagCount={3}
               >
                 {categories.map(({ id, name }) => (
                   <Select.Option value={id} key={id} label={name}>

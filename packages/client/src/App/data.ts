@@ -14,15 +14,6 @@ export function createCatchAllAccount(id = 'all'): Account {
   };
 }
 
-export function createCatchAllCategory(id = 'all'): Category {
-  return {
-    id,
-    key: id,
-    name: 'All Categories',
-    isParent: false,
-  };
-}
-
 export const useBaseData = (): {
   loading: boolean;
   error?: ApolloError;
@@ -45,7 +36,7 @@ export const useBaseData = (): {
     loading: false,
     data: {
       accounts: [createCatchAllAccount(), ...data.accounts],
-      categories: [createCatchAllCategory(), ...data.categories],
+      categories: data.categories,
       references: {
         internalTransferCategory: data.categories.find(
           (x) => x.name === 'Internal Transfer'
