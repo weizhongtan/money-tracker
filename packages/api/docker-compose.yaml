@@ -13,7 +13,7 @@ services:
   graphql-engine:
     image: hasura/graphql-engine:v1.3.3
     ports:
-      - '8080:8080'
+      - '3001:8080'
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:${DB_PASSWORD}@postgres:5432/${DB_NAME}
