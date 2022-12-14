@@ -41,7 +41,7 @@
     "csvjson": "^5.1.0",
     "dayjs": "^1.10.4",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "graphql": "^15.5.0",
     "graphql-request": "^3.4.0",
     "morgan": "^1.10.0",
